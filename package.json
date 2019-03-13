@@ -1,7 +1,7 @@
 {
   "name": "bukazu-portal-react",
   "version": "1.0.1",
-  "description": "A package for laoding tThe calendar and search module from bukazu loading into a react app.",
+  "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
   "scripts": {
