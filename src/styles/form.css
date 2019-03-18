@@ -12,7 +12,7 @@
     margin: 0;
   }
   .return-link {
-    color: rgba(23, 190, 187, 0.75);
+    color: var(--bukazu-button);
     cursor: pointer;
     text-decoration: underline;
   }
@@ -90,7 +90,7 @@
         display: none;
       }
       input:checked + label {
-        background: rgba(23, 190, 187, 0.75);
+        background: var(--bukazu-button);
         /* color: #fff; */
       }
       label {
