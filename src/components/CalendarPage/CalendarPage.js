@@ -16,6 +16,7 @@ export const HOUSE_QUERY = gql`
         last_minute_days
         discounts
         discounts_info
+        house_type
       }
     }
   }

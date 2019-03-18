@@ -23,10 +23,14 @@
     "adults_from": "(vanaf {age} jaar)",
     "children": "Kinderen",
     "children_from": "({from} t/m {til} jaar)",
-    "arrival_date": "Aankomstdatum",
-    "departure_date": "Vertrekdatum",
-    "arrival": "Aankomst",
-    "departure": "Vertrek ",
+    "house.arrival_date": "Aankomstdatum",
+    "camper.arrival_date": "Ophaaldatum",
+    "house.departure_date": "Vertrekdatum",
+    "camper.departure_date": "Inleverdatum",
+    "house.arrival": "Aankomst",
+    "camper.arrival": "Ophaaldatum",
+    "house.departure": "Vertrek",
+    "camper.departure": "Inleverdatum",
     "extra_costs_bookable": "Bijkomende kosten",
     "costs_on_site": "Eventueel bijkomende kosten ter plaatse:",
     "insurances": "Verzekeringen",
@@ -75,5 +79,6 @@
     "agree_with": "Door op 'Boek nu' te klikken gaat u akkoord met de",
     "discount_reason": "Reden korting.",
     "results": "resultaten",
-    "bathrooms": "badkamers"
+    "bathrooms": "badkamers",
+    "filters": "filters"
 }

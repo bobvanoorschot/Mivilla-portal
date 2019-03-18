@@ -54,23 +54,8 @@ class Portal extends Component {
       ...deData
     ]);
 
-    //
-    //   const elements = document.getElementsByClassName('bukazu-app');
-    //   if (elements.length > 0) {
-    //       for (let element of elements) {
-    //           runApp(element);
-    //       }
-    //   } else if (elem) {
-    //       runApp(elem);
-    //   }
     window.__localeId__ = locale;
 
-    // console.log({ filters });
-    // if (filters) {
-    //   filters = JSON.parse(filters);
-    // } else {
-    //   filters = {};
-    // }
 
     return (
       <ApolloProvider client={client}>

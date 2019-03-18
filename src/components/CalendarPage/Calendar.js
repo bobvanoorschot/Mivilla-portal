@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import dateFns from 'date-fns';
-import { Query } from 'react-apollo';
-import Loading from '../icons/loading.svg';
-import format from '../../_lib/format';
-import isAfter from 'date-fns/is_after';
-import CalendarHeader from './CalendarHeader';
-import PriceField from './PriceField';
-import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
+import React from "react";
+import PropTypes from "prop-types";
+import dateFns from "date-fns";
+import { Query } from "react-apollo";
+import Loading from "../icons/loading.svg";
+import format from "../../_lib/format";
+import isAfter from "date-fns/is_after";
+import CalendarHeader from "./CalendarHeader";
+import PriceField from "./PriceField";
+import differenceInCalendarDays from "date-fns/difference_in_calendar_days";
 
-import { CALENDAR_QUERY } from '../../_lib/queries';
-import { FormattedMessage } from 'react-intl';
+import { CALENDAR_QUERY } from "../../_lib/queries";
+import { FormattedMessage } from "react-intl";
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -21,20 +21,20 @@ class Calendar extends React.Component {
 
   state = {
     currentMonth: new Date(),
-    selectedDate: '',
+    selectedDate: "",
     numberOfMonths: this.props.numberOfMonths,
     house: this.props.house,
-    arrivalDate: '',
-    departureDate: '',
-    startBooking: false,
+    arrivalDate: "",
+    departureDate: "",
+    startBooking: false
   };
 
   renderHeader(month) {
-    const dateFormat = 'MMMM YYYY';
+    const dateFormat = "MMMM YYYY";
 
     return (
       <div className="header row flex-middle">
-        <div className="col col-center" style={{ textAlign: 'center' }}>
+        <div className="col col-center" style={{ textAlign: "center" }}>
           <span>{format(month, dateFormat)}</span>
         </div>
       </div>
@@ -42,7 +42,7 @@ class Calendar extends React.Component {
   }
 
   renderDays() {
-    const dateFormat = 'ddd';
+    const dateFormat = "ddd";
     const days = [];
 
     let startDate = dateFns.startOfWeek(this.state.currentMonth);
@@ -66,20 +66,20 @@ class Calendar extends React.Component {
     const endDate = dateFns.endOfWeek(monthEnd);
     const today = new Date();
 
-    const dateFormat = 'D';
+    const dateFormat = "D";
     const rows = [];
 
     let days = [];
     let day = startDate;
-    let formattedDate = '';
+    let formattedDate = "";
     let dayz = availabilities;
 
     while (day <= endDate) {
       // for (let daz of dayz) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
-        let date = dateFns.format(day, 'YYYY-MM-DD');
-        let yesterday = dateFns.format(dateFns.subDays(date, 1), 'YYYY-MM-DD');
+        let date = dateFns.format(day, "YYYY-MM-DD");
+        let yesterday = dateFns.format(dateFns.subDays(date, 1), "YYYY-MM-DD");
         let daz = dayz.find(x => x.date === date);
 
         const prevBooked = dayz.find(x => x.date === yesterday);
@@ -88,9 +88,9 @@ class Calendar extends React.Component {
           differenceInCalendarDays(daz.date, selectedDate) >= daz.min_nights;
         const maximum =
           differenceInCalendarDays(daz.date, selectedDate) <=
-          house.max_nights &&
+            house.max_nights &&
           differenceInCalendarDays(daz.date, selectedDate) <=
-          arrivalDate.max_nights;
+            arrivalDate.max_nights;
 
         const daysFromToday = differenceInCalendarDays(daz.date, today);
         const last_minute =
@@ -101,56 +101,56 @@ class Calendar extends React.Component {
             ? minimum
               ? maximum
                 ? prevBooked.max_nights !== 0
-                  ? 'departure'
+                  ? "departure"
                   : null
-                : ''
-              : ''
-            : '';
+                : ""
+              : ""
+            : "";
 
         days.push(
           <div
             className={`col cell
         ${
-              !dateFns.isSameMonth(day, monthStart)
-                ? 'disabled'
-                : dateFns.isSameDay(day, selectedDate) ||
-                  dateFns.isSameDay(day, departureDate.date)
-                  ? 'selected'
-                  : ''
-              }
+          !dateFns.isSameMonth(day, monthStart)
+            ? "disabled"
+            : dateFns.isSameDay(day, selectedDate) ||
+              dateFns.isSameDay(day, departureDate.date)
+            ? "selected"
+            : ""
+        }
               ${
-              dateFns.isAfter(day, selectedDate) &&
+                dateFns.isAfter(day, selectedDate) &&
                 dateFns.isBefore(day, departureDate.date)
-                ? 'selected'
-                : ''
+                  ? "selected"
+                  : ""
               }
               ${
-              (last_minute || daz.special_offer > 0) &&
+                (last_minute || daz.special_offer > 0) &&
                 daz.arrival &&
                 daz.max_nights !== 0
-                ? 'discount'
-                : ''
+                  ? "discount"
+                  : ""
               }
               ${
-              daz.arrival
-                ? dateFns.isAfter(daz.date, new Date())
-                  ? daz.max_nights !== 0
-                    ? prevBooked.max_nights === 0
-                      ? 'departure-arrival'
-                      : 'arrival'
-                    : ''
-                  : ''
-                : ''
+                daz.arrival
+                  ? dateFns.isAfter(daz.date, new Date())
+                    ? daz.max_nights !== 0
+                      ? prevBooked.max_nights === 0
+                        ? "departure-arrival"
+                        : "arrival"
+                      : ""
+                    : ""
+                  : ""
               }
               ${highlight}
               ${
-              daz.max_nights === 0
-                ? prevBooked.max_nights !== 0
-                  ? 'booked-departure'
-                  : 'booked'
-                : prevBooked.max_nights === 0
-                  ? 'booked'
-                  : ''
+                daz.max_nights === 0
+                  ? prevBooked.max_nights !== 0
+                    ? "booked-departure"
+                    : "booked"
+                  : prevBooked.max_nights === 0
+                  ? "booked"
+                  : ""
               }`}
             key={day}
             date={daz.date}
@@ -160,7 +160,7 @@ class Calendar extends React.Component {
             onKeyPress={() => this.onDateClick(cloneDay)}
           >
             <span>
-              {!dateFns.isSameMonth(day, monthStart) ? '' : formattedDate}
+              {!dateFns.isSameMonth(day, monthStart) ? "" : formattedDate}
             </span>
           </div>
         );
@@ -193,7 +193,7 @@ class Calendar extends React.Component {
       house_id: this.props.objectCode,
       starts_at: dateFns.startOfWeek(monthStart),
       ends_at: dateFns.endOfWeek(monthEnd),
-      locale: this.props.locale,
+      locale: this.props.locale
     };
 
     return (
@@ -229,14 +229,14 @@ class Calendar extends React.Component {
     ) {
       this.setState({
         departureDate: day,
-        startBooking: true,
+        startBooking: true
       });
     } else if (day.arrival) {
       this.setState({
         startBooking: false,
         selectedDate: dateFns.parse(day.date),
         arrivalDate: day,
-        departureDate: '',
+        departureDate: ""
       });
     }
   };
@@ -244,22 +244,22 @@ class Calendar extends React.Component {
   nextMonth = () => {
     const { numberOfMonths, currentMonth } = this.state;
     this.setState({
-      currentMonth: dateFns.addMonths(currentMonth, numberOfMonths),
+      currentMonth: dateFns.addMonths(currentMonth, numberOfMonths)
     });
   };
 
   prevMonth = () => {
     const { numberOfMonths, currentMonth } = this.state;
     this.setState({
-      currentMonth: dateFns.subMonths(currentMonth, numberOfMonths),
+      currentMonth: dateFns.subMonths(currentMonth, numberOfMonths)
     });
   };
 
   reset = () => {
     this.setState({
-      selectedDate: '',
-      arrivalDate: '',
-      departureDate: '',
+      selectedDate: "",
+      arrivalDate: "",
+      departureDate: ""
     });
   };
 
@@ -268,9 +268,9 @@ class Calendar extends React.Component {
     const { portalCode, objectCode, locale } = this.props;
 
     if (startBooking) {
-      setTimeout(function () {
-        document.querySelector('.price-overview').scrollIntoView({
-          behavior: 'smooth',
+      setTimeout(function() {
+        document.querySelector(".price-overview").scrollIntoView({
+          behavior: "smooth"
         });
       }, 1000);
       return (
@@ -297,13 +297,14 @@ class Calendar extends React.Component {
       arrivalDate,
       departureDate,
       is_option: status,
-      locale,
+      locale
     };
     this.props.onBooking(booking);
   }
 
   render() {
-    const { startBooking } = this.state;
+    const { startBooking, house } = this.state;
+
     return (
       <div>
         <CalendarHeader
@@ -315,7 +316,7 @@ class Calendar extends React.Component {
         <div className="legend">
           <div>
             <span className="legend-field arrival" />
-            <FormattedMessage id="arrival_date" />
+            <FormattedMessage id={`${house.house_type}.arrival_date`} />
           </div>
           <div>
             <span className="legend-field booked" />
@@ -323,14 +324,14 @@ class Calendar extends React.Component {
           </div>
           <div>
             <span className="legend-field departure" />
-            <FormattedMessage id="departure_date" />
+            <FormattedMessage id={`${house.house_type}.departure_date`} />
           </div>
           <div>
             <span className="legend-field last_minute_discount" />
             <FormattedMessage id="last_minute_discount" />
           </div>
         </div>
-        <div className={`price-overview ${startBooking ? 'open' : ''}`}>
+        <div className={`price-overview ${startBooking ? "open" : ""}`}>
           {this.showBooking()}
         </div>
       </div>
@@ -339,16 +340,16 @@ class Calendar extends React.Component {
 }
 
 Calendar.defaultProps = {
-  numberOfMonths: 4,
+  numberOfMonths: 4
 };
 
 Calendar.propTypes = {
-  numberOfMonths: PropTypes.number,
+  numberOfMonths: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   house: PropTypes.object.isRequired,
   onBooking: PropTypes.func.isRequired,
   objectCode: PropTypes.string.isRequired,
   portalCode: PropTypes.string.isRequired,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired
 };
 
 export default Calendar;

@@ -17,7 +17,7 @@
     }
   #bukazu-app .calendars-header .col .icon {
         padding: 8px 40px;
-        background: rgba(23, 190, 187, 0.75);
+        background: var(--bukazu-button);
         -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
                 box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
         cursor: pointer;
@@ -156,7 +156,6 @@
       cursor: pointer;
     }
   #bukazu-app .calendar .selected {
-      background: rgba(23, 190, 187, 0.75);
       background: var(--bukazu-button) !important;
     }
   #bukazu-app .calendar .booked {
