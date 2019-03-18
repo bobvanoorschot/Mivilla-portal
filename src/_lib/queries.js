@@ -119,59 +119,61 @@ export const BOOKING_PRICE_QUERY = gql`
 `;
 
 export const CREATE_BOOKING_MUTATION = gql`
-  mutation CreateBooking(
-    $first_name: String!
-    $last_name: String!
-    $is_option: Boolean!
-    $address: String
-    $zipcode: String
-    $city: String
-    $phone: String
-    $email: String!
-    $house_code: String!
-    $portal_code: String
-    $language: String
-    $country: String!
-    $adults: Int!
-    $children: Int
-    $babies: Int
-    $pets: Int
-    $discount: Int
-    $damage_insurance: Int
-    $cancel_insurance: Int
-    $travel_insurance: Int
-    $discount_reason: String
-    $arrival_date: String!
-    $departure_date: String!
-    $costs: Json
-  ) {
-    createBooking(
-      first_name: $first_name
-      last_name: $last_name
-      is_option: $is_option
-      address: $address
-      zipcode: $zipcode
-      city: $city
-      phone: $phone
-      email: $email
-      house_code: $house_code
-      portal_code: $portal_code
-      language: $language
-      country: $country
-      adults: $adults
-      children: $children
-      babies: $babies
-      pets: $pets
-      discount: $discount
-      damage_insurance: $damage_insurance
-      cancel_insurance: $cancel_insurance
-      travel_insurance: $travel_insurance
-      discount_reason: $discount_reason
-      arrival_date: $arrival_date
-      departure_date: $departure_date
-      costs: $costs
-    ) {
-      booking_nr
-    }
-  }
-`;
+         mutation CreateBooking(
+           $first_name: String!
+           $last_name: String!
+           $is_option: Boolean!
+           $address: String
+           $zipcode: String
+           $city: String
+           $phone: String
+           $email: String!
+           $house_code: String!
+           $portal_code: String
+           $language: String
+           $country: String!
+           $adults: Int!
+           $children: Int
+           $babies: Int
+           $pets: Int
+           $discount: Int
+           $damage_insurance: Int
+           $cancel_insurance: Int
+           $travel_insurance: Int
+           $discount_reason: String
+           $comment: String
+           $arrival_date: String!
+           $departure_date: String!
+           $costs: Json
+         ) {
+           createBooking(
+             first_name: $first_name
+             last_name: $last_name
+             is_option: $is_option
+             address: $address
+             zipcode: $zipcode
+             city: $city
+             phone: $phone
+             email: $email
+             house_code: $house_code
+             portal_code: $portal_code
+             language: $language
+             country: $country
+             adults: $adults
+             children: $children
+             babies: $babies
+             pets: $pets
+             discount: $discount
+             damage_insurance: $damage_insurance
+             cancel_insurance: $cancel_insurance
+             travel_insurance: $travel_insurance
+             discount_reason: $discount_reason
+             arrival_date: $arrival_date
+             departure_date: $departure_date
+             comment: $comment
+             costs: $costs
+           ) {
+             booking_nr
+           }
+         }
+       `;
