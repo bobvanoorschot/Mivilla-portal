@@ -221,7 +221,6 @@ class Calendar extends React.Component {
 
   onDateClick = day => {
     const { arrivalDate, selectedDate, house } = this.state;
-    console.log({ arrivalDate });
     if (
       day.departure &&
       isAfter(day.date, selectedDate) &&
