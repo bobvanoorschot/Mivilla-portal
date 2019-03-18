@@ -14,6 +14,9 @@ export const OptionalBookingFields = ({
       <FormattedMessage id="personal_details" />
     </h2>
     {bookingFields.map(input => {
+      if (input.id === 'telephone') {
+        input.id = 'phonenumber'
+      }
       if (input.id === 'country') {
         return (
           <div className="form-row" key={input.id}>
