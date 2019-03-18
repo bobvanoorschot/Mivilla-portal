@@ -221,10 +221,13 @@ class Calendar extends React.Component {
 
   onDateClick = day => {
     const { arrivalDate, selectedDate, house } = this.state;
+    console.log({ arrivalDate });
     if (
       day.departure &&
       isAfter(day.date, selectedDate) &&
       differenceInCalendarDays(day.date, selectedDate) <= house.max_nights &&
+      differenceInCalendarDays(day.date, selectedDate) >=
+        arrivalDate.min_nights &&
       differenceInCalendarDays(day.date, selectedDate) <= arrivalDate.max_nights
     ) {
       this.setState({
