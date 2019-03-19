@@ -27,9 +27,9 @@ class Modal extends React.Component {
     // Render nothing if the "show" prop is false
     if (!this.state.show) {
       return (
-        <button className="info-button" onClick={this.showModal}>
+        <a className="info-button" onClick={this.showModal}>
           {this.props.buttonText}
-        </button>
+        </a>
       );
     }
 
