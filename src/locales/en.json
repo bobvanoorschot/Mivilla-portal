@@ -1,4 +1,5 @@
 {
+    "next": "pijltje",
     "previous": "pijltje",
     "price": "Price",
     "calculate": "Calculate your price",
@@ -75,5 +76,19 @@
     "agree_with": "By clicking on 'Definite Booking', you agree to the",
     "discount_reason": "Reason discount.",
     "results": "results",
-    "bathrooms": "bathrooms"
+    "bathrooms": "bathrooms",
+    "you_need_to_give_reason": "You must indicate a valid discount reason",
+    "camper.arrival_date": "Start date",
+    "camper.departure_date": "End date",
+    "camper.arrival": "Start date",
+    "camper.departure": "End date",
+    "boat.arrival_date": "Start date",
+    "boat.departure_date": "End date",
+    "boat.arrival": "Start date",
+    "boat.departure": "End date",
+    "caravan.arrival_date": "Arrival date",
+    "caravan.departure_date": "Departure date",
+    "caravan.arrival": "Arrival",
+    "caravan.departure": "Departure",
+    "filters": "Filters"
 }

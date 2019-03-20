@@ -1,4 +1,5 @@
 {
+    "next": "pijltje",
     "previous": "pijltje",
     "price": "Precio",
     "calculate": "Calcula tu precio",
@@ -75,5 +76,19 @@
     "agree_with": "Al hacer clic ahora en 'reserva definitiva', te unes",
     "discount_reason": "Razón de descuento.",
     "results": "resultados",
-    "bathrooms": "baños"
+    "bathrooms": "baños",
+    "you_need_to_give_reason": "Vous devez indiquer un motif de réduction valide",
+    "camper.arrival_date": "Fecha de recogida",
+    "camper.departure_date": "Fecha de regreso",
+    "camper.arrival": "Recoger",
+    "camper.departure": "Entregar",
+    "boat.arrival_date": "Fecha de recogida",
+    "boat.departure_date": "Fecha de regreso",
+    "boat.arrival": "Recoger",
+    "boat.departure": "Entregar",
+    "caravan.arrival_date": "Fecha de llegada",
+    "caravan.departure_date": "Fecha de salida",
+    "caravan.arrival": "llegada",
+    "caravan.departure": "Salida",
+    "filters": "Filtros"
 }

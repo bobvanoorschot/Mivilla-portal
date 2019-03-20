@@ -234,7 +234,7 @@
     margin: 0;
   }
 #bukazu-app .form .return-link {
-    color: rgba(23, 190, 187, 0.75);
+    color: var(--bukazu-button);
     cursor: pointer;
     text-decoration: underline;
   }
@@ -332,7 +332,7 @@
         display: none;
       }
 #bukazu-app .form-sum .booking_option input:checked + label {
-        background: rgba(23, 190, 187, 0.75);
+        background: var(--bukazu-button);
         /* color: #fff; */
       }
 #bukazu-app .form-sum .booking_option label {

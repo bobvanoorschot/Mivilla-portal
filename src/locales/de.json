@@ -1,4 +1,5 @@
 {
+    "next": "pijltje",
     "previous": "pijltje",
     "price": "Preis",
     "calculate": "Berechnen Sie Ihren Preis",
@@ -75,5 +76,19 @@
     "agree_with": "Indem Sie auf 'Kostenpflichtige Buchung' klicken, akzeptieren Sie die",
     "discount_reason": "Grund für Rabatt",
     "results": "Ergebnisse",
-    "bathrooms": "Badezimmer"
+    "bathrooms": "Badezimmer",
+    "you_need_to_give_reason": "Sie müssen einen gültigen Rabattgrund angeben",
+    "camper.arrival_date": "Abholdatum",
+    "camper.departure_date": "Rückgabedatum",
+    "camper.arrival": "Abholen",
+    "camper.departure": "Rückgabe",
+    "boat.arrival_date": "Abholdatum",
+    "boat.departure_date": "Rückgabedatum",
+    "boat.arrival": "Abholen",
+    "boat.departure": "Rückgabe",
+    "caravan.arrival_date": "Anreisedatum",
+    "caravan.departure_date": "Abreisedatum",
+    "caravan.arrival": "Ankunft",
+    "caravan.departure": "Abreise",
+    "filters": "Filter"
 }
