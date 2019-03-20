@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import Calendar from './Calendar';
-import BookingForm from './BookingForm';
-import Loading from '../icons/loading.svg';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import Calendar from "./Calendar";
+import BookingForm from "./BookingForm";
+import Loading from "../icons/loading.svg";
 
 export const HOUSE_QUERY = gql`
   query PortalSiteHousesQuery($id: ID!, $house_id: String!) {
@@ -32,26 +32,26 @@ class CalendarPage extends Component {
     this.state = {
       bookingStarted: false,
       booking: {
-        objectCode: '',
-        portalCode: '',
+        objectCode: "",
+        portalCode: "",
         arrivalDate: {},
         departureDate: {},
-        in_option: false,
-      },
+        in_option: false
+      }
     };
   }
 
   onBooking(booking) {
     this.setState({
       bookingStarted: true,
-      booking,
+      booking
     });
   }
 
   onReturn(booking) {
     this.setState({
       bookingStarted: false,
-      booking,
+      booking
     });
   }
 
@@ -60,7 +60,7 @@ class CalendarPage extends Component {
     const variables = {
       id: PortalSite.portal_code,
       house_id: objectCode,
-      locale,
+      locale
     };
     return (
       <Query query={HOUSE_QUERY} variables={variables}>
@@ -123,13 +123,21 @@ class CalendarPage extends Component {
   }
 }
 
-
+CalendarPage.DefaultProps = {
+  PortalSite: {
+    options: {
+      bookingForm: {
+        numberOfMonths: 4
+      }
+    }
+  }
+};
 
 CalendarPage.propTypes = {
   objectCode: PropTypes.string.isRequired,
   // portalCode: PropTypes.string.isRequired,
   PortalSite: PropTypes.object.isRequired,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired
 };
 
 export default CalendarPage;

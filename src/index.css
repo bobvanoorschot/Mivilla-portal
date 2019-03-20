@@ -2014,7 +2014,7 @@
         left: 0;
         bottom: 0;
       }
-#bukazu-app .backdrop .bukazu-modal .bukazu-modal-footer button {
+#bukazu-app .backdrop .bukazu-modal .bukazu-modal-footer a {
           height: 100%;
           width: 100%;
           color: #fff;
