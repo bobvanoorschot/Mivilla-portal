@@ -60,9 +60,9 @@ class Modal extends React.Component {
           <div className="bukazu-modal-content">{this.props.children}</div>
 
           <div className="bukazu-modal-footer">
-            <button onClick={this.closeModal}>
+            <a onClick={this.closeModal}>
               <FormattedMessage id="close" />
-            </button>
+            </a>
           </div>
         </div>
       </div>
