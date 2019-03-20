@@ -74,6 +74,9 @@ class CalendarPage extends Component {
           if (error) return <div>Error</div>;
 
           const Results = data.PortalSite.houses;
+          const numberOfMonths = PortalSite.options.bookingForm
+            ? PortalSite.options.bookingForm.numberOfMonths
+            : 4;
 
           return (
             <div id="calendar-container">
@@ -83,9 +86,7 @@ class CalendarPage extends Component {
                   <Calendar
                     portalCode={variables.id}
                     objectCode={variables.house_id}
-                    numberOfMonths={
-                      PortalSite.options.bookingForm.numberOfMonths
-                    }
+                    numberOfMonths={numberOfMonths}
                     house={result}
                     locale={locale}
                     onBooking={this.onBooking}
@@ -121,6 +122,8 @@ class CalendarPage extends Component {
     return this.pageRendering();
   }
 }
+
+
 
 CalendarPage.propTypes = {
   objectCode: PropTypes.string.isRequired,
