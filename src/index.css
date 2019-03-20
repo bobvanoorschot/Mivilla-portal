@@ -2015,6 +2015,15 @@
         bottom: 0;
       }
 #bukazu-app .backdrop .bukazu-modal .bukazu-modal-footer a {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
           height: 100%;
           width: 100%;
           color: #fff;
@@ -2028,4 +2037,5 @@
           -webkit-box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
                   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
           border-radius: 0 0 5px 5px;
+
         }

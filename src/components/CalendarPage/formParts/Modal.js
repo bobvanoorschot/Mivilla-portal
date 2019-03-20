@@ -9,6 +9,8 @@ class Modal extends React.Component {
     this.state = {
       show: this.props.show,
     };
+    this.showModal = this.showModal.bind(this)
+    this.closeModal = this.closeModal.bind(this);
   }
 
   showModal() {
