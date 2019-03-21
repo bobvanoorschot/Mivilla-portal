@@ -121,12 +121,15 @@ export const BOOKING_PRICE_QUERY = gql`
 export const CREATE_BOOKING_MUTATION = gql`
          mutation CreateBooking(
            $first_name: String!
+           $preposition: String
            $last_name: String!
+           $company_name: String
            $is_option: Boolean!
            $address: String
            $zipcode: String
            $city: String
            $phone: String
+           $phone_mobile: String
            $email: String!
            $house_code: String!
            $portal_code: String
@@ -148,12 +151,15 @@ export const CREATE_BOOKING_MUTATION = gql`
          ) {
            createBooking(
              first_name: $first_name
+             preposition: $preposition
+             company_name: $company_name
              last_name: $last_name
              is_option: $is_option
              address: $address
              zipcode: $zipcode
              city: $city
              phone: $phone
+             phone_mobile: $phone_mobile
              email: $email
              house_code: $house_code
              portal_code: $portal_code

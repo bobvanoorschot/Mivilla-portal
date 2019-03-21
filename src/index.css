@@ -335,17 +335,23 @@
         background: var(--bukazu-button);
         /* color: #fff; */
       }
+#bukazu-app .form-sum .booking_option input:disabled + label {
+        background: #efefef;
+        color: #ccc;
+        /* color: #fff; */
+      }
 #bukazu-app .form-sum .booking_option label {
         border-radius: 16px;
         display: block;
         -webkit-box-flex: 1;
             -ms-flex: 1;
                 flex: 1;
-        padding: 4px 16px;
+        padding: 8px 16px;
         line-height: 2rem;
         -webkit-transition: all 0.2s ease;
         transition: all 0.2s ease;
         cursor: pointer;
+        margin: 0;
       }
 #bukazu-app .form-sum .costs-section {
       padding: 16px 0;
@@ -410,12 +416,12 @@
   }
 #bukazu-app .form-row select,
     #bukazu-app .form-row input {
-      max-width: 40%
+      max-width: 50%
     }
 @media screen and (max-width: 992px) {
     #bukazu-app .form-row select,
     #bukazu-app .form-row input {
-        max-width: none
+        max-width: 100%
     }
       }
 #bukazu-app .form-row.inline {
@@ -461,6 +467,9 @@
           width: 100%
       }
         }
+#bukazu-app .form-row.inline .info-button {
+        margin: 0 0 0 8px;
+      }
 #bukazu-app .form-row.inline .price_per {
         padding: 0 0 0 50px;
       }
@@ -1957,7 +1966,7 @@
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
   }
-#bukazu-app .info-button {
+#bukazu-app .info-button {    
     border: none;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;

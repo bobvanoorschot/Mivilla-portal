@@ -48,7 +48,7 @@
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
   }
-  .info-button {
+  .info-button {    
     border: none;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;

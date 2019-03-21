@@ -93,14 +93,20 @@
         background: var(--bukazu-button);
         /* color: #fff; */
       }
+      input:disabled + label {
+        background: #efefef;
+        color: #ccc;
+        /* color: #fff; */
+      }
       label {
         border-radius: 16px;
         display: block;
         flex: 1;
-        padding: 4px 16px;
+        padding: 8px 16px;
         line-height: 2rem;
         transition: all 0.2s ease;
         cursor: pointer;
+        margin: 0;
       }
     }
     .costs-section {
@@ -159,9 +165,9 @@
     padding: 8px 0;
     select,
     input {
-      max-width: 40%;
+      max-width: 50%;
       @media screen and (max-width: 992px) {
-        max-width: none;
+        max-width: 100%;
       }
     }
     &.inline {
@@ -190,6 +196,9 @@
           order: 3;
           width: 100%;
         }
+      }
+      .info-button {
+        margin: 0 0 0 8px;
       }
       .price_per {
         padding: 0 0 0 50px;
