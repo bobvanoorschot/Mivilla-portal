@@ -238,7 +238,7 @@ class FormCreator extends React.Component {
                 children: Number(values.children) || 0,
                 babies: Number(values.babies) || 0,
                 pets: Number(values.pets) || 0,
-                discount: values.discount || 0,
+                discount: Number(values.discount) || 0,
                 damage_insurance:
                   Number(values.damage_insurance) || 0,
                 cancel_insurance:
