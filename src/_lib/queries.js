@@ -102,6 +102,7 @@ export const BOOKING_PRICE_QUERY = gql`
       houses(house_code: $house_id) {
         id
         name
+        allow_option
         persons
         image_url
         discounts
