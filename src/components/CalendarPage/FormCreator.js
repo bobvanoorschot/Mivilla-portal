@@ -233,6 +233,7 @@ class FormCreator extends React.Component {
                 house_code: values.objectCode,
                 portal_code: values.portalCode,
                 language: locale,
+                locale: locale,
                 country: values.country.toUpperCase(),
                 adults: Number(values.adults),
                 children: Number(values.children) || 0,
