@@ -388,8 +388,6 @@ class FormCreator extends React.Component {
 
                   <Insurances
                     house={house}
-                    Field={Field}
-                    FormattedMessage={FormattedMessage}
                   />
 
                   {bookingPrice.optional_house_costs.length > 0 ? (
@@ -451,7 +449,6 @@ class FormCreator extends React.Component {
                   <OptionalBookingFields
                     bookingFields={this.state.bookingFields}
                     errors={errors}
-                    Field={Field}
                     PortalSite={PortalSite}
                   />
                 </div>
@@ -763,7 +760,7 @@ class FormCreator extends React.Component {
 FormCreator.propTypes = {
   house: PropTypes.object.isRequired,
   options: PropTypes.object.isRequired,
-  locale: PropTypes.string,
+  locale: PropTypes.string.isRequired,
   booking: PropTypes.object.isRequired,
   PortalSite: PropTypes.object.isRequired,
   onReturn: PropTypes.func.isRequired

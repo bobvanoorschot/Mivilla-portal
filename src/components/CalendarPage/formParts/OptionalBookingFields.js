@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field } from "formik";
 import { FormattedMessage } from 'react-intl';
 import { Countries } from '../../../_lib/countries';
 
 export const OptionalBookingFields = ({
   bookingFields,
   errors,
-  Field,
   PortalSite,
 }) => (
   <div className="form-section">
@@ -54,5 +54,4 @@ OptionalBookingFields.propTypes = {
   bookingFields: PropTypes.array.isRequired,
   errors: PropTypes.object.isRequired,
   PortalSite: PropTypes.object.isRequired,
-  Field: PropTypes.node.isRequired,
 };
