@@ -45,6 +45,7 @@ class BookingForm extends React.Component {
               options={options}
               booking={this.state.booking}
               PortalSite={data.PortalSite}
+              locale={locale}
               onReturn={() => {
                 this.props.onReturn(this.props.booking);
               }}

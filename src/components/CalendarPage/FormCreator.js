@@ -200,7 +200,7 @@ class FormCreator extends React.Component {
       costs[val.id] = "0";
     }
 
-    console.log({ house });
+    // console.log({ house });
 
     return (
       <Mutation mutation={CREATE_BOOKING_MUTATION}>
