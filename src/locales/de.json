@@ -3,7 +3,7 @@
     "previous": "pijltje",
     "price": "Preis",
     "calculate": "Berechnen Sie Ihren Preis",
-    "book": "Zahlungspflichtig buchen",
+    "book": "Buchen",
     "booked": "Gebucht",
     "booking": "Buchung",
     "last_minute_discount": "Last Minute Rabatt",
@@ -90,5 +90,6 @@
     "caravan.departure_date": "Abreisedatum",
     "caravan.arrival": "Ankunft",
     "caravan.departure": "Abreise",
-    "filters": "Filter"
+    "filters": "Filter",
+    "comply_insurance_card": "Ich bin damit einverstanden, dass die Versicherungskarte der Reiserücktrittsversicherung digital ausgestellt wird. Ich erhalte diese mit meiner Buchungsbestätigung."
 }

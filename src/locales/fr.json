@@ -3,7 +3,7 @@
     "previous": "pijltje",
     "price": "Prix",
     "calculate": "Calculez votre prix",
-    "book": "Réservation définitive",
+    "book": "Réserver",
     "booked": "Réservé",
     "booking": "Réservation",
     "last_minute_discount": "Réduction de dernière minute",
@@ -90,5 +90,6 @@
     "caravan.departure_date": "Date de départ",
     "caravan.arrival": "Arrivée",
     "caravan.departure": "Départ",
-    "filters": "Les filtres"
+    "filters": "Les filtres",
+    "comply_insurance_card": "Je conviens que la carte d’assurance annulation me sera délivrée numériquement. Je reçois ceci avec ma confirmation de réservation."
 }

@@ -1,8 +1,9 @@
 {
+    "next": "pijltje",
     "previous": "pijltje",
     "price": "Prijs",
     "calculate": "Bereken uw prijs",
-    "book": "Boek nu",
+    "book": "Boeken",
     "booked": "Geboekt",
     "booking": "Boeking",
     "last_minute_discount": "Last minute korting",
@@ -89,5 +90,6 @@
     "caravan.departure_date": "Vertrekdatum",
     "caravan.arrival": "Aankomst",
     "caravan.departure": "Vertrek ",
-    "filters": "Filters"
+    "filters": "Filters",
+    "comply_insurance_card": "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging."
 }

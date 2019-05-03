@@ -3,7 +3,7 @@
     "previous": "pijltje",
     "price": "Price",
     "calculate": "Calculate your price",
-    "book": "Definite Booking",
+    "book": "Book",
     "booked": "Booked",
     "booking": "Booking",
     "last_minute_discount": "Last minute discount",
@@ -90,5 +90,6 @@
     "caravan.departure_date": "Departure date",
     "caravan.arrival": "Arrival",
     "caravan.departure": "Departure",
-    "filters": "Filters"
+    "filters": "Filters",
+    "comply_insurance_card": "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation."
 }

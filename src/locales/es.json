@@ -3,13 +3,13 @@
     "previous": "pijltje",
     "price": "Precio",
     "calculate": "Calcula tu precio",
-    "book": "Reserva final",
+    "book": "Reservar",
     "booked": "Reservado",
     "booking": "Reserva",
     "last_minute_discount": "Descuento de ultimo minuto",
     "option": "Opción",
     "choose_for_option": "Tome una opción para este período",
-    "included_in_price": "incluso",
+    "included_in_price": "Incluido",
     "rent_price": "Precio de alquiler",
     "discount": "Reducción",
     "extra_costs_included": "Costes extras incluidos",
@@ -73,7 +73,7 @@
     "bedrooms": "dormitorios",
     "minimum_week_price": "min. precio semanal",
     "no_results": "Sin resultados",
-    "agree_with": "Al hacer clic ahora en 'reserva definitiva', te unes",
+    "agree_with": "Al hacer clic en ‘reserva definitiva’, acepta los Términos y condiciones",
     "discount_reason": "Razón de descuento.",
     "results": "resultados",
     "bathrooms": "baños",
@@ -90,5 +90,6 @@
     "caravan.departure_date": "Fecha de salida",
     "caravan.arrival": "llegada",
     "caravan.departure": "Salida",
-    "filters": "Filtros"
+    "filters": "Filtros",
+    "comply_insurance_card": "Estoy de acuerdo en que la tarjeta de seguro de cancelación será emitida digitalmente para mí. Recibo esto con mi confirmación de reserva."
 }
