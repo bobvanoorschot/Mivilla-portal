@@ -36,7 +36,8 @@ class Portal extends Component {
       // uri = 'https://stage.bukazu.eu/graphql';
     }
     const httpLink = createHttpLink({
-      uri
+      uri,
+      fetch: fetch
     });
 
     const client = new ApolloClient({
@@ -56,7 +57,6 @@ class Portal extends Component {
     ]);
 
     window.__localeId__ = locale;
-
 
     return (
       <ApolloProvider client={client}>
