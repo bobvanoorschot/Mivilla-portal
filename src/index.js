@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import App from "./components/App";
 import { IntlProvider } from "react-intl";
 import { addLocaleData } from "react-intl";
-import "unfetch/polyfill";
+import fetch from "unfetch";
 // import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloProvider } from "react-apollo";
