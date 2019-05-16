@@ -241,12 +241,9 @@ class FormCreator extends React.Component {
                 babies: Number(values.babies) || 0,
                 pets: Number(values.pets) || 0,
                 discount: Number(values.discount) || 0,
-                damage_insurance:
-                  Number(values.damage_insurance) || 0,
-                cancel_insurance:
-                  Number(values.cancel_insurance) || 0,
-                travel_insurance:
-                  Number(values.travel_insurance) || 0,
+                damage_insurance: Number(values.damage_insurance) || 0,
+                cancel_insurance: Number(values.cancel_insurance) || 0,
+                travel_insurance: Number(values.travel_insurance) || 0,
                 discount_reason: values.discount_reason || "",
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
@@ -255,7 +252,8 @@ class FormCreator extends React.Component {
               createBooking({ variables });
 
               setTimeout(() => {
-                setSubmitting(false);
+                this.props.onReturn();
+                // setSubmitting(false);
               }, 1000);
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
@@ -386,9 +384,7 @@ class FormCreator extends React.Component {
                   </div>
                   <Discount errors={errors} house={house} />
 
-                  <Insurances
-                    house={house}
-                  />
+                  <Insurances house={house} />
 
                   {bookingPrice.optional_house_costs.length > 0 ? (
                     <div className="form-section">
