@@ -232,7 +232,7 @@ class FormCreator extends React.Component {
                 email: values.email,
                 house_code: values.objectCode,
                 portal_code: values.portalCode,
-                comment: values.comment,
+                comment: values.comment || "",
                 language: locale,
                 locale: locale,
                 country: values.country.toUpperCase(),

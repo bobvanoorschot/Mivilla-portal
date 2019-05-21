@@ -44,7 +44,6 @@ class PriceField extends React.Component {
                 <Loading />
               </div>
             );
-          // if (error) return <div>Error</div>;
 
           const result = data.PortalSite.houses[0].booking_price;
 
