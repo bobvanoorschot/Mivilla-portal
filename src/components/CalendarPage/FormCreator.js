@@ -254,7 +254,7 @@ class FormCreator extends React.Component {
               setTimeout(() => {
                 this.props.onReturn();
                 // setSubmitting(false);
-              }, 1000);
+              }, 5000);
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
