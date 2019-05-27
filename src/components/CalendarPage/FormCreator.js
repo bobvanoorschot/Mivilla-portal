@@ -258,9 +258,7 @@ class FormCreator extends React.Component {
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
-                {loading && (
-                  <div className="return-message">Loading...</div>
-                )}
+                {loading && <div className="return-message">Loading...</div>}
                 {error && (
                   <Modal show={true}>
                     <FormattedMessage id="something_went_wrong_please_try_again" />
@@ -381,9 +379,7 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                     {errors.max_persons && (
-                      <div className="error-message">
-                        {errors.max_persons}
-                      </div>
+                      <div className="error-message">{errors.max_persons}</div>
                     )}
                   </div>
                   <Discount errors={errors} house={house} />
@@ -402,10 +398,7 @@ class FormCreator extends React.Component {
                             cost.max_available > 0
                           ) {
                             return (
-                              <div
-                                className="form-row inline"
-                                key={cost.id}
-                              >
+                              <div className="form-row inline" key={cost.id}>
                                 <label htmlFor={cost.id}>{cost.name}</label>
                                 <Field
                                   component="select"
@@ -492,9 +485,7 @@ class FormCreator extends React.Component {
                           <td className="price">
                             €{" "}
                             <FormattedNumber
-                              value={
-                                this.calculateRentPrice(values).rent_price
-                              }
+                              value={this.calculateRentPrice(values).rent_price}
                               minimumFractionDigits={2}
                               maximumFractionDigits={2}
                             />
@@ -507,15 +498,13 @@ class FormCreator extends React.Component {
                             </td>
                             <td className="price">
                               <FormattedNumber
-                                value={
-                                  this.calculateRentPrice(values).discount
-                                }
+                                value={this.calculateRentPrice(values).discount}
                               />{" "}
                               %
                             </td>
                           </tr>
                         ) : null}
-                        {this.calculateRentPrice(values).discount && (
+                        {this.calculateRentPrice(values).discount ? (
                           <tr>
                             <td>
                               <FormattedMessage id="price_after_discount" />
@@ -532,7 +521,7 @@ class FormCreator extends React.Component {
                               />
                             </td>
                           </tr>
-                        )}
+                        ) : null}
                       </tbody>
                     </table>
                   </div>
@@ -562,9 +551,7 @@ class FormCreator extends React.Component {
                               return (
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
-                                  <td className="price">
-                                    {cost.method_name}
-                                  </td>
+                                  <td className="price">{cost.method_name}</td>
                                 </tr>
                               );
                             } else {
@@ -574,10 +561,7 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     €{"  "}
                                     <FormattedNumber
-                                      value={this.calculateCost(
-                                        cost,
-                                        values
-                                      )}
+                                      value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
                                       maximumFractionDigits={2}
                                     />
@@ -621,10 +605,7 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     €{" "}
                                     <FormattedNumber
-                                      value={this.calculateCost(
-                                        cost,
-                                        values
-                                      )}
+                                      value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
                                       maximumFractionDigits={2}
                                     />
@@ -649,9 +630,7 @@ class FormCreator extends React.Component {
                               return (
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
-                                  <td className="price">
-                                    {cost.method_name}
-                                  </td>
+                                  <td className="price">{cost.method_name}</td>
                                 </tr>
                               );
                             } else {
@@ -661,10 +640,7 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     €{"  "}
                                     <FormattedNumber
-                                      value={this.calculateCost(
-                                        cost,
-                                        values
-                                      )}
+                                      value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
                                       maximumFractionDigits={2}
                                     />
@@ -702,10 +678,7 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     €{" "}
                                     <FormattedNumber
-                                      value={this.calculateCost(
-                                        cost,
-                                        values
-                                      )}
+                                      value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
                                       maximumFractionDigits={2}
                                     />
