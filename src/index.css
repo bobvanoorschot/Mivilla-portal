@@ -1953,6 +1953,17 @@
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
   }
+#bukazu-app tr {
+    border: 0;
+  }
+#bukazu-app .align-center {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
 #bukazu-app .house-name {
     padding: 16px;
   }

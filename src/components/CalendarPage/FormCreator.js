@@ -14,6 +14,7 @@ import Modal from "./formParts/Modal";
 import DefaultBookingFields from "./formParts/DefaultBookingFields";
 import SuccessMessage from "./formParts/SuccessMessage";
 import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
+import Description from "./Summary/Description";
 
 class FormCreator extends React.Component {
   state = {
@@ -594,14 +595,22 @@ class FormCreator extends React.Component {
                                         />
                                       </span>
                                     )}
-                                    {cost.method_name}
+                                    {cost.method_name}{" "}
+                                    <Description
+                                      description={cost.description}
+                                    />
                                   </td>
                                 </tr>
                               );
                             } else {
                               return (
                                 <tr key={cost.id}>
-                                  <td>{cost.name}</td>
+                                  <td>
+                                    {cost.name}{" "}
+                                    <Description
+                                      description={cost.description}
+                                    />
+                                  </td>
                                   <td className="price">
                                     €{" "}
                                     <FormattedNumber
@@ -655,7 +664,12 @@ class FormCreator extends React.Component {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
-                                  <td>{cost.name}</td>
+                                  <td>
+                                    {cost.name}
+                                    {cost.description ? (
+                                      <span>{cost.description}</span>
+                                    ) : null}
+                                  </td>
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
@@ -674,7 +688,12 @@ class FormCreator extends React.Component {
                             } else {
                               return (
                                 <tr key={cost.id}>
-                                  <td>{cost.name}</td>
+                                  <td>
+                                    {cost.name}
+                                    <Description
+                                      description={cost.description}
+                                    />
+                                  </td>
                                   <td className="price">
                                     €{" "}
                                     <FormattedNumber

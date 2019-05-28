@@ -35,6 +35,13 @@
   div {
     box-sizing: border-box;
   }
+  tr {
+    border: 0;
+  }
+  .align-center {
+    display: flex;
+    align-items: center;
+  }
   .house-name {
     padding: 16px;
   }
