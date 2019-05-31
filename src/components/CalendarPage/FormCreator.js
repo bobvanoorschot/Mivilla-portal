@@ -765,6 +765,12 @@ class FormCreator extends React.Component {
                       )}
                     </FormattedMessage>
                   </div>
+                  {[1,2].includes(Number(values.cancel_insurance)) ? (
+                    
+                    <div className="terms">
+                      <FormattedMessage id="comply_insurance_card" />
+                    </div>
+                  ) : null}
                   <button
                     className="button"
                     type="submit"
