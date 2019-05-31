@@ -32,10 +32,14 @@ class FormCreator extends React.Component {
   }
 
   validate = values => {
+    const { babies_extra } = this.props.house;
     let errors = {};
 
-    values.persons =
-      Number(values.children) + Number(values.adults) + Number(values.babies);
+    let babies = Number(values.babies) - babies_extra;
+    if (babies < 0) {
+      babies = 0;
+    }
+    values.persons = Number(values.children) + Number(values.adults) + babies;
 
     for (let field of this.state.bookingFields) {
       if (field.required) {
@@ -62,8 +66,13 @@ class FormCreator extends React.Component {
 
   calculateCost(cost, values) {
     const bookingPrice = this.props.house.booking_price;
+    const { babies_extra } = this.props.house;
     const { children, adults, babies } = values;
-    const persons = Number(children) + Number(adults) + Number(babies);
+    let babiesNumber = Number(babies) - babies_extra;
+    if (babiesNumber < 0) {
+      babiesNumber = 0;
+    }
+    const persons = Number(children) + Number(adults) + babiesNumber;
     return calc[cost.method](
       cost.amount,
       Number(values.costs[cost.id]),
@@ -200,8 +209,6 @@ class FormCreator extends React.Component {
     for (const val of bookingPrice.optional_house_costs) {
       costs[val.id] = "0";
     }
-
-    // console.log({ house });
 
     return (
       <Mutation mutation={CREATE_BOOKING_MUTATION}>
