@@ -77,6 +77,9 @@ class CalendarPage extends Component {
           const numberOfMonths = PortalSite.options.bookingForm
             ? PortalSite.options.bookingForm.numberOfMonths
             : 4;
+          const numberOfMonthsInARow = PortalSite.options.bookingForm
+            ? PortalSite.options.bookingForm.numberOfMonthsInARow
+            : 4;
 
           return (
             <div id="calendar-container">
@@ -87,6 +90,7 @@ class CalendarPage extends Component {
                     portalCode={variables.id}
                     objectCode={variables.house_id}
                     numberOfMonths={numberOfMonths}
+                    numberOfMonthsInARow={numberOfMonthsInARow}
                     house={result}
                     locale={locale}
                     onBooking={this.onBooking}
@@ -127,7 +131,8 @@ CalendarPage.DefaultProps = {
   PortalSite: {
     options: {
       bookingForm: {
-        numberOfMonths: 4
+        numberOfMonths: 4,
+        numberOfMonthsInARow: 2
       }
     }
   }

@@ -44,19 +44,31 @@
     display: flex;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
   }
   #bukazu-app .calendar {
     min-width: 48%;
     padding: 16px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    background: #fff;
-    -webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
-            box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
-    margin: 16px 0;
+    background: var(--month_background);
+    /* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25); */
+    margin: 16px 8px
   }
+  #bukazu-app .calendar.calendar-1 {
+      min-width: 98%;
+    }
+  #bukazu-app .calendar.calendar-2 {
+      min-width: 48%;
+    }
+  #bukazu-app .calendar.calendar-3 {
+      min-width: 32%;
+    }
+  #bukazu-app .calendar.calendar-4 {
+      min-width: 24%;
+    }
   #bukazu-app .calendar .header {
       background-color: rgba(211, 211, 211, 0.2);
     }

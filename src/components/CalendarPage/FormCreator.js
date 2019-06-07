@@ -260,7 +260,11 @@ class FormCreator extends React.Component {
               createBooking({ variables });
 
               setTimeout(() => {
-                this.props.onReturn();
+                if (options.bookingForm.redirectUrl && options.bookingForm.redirectUrl !== "") {
+                  window.location = options.bookingForm.redirectUrl
+                } else {
+                  this.props.onReturn();
+                }
                 // setSubmitting(false);
               }, 5000);
             }}

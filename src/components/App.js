@@ -64,6 +64,10 @@ class App extends Component {
             '--bukazu-button_cta',
             `${options.colors ? options.colors.buttonCta : '#e28413'}`
           );
+          root.style.setProperty(
+            '--bukazu-background_month',
+            `${options.colors ? options.colors.month_background : '#e28413'}`
+          );
           
           if (objectCode && objectCode !== null) {
             return (

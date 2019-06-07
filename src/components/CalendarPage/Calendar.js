@@ -23,6 +23,7 @@ class Calendar extends React.Component {
     currentMonth: new Date(),
     selectedDate: "",
     numberOfMonths: this.props.numberOfMonths,
+    numberOfMonthsInARow: this.props.numberOfMonthsInARow,
     house: this.props.house,
     arrivalDate: "",
     departureDate: "",
@@ -185,6 +186,7 @@ class Calendar extends React.Component {
   }
 
   renderSingleMonth(count) {
+    const { numberOfMonthsInARow } = this.state;
     let month = dateFns.addMonths(this.state.currentMonth, count);
     let monthStart = dateFns.startOfMonth(month);
     let monthEnd = dateFns.endOfMonth(month);
@@ -195,9 +197,10 @@ class Calendar extends React.Component {
       ends_at: dateFns.endOfWeek(monthEnd),
       locale: this.props.locale
     };
+    console.log({ numberOfMonthsInARow });
 
     return (
-      <div className="calendar" key={month}>
+      <div className={`calendar calendar-${numberOfMonthsInARow}`} key={month}>
         {this.renderHeader(month)}
         {this.renderDays()}
         <Query query={CALENDAR_QUERY} variables={variables}>
@@ -261,7 +264,8 @@ class Calendar extends React.Component {
     this.setState({
       selectedDate: "",
       arrivalDate: "",
-      departureDate: ""
+      departureDate: "",
+      startBooking: false
     });
   };
 
@@ -342,7 +346,8 @@ class Calendar extends React.Component {
 }
 
 Calendar.defaultProps = {
-  numberOfMonths: 4
+  numberOfMonths: 4,
+  numberOfMonthsInARow: 2
 };
 
 Calendar.propTypes = {
