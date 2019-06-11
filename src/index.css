@@ -620,7 +620,7 @@
   right: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-  transform: translateY(-50%)
+          transform: translateY(-50%)
 }
 .SingleDatePickerInput_clearDate__default:focus,
 .SingleDatePickerInput_clearDate__default:hover {
@@ -1327,7 +1327,7 @@
   right: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-  transform: translateY(-50%)
+          transform: translateY(-50%)
 }
 .DateRangePickerInput_clearDates__small {
   padding: 6px
