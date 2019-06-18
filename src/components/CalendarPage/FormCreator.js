@@ -35,7 +35,7 @@ class FormCreator extends React.Component {
     const { babies_extra } = this.props.house;
     let errors = {};
 
-    let babies = Number(values.babies) - babies_extra;
+    let babies = Number(values.babies) - Number(babies_extra);
     if (babies < 0) {
       babies = 0;
     }
@@ -93,6 +93,10 @@ class FormCreator extends React.Component {
       adults,
       babies
     } = values;
+    let babiesNumber = Number(babies) - Number(house.babies_extra);
+    if (babiesNumber < 0) {
+      babiesNumber = 0;
+    }
     const persons = Number(children) + Number(adults) + Number(babies);
 
     let insurances = [];
@@ -147,8 +151,12 @@ class FormCreator extends React.Component {
     } = this.props.house.booking_price;
     let discount = this.props.house.booking_price.discount;
     const { children, adults, babies } = values;
-    const persons = Number(children) + Number(adults) + Number(babies);
 
+    let babiesNumber = Number(babies) - Number(this.props.house.babies_extra);
+    if (babiesNumber < 0) {
+      babiesNumber = 0;
+    }
+    const persons = Number(children) + Number(adults) + Number(babiesNumber);
     let night_percentage = night_percentages.find(x => x.nights === nights);
     let night_price = base_price * (night_percentage.percentage / 100);
 
