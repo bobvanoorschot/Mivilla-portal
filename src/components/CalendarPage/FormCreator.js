@@ -267,14 +267,16 @@ class FormCreator extends React.Component {
               };
               createBooking({ variables });
 
-              setTimeout(() => {
-                if (options.bookingForm.redirectUrl && options.bookingForm.redirectUrl !== "") {
-                  window.location = options.bookingForm.redirectUrl
-                } else {
+              if (
+                options.bookingForm.redirectUrl &&
+                options.bookingForm.redirectUrl !== ""
+              ) {
+                window.location = options.bookingForm.redirectUrl;
+              } else {
+                setTimeout(() => {
                   this.props.onReturn();
-                }
-                // setSubmitting(false);
-              }, 5000);
+                }, 5000);
+              }
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
@@ -777,8 +779,7 @@ class FormCreator extends React.Component {
                       )}
                     </FormattedMessage>
                   </div>
-                  {[1,2].includes(Number(values.cancel_insurance)) ? (
-                    
+                  {[1, 2].includes(Number(values.cancel_insurance)) ? (
                     <div className="terms">
                       <FormattedMessage id="comply_insurance_card" />
                     </div>
