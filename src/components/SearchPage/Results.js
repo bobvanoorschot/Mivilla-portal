@@ -27,6 +27,8 @@ class Results extends Component {
         filters.departure_date,
         filters.arrival_date
       );
+    } else if (filters.arrival_date) {
+      min_nights = 1
     }
     let filterProperties = filters.properties || [];
     filterProperties = filterProperties.map(e => {
