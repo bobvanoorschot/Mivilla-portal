@@ -34,7 +34,7 @@
   }
   .calendar {
     min-width: 48%;
-    padding: 16px;
+    padding: 16px 8px;
     box-sizing: border-box;
     background: var(--month_background);
     /* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25); */

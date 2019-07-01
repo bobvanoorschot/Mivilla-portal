@@ -50,7 +50,7 @@
   }
   #bukazu-app .calendar {
     min-width: 48%;
-    padding: 16px;
+    padding: 16px 8px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     background: var(--month_background);
