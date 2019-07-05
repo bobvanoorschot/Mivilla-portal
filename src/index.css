@@ -67,7 +67,7 @@
       min-width: 32%;
     }
   #bukazu-app .calendar.calendar-4 {
-      min-width: 24%;
+      min-width: calc(25% - 16px);
     }
   #bukazu-app .calendar .header {
       background-color: rgba(211, 211, 211, 0.2);
