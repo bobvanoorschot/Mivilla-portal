@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'formik';
 
 const Discount = ({ errors, house }) => {
-  if (house.discounts) {
+  if (house.discounts && house.discounts !== '0') {
     let discounts = house.discounts.split(',');
     return (
       <div className="form-section">
