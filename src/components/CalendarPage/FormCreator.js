@@ -15,6 +15,7 @@ import DefaultBookingFields from "./formParts/DefaultBookingFields";
 import SuccessMessage from "./formParts/SuccessMessage";
 import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
 import Description from "./Summary/Description";
+import includes from "array-includes";
 
 class FormCreator extends React.Component {
   state = {
@@ -416,7 +417,7 @@ class FormCreator extends React.Component {
                       <div>
                         {bookingPrice.optional_house_costs.map(cost => {
                           if (
-                            !["none", "total"].includes(cost.method) &&
+                            !includes(["none", "total"], cost.method) &&
                             cost.max_available > 0
                           ) {
                             return (
@@ -779,7 +780,7 @@ class FormCreator extends React.Component {
                       )}
                     </FormattedMessage>
                   </div>
-                  {[1, 2].includes(Number(values.cancel_insurance)) ? (
+                  {includes([1,2], Number(values.cancel_insurance)) ? (
                     <div className="terms">
                       <FormattedMessage id="comply_insurance_card" />
                     </div>

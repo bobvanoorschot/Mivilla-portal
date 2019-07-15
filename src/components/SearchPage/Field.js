@@ -4,6 +4,7 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import './Field.css';
 import ListItem from './inputs/listItem.css';
+import includes from 'array-includes'
 
 class Field extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class Field extends Component {
     const value = Number(event.target.value);
 
     let properties = this.props.filters.properties || [];
-    if (properties.includes(value)) {
+    if (includes(properties, value)) {
       let index = properties.indexOf(value);
       properties.splice(index, 1);
     } else {
@@ -63,7 +64,7 @@ class Field extends Component {
     const { PortalSite } = this.props;
     //   console.log({PortalSite})
     let options = [];
-    if (['countries', 'cities', 'regions'].includes(field.id)) {
+    if (includes(['countries', 'cities', 'regions'], field.id)) {
       options = PortalSite[field.id];
     } else if (field.id === 'persons_min' || field.id === 'persons_max') {
       options = this.createNumberArray(PortalSite.max_persons);
@@ -96,7 +97,7 @@ class Field extends Component {
       let requiredCategories = PortalSite.options.filtersForm.categories;
       input = [];
       PortalSite.categories.map(category => {
-        if (requiredCategories.includes(category.id)) {
+        if (includes(requiredCategories, category.id)) {
           input.push(
             <div className="bu-properties" key={category.id}>
               <strong>{category.name}</strong>
@@ -108,7 +109,7 @@ class Field extends Component {
                         type="checkbox"
                         id={property.id}
                         value={property.id}
-                        checked={properties.includes(property.id)}
+                        checked={includes(properties, property.id)}
                         onChange={this.handlePropertyChange}
                       />
                       {property.name}
@@ -121,7 +122,7 @@ class Field extends Component {
         }
       });
     } else if (field.type === 'select') {
-      if (options && ['countries', 'cities', 'regions'].includes(field.id)) {
+      if (options && includes(['countries', 'cities', 'regions'], field.id)) {
         input = (
           <select
             name={field.id}
@@ -132,12 +133,12 @@ class Field extends Component {
             <option value="" />
             {options.map(opt => {
               let hidden = false;
-              if (['cities', 'regions'].includes(field.id)) {
-                if (countries && !countries.includes(opt.country_id)) {
+              if (includes(['cities', 'regions'], field.id)) {
+                if (countries && !includes(countries, opt.country_id)) {
                   hidden = true;
                 }
                 if (field.id === 'cities') {
-                  if (regions && !regions.includes(opt.region)) {
+                  if (regions && !includes(regions, opt.region)) {
                     hidden = true;
                   }
                 }
@@ -184,7 +185,7 @@ class Field extends Component {
           {options.map(opt => (
             <ListItem
               key={opt.id}
-              disabled={countries ? !countries.includes(opt.country_id) : false}
+              disabled={countries ? !includes(countries, opt.country_id) : false}
             >
               <input
                 name={field.id}
@@ -192,7 +193,7 @@ class Field extends Component {
                 id={opt.id}
                 value={opt.id}
                 disabled={
-                  countries ? !countries.includes(opt.country_id) : false
+                  countries ? !includes(countries, opt.country_id) : false
                 }
                 checked={value === opt.id}
                 onBlur={this.handleCheckboxChange}
@@ -209,7 +210,7 @@ class Field extends Component {
           {options.map(opt => (
             <ListItem
               key={opt.id || opt}
-              disabled={countries ? !countries.includes(opt.country_id) : false}
+              disabled={countries ? !includes(countries, opt.country_id) : false}
             >
               <input
                 name={field.id}
@@ -217,7 +218,7 @@ class Field extends Component {
                 id={opt.id || opt}
                 value={opt.id || opt}
                 disabled={
-                  countries ? !countries.includes(opt.country_id) : false
+                  countries ? !includes(countries, opt.country_id) : false
                 }
                 // checked={value === opt.id || opt}
                 onBlur={this.handleChange}
