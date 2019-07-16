@@ -197,7 +197,6 @@ class Calendar extends React.Component {
       ends_at: dateFns.endOfWeek(monthEnd),
       locale: this.props.locale
     };
-    console.log({ numberOfMonthsInARow });
 
     return (
       <div className={`calendar calendar-${numberOfMonthsInARow}`} key={month}>

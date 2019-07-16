@@ -44,7 +44,7 @@
     flex-direction: row;
     /* width: 30%; */
     min-height: 200px;
-    flex: 1;
+    flex: 1 1 auto;
     justify-content: center;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -58,7 +58,7 @@
     display: flex;
     padding: 16px;
     flex-direction: column;
-    flex: 1;
+    flex: 1 1 auto;
     justify-content: center;
     align-items: center;
     /* width: 30%; */
@@ -72,7 +72,7 @@
     }
   }
   &--book {
-    flex: 1;
+    flex: 1 1 auto;
     /* width: 30%; */
     padding: 16px;
     display: flex;

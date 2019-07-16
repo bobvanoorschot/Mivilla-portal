@@ -78,8 +78,8 @@
       display: -ms-flexbox;
       display: flex;
       -webkit-box-flex: 1;
-          -ms-flex: 1 1;
-              flex: 1 1
+          -ms-flex: 1 1 auto;
+              flex: 1 1 auto
     }
   #bukazu-app .calendar .row.days {
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
@@ -356,8 +356,8 @@
         border-radius: 16px;
         display: block;
         -webkit-box-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
+            -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
         padding: 8px 16px;
         line-height: 2rem;
         -webkit-transition: all 0.2s ease;
@@ -1485,8 +1485,8 @@
     /* width: 30%; */
     min-height: 200px;
     -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
@@ -1513,8 +1513,8 @@
         -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
@@ -1533,8 +1533,8 @@
     }
 .price-overview--book {
     -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     /* width: 30%; */
     padding: 16px;
     display: -webkit-box;
@@ -1648,8 +1648,8 @@
       }
 .bukazu-result-inner .result {
       -webkit-box-flex: 1;
-          -ms-flex: 1 1;
-              flex: 1 1;
+          -ms-flex: 1 1 auto;
+              flex: 1 1 auto;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -1671,8 +1671,8 @@
 .bukazu-result-inner .result-description {
         padding: 8px;
         -webkit-box-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
+            -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
       }
 .bukazu-result-inner .result-details {
         padding: 8px;

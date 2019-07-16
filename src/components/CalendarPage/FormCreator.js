@@ -269,6 +269,7 @@ class FormCreator extends React.Component {
               createBooking({ variables });
 
               if (
+                options.bookingForm &&
                 options.bookingForm.redirectUrl &&
                 options.bookingForm.redirectUrl !== ""
               ) {

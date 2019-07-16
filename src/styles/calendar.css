@@ -57,7 +57,7 @@
     .row {
       width: 100%;
       display: flex;
-      flex: 1 1;
+      flex: 1 1 auto;
       &.days {
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
       }
