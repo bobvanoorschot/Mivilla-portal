@@ -17,6 +17,7 @@
     }
   #bukazu-app .calendars-header .col .icon {
         padding: 8px 40px;
+        background-color: rgb(23, 190, 187);
         background: var(--bukazu-button);
         -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
                 box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
@@ -117,6 +118,7 @@
       text-decoration: underline;
     }
   #bukazu-app .calendar .discount {
+      background: orange;
       background: var(--bukazu-discount);
     }
   /* .discount.arrival {
@@ -168,6 +170,7 @@
       cursor: pointer;
     }
   #bukazu-app .calendar .selected {
+      background: rgb(23, 190, 187) !important;
       background: var(--bukazu-button) !important;
     }
   #bukazu-app .calendar .booked {
@@ -210,15 +213,19 @@
       margin: 0 8px 0 0
     }
   #bukazu-app .legend-field.booked {
+        background: #ea2b1f;
         background: var(--bukazu-booked);
       }
   #bukazu-app .legend-field.arrival {
+        background: #6eeb83;
         background: var(--bukazu-arrival);
       }
   #bukazu-app .legend-field.departure {
+        background: yellow;
         background: var(--bukazu-departure);
       }
   #bukazu-app .legend-field.last_minute_discount {
+        background: orange;
         background: var(--bukazu-discount);
       }
 #bukazu-app .form {
