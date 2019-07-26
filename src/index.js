@@ -3,7 +3,6 @@ import App from "./components/App";
 import { IntlProvider } from "react-intl";
 import { addLocaleData } from "react-intl";
 import fetch from "unfetch";
-import * as Sentry from "@sentry/browser";
 // import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloProvider } from "react-apollo";
@@ -47,10 +46,6 @@ class Portal extends Component {
     });
 
     const messages = { en, nl, de, fr, es, it };
-
-    Sentry.init({
-      dsn: "https://1c8907a40e6c4f17b9f2f22efb2ff390@sentry.io/1410853"
-    });
 
     addLocaleData([
       ...enData,
