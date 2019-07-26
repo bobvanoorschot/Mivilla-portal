@@ -12,6 +12,7 @@
     .col {
       .icon {
         padding: 8px 40px;
+        background-color: rgb(23, 190, 187);
         background: var(--bukazu-button);
         box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
         cursor: pointer;
@@ -94,6 +95,7 @@
       text-decoration: underline;
     }
     .discount {
+      background: orange;
       background: var(--bukazu-discount);
     }
     /* .discount.arrival {
@@ -145,6 +147,7 @@
       cursor: pointer;
     }
     .selected {
+      background: rgb(23, 190, 187) !important;
       background: var(--bukazu-button) !important;
     }
     .booked {
@@ -174,15 +177,19 @@
       height: 16px;
       margin: 0 8px 0 0;
       &.booked {
+        background: #ea2b1f;
         background: var(--bukazu-booked);
       }
       &.arrival {
+        background: #6eeb83;
         background: var(--bukazu-arrival);
       }
       &.departure {
+        background: yellow;
         background: var(--bukazu-departure);
       }
       &.last_minute_discount {
+        background: orange;
         background: var(--bukazu-discount);
       }
     }
