@@ -406,7 +406,7 @@ class FormCreator extends React.Component {
                     {errors.max_persons && (
                       <div className="error-message">{errors.max_persons}</div>
                     )}
-                    {house.pets && (
+                    {house.pets > 0 && (
                       <div className="form-row inline">
                         <label htmlFor="pets">
                           <FormattedMessage id="pets" />
