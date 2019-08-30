@@ -72,7 +72,7 @@ class Calendar extends React.Component {
 
     let days = [];
     let day = startDate;
-    let formattedDate = "";
+    let formattedDate = ""; 
     let dayz = availabilities;
 
     while (day <= endDate) {

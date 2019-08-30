@@ -210,6 +210,7 @@ class FormCreator extends React.Component {
     let adults = this.createPeronsArray(this.state.max_persons);
     const children = this.createPeronsArray(this.state.max_persons - 1);
     const { house, locale, PortalSite, options } = this.props;
+    const pets = this.createPeronsArray(house.pets);
     const bookingPrice = house.booking_price;
 
     let costs = {};
@@ -400,6 +401,25 @@ class FormCreator extends React.Component {
                             />
                           </div>
                         </div>
+                      </div>
+                    )}
+                    {errors.max_persons && (
+                      <div className="error-message">{errors.max_persons}</div>
+                    )}
+                    {house.pets && (
+                      <div className="form-row inline">
+                        <label htmlFor="pets">
+                          <FormattedMessage id="pets" />
+                        </label>
+                        <Field component="select" name="pets">
+                          {pets.map(opt => {
+                            return (
+                              <option key={opt} value={opt}>
+                                {opt}
+                              </option>
+                            );
+                          })}
+                        </Field>
                       </div>
                     )}
                     {errors.max_persons && (
@@ -781,7 +801,7 @@ class FormCreator extends React.Component {
                       )}
                     </FormattedMessage>
                   </div>
-                  {includes([1,2], Number(values.cancel_insurance)) ? (
+                  {includes([1, 2], Number(values.cancel_insurance)) ? (
                     <div className="terms">
                       <FormattedMessage id="comply_insurance_card" />
                     </div>
