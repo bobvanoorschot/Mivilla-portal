@@ -114,6 +114,7 @@ export const BOOKING_PRICE_QUERY = gql`
         damage_insurance_required
         travel_insurance
         babies_extra
+        pets
         booking_price(starts_at: $starts_at, ends_at: $ends_at)
       }
     }
