@@ -86,7 +86,8 @@ class Calendar extends React.Component {
         const prevBooked = dayz.find(x => x.date === yesterday);
         const cloneDay = daz;
         const minimum =
-          differenceInCalendarDays(daz.date, selectedDate) >= daz.min_nights;
+          differenceInCalendarDays(daz.date, selectedDate) >=
+          arrivalDate.min_nights;
         const maximum =
           differenceInCalendarDays(daz.date, selectedDate) <=
             house.max_nights &&
