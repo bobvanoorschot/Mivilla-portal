@@ -114,7 +114,6 @@ export const BOOKING_PRICE_QUERY = gql`
         damage_insurance_required
         travel_insurance
         babies_extra
-        pets
         booking_price(starts_at: $starts_at, ends_at: $ends_at)
       }
     }
@@ -141,7 +140,6 @@ export const CREATE_BOOKING_MUTATION = gql`
            $adults: Int!
            $children: Int
            $babies: Int
-           $pets: Int
            $discount: Int
            $damage_insurance: Int
            $cancel_insurance: Int
@@ -171,7 +169,6 @@ export const CREATE_BOOKING_MUTATION = gql`
              adults: $adults
              children: $children
              babies: $babies
-             pets: $pets
              discount: $discount
              damage_insurance: $damage_insurance
              cancel_insurance: $cancel_insurance
