@@ -51,12 +51,12 @@
   }
   #bukazu-app .calendar {
     min-width: 48%;
-    padding: 16px 8px;
+    padding: 16px 1%;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    background: var(--month_background);
+    background: var(--month_background)
     /* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25); */
-    margin: 16px 8px
+    /* margin: 16px 8px; */
   }
   #bukazu-app .calendar.calendar-1 {
       min-width: 98%;
