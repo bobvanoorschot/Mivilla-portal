@@ -73,7 +73,9 @@ class FormCreator extends React.Component {
     if (babiesNumber < 0) {
       babiesNumber = 0;
     }
-    const persons = Number(children) + Number(adults) + babiesNumber;
+    
+    const persons = Number(children) + Number(adults) + Number(babies);
+
     return calc[cost.method](
       cost.amount,
       Number(values.costs[cost.id]),
