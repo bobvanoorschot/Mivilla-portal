@@ -91,5 +91,13 @@
     "caravan.arrival": "Arrival",
     "caravan.departure": "Departure",
     "filters": "Filters",
-    "comply_insurance_card": "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation."
+    "comply_insurance_card": "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation.",
+    "house.you_picked_arrival_date": "Your arrival date is",
+    "camper.you_picked_arrival_date": "Your pickup date is",
+    "house.pick_your_departure_in_the_calendar": "Select a departure date",
+    "camper.pick_your_departure_in_the_calendar": "Select a return date",
+    "house.you_picked_departure_date": "Your departure date is",
+    "camper.you_picked_departure_date": "Your return date is",
+    "house.pick_your_arrivaldate_in_the_calendar": "Choose an arrival date",
+    "camper.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date"
 }

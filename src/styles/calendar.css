@@ -28,6 +28,12 @@
       }
     }
   }
+  .assistance {
+    padding: 16px;
+    span {
+      font-weight: bold;
+    }
+  }
   .calendars-row {
     display: flex;
     flex-wrap: wrap;

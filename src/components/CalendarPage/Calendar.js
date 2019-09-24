@@ -11,6 +11,7 @@ import differenceInCalendarDays from "date-fns/difference_in_calendar_days";
 
 import { CALENDAR_QUERY } from "../../_lib/queries";
 import { FormattedMessage } from "react-intl";
+import AssistanceMessage from "./formParts/AssistanceMessage";
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class Calendar extends React.Component {
 
     let days = [];
     let day = startDate;
-    let formattedDate = ""; 
+    let formattedDate = "";
     let dayz = availabilities;
 
     while (day <= endDate) {
@@ -309,10 +310,15 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const { startBooking, house } = this.state;
+    const { startBooking, house, arrivalDate, departureDate } = this.state;
 
     return (
       <div>
+        <AssistanceMessage
+          house={house}
+          arrivalDate={arrivalDate}
+          departureDate={departureDate}
+        />
         <CalendarHeader
           onGoNext={this.nextMonth}
           onGoPrev={this.prevMonth}
@@ -337,6 +343,11 @@ class Calendar extends React.Component {
             <FormattedMessage id="last_minute_discount" />
           </div>
         </div>
+        <AssistanceMessage
+          house={house}
+          arrivalDate={arrivalDate}
+          departureDate={departureDate}
+        />
         <div className={`price-overview ${startBooking ? "open" : ""}`}>
           {this.showBooking()}
         </div>

@@ -91,5 +91,13 @@
     "caravan.arrival": "Aankomst",
     "caravan.departure": "Vertrek ",
     "filters": "Filters",
-    "comply_insurance_card": "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging."
+    "comply_insurance_card": "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging.",
+    "house.you_picked_arrival_date": "Uw aankomstdatum is",
+    "camper.you_picked_arrival_date": "Uw ophaaldatum is",
+    "house.pick_your_departure_in_the_calendar": "Kies een vertrekdatum",
+    "camper.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
+    "house.you_picked_departure_date": "Uw vertrekdatum is",
+    "camper.you_picked_departure_date": "Uw inleverdatum is",
+    "house.pick_your_arrivaldate_in_the_calendar": "Kies een aankomstdatum",
+    "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum"
 }

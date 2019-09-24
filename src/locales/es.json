@@ -91,5 +91,13 @@
     "caravan.arrival": "llegada",
     "caravan.departure": "Salida",
     "filters": "Filtros",
-    "comply_insurance_card": "Estoy de acuerdo en que la tarjeta de seguro de cancelación será emitida digitalmente para mí. Recibo esto con mi confirmación de reserva."
+    "comply_insurance_card": "Estoy de acuerdo en que la tarjeta de seguro de cancelación será emitida digitalmente para mí. Recibo esto con mi confirmación de reserva.",
+    "house.you_picked_arrival_date": "Su fecha de llegada es",
+    "camper.you_picked_arrival_date": "Su fecha de recogida es",
+    "house.pick_your_departure_in_the_calendar": "Seleccione una fecha de salida",
+    "camper.pick_your_departure_in_the_calendar": "Seleccione una fecha de regreso",
+    "house.you_picked_departure_date": "Su fecha de salida es",
+    "camper.you_picked_departure_date": "Su fecha de retorno es",
+    "house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
+    "camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida"
 }
