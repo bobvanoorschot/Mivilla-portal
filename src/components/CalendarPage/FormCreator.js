@@ -265,7 +265,7 @@ class FormCreator extends React.Component {
                 discount_reason: values.discount_reason || "",
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
-                costs: values.costs
+                costs: JSON.stringify(values.costs)
               };
               createBooking({ variables });
 
