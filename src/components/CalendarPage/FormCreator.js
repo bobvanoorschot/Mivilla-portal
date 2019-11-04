@@ -110,7 +110,7 @@ class FormCreator extends React.Component {
       insurances.push(ins);
     }
     if (cancel_insurance === "1" || cancel_insurance === "2") {
-      let perc = cancel_insurance === "1" ? 5.5 : 7;
+      let perc = cancel_insurance === "1" ? 6.7 : 8.6;
       let ins = {};
       ins.name = "cancel_insurance";
       ins.price = prices.discounted_price * (perc / 100);
