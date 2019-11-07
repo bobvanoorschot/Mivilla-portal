@@ -54,6 +54,7 @@ class Paginator extends React.Component {
                 totalItemsCount={results.length}
                 pageRangeDisplayed={5}
                 onChange={this.handlePageChange}
+                innerClass="bu-pagination"
               />
             </div>
           );
