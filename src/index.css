@@ -1775,6 +1775,9 @@
           max-width: 90ch;
         }
   }
+#bukazu-app .bu-smaller #results {
+  padding: 8px;
+}
 #bukazu-app #results {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -1861,6 +1864,10 @@
             left: 0;
             z-index: 9999;
         }
+#bukazu-app .bu-smaller #search-page .filters {
+    width: 175px;
+    min-width: 175px;
+}
 #bukazu-app #search-page .filters {
     padding: 8px;
     /* width: 20%; */

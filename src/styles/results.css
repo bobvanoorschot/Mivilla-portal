@@ -1,3 +1,6 @@
+#bukazu-app .bu-smaller #results {
+  padding: 8px;
+}
 #bukazu-app #results {
   display: inline-flex;
   flex-direction: row;
@@ -8,6 +11,7 @@
   @media screen and (max-width: 992px) {
     justify-content: space-around;
   }
+  
   .bu-paginator {
         display: flex;
   justify-content: space-between;

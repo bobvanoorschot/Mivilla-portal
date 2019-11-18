@@ -17,6 +17,11 @@
     }
 }
 
+#bukazu-app .bu-smaller #search-page .filters {
+    width: 175px;
+    min-width: 175px;
+}
+
 #bukazu-app #search-page .filters {
     padding: 8px;
     /* width: 20%; */
