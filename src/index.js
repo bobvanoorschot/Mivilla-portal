@@ -28,7 +28,7 @@ import "./index.css";
 
 class Portal extends Component {
   render() {
-    const { portalCode, objectCode, locale, filters } = this.props;
+    const { portalCode, objectCode, pageType, locale, filters } = this.props;
 
     let uri = "https://bukazu.eu/graphql";
 
@@ -64,6 +64,7 @@ class Portal extends Component {
           <App
             portalCode={portalCode}
             objectCode={objectCode}
+            pageType={pageType}
             locale={locale}
             filters={filters}
           />
@@ -72,5 +73,9 @@ class Portal extends Component {
     );
   }
 }
+
+Portal.defaultProps = {
+  pageType: null
+};
 
 export default Portal;

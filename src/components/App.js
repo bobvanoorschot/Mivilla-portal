@@ -8,6 +8,7 @@ import { PORTAL_QUERY } from "../_lib/queries";
 
 import SearchPage from "./SearchPage/SearchPage";
 import CalendarPage from "./CalendarPage/CalendarPage";
+import ReviewsPage from "./ReviewsPage/ReviewsPage";
 
 // import 'react-dates/lib/css/_datepicker.css';
 
@@ -37,7 +38,7 @@ class App extends Component {
   }
 
   render() {
-    const { portalCode, objectCode, locale, filters } = this.props;
+    const { portalCode, objectCode, pageType, locale, filters } = this.props;
 
     return (
       <div ref={this.pageWidth}>
@@ -94,7 +95,7 @@ class App extends Component {
               `${options.colors ? options.colors.month_background : "#e28413"}`
             );
 
-            if (objectCode && objectCode !== null) {
+            if (objectCode && objectCode !== null && pageType !== "reviews") {
               return (
                 <CalendarPage
                   PortalSite={PortalSite}
@@ -102,6 +103,15 @@ class App extends Component {
                   locale={locale}
                 />
               );
+            } else if (objectCode && objectCode !== null && pageType === "reviews") {
+              return (
+                <ReviewsPage
+                  PortalSite={PortalSite}
+                  locale={locale}
+                  options={options}
+                  filters={filters}
+                />
+              );            
             } else {
               return (
                 <SearchPage
