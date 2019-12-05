@@ -863,8 +863,7 @@
     fill: #cacccd;
   }
 
-  .DayPicker_weekHeader_ul,
-  .CalendarDay__default {
+  .CalendarMonth_table tr td {
     padding: 0;
   }
 }

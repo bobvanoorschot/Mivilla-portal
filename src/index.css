@@ -1437,8 +1437,7 @@
     width: 15px;
     fill: #cacccd;
   }
-#bukazu-app .DayPicker_weekHeader_ul,
-  #bukazu-app .CalendarDay__default {
+#bukazu-app .CalendarMonth_table tr td {
     padding: 0;
   }
 .price-overview {
