@@ -286,7 +286,9 @@
   box-sizing: border-box;
   cursor: pointer;
   font-size: 14px;
-  text-align: center
+  text-align: center;
+  padding: 0;
+
 }
 .CalendarDay:active {
   outline: 0
@@ -601,8 +603,7 @@
 .DayPicker_weekHeader_ul {
   list-style: none;
   margin: 1px 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
   font-size: 14px
 }
 .DayPicker_weekHeader_li {
@@ -862,6 +863,6 @@
   fill: #cacccd
 }
 
-.DayPicker_weekHeader_ul, td.CalendarDay {
+.DayPicker_weekHeader_ul, .CalendarDay__default {
   padding: 0;
 }
