@@ -861,3 +861,7 @@
   width: 15px;
   fill: #cacccd
 }
+
+.DayPicker_weekHeader_ul, td.CalendarDay {
+  padding: 0;
+}
