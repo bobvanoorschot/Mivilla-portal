@@ -72,7 +72,7 @@
     .col {
       width: 100%;
       /* border: solid 1px #fff; */
-      padding: 8px;
+      padding: 4px;
       text-transform: capitalize;
       text-align: center;
       transition: all 0.5s ease;
@@ -197,6 +197,24 @@
       &.last_minute_discount {
         background: orange;
         background: var(--bukazu-discount);
+      }
+    }
+  }
+  .calender--picker {
+    padding: 8px;
+    display: flex;
+    border: 1px solid var(--bukazu-button);
+    &--date {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 16px;
+      span.name {
+        font-size: 18px;
+      }
+      span.detail {
+        opacity: 0.9
       }
     }
   }

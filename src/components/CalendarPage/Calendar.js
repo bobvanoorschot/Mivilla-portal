@@ -271,28 +271,23 @@ class Calendar extends React.Component {
   };
 
   showBooking() {
-    const { startBooking, arrivalDate, departureDate } = this.state;
+    const { startBooking, arrivalDate, departureDate, house } = this.state;
     const { portalCode, objectCode, locale } = this.props;
 
-    if (startBooking) {
-      setTimeout(function() {
-        document.querySelector(".price-overview").scrollIntoView({
-          behavior: "smooth"
-        });
-      }, 1000);
-      return (
-        <PriceField
-          portalCode={portalCode}
-          objectCode={objectCode}
-          locale={locale}
-          startsAt={arrivalDate.date}
-          endsAt={departureDate.date}
-          onStartBooking={this.bookingStart}
-        />
-      );
-    } else {
-      return <div />;
-    }
+    console.log({ startBooking, portalCode, objectCode, locale })
+
+    return (
+      <PriceField
+        portalCode={portalCode}
+        objectCode={objectCode}
+        locale={locale}
+        startsAt={arrivalDate.date || null}
+        endsAt={departureDate.date || null}
+        disabled={startBooking}
+        onStartBooking={this.bookingStart}
+        house={house}
+      />
+    );
   }
 
   bookingStart(status) {
@@ -319,6 +314,7 @@ class Calendar extends React.Component {
           arrivalDate={arrivalDate}
           departureDate={departureDate}
         />
+        <div className={`price-overview`}>{this.showBooking()}</div>
         <CalendarHeader
           onGoNext={this.nextMonth}
           onGoPrev={this.prevMonth}
@@ -348,9 +344,6 @@ class Calendar extends React.Component {
           arrivalDate={arrivalDate}
           departureDate={departureDate}
         />
-        <div className={`price-overview ${startBooking ? "open" : ""}`}>
-          {this.showBooking()}
-        </div>
       </div>
     );
   }
