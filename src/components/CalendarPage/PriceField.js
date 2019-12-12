@@ -5,6 +5,9 @@ import gql from "graphql-tag";
 import Loading from "../icons/loading.svg";
 import format from "../../_lib/format";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+import { createPeronsArray } from "./formParts/BookingHelpers";
+
+const dateFormat = "dddd DD MMMM YYYY";
 
 export const CALENDAR_QUERY = gql`
   query BookingPriceQuery(
@@ -12,18 +15,30 @@ export const CALENDAR_QUERY = gql`
     $house_id: String!
     $starts_at: Date!
     $ends_at: Date!
+    $persons: Int
   ) {
     PortalSite(id: $id) {
       houses(house_code: $house_id) {
         id
         name
-        booking_price(starts_at: $starts_at, ends_at: $ends_at)
+        booking_price(
+          starts_at: $starts_at
+          ends_at: $ends_at
+          persons: $persons
+        )
       }
     }
   }
 `;
 
 class PriceField extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      persons: 2
+    };
+  }
   render() {
     const {
       portalCode,
@@ -33,6 +48,10 @@ class PriceField extends React.Component {
       locale,
       house
     } = this.props;
+    const { persons } = this.state;
+
+    let adults = createPeronsArray(house.persons);
+
     return (
       <div className="calendar--picker">
         <div className="calendar--picker--date">
@@ -40,9 +59,13 @@ class PriceField extends React.Component {
             <FormattedMessage id={`${house.house_type}.arrival`} />
           </span>
           <span className="detail">
-          <FormattedMessage
-            id={`${house.house_type}.pick_your_arrivaldate_in_the_calendar`}
-          />
+            {startsAt ? (
+              <span>{format(startsAt, dateFormat)}</span>
+            ) : (
+              <FormattedMessage
+                id={`${house.house_type}.pick_your_arrivaldate_in_the_calendar`}
+              />
+            )}
           </span>
         </div>
         <div className="calendar--picker--date">
@@ -50,10 +73,30 @@ class PriceField extends React.Component {
             <FormattedMessage id={`${house.house_type}.departure`} />
           </span>
           <span className="detail">
-          <FormattedMessage
-            id={`${house.house_type}.pick_your_departure_in_the_calendar`}
-            />
-            </span>
+            {endsAt ? (
+              <span>{format(endsAt, dateFormat)}</span>
+            ) : (
+              <FormattedMessage
+                id={`${house.house_type}.pick_your_departure_in_the_calendar`}
+              />
+            )}
+          </span>
+        </div>
+        <div className="calendar--picker--date">
+          <span className="detail">
+            <select className="calendar--picker--persons" value={persons}>
+              {adults.map(person => (
+                <FormattedMessage
+                  id="persons"
+                  children={text => (
+                    <option value={person}>
+                      {person} {text}
+                    </option>
+                  )}
+                />
+              ))}
+            </select>
+          </span>
         </div>
         {startsAt && endsAt && (
           <Query
@@ -66,18 +109,19 @@ class PriceField extends React.Component {
               locale: locale
             }}
           >
-            {({ loading, data }) => {
+            {({ loading, data, error }) => {
               if (loading)
                 return (
                   <div className="price-overview--build">
                     <Loading />
                   </div>
                 );
+              if (error)
+                return <div className="price-overview--build">Error</div>;
               const result = data.PortalSite.houses[0].booking_price;
               return (
                 <React.Fragment>
-                  <div className="price-overview--details" />
-                  <div className="price-overview--build">
+                  {/* <div className="price-overview--build">
                     <table>
                       <thead>
                         <tr>
@@ -114,17 +158,8 @@ class PriceField extends React.Component {
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> */}
 
-                  <div className="price-overview--extra">
-                    <div className="data-label">
-                      <FormattedMessage id="booking_from_til" />
-                    </div>
-                    <div className="data">
-                      {format(startsAt, "DD-MM-YYYY")} /{" "}
-                      {format(endsAt, "DD-MM-YYYY")}
-                    </div>
-                  </div>
                   <div className="price-overview--book">
                     <div className="price">
                       €{" "}
@@ -136,23 +171,23 @@ class PriceField extends React.Component {
                     </div>
                     <div>
                       <i>
-                        <FormattedMessage id="based_on_one_person" />
+                        <FormattedMessage id="based_on_one_person" value={persons} />
                       </i>
                     </div>
-                    <button
-                      className="button"
-                      onClick={() => {
-                        this.props.onStartBooking("false");
-                      }}
-                    >
-                      <FormattedMessage id="calculate" />
-                    </button>
                   </div>
                 </React.Fragment>
               );
             }}
           </Query>
         )}
+        <button
+          className="button"
+          onClick={() => {
+            this.props.onStartBooking("false");
+          }}
+        >
+          <FormattedMessage id="calculate" />
+        </button>
       </div>
     );
   }

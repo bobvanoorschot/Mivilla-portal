@@ -200,11 +200,14 @@
       }
     }
   }
-  .calender--picker {
+  .calendar--picker {
     padding: 8px;
     display: flex;
-    border: 1px solid var(--bukazu-button);
+    justify-content: space-around;
+    width: 100%;
+    box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
     &--date {
+      width: 20%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -212,9 +215,38 @@
       padding: 8px 16px;
       span.name {
         font-size: 18px;
+        border-bottom: 1px solid #ccc;
+        padding: 4px 0;
       }
       span.detail {
-        opacity: 0.9
+        display: flex;
+        padding: 4px 0;
+        opacity: 0.9;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    &--persons {
+      border: 0;
+      padding: 16px;
+      width: 100%;
+      appearance: none;
+    }
+    .button {
+      width: 20%;
+      background: var(--bukazu-button_cta);
+      color: #fff;
+      padding: 12px 32px;
+      margin: 8px 0;
+      font-weight: bold;
+      text-align: center;
+      border: 0;
+      font-size: 20px;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      &:hover {
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
       }
     }
   }

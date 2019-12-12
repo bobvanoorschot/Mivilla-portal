@@ -234,14 +234,19 @@
         background: orange;
         background: var(--bukazu-discount);
       }
-  #bukazu-app .calender--picker {
+  #bukazu-app .calendar--picker {
     padding: 8px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    border: 1px solid var(--bukazu-button);
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    width: 100%;
+    -webkit-box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
+            box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
   }
-  #bukazu-app .calender--picker--date {
+  #bukazu-app .calendar--picker--date {
+      width: 20%;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -257,11 +262,50 @@
               align-items: center;
       padding: 8px 16px;
     }
-  #bukazu-app .calender--picker--date span.name {
+  #bukazu-app .calendar--picker--date span.name {
         font-size: 18px;
+        border-bottom: 1px solid #ccc;
+        padding: 4px 0;
       }
-  #bukazu-app .calender--picker--date span.detail {
-        opacity: 0.9
+  #bukazu-app .calendar--picker--date span.detail {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 4px 0;
+        opacity: 0.9;
+        width: 100%;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+      }
+  #bukazu-app .calendar--picker--persons {
+      border: 0;
+      padding: 16px;
+      width: 100%;
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+    }
+  #bukazu-app .calendar--picker .button {
+      width: 20%;
+      background: var(--bukazu-button_cta);
+      color: #fff;
+      padding: 12px 32px;
+      margin: 8px 0;
+      font-weight: bold;
+      text-align: center;
+      border: 0;
+      font-size: 20px;
+      -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+              box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+      cursor: pointer
+    }
+  #bukazu-app .calendar--picker .button:hover {
+        -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+                box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
       }
 #bukazu-app .form {
   max-width: 1400px;
