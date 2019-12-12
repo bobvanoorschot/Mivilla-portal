@@ -1,3 +1,50 @@
+
+  @media screen and (min-width: 1200px) {
+    #bukazu-app div.calendar-container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+      #bukazu-app div.calendar-container .calendar-section {
+        width: 75%;
+        -webkit-box-ordinal-group: 2;
+            -ms-flex-order: 1;
+                order: 1;
+      }
+      #bukazu-app div.calendar-container .price-overview {
+        width: 25%;
+        -webkit-box-ordinal-group: 3;
+            -ms-flex-order: 2;
+                order: 2;
+      }
+        #bukazu-app div.calendar-container .price-overview .calendar--picker {
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+        }
+          #bukazu-app div.calendar-container .price-overview .calendar--picker--date, #bukazu-app div.calendar-container .price-overview .calendar--picker .button {
+            width: auto;
+          }
+          #bukazu-app div.calendar-container .price-overview .calendar--picker .button {
+            padding: 12px;
+          }
+  }
+@media screen and (max-width: 993px) {
+        #bukazu-app .price-overview .calendar--picker {
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+        }
+          #bukazu-app .price-overview .calendar--picker--date, #bukazu-app .price-overview .calendar--picker .button {
+            width: auto;
+          }
+          #bukazu-app .price-overview .calendar--picker .button {
+            padding: 12px;
+          }
+    
+  }
 #bukazu-app .calendars-header {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -9,13 +56,13 @@
     -ms-flex-pack: distribute;
         justify-content: space-around
   }
-  @media screen and (max-width: 992px) {
+@media screen and (max-width: 992px) {
       /* flex-direction: column; */
       #bukazu-app .calendars-header .col {
         margin: 4px 8px;
       }
     }
-  #bukazu-app .calendars-header .col .icon {
+#bukazu-app .calendars-header .col .icon {
         padding: 8px 40px;
         background-color: rgb(23, 190, 187);
         background: var(--bukazu-button);
@@ -32,20 +79,20 @@
             -ms-flex-pack: center;
                 justify-content: center;
       }
-  #bukazu-app .calendars-header .col .icon svg {
+#bukazu-app .calendars-header .col .icon svg {
           height: 18px;
         }
-  #bukazu-app .calendars-header .col .icon:hover {
+#bukazu-app .calendars-header .col .icon:hover {
           -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
                   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
         }
-  #bukazu-app .assistance {
+#bukazu-app .assistance {
     padding: 16px;
   }
-  #bukazu-app .assistance span {
+#bukazu-app .assistance span {
       font-weight: bold;
     }
-  #bukazu-app .calendars-row {
+#bukazu-app .calendars-row {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -55,7 +102,7 @@
         -ms-flex-pack: start;
             justify-content: flex-start;
   }
-  #bukazu-app .calendar {
+#bukazu-app .calendar {
     min-width: 48%;
     padding: 16px 1%;
     -webkit-box-sizing: border-box;
@@ -64,22 +111,22 @@
     /* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25); */
     /* margin: 16px 8px; */
   }
-  #bukazu-app .calendar.calendar-1 {
+#bukazu-app .calendar.calendar-1 {
       min-width: 98%;
     }
-  #bukazu-app .calendar.calendar-2 {
+#bukazu-app .calendar.calendar-2 {
       min-width: 48%;
     }
-  #bukazu-app .calendar.calendar-3 {
+#bukazu-app .calendar.calendar-3 {
       min-width: 32%;
     }
-  #bukazu-app .calendar.calendar-4 {
+#bukazu-app .calendar.calendar-4 {
       min-width: calc(25% - 16px);
     }
-  #bukazu-app .calendar .header {
+#bukazu-app .calendar .header {
       background-color: rgba(211, 211, 211, 0.2);
     }
-  #bukazu-app .calendar .row {
+#bukazu-app .calendar .row {
       width: 100%;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -88,10 +135,10 @@
           -ms-flex: 1 1 auto;
               flex: 1 1 auto
     }
-  #bukazu-app .calendar .row.days {
+#bukazu-app .calendar .row.days {
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
       }
-  #bukazu-app .calendar .col {
+#bukazu-app .calendar .col {
       width: 100%;
       /* border: solid 1px #fff; */
       padding: 4px;
@@ -100,55 +147,55 @@
       -webkit-transition: all 0.5s ease;
       transition: all 0.5s ease;
     }
-  #bukazu-app .calendar .col-center {
+#bukazu-app .calendar .col-center {
         text-align: center;
       }
-  #bukazu-app .calendar .col-start {
+#bukazu-app .calendar .col-start {
         text-align: left;
       }
-  #bukazu-app .calendar .col-end {
+#bukazu-app .calendar .col-end {
         text-align: right;
       }
-  #bukazu-app .calendar .cell {
+#bukazu-app .calendar .cell {
       background: #6eeb83;
       background: var(--bukazu-cell);
     }
-  #bukazu-app .calendar .disabled {
+#bukazu-app .calendar .disabled {
       opacity: 0;
     }
-  #bukazu-app .calendar .arrival {
+#bukazu-app .calendar .arrival {
       background: #6eeb83;
       background: var(--bukazu-arrival);
       cursor: pointer;
       font-weight: bold;
       text-decoration: underline;
     }
-  #bukazu-app .calendar .discount {
+#bukazu-app .calendar .discount {
       background: orange;
       background: var(--bukazu-discount);
     }
-  /* .discount.arrival {
+/* .discount.arrival {
       background: linear-gradient(
         45deg,
         var(--bukazu-discount) 50%,
         var(--bukazu-arrival) 50%
       ); 
     } */
-  #bukazu-app .calendar .booked-departure {
+#bukazu-app .calendar .booked-departure {
       background: linear-gradient(
         45deg,
         var(--bukazu-cell) 50%,
         var(--bukazu-booked) 50%
       );
     }
-  #bukazu-app .calendar .discount.booked-departure {
+#bukazu-app .calendar .discount.booked-departure {
       background: linear-gradient(
         45deg,
         var(--bukazu-discount) 50%,
         var(--bukazu-booked) 50%
       );
     }
-  #bukazu-app .calendar .departure.discount.booked-departure,
+#bukazu-app .calendar .departure.discount.booked-departure,
     #bukazu-app .calendar .departure.booked-departure,
     #bukazu-app .calendar .departure.booked {
       background: linear-gradient(
@@ -157,7 +204,7 @@
         var(--bukazu-booked) 50%
       );
     }
-  #bukazu-app .calendar .departure-arrival {
+#bukazu-app .calendar .departure-arrival {
       background: linear-gradient(
         45deg,
         var(--bukazu-booked) 50%,
@@ -165,27 +212,27 @@
       ) !important;
       cursor: pointer;
     }
-  #bukazu-app .calendar .icon {
+#bukazu-app .calendar .icon {
       cursor: pointer;
     }
-  #bukazu-app .calendar .discount.arrival.departure,
+#bukazu-app .calendar .discount.arrival.departure,
     #bukazu-app .calendar .departure {
       font-weight: bold;
       background: yellow;
       background: var(--bukazu-departure);
       cursor: pointer;
     }
-  #bukazu-app .calendar .selected {
+#bukazu-app .calendar .selected {
       background: rgb(23, 190, 187) !important;
       background: var(--bukazu-button) !important;
     }
-  #bukazu-app .calendar .booked {
+#bukazu-app .calendar .booked {
       background: #ea2b1f;
       background: var(--bukazu-booked);
       color: #000;
       /* filter: invert(100%) */
     }
-  #bukazu-app .legend {
+#bukazu-app .legend {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -193,7 +240,7 @@
         flex-wrap: wrap;
     padding: 8px 16px
   }
-  @media screen and (max-width: 992px) {
+@media screen and (max-width: 992px) {
   #bukazu-app .legend {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
@@ -201,40 +248,40 @@
               flex-direction: column
   }
     }
-  #bukazu-app .legend > div {
+#bukazu-app .legend > div {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
       padding: 0 16px
     }
-  @media screen and (max-width: 992px) {
+@media screen and (max-width: 992px) {
     #bukazu-app .legend > div {
         padding: 4px 8px
     }
       }
-  #bukazu-app .legend-field {
+#bukazu-app .legend-field {
       display: block;
       width: 16px;
       height: 16px;
       margin: 0 8px 0 0
     }
-  #bukazu-app .legend-field.booked {
+#bukazu-app .legend-field.booked {
         background: #ea2b1f;
         background: var(--bukazu-booked);
       }
-  #bukazu-app .legend-field.arrival {
+#bukazu-app .legend-field.arrival {
         background: #6eeb83;
         background: var(--bukazu-arrival);
       }
-  #bukazu-app .legend-field.departure {
+#bukazu-app .legend-field.departure {
         background: yellow;
         background: var(--bukazu-departure);
       }
-  #bukazu-app .legend-field.last_minute_discount {
+#bukazu-app .legend-field.last_minute_discount {
         background: orange;
         background: var(--bukazu-discount);
       }
-  #bukazu-app .calendar--picker {
+#bukazu-app .calendar--picker {
     padding: 8px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -245,7 +292,7 @@
     -webkit-box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
             box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
   }
-  #bukazu-app .calendar--picker--date {
+#bukazu-app .calendar--picker--date {
       width: 20%;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -262,12 +309,17 @@
               align-items: center;
       padding: 8px 16px;
     }
-  #bukazu-app .calendar--picker--date span.name {
+#bukazu-app .calendar--picker--date span.name {
         font-size: 18px;
         border-bottom: 1px solid #ccc;
-        padding: 4px 0;
+        padding: 4px 0
       }
-  #bukazu-app .calendar--picker--date span.detail {
+@media screen and (max-width: 1200px) {
+      #bukazu-app .calendar--picker--date span.name {
+    font-size: 16px
+      }
+  }
+#bukazu-app .calendar--picker--date span.detail {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -279,9 +331,14 @@
                 justify-content: center;
         -webkit-box-align: center;
             -ms-flex-align: center;
-                align-items: center;
+                align-items: center
       }
-  #bukazu-app .calendar--picker--persons {
+@media screen and (max-width: 1200px) {
+      #bukazu-app .calendar--picker--date span.detail {
+                  font-size: 14px
+      }
+                }
+#bukazu-app .calendar--picker--persons {
       border: 1px solid #ccc;
       width: 100%;
       -webkit-appearance: none;
@@ -289,7 +346,7 @@
               appearance: none;
       font-size: 16px;
     }
-  #bukazu-app .calendar--picker .button {
+#bukazu-app .calendar--picker .button {
       width: 20%;
       background: var(--bukazu-button_cta);
       color: #fff;
@@ -303,7 +360,11 @@
               box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
       cursor: pointer
     }
-  #bukazu-app .calendar--picker .button:hover {
+#bukazu-app .calendar--picker .button:disabled {
+       background: #ccc;
+       cursor: not-allowed;
+      }
+#bukazu-app .calendar--picker .button:hover {
         -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
                 box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
       }
@@ -1639,36 +1700,35 @@
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center
+
   }
 @media screen and (max-width: 992px) {
   .price-overview--book {
       padding: 16px 0
+
   }
     }
 .price-overview--book > div {
       padding: 4px 0;
     }
 .price-overview--book .price {
-      font-size: 32px;
+      font-size: 28px;
+    }
+@media screen and (min-width: 1200px) {
+    .price-overview--book .price {
+        font-size: 32px;
+    }
+      }
+.price-overview--book .price {
       font-weight: bold;
     }
-.price-overview--book .button {
-      background: var(--bukazu-button_cta);
-      color: #fff;
-      padding: 12px 32px;
-      margin: 8px 0;
-      font-weight: bold;
-      width: 75%;
-      text-align: center;
-      border: 0;
-      font-size: 20px;
-      -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
-              box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
-      cursor: pointer
+.price-overview--book i {
+      font-size: 14px
     }
-.price-overview--book .button:hover {
-        -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-                box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+@media screen and (min-width: 1200px) {
+    .price-overview--book i {
+        font-size: 16px
+    }
       }
 .success-message {
     display: -webkit-box;

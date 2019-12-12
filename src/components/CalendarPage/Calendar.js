@@ -308,42 +308,39 @@ class Calendar extends React.Component {
     const { startBooking, house, arrivalDate, departureDate } = this.state;
 
     return (
-      <div>
-        <AssistanceMessage
-          house={house}
-          arrivalDate={arrivalDate}
-          departureDate={departureDate}
-        />
-        <div className={`price-overview`}>{this.showBooking()}</div>
-        <CalendarHeader
-          onGoNext={this.nextMonth}
-          onGoPrev={this.prevMonth}
-          onReset={this.reset}
-        />
-        <div className="calendars-row">{this.renderMonths()}</div>
-        <div className="legend">
-          <div>
-            <span className="legend-field arrival" />
-            <FormattedMessage id={`${house.house_type}.arrival_date`} />
+      <div className="calendar-container ">
+        <div className="price-overview">{this.showBooking()}</div>
+        <div className="calendar-section">
+          <CalendarHeader
+            onGoNext={this.nextMonth}
+            onGoPrev={this.prevMonth}
+            onReset={this.reset}
+          />
+          <div className="calendars-row">{this.renderMonths()}</div>
+          <div className="legend">
+            <div>
+              <span className="legend-field arrival" />
+              <FormattedMessage id={`${house.house_type}.arrival_date`} />
+            </div>
+            <div>
+              <span className="legend-field booked" />
+              <FormattedMessage id="booked" />
+            </div>
+            <div>
+              <span className="legend-field departure" />
+              <FormattedMessage id={`${house.house_type}.departure_date`} />
+            </div>
+            <div>
+              <span className="legend-field last_minute_discount" />
+              <FormattedMessage id="last_minute_discount" />
+            </div>
           </div>
-          <div>
-            <span className="legend-field booked" />
-            <FormattedMessage id="booked" />
-          </div>
-          <div>
-            <span className="legend-field departure" />
-            <FormattedMessage id={`${house.house_type}.departure_date`} />
-          </div>
-          <div>
-            <span className="legend-field last_minute_discount" />
-            <FormattedMessage id="last_minute_discount" />
-          </div>
+          <AssistanceMessage
+            house={house}
+            arrivalDate={arrivalDate}
+            departureDate={departureDate}
+          />
         </div>
-        <AssistanceMessage
-          house={house}
-          arrivalDate={arrivalDate}
-          departureDate={departureDate}
-        />
       </div>
     );
   }

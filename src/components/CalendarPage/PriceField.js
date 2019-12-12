@@ -51,7 +51,8 @@ class PriceField extends React.Component {
       startsAt,
       endsAt,
       locale,
-      house
+      house,
+      disabled
     } = this.props;
     const { persons } = this.state;
 
@@ -107,32 +108,32 @@ class PriceField extends React.Component {
             </select>
           </span>
         </div>
-                          <div className="calendar--picker--date">
-        {startsAt && endsAt && (
-          <Query
-            query={CALENDAR_QUERY}
-            variables={{
-              id: portalCode,
-              house_id: objectCode,
-              starts_at: startsAt,
-              ends_at: endsAt,
-              persons: parseInt(persons),
-              locale: locale
-            }}
-          >
-            {({ loading, data, error }) => {
-              if (loading)
+        <div className="calendar--picker--date">
+          {startsAt && endsAt && (
+            <Query
+              query={CALENDAR_QUERY}
+              variables={{
+                id: portalCode,
+                house_id: objectCode,
+                starts_at: startsAt,
+                ends_at: endsAt,
+                persons: parseInt(persons),
+                locale: locale
+              }}
+            >
+              {({ loading, data, error }) => {
+                if (loading)
+                  return (
+                    <div className="price-overview--build">
+                      <Loading />
+                    </div>
+                  );
+                if (error)
+                  return <div className="price-overview--build">Error</div>;
+                const result = data.PortalSite.houses[0].booking_price;
                 return (
-                  <div className="price-overview--build">
-                    <Loading />
-                  </div>
-                );
-              if (error)
-                return <div className="price-overview--build">Error</div>;
-              const result = data.PortalSite.houses[0].booking_price;
-              return (
-                <React.Fragment>
-                  {/* <div className="price-overview--build">
+                  <React.Fragment>
+                    {/* <div className="price-overview--build">
                     <table>
                       <thead>
                         <tr>
@@ -171,34 +172,37 @@ class PriceField extends React.Component {
                     </table>
                   </div> */}
 
-                  <div className="price-overview--book">
-                    <div className="price">
-                      €{" "}
-                      <FormattedNumber
-                        value={result.total_price}
-                        minimumFractionDigits={2}
-                        maximumFractionDigits={2}
-                      />
-                    </div>
-                    <div>
-                      <i>
-                        <FormattedMessage
-                          id="based_on_one_person"
-                          values={{ persons }}
+                    <div className="price-overview--book">
+                      <div className="price">
+                        €{" "}
+                        <FormattedNumber
+                          value={result.total_price}
+                          minimumFractionDigits={2}
+                          maximumFractionDigits={2}
                         />
-                      </i>
+                      </div>
+                      <div>
+                        <i>
+                          <FormattedMessage
+                            id="based_on_one_person"
+                            values={{ persons }}
+                          />
+                        </i>
+                      </div>
                     </div>
-                  </div>
-                </React.Fragment>
-              );
-            }}
-          </Query>
-        )}
-          </div>
+                  </React.Fragment>
+                );
+              }}
+            </Query>
+          )}
+        </div>
         <button
           className="button"
+          disabled={!disabled}
           onClick={() => {
-            this.props.onStartBooking("false");
+            if (!disabled) {
+              this.props.onStartBooking("false");
+            }
           }}
         >
           <FormattedMessage id="calculate" />
