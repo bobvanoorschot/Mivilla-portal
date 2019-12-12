@@ -282,23 +282,23 @@
                 align-items: center;
       }
   #bukazu-app .calendar--picker--persons {
-      border: 0;
-      padding: 16px;
+      border: 1px solid #ccc;
       width: 100%;
       -webkit-appearance: none;
          -moz-appearance: none;
               appearance: none;
+      font-size: 16px;
     }
   #bukazu-app .calendar--picker .button {
       width: 20%;
       background: var(--bukazu-button_cta);
       color: #fff;
-      padding: 12px 32px;
+      padding: 4px 16px;
       margin: 8px 0;
       font-weight: bold;
       text-align: center;
       border: 0;
-      font-size: 20px;
+      font-size: 18px;
       -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
               box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
       cursor: pointer
@@ -1572,7 +1572,7 @@
         -ms-flex-direction: row;
             flex-direction: row;
     /* width: 30%; */
-    min-height: 200px;
+    /* min-height: 200px; */
     -webkit-box-flex: 1;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
@@ -1625,7 +1625,7 @@
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     /* width: 30%; */
-    padding: 16px;
+    padding: 4px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1646,7 +1646,7 @@
   }
     }
 .price-overview--book > div {
-      padding: 8px 0;
+      padding: 4px 0;
     }
 .price-overview--book .price {
       font-size: 32px;

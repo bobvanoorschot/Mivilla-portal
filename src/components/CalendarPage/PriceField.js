@@ -39,6 +39,11 @@ class PriceField extends React.Component {
       persons: 2
     };
   }
+
+  changePersons = e => {
+    this.setState({ persons: e.target.value });
+  };
+
   render() {
     const {
       portalCode,
@@ -84,12 +89,16 @@ class PriceField extends React.Component {
         </div>
         <div className="calendar--picker--date">
           <span className="detail">
-            <select className="calendar--picker--persons" value={persons}>
+            <select
+              className="calendar--picker--persons"
+              value={persons}
+              onChange={this.changePersons}
+            >
               {adults.map(person => (
                 <FormattedMessage
                   id="persons"
                   children={text => (
-                    <option value={person}>
+                    <option value={person} key={person}>
                       {person} {text}
                     </option>
                   )}
@@ -98,6 +107,7 @@ class PriceField extends React.Component {
             </select>
           </span>
         </div>
+                          <div className="calendar--picker--date">
         {startsAt && endsAt && (
           <Query
             query={CALENDAR_QUERY}
@@ -106,6 +116,7 @@ class PriceField extends React.Component {
               house_id: objectCode,
               starts_at: startsAt,
               ends_at: endsAt,
+              persons: parseInt(persons),
               locale: locale
             }}
           >
@@ -171,7 +182,10 @@ class PriceField extends React.Component {
                     </div>
                     <div>
                       <i>
-                        <FormattedMessage id="based_on_one_person" value={persons} />
+                        <FormattedMessage
+                          id="based_on_one_person"
+                          values={{ persons }}
+                        />
                       </i>
                     </div>
                   </div>
@@ -180,6 +194,7 @@ class PriceField extends React.Component {
             }}
           </Query>
         )}
+          </div>
         <button
           className="button"
           onClick={() => {
