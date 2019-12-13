@@ -200,8 +200,8 @@ class PriceField extends React.Component {
           className="button"
           disabled={!disabled}
           onClick={() => {
-            if (!disabled) {
-              this.props.onStartBooking("false");
+            if (startsAt && endsAt) { 
+              this.props.onStartBooking("false", persons);
             }
           }}
         >

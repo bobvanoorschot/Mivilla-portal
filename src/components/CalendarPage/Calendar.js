@@ -290,7 +290,7 @@ class Calendar extends React.Component {
     );
   }
 
-  bookingStart(status) {
+  bookingStart(status, persons) {
     const { arrivalDate, departureDate } = this.state;
     const { portalCode, objectCode, locale } = this.props;
     const booking = {
@@ -299,7 +299,8 @@ class Calendar extends React.Component {
       arrivalDate,
       departureDate,
       is_option: status,
-      locale
+      locale,
+      persons
     };
     this.props.onBooking(booking);
   }

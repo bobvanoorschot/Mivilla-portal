@@ -211,7 +211,7 @@ class FormCreator extends React.Component {
   render() {
     let adults = this.createPeronsArray(this.state.max_persons);
     const children = this.createPeronsArray(this.state.max_persons - 1);
-    const { house, locale, PortalSite, options } = this.props;
+    const { house, locale, PortalSite, options, booking } = this.props;
     const bookingPrice = house.booking_price;
 
     let costs = {};
@@ -229,7 +229,7 @@ class FormCreator extends React.Component {
             initialValues={{
               ...this.props.booking,
               costs,
-              adults: 2,
+              adults: booking.persons,
               children: 0,
               babies: 0,
               persons: 2,
