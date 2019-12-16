@@ -73,7 +73,7 @@ class FormCreator extends React.Component {
     if (babiesNumber < 0) {
       babiesNumber = 0;
     }
-    
+
     const persons = Number(children) + Number(adults) + Number(babies);
 
     return calc[cost.method](
@@ -189,7 +189,7 @@ class FormCreator extends React.Component {
     return new_rent;
   }
 
-  calculateTotal(values) {
+  calculateSubTotal(values) {
     const bookingPrice = this.props.house.booking_price;
     let total = 0;
     total += this.calculateRentPrice(values).discounted_price;
@@ -199,9 +199,27 @@ class FormCreator extends React.Component {
     }
 
     for (let cost of bookingPrice.required_house_costs) {
+      if (cost.gl === "0120") continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
     for (let cost of bookingPrice.optional_house_costs) {
+      if (cost.gl === "0120") continue;
+      total += parseFloat(this.calculateCost(cost, values));
+    }
+
+    return total;
+  }
+
+  calculateTotal(values) {
+    const bookingPrice = this.props.house.booking_price;
+    let total = this.calculateSubTotal(values);
+
+    for (let cost of bookingPrice.required_house_costs) {
+      if (cost.gl !== "0120") continue;
+      total += parseFloat(this.calculateCost(cost, values));
+    }
+    for (let cost of bookingPrice.optional_house_costs) {
+      if (cost.gl !== "0120") continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
 
@@ -405,7 +423,7 @@ class FormCreator extends React.Component {
                     )}
                     {errors.max_persons && (
                       <div className="error-message">{errors.max_persons}</div>
-                    )}                    
+                    )}
                     {errors.max_persons && (
                       <div className="error-message">{errors.max_persons}</div>
                     )}
@@ -574,7 +592,7 @@ class FormCreator extends React.Component {
                           );
                         })}
                         {bookingPrice.required_house_costs.map(cost => {
-                          if (!cost.on_site) {
+                          if (!cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
@@ -606,7 +624,7 @@ class FormCreator extends React.Component {
                     <table>
                       <tbody>
                         {bookingPrice.optional_house_costs.map(cost => {
-                          if (!cost.on_site) {
+                          if (!cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
@@ -661,7 +679,7 @@ class FormCreator extends React.Component {
                     <table>
                       <tbody>
                         {bookingPrice.required_house_costs.map(cost => {
-                          if (cost.on_site) {
+                          if (cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
@@ -687,7 +705,7 @@ class FormCreator extends React.Component {
                           }
                         })}
                         {bookingPrice.optional_house_costs.map(cost => {
-                          if (cost.on_site) {
+                          if (cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
@@ -740,6 +758,70 @@ class FormCreator extends React.Component {
                   <div className="costs-section">
                     <table>
                       <tbody>
+                        <tr>
+                          <th
+                            style={{
+                              textAlign: "left",
+                              testTransform: "capitalize"
+                            }}
+                          >
+                            <FormattedMessage id="total" />
+                          </th>
+                          <th className="price" style={{ fontSize: 18}}>
+                            €{" "}
+                            <FormattedNumber
+                              value={this.calculateSubTotal(values)}
+                              minimumFractionDigits={2}
+                              maximumFractionDigits={2}
+                            />
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="costs-section">
+                    <table>
+                      <tbody>
+                        {bookingPrice.required_house_costs.map(cost => {
+                          if (cost.gl === "0120") {
+                            return (
+                              <tr key={cost.id}>
+                                <td>
+                                  {cost.name}
+                                  <Description description={cost.description} />
+                                </td>
+                                <td className="price">
+                                  €{" "}
+                                  <FormattedNumber
+                                    value={this.calculateCost(cost, values)}
+                                    minimumFractionDigits={2}
+                                    maximumFractionDigits={2}
+                                  />
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
+                        {bookingPrice.optional_house_costs.map(cost => {
+                          if (cost.gl === "0120") {
+                            return (
+                              <tr key={cost.id}>
+                                <td>
+                                  {cost.name}
+                                  <Description description={cost.description} />
+                                </td>
+                                <td className="price">
+                                  €{" "}
+                                  <FormattedNumber
+                                    value={this.calculateCost(cost, values)}
+                                    minimumFractionDigits={2}
+                                    maximumFractionDigits={2}
+                                  />
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
                         <tr>
                           <th
                             style={{
