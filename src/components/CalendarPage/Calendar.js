@@ -271,31 +271,26 @@ class Calendar extends React.Component {
   };
 
   showBooking() {
-    const { startBooking, arrivalDate, departureDate } = this.state;
+    const { startBooking, arrivalDate, departureDate, house } = this.state;
     const { portalCode, objectCode, locale } = this.props;
 
-    if (startBooking) {
-      setTimeout(function() {
-        document.querySelector(".price-overview").scrollIntoView({
-          behavior: "smooth"
-        });
-      }, 1000);
-      return (
-        <PriceField
-          portalCode={portalCode}
-          objectCode={objectCode}
-          locale={locale}
-          startsAt={arrivalDate.date}
-          endsAt={departureDate.date}
-          onStartBooking={this.bookingStart}
-        />
-      );
-    } else {
-      return <div />;
-    }
+    // console.log({ startBooking, portalCode, objectCode, locale })
+
+    return (
+      <PriceField
+        portalCode={portalCode}
+        objectCode={objectCode}
+        locale={locale}
+        startsAt={arrivalDate.date || null}
+        endsAt={departureDate.date || null}
+        disabled={startBooking}
+        onStartBooking={this.bookingStart}
+        house={house}
+      />
+    );
   }
 
-  bookingStart(status) {
+  bookingStart(status, persons) {
     const { arrivalDate, departureDate } = this.state;
     const { portalCode, objectCode, locale } = this.props;
     const booking = {
@@ -304,7 +299,8 @@ class Calendar extends React.Component {
       arrivalDate,
       departureDate,
       is_option: status,
-      locale
+      locale,
+      persons
     };
     this.props.onBooking(booking);
   }
@@ -313,43 +309,38 @@ class Calendar extends React.Component {
     const { startBooking, house, arrivalDate, departureDate } = this.state;
 
     return (
-      <div>
-        <AssistanceMessage
-          house={house}
-          arrivalDate={arrivalDate}
-          departureDate={departureDate}
-        />
-        <CalendarHeader
-          onGoNext={this.nextMonth}
-          onGoPrev={this.prevMonth}
-          onReset={this.reset}
-        />
-        <div className="calendars-row">{this.renderMonths()}</div>
-        <div className="legend">
-          <div>
-            <span className="legend-field arrival" />
-            <FormattedMessage id={`${house.house_type}.arrival_date`} />
+      <div className="calendar-container ">
+        <div className="price-overview">{this.showBooking()}</div>
+        <div className="calendar-section">
+          <CalendarHeader
+            onGoNext={this.nextMonth}
+            onGoPrev={this.prevMonth}
+            onReset={this.reset}
+          />
+          <div className="calendars-row">{this.renderMonths()}</div>
+          <div className="legend">
+            <div>
+              <span className="legend-field arrival" />
+              <FormattedMessage id={`${house.house_type}.arrival_date`} />
+            </div>
+            <div>
+              <span className="legend-field booked" />
+              <FormattedMessage id="booked" />
+            </div>
+            <div>
+              <span className="legend-field departure" />
+              <FormattedMessage id={`${house.house_type}.departure_date`} />
+            </div>
+            <div>
+              <span className="legend-field last_minute_discount" />
+              <FormattedMessage id="last_minute_discount" />
+            </div>
           </div>
-          <div>
-            <span className="legend-field booked" />
-            <FormattedMessage id="booked" />
-          </div>
-          <div>
-            <span className="legend-field departure" />
-            <FormattedMessage id={`${house.house_type}.departure_date`} />
-          </div>
-          <div>
-            <span className="legend-field last_minute_discount" />
-            <FormattedMessage id="last_minute_discount" />
-          </div>
-        </div>
-        <AssistanceMessage
-          house={house}
-          arrivalDate={arrivalDate}
-          departureDate={departureDate}
-        />
-        <div className={`price-overview ${startBooking ? "open" : ""}`}>
-          {this.showBooking()}
+          <AssistanceMessage
+            house={house}
+            arrivalDate={arrivalDate}
+            departureDate={departureDate}
+          />
         </div>
       </div>
     );

@@ -17,6 +17,7 @@ export const HOUSE_QUERY = gql`
         discounts
         discounts_info
         house_type
+        persons
       }
     }
   }
