@@ -2,6 +2,7 @@
   padding: 16px;
   display: flex;
   flex-wrap: wrap;
+  background-color: #fff;
   @media screen and (max-width: 992px) {
     flex-direction: column;
   }
