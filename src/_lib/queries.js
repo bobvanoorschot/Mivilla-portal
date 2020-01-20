@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const PORTAL_QUERY = gql`
   query PortalSiteQuery($id: ID!) {
@@ -99,6 +99,8 @@ export const BOOKING_PRICE_QUERY = gql`
       bic_label
       comment_label
       company_name_label
+      extra_fields_drivers_license_label
+      extra_fields_destination_label
       houses(house_code: $house_id) {
         id
         name
@@ -121,67 +123,67 @@ export const BOOKING_PRICE_QUERY = gql`
 `;
 
 export const CREATE_BOOKING_MUTATION = gql`
-         mutation CreateBooking(
-           $first_name: String!
-           $preposition: String
-           $last_name: String!
-           $company_name: String
-           $is_option: Boolean!
-           $address: String
-           $zipcode: String
-           $city: String
-           $phone: String
-           $phone_mobile: String
-           $email: String!
-           $house_code: String!
-           $portal_code: String
-           $language: String
-           $country: String!
-           $adults: Int!
-           $children: Int
-           $babies: Int
-           $discount: Int
-           $damage_insurance: Int
-           $cancel_insurance: Int
-           $travel_insurance: Int
-           $discount_reason: String
-           $comment: String
-           $arrival_date: String!
-           $departure_date: String!
-           $costs: Json
-           $extra_fields: String
-         ) {
-           createBooking(
-             first_name: $first_name
-             preposition: $preposition
-             company_name: $company_name
-             last_name: $last_name
-             is_option: $is_option
-             address: $address
-             zipcode: $zipcode
-             city: $city
-             phone: $phone
-             phone_mobile: $phone_mobile
-             email: $email
-             house_code: $house_code
-             portal_code: $portal_code
-             language: $language
-             country: $country
-             adults: $adults
-             children: $children
-             babies: $babies
-             discount: $discount
-             damage_insurance: $damage_insurance
-             cancel_insurance: $cancel_insurance
-             travel_insurance: $travel_insurance
-             discount_reason: $discount_reason
-             arrival_date: $arrival_date
-             departure_date: $departure_date
-             comment: $comment
-             costs: $costs
-             extra_fields: $extra_fields
-           ) {
-             booking_nr
-           }
-         }
-       `;
+  mutation CreateBooking(
+    $first_name: String!
+    $preposition: String
+    $last_name: String!
+    $company_name: String
+    $is_option: Boolean!
+    $address: String
+    $zipcode: String
+    $city: String
+    $phone: String
+    $phone_mobile: String
+    $email: String!
+    $house_code: String!
+    $portal_code: String
+    $language: String
+    $country: String!
+    $adults: Int!
+    $children: Int
+    $babies: Int
+    $discount: Int
+    $damage_insurance: Int
+    $cancel_insurance: Int
+    $travel_insurance: Int
+    $discount_reason: String
+    $comment: String
+    $arrival_date: String!
+    $departure_date: String!
+    $costs: Json
+    $extra_fields: String
+  ) {
+    createBooking(
+      first_name: $first_name
+      preposition: $preposition
+      company_name: $company_name
+      last_name: $last_name
+      is_option: $is_option
+      address: $address
+      zipcode: $zipcode
+      city: $city
+      phone: $phone
+      phone_mobile: $phone_mobile
+      email: $email
+      house_code: $house_code
+      portal_code: $portal_code
+      language: $language
+      country: $country
+      adults: $adults
+      children: $children
+      babies: $babies
+      discount: $discount
+      damage_insurance: $damage_insurance
+      cancel_insurance: $cancel_insurance
+      travel_insurance: $travel_insurance
+      discount_reason: $discount_reason
+      arrival_date: $arrival_date
+      departure_date: $departure_date
+      comment: $comment
+      costs: $costs
+      extra_fields: $extra_fields
+    ) {
+      booking_nr
+    }
+  }
+`;

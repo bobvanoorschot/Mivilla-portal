@@ -21,7 +21,7 @@ export const OptionalBookingFields = ({
       if (input.id === 'country') {
         return (
           <div className="form-row" key={input.id}>
-            <label htmlFor={input.id}>{PortalSite[`${input.id}_label`]}</label>
+      <label htmlFor={input.id}>{PortalSite[`${input.id}_label`]} {input.required && (<span>*</span>)}</label>
             <Field component="select" name={input.id}>
               {Countries[window.__localeId__].map(country => {
                 return (
@@ -39,7 +39,13 @@ export const OptionalBookingFields = ({
       } else {
         return (
           <div className="form-row" key={input.id}>
-            <label htmlFor={input.id}>{PortalSite[`${input.id}_label`]}</label>
+            <label
+              htmlFor={input.id}
+              name={`${input.id.replace(/\./g, "_")}_label`}
+            >
+              {PortalSite[`${input.id.replace(/\./g, "_")}_label`]}{" "}
+              {input.required && <span>*</span>}
+            </label>
             <Field type={input.type} name={input.id} />
             {errors[input.id] && touched[input.id] && (
               <div className="error-message">{errors[input.id]}</div>
