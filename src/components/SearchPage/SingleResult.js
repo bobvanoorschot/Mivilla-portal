@@ -4,7 +4,6 @@ import { FormattedMessage, FormattedNumber } from 'react-intl';
 import ArrowRight from '../icons/ArrowRight.svg';
 
 const SingleResult = ({ result, options }) => {
-  // console.log({ options });
   let thisOptions = options || {};
 
   return (

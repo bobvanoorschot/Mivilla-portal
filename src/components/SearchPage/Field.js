@@ -62,7 +62,6 @@ class Field extends Component {
   render() {
     const field = this.props.field;
     const { PortalSite } = this.props;
-    //   console.log({PortalSite})
     let options = [];
     if (includes(['countries', 'cities', 'regions'], field.id)) {
       options = PortalSite[field.id];

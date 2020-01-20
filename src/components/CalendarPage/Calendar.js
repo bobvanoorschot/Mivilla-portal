@@ -274,8 +274,6 @@ class Calendar extends React.Component {
     const { startBooking, arrivalDate, departureDate, house } = this.state;
     const { portalCode, objectCode, locale } = this.props;
 
-    // console.log({ startBooking, portalCode, objectCode, locale })
-
     return (
       <PriceField
         portalCode={portalCode}

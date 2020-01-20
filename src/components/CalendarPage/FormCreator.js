@@ -17,6 +17,21 @@ import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
 import Description from "./Summary/Description";
 import includes from "array-includes";
 
+function byString(o, s) {
+  s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
+  s = s.replace(/^\./, ""); // strip a leading dot
+  var a = s.split(".");
+  for (var i = 0, n = a.length; i < n; ++i) {
+    var k = a[i];
+    if (k in o) {
+      o = o[k];
+    } else {
+      return;
+    }
+  }
+  return o;
+};
+
 class FormCreator extends React.Component {
   state = {
     max_persons: this.props.house.persons,
@@ -44,7 +59,7 @@ class FormCreator extends React.Component {
 
     for (let field of this.state.bookingFields) {
       if (field.required) {
-        if (!values[field.id]) {
+        if (!byString(value, field.id)) {
           errors[field.id] = <FormattedMessage id="required" />;
         }
       }
@@ -166,7 +181,6 @@ class FormCreator extends React.Component {
 
     let percentage = {
       persons: 5000
-      // percentage: 100
     };
 
     for (let perc of person_percentages) {
@@ -310,7 +324,7 @@ class FormCreator extends React.Component {
               } else {
                 setTimeout(() => {
                   this.props.onReturn();
-                }, 5000);
+                }, 15000);
               }
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (

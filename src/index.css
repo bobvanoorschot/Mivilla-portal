@@ -5,25 +5,25 @@
       display: -ms-flexbox;
       display: flex;
       -webkit-box-align: start;
-          -ms-flex-align: start;
+                  -ms-flex-align: start;
               align-items: flex-start;
     }
       #bukazu-app div.calendar-container .calendar-section {
         width: 75%;
         -webkit-box-ordinal-group: 2;
-            -ms-flex-order: 1;
+                    -ms-flex-order: 1;
                 order: 1;
       }
       #bukazu-app div.calendar-container .price-overview {
         width: 25%;
         -webkit-box-ordinal-group: 3;
-            -ms-flex-order: 2;
+                    -ms-flex-order: 2;
                 order: 2;
       }
         #bukazu-app div.calendar-container .price-overview .calendar--picker {
           -webkit-box-orient: vertical;
           -webkit-box-direction: normal;
-              -ms-flex-direction: column;
+                      -ms-flex-direction: column;
                   flex-direction: column;
         }
           #bukazu-app div.calendar-container .price-overview .calendar--picker--date, #bukazu-app div.calendar-container .price-overview .calendar--picker .button {
@@ -37,7 +37,7 @@
         #bukazu-app .price-overview .calendar--picker {
           -webkit-box-orient: vertical;
           -webkit-box-direction: normal;
-              -ms-flex-direction: column;
+                      -ms-flex-direction: column;
                   flex-direction: column;
         }
           #bukazu-app .price-overview .calendar--picker--date, #bukazu-app .price-overview .calendar--picker .button {
@@ -54,7 +54,7 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
+                -ms-flex-direction: row;
             flex-direction: row;
     -ms-flex-pack: distribute;
         justify-content: space-around
@@ -76,10 +76,10 @@
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-            -ms-flex-align: center;
+                    -ms-flex-align: center;
                 align-items: center;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
+                    -ms-flex-pack: center;
                 justify-content: center;
       }
 #bukazu-app .calendars-header .col .icon svg {
@@ -102,7 +102,7 @@
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     -webkit-box-pack: start;
-        -ms-flex-pack: start;
+                -ms-flex-pack: start;
             justify-content: flex-start;
   }
 #bukazu-app .calendar {
@@ -135,7 +135,7 @@
       display: -ms-flexbox;
       display: flex;
       -webkit-box-flex: 1;
-          -ms-flex: 1 1 auto;
+                  -ms-flex: 1 1 auto;
               flex: 1 1 auto
     }
 #bukazu-app .calendar .row.days {
@@ -247,7 +247,7 @@
   #bukazu-app .legend {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-          -ms-flex-direction: column;
+                  -ms-flex-direction: column;
               flex-direction: column
   }
     }
@@ -302,13 +302,13 @@
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-          -ms-flex-direction: column;
+                  -ms-flex-direction: column;
               flex-direction: column;
       -webkit-box-pack: center;
-          -ms-flex-pack: center;
+                  -ms-flex-pack: center;
               justify-content: center;
       -webkit-box-align: center;
-          -ms-flex-align: center;
+                  -ms-flex-align: center;
               align-items: center;
       padding: 8px 16px;
     }
@@ -330,10 +330,10 @@
         opacity: 0.9;
         width: 100%;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
+                    -ms-flex-pack: center;
                 justify-content: center;
         -webkit-box-align: center;
-            -ms-flex-align: center;
+                    -ms-flex-align: center;
                 align-items: center
       }
 @media screen and (max-width: 1200px) {
@@ -379,7 +379,7 @@
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
+              -ms-flex-direction: row;
           flex-direction: row;
   position: relative
 }
@@ -387,7 +387,7 @@
 #bukazu-app .form {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column
 }
   }
@@ -423,7 +423,7 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
     border-bottom: 1px solid #aeacac;
     padding: 16px;
@@ -473,7 +473,7 @@
       display: flex;
       -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
-          -ms-flex-direction: row;
+                  -ms-flex-direction: row;
               flex-direction: row;
       padding: 0;
       margin: 0;
@@ -506,7 +506,7 @@
         border-radius: 16px;
         display: block;
         -webkit-box-flex: 1;
-            -ms-flex: 1 1 auto;
+                    -ms-flex: 1 1 auto;
                 flex: 1 1 auto;
         padding: 8px 16px;
         line-height: 2rem;
@@ -572,7 +572,7 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
     padding: 8px 0;
   }
@@ -588,14 +588,14 @@
       }
 #bukazu-app .form-row.inline {
       -webkit-box-align: center;
-          -ms-flex-align: center;
+                  -ms-flex-align: center;
               align-items: center;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
       -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
-          -ms-flex-direction: row;
+                  -ms-flex-direction: row;
               flex-direction: row;
       /* justify-content: space-between; */
       -ms-flex-wrap: wrap;
@@ -624,7 +624,7 @@
       #bukazu-app .form-row.inline select,
       #bukazu-app .form-row.inline input {
           -webkit-box-ordinal-group: 4;
-              -ms-flex-order: 3;
+                      -ms-flex-order: 3;
                   order: 3;
           width: 100%
       }
@@ -770,7 +770,7 @@
     right: 0;
     top: 50%;
     -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
   }
 #bukazu-app .SingleDatePickerInput_clearDate__default:focus,
   #bukazu-app .SingleDatePickerInput_clearDate__default:hover {
@@ -1477,7 +1477,7 @@
     right: 0;
     top: 50%;
     -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
   }
 #bukazu-app .DateRangePickerInput_clearDates__small {
     padding: 6px;
@@ -1590,7 +1590,7 @@
 .price-overview {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column
 }
   }
@@ -1634,20 +1634,20 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
+                -ms-flex-direction: row;
             flex-direction: row;
     /* width: 30%; */
     /* min-height: 200px; */
     -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
+                -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
+                -ms-flex-pack: center;
             justify-content: center;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     -webkit-box-align: start;
-        -ms-flex-align: start;
+                -ms-flex-align: start;
             align-items: flex-start;
     padding: 16px
   }
@@ -1664,16 +1664,16 @@
     padding: 16px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
+                -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
+                -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
+                -ms-flex-align: center;
             align-items: center;
   }
 /* width: 30%; */
@@ -1687,7 +1687,7 @@
     }
 .price-overview--book {
     -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
+                -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     /* width: 30%; */
     padding: 4px;
@@ -1696,13 +1696,13 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
+                -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
+                -ms-flex-align: center;
             align-items: center
 
   }
@@ -1740,10 +1740,10 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
+                -ms-flex-pack: center;
             justify-content: center;
     -ms-flex-line-pack: center;
         align-content: center;
@@ -1781,7 +1781,7 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+                -ms-flex-direction: column;
             flex-direction: column;
   }
 .bukazu-result-inner .image-holder {
@@ -1801,14 +1801,14 @@
       }
 .bukazu-result-inner .result {
       -webkit-box-flex: 1;
-          -ms-flex: 1 1 auto;
+                  -ms-flex: 1 1 auto;
               flex: 1 1 auto;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-          -ms-flex-direction: column;
+                  -ms-flex-direction: column;
               flex-direction: column;
       font-size: 14px;
       background: #fff;
@@ -1824,7 +1824,7 @@
 .bukazu-result-inner .result-description {
         padding: 8px;
         -webkit-box-flex: 1;
-            -ms-flex: 1 1 auto;
+                    -ms-flex: 1 1 auto;
                 flex: 1 1 auto;
       }
 .bukazu-result-inner .result-details {
@@ -1833,7 +1833,7 @@
         display: -ms-flexbox;
         display: flex;
         -webkit-box-pack: space-evenly;
-            -ms-flex-pack: space-evenly;
+                    -ms-flex-pack: space-evenly;
                 justify-content: space-evenly;
         border-bottom: 1px solid rgba(69, 74, 83, 0.2);
       }
@@ -1843,13 +1843,13 @@
         display: flex;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-            -ms-flex-direction: column;
+                    -ms-flex-direction: column;
                 flex-direction: column;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
+                    -ms-flex-pack: center;
                 justify-content: center;
         -webkit-box-align: center;
-            -ms-flex-align: center;
+                    -ms-flex-align: center;
                 align-items: center;
         padding: 12px 8px;
       }
@@ -1867,10 +1867,10 @@
         display:-ms-flexbox;
         display:flex;
         -webkit-box-align: center;
-            -ms-flex-align: center;
+                    -ms-flex-align: center;
                 align-items: center;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
+                    -ms-flex-pack: center;
                 justify-content: center;
       }
 .bukazu-result-inner .result-button svg {
@@ -1899,7 +1899,7 @@
     .list .bukazu-result .bukazu-result-inner {
       -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
-          -ms-flex-direction: row;
+                  -ms-flex-direction: row;
               flex-direction: row;
     }
       .list .bukazu-result .bukazu-result-inner .image-holder {
@@ -1924,13 +1924,13 @@
   display: inline-flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
+              -ms-flex-direction: row;
           flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   padding: 16px;
   -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
+              -ms-flex-align: stretch;
           align-items: stretch;
   -ms-flex-line-pack: start;
       align-content: flex-start
@@ -1946,10 +1946,10 @@
         display: -ms-flexbox;
         display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
+              -ms-flex-pack: justify;
           justify-content: space-between;
   -webkit-box-align: center;
-      -ms-flex-align: center;
+              -ms-flex-align: center;
           align-items: center;
   width: 100%;
   padding: 8px 16px 0;
@@ -1987,7 +1987,7 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
+                -ms-flex-direction: row;
             flex-direction: row;
 }
 #bukazu-app #search-page .filters-button {
@@ -2017,7 +2017,7 @@
     #bukazu-app #search-page {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-            -ms-flex-direction: column;
+                    -ms-flex-direction: column;
                 flex-direction: column;
     }
         #bukazu-app #search-page .filters-button {
@@ -2078,7 +2078,7 @@
                  display: -ms-flexbox;
                  display: flex;
                  -webkit-box-align: center;
-                     -ms-flex-align: center;
+                             -ms-flex-align: center;
                          align-items: center;
              }
 #bukazu-app .SingleDatePicker, #bukazu-app .SingleDatePickerInput, #bukazu-app .DateInput {
@@ -2174,13 +2174,13 @@
 #bukazu-app #search-page.bu-reverse {
       -webkit-box-orient: horizontal;
       -webkit-box-direction: reverse;
-          -ms-flex-direction: row-reverse;
+                  -ms-flex-direction: row-reverse;
               flex-direction: row-reverse;
     }
 #bukazu-app #search-page.bu-column {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-          -ms-flex-direction: column;
+                  -ms-flex-direction: column;
               flex-direction: column;
     }
 #bukazu-app #search-page.bu-column .filters {
@@ -2189,7 +2189,7 @@
         display: flex;
         -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
-            -ms-flex-direction: row;
+                    -ms-flex-direction: row;
                 flex-direction: row;
         -ms-flex-wrap: wrap;
             flex-wrap: wrap;
@@ -2198,7 +2198,7 @@
 #bukazu-app #search-page.bu-column .filters .filters-reload {
           max-height: 24px;
           -webkit-box-ordinal-group: 4;
-              -ms-flex-order: 3;
+                      -ms-flex-order: 3;
                   order: 3;
         }
 #bukazu-app #search-page.bu-column .filters .bu-field {
@@ -2218,7 +2218,7 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-        -ms-flex-align: center;
+                -ms-flex-align: center;
             align-items: center;
   }
 #bukazu-app .house-name {
@@ -2251,7 +2251,7 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-        -ms-flex-align: center;
+                -ms-flex-align: center;
             align-items: center
   }
 @media screen and (max-width: 992px) {
@@ -2274,12 +2274,12 @@
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
-          -ms-flex-direction: column;
+                  -ms-flex-direction: column;
               flex-direction: column;
     }
 #bukazu-app .backdrop .bukazu-modal .bukazu-modal-content {
         -webkit-box-flex: 1;
-            -ms-flex: 1 1 auto;
+                    -ms-flex: 1 1 auto;
                 flex: 1 1 auto;
         height: 100%;
         overflow-y: auto;
@@ -2296,10 +2296,10 @@
           display: -ms-flexbox;
           display: flex;
           -webkit-box-align: center;
-              -ms-flex-align: center;
+                      -ms-flex-align: center;
                   align-items: center;
           -webkit-box-pack: center;
-              -ms-flex-pack: center;
+                      -ms-flex-pack: center;
                   justify-content: center;
           height: 100%;
           width: 100%;

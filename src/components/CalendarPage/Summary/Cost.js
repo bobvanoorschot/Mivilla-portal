@@ -2,7 +2,6 @@ import React from "react";
 
 const Cost = ({ values, calculateCost, cost }) => {
   let val;
-  // console.log({cost});
   
   if (cost.on_site) {
     if (cost.method === "none") {

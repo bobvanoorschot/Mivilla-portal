@@ -5,7 +5,6 @@ import format from "../../../_lib/format";
 const dateFormat = "dddd DD MMMM YYYY";
 
 const AssistanceMessage = ({ arrivalDate, departureDate, house }) => {
-  console.log({ arrivalDate, departureDate });
 
   if (departureDate.date) {
     return (

@@ -20,7 +20,6 @@ class Paginator extends React.Component {
   }
 
   handlePageChange(pageNumber) {
-    // console.log(`active page is ${pageNumber}`);
     this.props.onPageChange(pageNumber);
   }
 
