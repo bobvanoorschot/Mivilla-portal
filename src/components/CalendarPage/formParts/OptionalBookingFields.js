@@ -7,6 +7,7 @@ import { Countries } from '../../../_lib/countries';
 export const OptionalBookingFields = ({
   bookingFields,
   errors,
+  touched,
   PortalSite,
 }) => (
   <div className="form-section">
@@ -40,7 +41,7 @@ export const OptionalBookingFields = ({
           <div className="form-row" key={input.id}>
             <label htmlFor={input.id}>{PortalSite[`${input.id}_label`]}</label>
             <Field type={input.type} name={input.id} />
-            {errors[input.id] && (
+            {errors[input.id] && touched[input.id] && (
               <div className="error-message">{errors[input.id]}</div>
             )}
           </div>

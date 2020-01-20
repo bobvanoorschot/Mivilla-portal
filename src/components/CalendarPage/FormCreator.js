@@ -61,6 +61,7 @@ class FormCreator extends React.Component {
     if (values.persons > this.state.max_persons) {
       errors.max_persons = <FormattedMessage id="max_persons_reached" />;
     }
+    console.log({ values, errors });
 
     return errors;
   };
@@ -226,6 +227,15 @@ class FormCreator extends React.Component {
     return total;
   }
 
+  initializeBookingFields() {
+    const fields = this.state.bookingFields;
+    let obj = {};
+    fields.map(field => {
+      obj[field.id] = "";
+    });
+    return obj;
+  }
+
   render() {
     let adults = this.createPeronsArray(this.state.max_persons);
     const children = this.createPeronsArray(this.state.max_persons - 1);
@@ -238,6 +248,7 @@ class FormCreator extends React.Component {
     for (const val of bookingPrice.optional_house_costs) {
       costs[val.id] = "0";
     }
+    const optBookingFieldsInitialized = this.initializeBookingFields();
 
     return (
       <Mutation mutation={CREATE_BOOKING_MUTATION}>
@@ -246,6 +257,7 @@ class FormCreator extends React.Component {
             validate={this.validate}
             initialValues={{
               ...this.props.booking,
+              ...optBookingFieldsInitialized,
               costs,
               adults: booking.persons,
               children: 0,
@@ -283,21 +295,25 @@ class FormCreator extends React.Component {
                 discount_reason: values.discount_reason || "",
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
-                costs: JSON.stringify(values.costs)
+                costs: JSON.stringify(values.costs),
+                extra_fields: JSON.stringify(values.extra_fields)
               };
-              createBooking({ variables });
 
-              if (
-                options.bookingForm &&
-                options.bookingForm.redirectUrl &&
-                options.bookingForm.redirectUrl !== ""
-              ) {
-                window.location = options.bookingForm.redirectUrl;
-              } else {
-                setTimeout(() => {
-                  this.props.onReturn();
-                }, 5000);
-              }
+              console.log({ values, variables });
+
+              // createBooking({ variables });
+
+              // if (
+              //   options.bookingForm &&
+              //   options.bookingForm.redirectUrl &&
+              //   options.bookingForm.redirectUrl !== ""
+              // ) {
+              //   window.location = options.bookingForm.redirectUrl;
+              // } else {
+              //   setTimeout(() => {
+              //     this.props.onReturn();
+              //   }, 5000);
+              // }
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
@@ -491,6 +507,7 @@ class FormCreator extends React.Component {
                   <OptionalBookingFields
                     bookingFields={this.state.bookingFields}
                     errors={errors}
+                    touched={touched}
                     PortalSite={PortalSite}
                   />
                 </div>
@@ -767,7 +784,7 @@ class FormCreator extends React.Component {
                           >
                             <FormattedMessage id="total" />
                           </th>
-                          <th className="price" style={{ fontSize: 18}}>
+                          <th className="price" style={{ fontSize: 18 }}>
                             €{" "}
                             <FormattedNumber
                               value={this.calculateSubTotal(values)}
