@@ -30,7 +30,7 @@ function byString(o, s) {
     }
   }
   return o;
-};
+}
 
 class FormCreator extends React.Component {
   state = {
@@ -59,7 +59,8 @@ class FormCreator extends React.Component {
 
     for (let field of this.state.bookingFields) {
       if (field.required) {
-        if (!byString(value, field.id)) {
+        validateValue = byString(value, field.id)
+        if (!validateValue || validateValue === '') {
           errors[field.id] = <FormattedMessage id="required" />;
         }
       }
@@ -245,7 +246,7 @@ class FormCreator extends React.Component {
     const fields = this.state.bookingFields;
     let obj = {};
     fields.map(field => {
-      obj[field.id] = "";
+      obj[field.id] = null;
     });
     return obj;
   }
