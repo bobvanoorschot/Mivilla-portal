@@ -78,7 +78,6 @@ class FormCreator extends React.Component {
     if (values.persons > this.state.max_persons) {
       errors.max_persons = <FormattedMessage id="max_persons_reached" />;
     }
-    console.log({ values, errors });
 
     return errors;
   };
@@ -243,14 +242,14 @@ class FormCreator extends React.Component {
     return total;
   }
 
-  // initializeBookingFields() {
-  //   const fields = this.state.bookingFields;
-  //   let obj = {};
-  //   fields.map(field => {
-  //     obj[field.id] = '';
-  //   });
-  //   return obj;
-  // }
+  initializeBookingFields() {
+    const fields = this.state.bookingFields;
+    let obj = {};
+    fields.map(field => {
+      obj[field.id] = '';
+    });
+    return obj;
+  }
 
   render() {
     let adults = this.createPeronsArray(this.state.max_persons);
@@ -264,7 +263,7 @@ class FormCreator extends React.Component {
     for (const val of bookingPrice.optional_house_costs) {
       costs[val.id] = "0";
     }
-    // const optBookingFieldsInitialized = this.initializeBookingFields();
+    const optBookingFieldsInitialized = this.initializeBookingFields();
 
     return (
       <Mutation mutation={CREATE_BOOKING_MUTATION}>
@@ -273,7 +272,7 @@ class FormCreator extends React.Component {
             validate={this.validate}
             initialValues={{
               ...this.props.booking,
-              // ...optBookingFieldsInitialized,
+              ...optBookingFieldsInitialized,
               costs,
               adults: booking.persons,
               children: 0,
