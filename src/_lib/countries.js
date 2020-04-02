@@ -6,3 +6,5 @@ export const Countries = {
   es: require('./countries/es.json'),
   it: require('./countries/it.json'),
 };
+
+export const PhoneCodes = require('./phone_codes.json')
