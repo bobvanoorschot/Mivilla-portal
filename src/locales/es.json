@@ -99,5 +99,6 @@
     "house.you_picked_departure_date": "Su fecha de salida es",
     "camper.you_picked_departure_date": "Su fecha de retorno es",
     "house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
-    "camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida"
+    "camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
+    "no": "No"
 }

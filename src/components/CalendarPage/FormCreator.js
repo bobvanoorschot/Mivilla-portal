@@ -40,14 +40,14 @@ class FormCreator extends React.Component {
     discountedPrice: this.props.house.booking_price.discounted_price,
     formValues: {},
     formSubmit: false,
-    bookingFields: this.props.options.bookingFields || DefaultBookingFields
+    bookingFields: this.props.options.bookingFields || DefaultBookingFields,
   };
 
   createPeronsArray(persons) {
     return Array.apply(null, { length: persons + 1 }).map(Number.call, Number);
   }
 
-  validate = values => {
+  validate = (values) => {
     const { babies_extra } = this.props.house;
     let errors = {};
 
@@ -111,7 +111,7 @@ class FormCreator extends React.Component {
       travel_insurance,
       children,
       adults,
-      babies
+      babies,
     } = values;
     let babiesNumber = Number(babies) - Number(house.babies_extra);
     if (babiesNumber < 0) {
@@ -157,7 +157,9 @@ class FormCreator extends React.Component {
   translatedOption(id, value) {
     return (
       <FormattedMessage id={id}>
-        {formattedMessage => <option value={value}>{formattedMessage}</option>}
+        {(formattedMessage) => (
+          <option value={value}>{formattedMessage}</option>
+        )}
       </FormattedMessage>
     );
   }
@@ -167,7 +169,7 @@ class FormCreator extends React.Component {
       base_price,
       person_percentages,
       night_percentages,
-      nights
+      nights,
     } = this.props.house.booking_price;
     let discount = this.props.house.booking_price.discount;
     const { children, adults, babies } = values;
@@ -177,11 +179,11 @@ class FormCreator extends React.Component {
       babiesNumber = 0;
     }
     const persons = Number(children) + Number(adults) + Number(babiesNumber);
-    let night_percentage = night_percentages.find(x => x.nights === nights);
+    let night_percentage = night_percentages.find((x) => x.nights === nights);
     let night_price = base_price * (night_percentage.percentage / 100);
 
     let percentage = {
-      persons: 5000
+      persons: 5000,
     };
 
     for (let perc of person_percentages) {
@@ -199,7 +201,7 @@ class FormCreator extends React.Component {
     let new_rent = {
       rent_price: price,
       discount,
-      discounted_price: price - price * (discount / 100)
+      discounted_price: price - price * (discount / 100),
     };
 
     return new_rent;
@@ -245,8 +247,8 @@ class FormCreator extends React.Component {
   initializeBookingFields() {
     const fields = this.state.bookingFields;
     let obj = {};
-    fields.map(field => {
-      obj[field.id] = '';
+    fields.map((field) => {
+      obj[field.id] = "";
     });
     return obj;
   }
@@ -279,7 +281,7 @@ class FormCreator extends React.Component {
               babies: 0,
               persons: 2,
               discount: 0,
-              country: "nl"
+              country: "nl",
             }}
             onSubmit={(values, { setSubmitting }) => {
               let variables = {
@@ -311,7 +313,7 @@ class FormCreator extends React.Component {
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
                 costs: JSON.stringify(values.costs),
-                extra_fields: JSON.stringify(values.extra_fields)
+                extra_fields: JSON.stringify(values.extra_fields),
               };
 
               createBooking({ variables });
@@ -365,7 +367,7 @@ class FormCreator extends React.Component {
                         <FormattedMessage id="adults" />
                       </label>
                       <Field component="select" name="adults">
-                        {adults.map(opt => {
+                        {adults.map((opt) => {
                           return (
                             <option key={opt} value={opt}>
                               {opt}
@@ -380,7 +382,7 @@ class FormCreator extends React.Component {
                           values={{
                             age: options.bookingForm
                               ? options.bookingForm.adults_from || "18"
-                              : "18"
+                              : "18",
                           }}
                         />
                       </div>
@@ -395,7 +397,7 @@ class FormCreator extends React.Component {
                           <FormattedMessage id="children" />
                         </label>
                         <Field component="select" name="children">
-                          {children.map(opt => {
+                          {children.map((opt) => {
                             return (
                               <option key={opt} value={opt}>
                                 {opt}
@@ -413,7 +415,7 @@ class FormCreator extends React.Component {
                                 : "3",
                               til: options.bookingForm
                                 ? options.bookingForm.children_til || "17"
-                                : "17"
+                                : "17",
                             }}
                           />
                         </div>
@@ -427,7 +429,7 @@ class FormCreator extends React.Component {
                           <FormattedMessage id="babies" />
                         </label>
                         <Field component="select" name="babies">
-                          {children.map(opt => {
+                          {children.map((opt) => {
                             return (
                               <option key={opt} value={opt}>
                                 {opt}
@@ -443,7 +445,7 @@ class FormCreator extends React.Component {
                               values={{
                                 babies: options.bookingForm
                                   ? options.bookingForm.babies_til || "2"
-                                  : "2"
+                                  : "2",
                               }}
                             />
                           </div>
@@ -467,11 +469,56 @@ class FormCreator extends React.Component {
                         <FormattedMessage id="extra_costs_bookable" />
                       </h2>
                       <div>
-                        {bookingPrice.optional_house_costs.map(cost => {
+                        {bookingPrice.optional_house_costs.map((cost) => {
                           if (
                             !includes(["none", "total"], cost.method) &&
                             cost.max_available > 0
                           ) {
+                            if (cost.max_available === 1) {
+                              return (
+                                <div className="form-row inline" key={cost.id}>
+                                  <label htmlFor={cost.id}>{cost.name}</label>
+                                  <Field
+                                    component="select"
+                                    name={`costs[${cost.id}]`}
+                                  >
+                                    <FormattedMessage id="no">
+                                      {(formattedMessage) => (
+                                        <option value={0}>
+                                          {formattedMessage}
+                                        </option>
+                                      )}
+                                    </FormattedMessage>
+                                    <FormattedMessage id="yes">
+                                      {(formattedMessage) => (
+                                        <option value={1}>
+                                          {formattedMessage}
+                                        </option>
+                                      )}
+                                    </FormattedMessage>
+                                  </Field>
+
+                                  <div className="price_per">
+                                    €{" "}
+                                    <FormattedNumber
+                                      value={cost.amount}
+                                      minimumFractionDigits={2}
+                                      maximumFractionDigits={2}
+                                    />{" "}
+                                    {cost.method_name}
+                                  </div>
+                                  <div>
+                                    {cost.description ? (
+                                      <div>
+                                        <Modal buttonText={<Icon />}>
+                                          <p>{cost.description}</p>
+                                        </Modal>
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                </div>
+                              );
+                            }
                             return (
                               <div className="form-row inline" key={cost.id}>
                                 <label htmlFor={cost.id}>{cost.name}</label>
@@ -481,7 +528,7 @@ class FormCreator extends React.Component {
                                 >
                                   {this.createPeronsArray(
                                     cost.max_available
-                                  ).map(opt => {
+                                  ).map((opt) => {
                                     return (
                                       <option key={opt} value={opt}>
                                         {opt}
@@ -604,7 +651,7 @@ class FormCreator extends React.Component {
                   <div className="costs-section">
                     <table>
                       <tbody>
-                        {this.calculateInsurances(values).map(ins => {
+                        {this.calculateInsurances(values).map((ins) => {
                           return (
                             <tr key={ins.name}>
                               <td>
@@ -621,7 +668,7 @@ class FormCreator extends React.Component {
                             </tr>
                           );
                         })}
-                        {bookingPrice.required_house_costs.map(cost => {
+                        {bookingPrice.required_house_costs.map((cost) => {
                           if (!cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
@@ -653,7 +700,7 @@ class FormCreator extends React.Component {
                   <div className="costs-section">
                     <table>
                       <tbody>
-                        {bookingPrice.optional_house_costs.map(cost => {
+                        {bookingPrice.optional_house_costs.map((cost) => {
                           if (!cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
@@ -708,7 +755,7 @@ class FormCreator extends React.Component {
                     </strong>
                     <table>
                       <tbody>
-                        {bookingPrice.required_house_costs.map(cost => {
+                        {bookingPrice.required_house_costs.map((cost) => {
                           if (cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
@@ -734,7 +781,7 @@ class FormCreator extends React.Component {
                             }
                           }
                         })}
-                        {bookingPrice.optional_house_costs.map(cost => {
+                        {bookingPrice.optional_house_costs.map((cost) => {
                           if (cost.on_site && cost.gl !== "0120") {
                             if (cost.method === "none") {
                               return (
@@ -792,7 +839,7 @@ class FormCreator extends React.Component {
                           <th
                             style={{
                               textAlign: "left",
-                              testTransform: "capitalize"
+                              testTransform: "capitalize",
                             }}
                           >
                             <FormattedMessage id="total" />
@@ -812,7 +859,7 @@ class FormCreator extends React.Component {
                   <div className="costs-section">
                     <table>
                       <tbody>
-                        {bookingPrice.required_house_costs.map(cost => {
+                        {bookingPrice.required_house_costs.map((cost) => {
                           if (cost.gl === "0120") {
                             return (
                               <tr key={cost.id}>
@@ -832,7 +879,7 @@ class FormCreator extends React.Component {
                             );
                           }
                         })}
-                        {bookingPrice.optional_house_costs.map(cost => {
+                        {bookingPrice.optional_house_costs.map((cost) => {
                           if (cost.gl === "0120") {
                             return (
                               <tr key={cost.id}>
@@ -856,7 +903,7 @@ class FormCreator extends React.Component {
                           <th
                             style={{
                               textAlign: "left",
-                              testTransform: "capitalize"
+                              testTransform: "capitalize",
                             }}
                           >
                             <FormattedMessage id="total" />
@@ -877,12 +924,12 @@ class FormCreator extends React.Component {
                   <div className="terms">
                     <FormattedMessage id="agree_with" />{" "}
                     <FormattedMessage id="terms">
-                      {fm => (
+                      {(fm) => (
                         <Modal buttonText={fm}>
                           <div
                             style={{
                               width: "90vh",
-                              height: "90vh"
+                              height: "90vh",
                             }}
                           >
                             <iframe
@@ -925,7 +972,7 @@ FormCreator.propTypes = {
   locale: PropTypes.string.isRequired,
   booking: PropTypes.object.isRequired,
   PortalSite: PropTypes.object.isRequired,
-  onReturn: PropTypes.func.isRequired
+  onReturn: PropTypes.func.isRequired,
 };
 
 export default FormCreator;
