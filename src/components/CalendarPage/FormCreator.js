@@ -714,7 +714,7 @@ class FormCreator extends React.Component {
                                           value={cost.amount}
                                           minimumFractionDigits={2}
                                           maximumFractionDigits={2}
-                                        />
+                                        />{" "}
                                       </span>
                                     )}
                                     {cost.method_name}{" "}
@@ -724,6 +724,31 @@ class FormCreator extends React.Component {
                                   </td>
                                 </tr>
                               );
+                            } else if (cost.method === "on_site") {
+                              if (Number(values.costs[cost.id]) > 0) {
+                                return (
+                                  <tr key={cost.id}>
+                                    <td>{cost.name}</td>
+                                    <td className="price">
+                                      {cost.amount && cost.amount > 0 && (
+                                        <span>
+                                          €{" "}
+                                          <FormattedNumber
+                                            value={cost.amount}
+                                            minimumFractionDigits={2}
+                                            maximumFractionDigits={2}
+                                          />{" "}
+                                        </span>
+                                      )}
+                                      {cost.method_name}{" "}
+                                      <Description
+                                        description={cost.description}
+                                      />
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                              return <tr></tr>;
                             } else {
                               return (
                                 <tr key={cost.id}>
@@ -786,12 +811,7 @@ class FormCreator extends React.Component {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
-                                  <td>
-                                    {cost.name}
-                                    {cost.description ? (
-                                      <span>{cost.description}</span>
-                                    ) : null}
-                                  </td>
+                                  <td>{cost.name}</td>
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
@@ -800,18 +820,46 @@ class FormCreator extends React.Component {
                                           value={cost.amount}
                                           minimumFractionDigits={2}
                                           maximumFractionDigits={2}
-                                        />
+                                        />{" "}
                                       </span>
                                     )}
-                                    {cost.method_name}
+                                    {cost.method_name}{" "}
+                                    <Description
+                                      description={cost.description}
+                                    />
                                   </td>
                                 </tr>
                               );
+                            } else if (cost.method === "on_site") {
+                              if (Number(values.costs[cost.id]) > 0) {
+                                return (
+                                  <tr key={cost.id}>
+                                    <td>{cost.name}</td>
+                                    <td className="price">
+                                      {cost.amount && cost.amount > 0 && (
+                                        <span>
+                                          €{" "}
+                                          <FormattedNumber
+                                            value={cost.amount}
+                                            minimumFractionDigits={2}
+                                            maximumFractionDigits={2}
+                                          />{" "}
+                                        </span>
+                                      )}
+                                      {cost.method_name}{" "}
+                                      <Description
+                                        description={cost.description}
+                                      />
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                              return <tr></tr>;
                             } else {
                               return (
                                 <tr key={cost.id}>
                                   <td>
-                                    {cost.name}
+                                    {cost.name}{" "}
                                     <Description
                                       description={cost.description}
                                     />

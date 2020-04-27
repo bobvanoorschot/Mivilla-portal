@@ -6,6 +6,10 @@ export function none(price, quantity, totalPersons, nrOfNights) {
   return 0.0;
 }
 
+export function on_site(price, quantity, totalPersons, nrOfNights) {
+  return 0.0;
+}
+
 export function total(price, quantity, totalPersons, nrOfNights) {
   return price;
 }
