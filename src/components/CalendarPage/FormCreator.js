@@ -705,7 +705,12 @@ class FormCreator extends React.Component {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
-                                  <td>{cost.name}</td>
+                                  <td>
+                                    {cost.name}{" "}
+                                    <Description
+                                      description={cost.description}
+                                    />
+                                  </td>
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
@@ -717,10 +722,7 @@ class FormCreator extends React.Component {
                                         />{" "}
                                       </span>
                                     )}
-                                    {cost.method_name}{" "}
-                                    <Description
-                                      description={cost.description}
-                                    />
+                                    {cost.method_name}
                                   </td>
                                 </tr>
                               );
@@ -728,7 +730,12 @@ class FormCreator extends React.Component {
                               if (Number(values.costs[cost.id]) > 0) {
                                 return (
                                   <tr key={cost.id}>
-                                    <td>{cost.name}</td>
+                                    <td>
+                                      {cost.name}{" "}
+                                      <Description
+                                        description={cost.description}
+                                      />
+                                    </td>
                                     <td className="price">
                                       {cost.amount && cost.amount > 0 && (
                                         <span>
@@ -740,10 +747,7 @@ class FormCreator extends React.Component {
                                           />{" "}
                                         </span>
                                       )}
-                                      {cost.method_name}{" "}
-                                      <Description
-                                        description={cost.description}
-                                      />
+                                      {cost.method_name}
                                     </td>
                                   </tr>
                                 );
@@ -811,7 +815,12 @@ class FormCreator extends React.Component {
                             if (cost.method === "none") {
                               return (
                                 <tr key={cost.id}>
-                                  <td>{cost.name}</td>
+                                  <td>
+                                    {cost.name}{" "}
+                                    <Description
+                                      description={cost.description}
+                                    />
+                                  </td>
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
@@ -823,10 +832,7 @@ class FormCreator extends React.Component {
                                         />{" "}
                                       </span>
                                     )}
-                                    {cost.method_name}{" "}
-                                    <Description
-                                      description={cost.description}
-                                    />
+                                    {cost.method_name}
                                   </td>
                                 </tr>
                               );
@@ -834,7 +840,12 @@ class FormCreator extends React.Component {
                               if (Number(values.costs[cost.id]) > 0) {
                                 return (
                                   <tr key={cost.id}>
-                                    <td>{cost.name}</td>
+                                    <td>
+                                      {cost.name}{" "}
+                                      <Description
+                                        description={cost.description}
+                                      />
+                                    </td>
                                     <td className="price">
                                       {cost.amount && cost.amount > 0 && (
                                         <span>
@@ -846,10 +857,7 @@ class FormCreator extends React.Component {
                                           />{" "}
                                         </span>
                                       )}
-                                      {cost.method_name}{" "}
-                                      <Description
-                                        description={cost.description}
-                                      />
+                                      {cost.method_name}
                                     </td>
                                   </tr>
                                 );
