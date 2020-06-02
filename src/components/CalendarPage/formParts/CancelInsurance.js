@@ -1,6 +1,15 @@
 import React from 'react';
 import { FormattedMessage as FM } from 'react-intl';
 
+const LocalizedAttachment = {
+  nl:
+    "http://bukazu.com/insurances/nl/Voorwaarden%20Annuleringsverzekering.pdf",
+  de:
+    "http://bukazu.com/insurances/de/Bedingungen%20ReiserÃ¼cktrittsversicherung.pdf",
+  en:
+    "http://bukazu.com/insurances/en/Terms%20to%20Cancellation%20Insurance.pdf",
+};
+
 const CancelInsurance = () => (
   <React.Fragment>
     <h2>
@@ -42,7 +51,7 @@ const CancelInsurance = () => (
       <FM id="more_information" />
     </p>
     <a
-      href="http://bukazu.com/insurances/nl/Voorwaarden%20Annuleringsverzekering.pdf"
+      href={LocalizedAttachment[window.__localeId__]}
       target="_blank"
       rel="noopener noreferrer"
     >
