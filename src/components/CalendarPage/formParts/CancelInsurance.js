@@ -5,10 +5,12 @@ const LocalizedAttachment = {
   nl:
     "http://bukazu.com/insurances/nl/Voorwaarden%20Annuleringsverzekering.pdf",
   de:
-    "http://bukazu.com/insurances/de/Bedingungen%20ReiserÃ¼cktrittsversicherung.pdf",
+    "http://bukazu.com/insurances/de/Bedingungen%20Reiseruecktrittsversicherung.pdf",
   en:
     "http://bukazu.com/insurances/en/Terms%20to%20Cancellation%20Insurance.pdf",
 };
+
+console.log({locle: window.__localeId__})
 
 const CancelInsurance = () => (
   <React.Fragment>
