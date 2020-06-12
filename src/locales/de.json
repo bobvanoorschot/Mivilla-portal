@@ -94,11 +94,15 @@
     "comply_insurance_card": "Ich bin damit einverstanden, dass die Versicherungskarte der Reiserücktrittsversicherung digital ausgestellt wird. Ich erhalte diese mit meiner Buchungsbestätigung.",
     "house.you_picked_arrival_date": "Ihre Ankunft ist",
     "camper.you_picked_arrival_date": "Ihr Abholdatum ist",
+    "boat.you_picked_arrival_date": "Ihr Abholdatum ist",
     "house.pick_your_departure_in_the_calendar": "Wählen Sie ein Abreisedatum",
     "camper.pick_your_departure_in_the_calendar": "Wählen Sie ein Rückgabedatum",
+    "boat.pick_your_departure_in_the_calendar": "Wählen Sie ein Rückgabedatum",
     "house.you_picked_departure_date": "Ihr Abreisedatum ist",
     "camper.you_picked_departure_date": "Ihr Rückgabedatum ist",
+    "boat.you_picked_departure_date": "Ihr Rückgabedatum ist",
     "house.pick_your_arrivaldate_in_the_calendar": "Wählen Sie das Ankunftsdatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
+    "boat.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
     "no": "Nein"
 }
