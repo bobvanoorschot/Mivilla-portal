@@ -316,19 +316,20 @@ class FormCreator extends React.Component {
                 extra_fields: JSON.stringify(values.extra_fields),
               };
 
-              createBooking({ variables });
+              createBooking({ variables }).then(() => {
+                if (
+                  options.bookingForm &&
+                  options.bookingForm.redirectUrl &&
+                  options.bookingForm.redirectUrl !== ""
+                ) {
+                  window.location = options.bookingForm.redirectUrl;
+                } else {
+                  setTimeout(() => {
+                    this.props.onReturn();
+                  }, 15000);
+                }
+              });
 
-              if (
-                options.bookingForm &&
-                options.bookingForm.redirectUrl &&
-                options.bookingForm.redirectUrl !== ""
-              ) {
-                window.location = options.bookingForm.redirectUrl;
-              } else {
-                setTimeout(() => {
-                  this.props.onReturn();
-                }, 15000);
-              }
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
