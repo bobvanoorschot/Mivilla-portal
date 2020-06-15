@@ -25,8 +25,11 @@ export const OptionalBookingFields = ({
 
         return (
           <div className="form-row" key={bookingField.id}>
-            <label htmlFor={bookingField.id}>{bookingField.label}</label>
+            <label htmlFor={`extra_fields.booking_field_${bookingField.id}`}>
+              {bookingField.label}
+            </label>
             <Field
+              id={`extra_fields.booking_field_${bookingField.id}`}
               type={bookingField.field_type}
               name={`extra_fields.booking_field_${bookingField.id}`}
             />
