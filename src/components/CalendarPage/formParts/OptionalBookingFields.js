@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import { Field } from "formik";
-import { FormattedMessage } from 'react-intl';
-import { Countries } from '../../../_lib/countries';
+import { FormattedMessage } from "react-intl";
+import { Countries } from "../../../_lib/countries";
 
 export const OptionalBookingFields = ({
   bookingFields,
@@ -14,16 +14,33 @@ export const OptionalBookingFields = ({
     <h2>
       <FormattedMessage id="personal_details" />
     </h2>
-    {bookingFields.map(input => {
-      if (input.id === 'telephone') {
-        input.id = 'phonenumber'
+    {bookingFields.map((input) => {
+      if (input.id === "telephone") {
+        input.id = "phonenumber";
       }
-      if (input.id === 'country') {
+      if (input.type === "booking_field") {
+        const bookingField = PortalSite.booking_fields.find(
+          (x) => x.id === input.id
+        );
+
+        return (
+          <div className="form-row" key={bookingField.id}>
+            <label htmlFor={bookingField.id}>{bookingField.label}</label>
+            <Field
+              type={bookingField.field_type}
+              name={`extra_fields.booking_field_${bookingField.id}`}
+            />
+          </div>
+        );
+      } else if (input.id === "country") {
         return (
           <div className="form-row" key={input.id}>
-      <label htmlFor={input.id}>{PortalSite[`${input.id}_label`]} {input.required && (<span>*</span>)}</label>
+            <label htmlFor={input.id}>
+              {PortalSite[`${input.id}_label`]}{" "}
+              {input.required && <span>*</span>}
+            </label>
             <Field component="select" name={input.id}>
-              {Countries[window.__localeId__].map(country => {
+              {Countries[window.__localeId__].map((country) => {
                 return (
                   <option value={country.alpha2} key={country.alpha2}>
                     {country.name}

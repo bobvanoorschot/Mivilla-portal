@@ -101,6 +101,13 @@ export const BOOKING_PRICE_QUERY = gql`
       company_name_label
       extra_fields_drivers_license_label
       extra_fields_destination_label
+      booking_fields {
+        id
+        label
+        field_type
+        options
+        placeholder
+      }
       houses(house_code: $house_id) {
         id
         name
