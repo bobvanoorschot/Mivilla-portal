@@ -3,11 +3,11 @@ import { FormattedMessage as FM } from 'react-intl';
 
 const LocalizedAttachment = {
   nl:
-    "http://bukazu.com/insurances/nl/Voorwaarden%20Annuleringsverzekering.pdf",
+    "https://insurances.bukazu.com/nl/Voorwaarden%20Annuleringsverzekering.pdf",
   de:
-    "http://bukazu.com/insurances/de/Bedingungen%20Reiseruecktrittsversicherung.pdf",
+    "https://insurances.bukazu.com/de/Bedingungen%20Reiseruecktrittsversicherung.pdf",
   en:
-    "http://bukazu.com/insurances/en/Terms%20to%20Cancellation%20Insurance.pdf",
+    "https://insurances.bukazu.com/en/Terms%20to%20Cancellation%20Insurance.pdf",
 };
 
 console.log({locle: window.__localeId__})
