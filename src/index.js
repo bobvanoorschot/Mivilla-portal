@@ -37,12 +37,17 @@ class Portal extends Component {
     }
     const httpLink = createHttpLink({
       uri,
-      fetch: fetch
+      fetch: fetch,
     });
 
     const client = new ApolloClient({
       link: httpLink,
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
+      defaultOptions: {
+        watchQuery: {
+          fetchPolicy: "cache-and-network",
+        },
+      },
     });
 
     const messages = { en, nl, de, fr, es, it };
@@ -53,7 +58,7 @@ class Portal extends Component {
       ...esData,
       ...nlData,
       ...itData,
-      ...deData
+      ...deData,
     ]);
 
     window.__localeId__ = locale;
@@ -75,8 +80,7 @@ class Portal extends Component {
 }
 
 Portal.defaultProps = {
-  pageType: null
+  pageType: null,
 };
 
 export default Portal;
-
