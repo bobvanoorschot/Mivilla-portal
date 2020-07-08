@@ -98,12 +98,18 @@ export function per_week(price, quantity, totalPersons, nrOfNights) {
   var weeks = Math.ceil(nrOfNights / 7);
   return price * weeks;
 }
+
 export function per_person_per_week(price, quantity, totalPersons, nrOfNights) {
   var weeks = Math.ceil(nrOfNights / 7);
   return price * totalPersons * weeks;
 }
+
 export function per_piece_per_week(price, quantity, totalPersons, nrOfNights) {
   var weeks = Math.ceil(nrOfNights / 7);
   return price * quantity * weeks;
+}
+
+export function perc_of_net_rent(price, quantity, totalPersons, nrOfNights, rent_total) {
+  return (rent_total / 100) * price;
 }
 /* eslint-enable */
