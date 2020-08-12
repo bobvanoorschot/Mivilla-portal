@@ -72,7 +72,7 @@ const CancelInsurance = () => (
         </strong>
       </li>
       <li>
-        <FM id="9persons_9addresses" />
+        <FM id="9persons_4addresses" />
       </li>
     </ul>
 

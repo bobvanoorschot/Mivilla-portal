@@ -329,7 +329,6 @@ class FormCreator extends React.Component {
                   }, 15000);
                 }
               });
-
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
@@ -609,7 +608,10 @@ class FormCreator extends React.Component {
                           <td className="price">
                             €{" "}
                             <FormattedNumber
-                              value={this.calculateRentPrice(values).rent_price}
+                              value={
+                                Math.round(this.calculateRentPrice(values)
+                                  .rent_price)
+                              }
                               minimumFractionDigits={2}
                               maximumFractionDigits={2}
                             />
@@ -636,10 +638,10 @@ class FormCreator extends React.Component {
                             <td className="price">
                               €{"  "}
                               <FormattedNumber
-                                value={
+                                value={Math.round(
                                   this.calculateRentPrice(values)
                                     .discounted_price
-                                }
+                                )}
                                 minimumFractionDigits={2}
                                 maximumFractionDigits={2}
                               />
