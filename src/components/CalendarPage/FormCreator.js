@@ -201,7 +201,7 @@ class FormCreator extends React.Component {
     let new_rent = {
       rent_price: price,
       discount,
-      discounted_price: price - price * (discount / 100),
+      discounted_price: price - discount,
     };
 
     return new_rent;
@@ -608,10 +608,9 @@ class FormCreator extends React.Component {
                           <td className="price">
                             €{" "}
                             <FormattedNumber
-                              value={
-                                Math.round(this.calculateRentPrice(values)
-                                  .rent_price)
-                              }
+                              value={Math.round(
+                                this.calculateRentPrice(values).rent_price
+                              )}
                               minimumFractionDigits={2}
                               maximumFractionDigits={2}
                             />
@@ -623,10 +622,12 @@ class FormCreator extends React.Component {
                               <FormattedMessage id="discount" />
                             </td>
                             <td className="price">
+                              €{"  "}
                               <FormattedNumber
                                 value={this.calculateRentPrice(values).discount}
-                              />{" "}
-                              %
+                                minimumFractionDigits={2}
+                                maximumFractionDigits={2}
+                              />
                             </td>
                           </tr>
                         ) : null}
