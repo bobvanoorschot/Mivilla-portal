@@ -179,6 +179,13 @@
       ) !important;
       cursor: pointer;
     }
+    .discount.departure-arrival {
+      background: linear-gradient(
+        45deg,
+        var(--bukazu-booked) 50%,
+        var(--bukazu-discount) 50%
+      ) !important;
+    }
     .icon {
       cursor: pointer;
     }
