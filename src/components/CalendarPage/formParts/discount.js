@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import { Field } from 'formik';
+import React from "react";
+import PropTypes from "prop-types";
+import { FormattedMessage } from "react-intl";
+import { Field } from "formik";
+import Modal from "./Modal";
 
 const Discount = ({ errors, house }) => {
-  if (house.discounts && house.discounts !== '0') {
-    let discounts = house.discounts.split(',');
+  if (house.discounts && house.discounts !== "0") {
+    let discounts = house.discounts.split(",");
     return (
       <div className="form-section">
         <div className="form-row inline">
@@ -13,7 +14,7 @@ const Discount = ({ errors, house }) => {
             <FormattedMessage id="discount" />
           </label>
           <Field component="select" name="discount">
-            {discounts.map(discount => (
+            {discounts.map((discount) => (
               <option value={discount} key={discount}>
                 {discount}%
               </option>
@@ -28,6 +29,9 @@ const Discount = ({ errors, house }) => {
           {errors.discount_reason && (
             <div className="error-message">{errors.discount_reason}</div>
           )}
+        </div>
+        <div>
+          <i style={{ fontSize: 14 }}>{house.discounts_info}</i>
         </div>
       </div>
     );
