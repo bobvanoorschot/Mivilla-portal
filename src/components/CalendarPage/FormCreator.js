@@ -194,8 +194,11 @@ class FormCreator extends React.Component {
 
     let price = night_price * (percentage.percentage / 100);
 
-    if (Number(values.discount) > 0 && Number(values.discount) > discount) {
-      discount = values.discount;
+    if (Number(values.discount) > 0) {
+      let personalDiscount = (price / 100) * Number(values.discount)
+      if (personalDiscount > discount) {
+        discount = personalDiscount;
+      } 
     }
 
     let new_rent = {
