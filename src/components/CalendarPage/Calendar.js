@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import dateFns from "date-fns";
 import { Query } from "react-apollo";
+import * as Sentry from "@sentry/react";
 import Loading from "../icons/loading.svg";
 import format from "../../_lib/format";
 import isAfter from "date-fns/is_after";
@@ -216,7 +217,10 @@ class Calendar extends React.Component {
                   <Loading />
                 </div>
               );
-            if (error) return <div>Error</div>;
+            if (error) {
+              Sentry.captureException(error);
+              return <div>Error</div>;
+            }
 
             const results = data.PortalSite.houses[0].availabilities;
             const discounts = data.Discounts;

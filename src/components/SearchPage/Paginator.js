@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import Pagination from 'react-js-pagination';
 import { FormattedMessage } from 'react-intl';
+import * as Sentry from "@sentry/react";
 import PropTypes from 'prop-types';
 // import { Container } from './Pagination.css';
 import { HOUSE_COUNT_QUERY } from '../../_lib/SearchQueries';
@@ -39,7 +40,10 @@ class Paginator extends React.Component {
                 <Loading />
               </div>
             );
-          if (error) return <div>Error</div>;
+          if (error) {
+            Sentry.captureException(error);
+            return <div>Error</div>;
+          };
 
           const results = data.PortalSite.houses;
           return (

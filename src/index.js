@@ -3,6 +3,7 @@ import App from "./components/App";
 import { IntlProvider } from "react-intl";
 import { addLocaleData } from "react-intl";
 import fetch from "unfetch";
+import * as Sentry from "@sentry/react";
 // import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloProvider } from "react-apollo";
@@ -25,6 +26,17 @@ import es from "./locales/es.json";
 import it from "./locales/it.json";
 
 import "./index.css";
+
+Sentry.init({
+  dsn:
+    "https://1c8907a40e6c4f17b9f2f22efb2ff390@o208128.ingest.sentry.io/1410853",
+  release: "bukazu-portal@" + process.env.npm_package_version,
+  integrations: [
+    new Sentry.Integrations.GlobalHandlers({
+      onunhandledrejection: false,
+    }),
+  ],
+});
 
 class Portal extends Component {
   render() {
@@ -83,4 +95,4 @@ Portal.defaultProps = {
   pageType: null,
 };
 
-export default Portal;
+export default Sentry.withProfiler(Portal);

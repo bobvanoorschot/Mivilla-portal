@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import Loading from "./icons/loading.svg";
 import "react-dates/initialize";
+import * as Sentry from "@sentry/react";
 
 import { PORTAL_QUERY } from "../_lib/queries";
 
@@ -50,7 +51,10 @@ class App extends Component {
                   <Loading />
                 </div>
               );
-            if (error) return <div>Error</div>;
+            if (error) {
+              Sentry.captureException(error);
+              return <div>Error</div>;
+            }
 
             const PortalSite = data.PortalSite;
             let options = data.PortalSite.options;
@@ -103,7 +107,11 @@ class App extends Component {
                   locale={locale}
                 />
               );
-            } else if (objectCode && objectCode !== null && pageType === "reviews") {
+            } else if (
+              objectCode &&
+              objectCode !== null &&
+              pageType === "reviews"
+            ) {
               return (
                 <ReviewsPage
                   PortalSite={PortalSite}
@@ -111,7 +119,7 @@ class App extends Component {
                   options={options}
                   filters={filters}
                 />
-              );            
+              );
             } else {
               return (
                 <SearchPage
@@ -130,14 +138,14 @@ class App extends Component {
 }
 
 App.defaultProps = {
-  filters: {}
+  filters: {},
 };
 
 App.propTypes = {
   portalCode: PropTypes.string.isRequired,
   objectCode: PropTypes.string,
   locale: PropTypes.string.isRequired,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.object.isRequired,
 };
 
 export default App;
