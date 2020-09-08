@@ -98,6 +98,7 @@ class PriceField extends React.Component {
               {adults.map(person => (
                 <FormattedMessage
                   id="persons"
+                  key={person}
                   children={text => (
                     <option value={person} key={person}>
                       {person} {text}

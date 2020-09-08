@@ -28,7 +28,7 @@ class Calendar extends React.Component {
     house: this.props.house,
     arrivalDate: "",
     departureDate: "",
-    startBooking: false
+    startBooking: false,
   };
 
   renderHeader(month) {
@@ -60,7 +60,7 @@ class Calendar extends React.Component {
     return <div className="days row">{days}</div>;
   }
 
-  renderCells(availabilities, month) {
+  renderCells(availabilities, month, discounts) {
     const { selectedDate, departureDate, house, arrivalDate } = this.state;
     const monthStart = dateFns.startOfMonth(month);
     const monthEnd = dateFns.endOfMonth(monthStart);
@@ -82,10 +82,15 @@ class Calendar extends React.Component {
         formattedDate = dateFns.format(day, dateFormat);
         let date = dateFns.format(day, "YYYY-MM-DD");
         let yesterday = dateFns.format(dateFns.subDays(date, 1), "YYYY-MM-DD");
-        let daz = dayz.find(x => x.date === date);
+        let daz = dayz.find((x) => x.date === date);
 
-        const prevBooked = dayz.find(x => x.date === yesterday);
+        const prevBooked = dayz.find((x) => x.date === yesterday);
         const cloneDay = daz;
+        const discount = discounts.find(
+          (x) =>
+            dateFns.isBefore(dateFns.subDays(x.discount_starts_at, 1), date) &&
+            isAfter(dateFns.addDays(x.discount_ends_at, 1), date)
+        );
         const minimum =
           differenceInCalendarDays(daz.date, selectedDate) >=
           arrivalDate.min_nights;
@@ -128,12 +133,11 @@ class Calendar extends React.Component {
                   : ""
               }
               ${
-                (last_minute || daz.special_offer > 0) &&
-                daz.arrival &&
-                daz.max_nights !== 0
+                (last_minute || daz.special_offer > 0) 
                   ? "discount"
                   : ""
               }
+              ${discount ? "discount" : ""}
               ${
                 daz.arrival
                   ? dateFns.isAfter(daz.date, new Date())
@@ -197,7 +201,7 @@ class Calendar extends React.Component {
       house_id: this.props.objectCode,
       starts_at: dateFns.startOfWeek(monthStart),
       ends_at: dateFns.endOfWeek(monthEnd),
-      locale: this.props.locale
+      locale: this.props.locale,
     };
 
     return (
@@ -215,15 +219,16 @@ class Calendar extends React.Component {
             if (error) return <div>Error</div>;
 
             const results = data.PortalSite.houses[0].availabilities;
+            const discounts = data.Discounts;
 
-            return this.renderCells(results, month);
+            return this.renderCells(results, month, discounts);
           }}
         </Query>
       </div>
     );
   }
 
-  onDateClick = day => {
+  onDateClick = (day) => {
     const { arrivalDate, selectedDate, house } = this.state;
     if (
       day.departure &&
@@ -235,14 +240,14 @@ class Calendar extends React.Component {
     ) {
       this.setState({
         departureDate: day,
-        startBooking: true
+        startBooking: true,
       });
     } else if (day.arrival) {
       this.setState({
         startBooking: false,
         selectedDate: dateFns.parse(day.date),
         arrivalDate: day,
-        departureDate: ""
+        departureDate: "",
       });
     }
   };
@@ -250,14 +255,14 @@ class Calendar extends React.Component {
   nextMonth = () => {
     const { numberOfMonths, currentMonth } = this.state;
     this.setState({
-      currentMonth: dateFns.addMonths(currentMonth, numberOfMonths)
+      currentMonth: dateFns.addMonths(currentMonth, numberOfMonths),
     });
   };
 
   prevMonth = () => {
     const { numberOfMonths, currentMonth } = this.state;
     this.setState({
-      currentMonth: dateFns.subMonths(currentMonth, numberOfMonths)
+      currentMonth: dateFns.subMonths(currentMonth, numberOfMonths),
     });
   };
 
@@ -266,7 +271,7 @@ class Calendar extends React.Component {
       selectedDate: "",
       arrivalDate: "",
       departureDate: "",
-      startBooking: false
+      startBooking: false,
     });
   };
 
@@ -298,13 +303,13 @@ class Calendar extends React.Component {
       departureDate,
       is_option: status,
       locale,
-      persons
+      persons,
     };
     this.props.onBooking(booking);
   }
 
   render() {
-    const { startBooking, house, arrivalDate, departureDate } = this.state;
+    const { house, arrivalDate, departureDate } = this.state;
 
     return (
       <div className="calendar-container ">
@@ -331,7 +336,7 @@ class Calendar extends React.Component {
             </div>
             <div>
               <span className="legend-field last_minute_discount" />
-              <FormattedMessage id="last_minute_discount" />
+              <FormattedMessage id="discount" />
             </div>
           </div>
           <AssistanceMessage
@@ -347,7 +352,7 @@ class Calendar extends React.Component {
 
 Calendar.defaultProps = {
   numberOfMonths: 4,
-  numberOfMonthsInARow: 2
+  numberOfMonthsInARow: 2,
 };
 
 Calendar.propTypes = {
@@ -356,7 +361,7 @@ Calendar.propTypes = {
   onBooking: PropTypes.func.isRequired,
   objectCode: PropTypes.string.isRequired,
   portalCode: PropTypes.string.isRequired,
-  locale: PropTypes.string.isRequired
+  locale: PropTypes.string.isRequired,
 };
 
 export default Calendar;

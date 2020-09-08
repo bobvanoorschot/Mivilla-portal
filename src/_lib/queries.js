@@ -48,32 +48,42 @@ export const PORTAL_QUERY = gql`
 `;
 
 export const CALENDAR_QUERY = gql`
-  query PortalSiteHousesQuery(
-    $id: ID!
-    $house_id: String!
-    $starts_at: Date!
-    $ends_at: Date!
-  ) {
-    PortalSite(id: $id) {
-      houses(house_code: $house_id) {
-        id
-        name
-        last_minute_days
-        availabilities(starts_at: $starts_at, ends_at: $ends_at) {
-          arrival
-          arrival_time_from
-          arrival_time_to
-          date
-          departure
-          departure_time
-          max_nights
-          min_nights
-          special_offer
-        }
-      }
-    }
-  }
-`;
+         query PortalSiteHousesQuery(
+           $id: ID!
+           $house_id: String!
+           $starts_at: Date!
+           $ends_at: Date!
+         ) {
+           PortalSite(id: $id) {
+             houses(house_code: $house_id) {
+               id
+               name
+               last_minute_days
+               availabilities(starts_at: $starts_at, ends_at: $ends_at) {
+                 arrival
+                 arrival_time_from
+                 arrival_time_to
+                 date
+                 departure
+                 departure_time
+                 max_nights
+                 min_nights
+                 special_offer
+               }
+             }
+           }
+           Discounts(
+             house_code: $house_id
+             discount_starts_at: $ends_at
+             discount_ends_at: $starts_at
+             active_today: true
+           ) {
+             name
+             discount_starts_at
+             discount_ends_at
+           }
+         }
+       `;
 
 export const BOOKING_PRICE_QUERY = gql`
   query BookingPriceQuery(

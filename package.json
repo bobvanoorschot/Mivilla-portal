@@ -1,6 +1,6 @@
 {
   "name": "bukazu-portal-react",
-  "version": "1.2.45",
+  "version": "1.2.50",
   "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^5.5.0",
+    "@sentry/react": "^5.22.3",
     "apollo-boost": "^0.1.10",
     "array-includes": "^3.0.3",
     "array-sort": "^1.0.0",
