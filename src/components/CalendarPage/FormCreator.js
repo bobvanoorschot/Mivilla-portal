@@ -204,7 +204,7 @@ class FormCreator extends React.Component {
     let new_rent = {
       rent_price: price,
       discount,
-      discounted_price: price - discount,
+      discounted_price: Math.round(price - discount),
     };
 
     return new_rent;
