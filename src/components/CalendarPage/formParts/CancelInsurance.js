@@ -10,8 +10,6 @@ const LocalizedAttachment = {
     "https://insurances.bukazu.com/en/Terms%20to%20Cancellation%20Insurance.pdf",
 };
 
-console.log({locle: window.__localeId__})
-
 const CancelInsurance = () => (
   <React.Fragment>
     <h2>

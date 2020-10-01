@@ -179,7 +179,7 @@ class PriceField extends React.Component {
                       <div className="price">
                         €{" "}
                         <FormattedNumber
-                          value={result.total_price}
+                          value={Math.round(result.total_price)}
                           minimumFractionDigits={2}
                           maximumFractionDigits={2}
                         />
