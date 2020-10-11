@@ -28,8 +28,8 @@ import it from "./locales/it.json";
 import "./index.css";
 
 Sentry.init({
-  dsn:
-    "https://1c8907a40e6c4f17b9f2f22efb2ff390@o208128.ingest.sentry.io/1410853",
+  // dsn:
+    // "https://1c8907a40e6c4f17b9f2f22efb2ff390@o208128.ingest.sentry.io/1410853",
   release: "bukazu-portal@" + process.env.npm_package_version,
   integrations: [
     new Sentry.Integrations.GlobalHandlers({
