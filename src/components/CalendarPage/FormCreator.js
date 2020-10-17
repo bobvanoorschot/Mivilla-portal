@@ -184,6 +184,7 @@ class FormCreator extends React.Component {
 
     let percentage = {
       persons: 5000,
+      percentage: 100,
     };
 
     for (let perc of person_percentages) {
@@ -195,10 +196,10 @@ class FormCreator extends React.Component {
     let price = night_price * (percentage.percentage / 100);
 
     if (Number(values.discount) > 0) {
-      let personalDiscount = (price / 100) * Number(values.discount)
+      let personalDiscount = (price / 100) * Number(values.discount);
       if (personalDiscount > discount) {
         discount = personalDiscount;
-      } 
+      }
     }
 
     let new_rent = {
@@ -227,7 +228,7 @@ class FormCreator extends React.Component {
       if (cost.gl === "0120") continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
-    total = Math.round(total)
+    total = Math.round(total);
 
     return total;
   }
