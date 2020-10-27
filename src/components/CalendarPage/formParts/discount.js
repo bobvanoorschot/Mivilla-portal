@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { Field } from "formik";
-import Modal from "./Modal";
+import DiscountCode from "./DiscountCode";
 
 const Discount = ({ errors, house }) => {
   if (house.discounts && house.discounts !== "0") {
@@ -33,6 +33,7 @@ const Discount = ({ errors, house }) => {
         <div>
           <i style={{ fontSize: 14 }}>{house.discounts_info}</i>
         </div>
+        <DiscountCode />
       </div>
     );
   } else {
