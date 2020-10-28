@@ -11,7 +11,9 @@
     "start-js": "webpack --watch",
     "build-js": "webpack",
     "start": "npm-run-all -p watch:css start-js",
-    "build": "npm-run-all build:css build-js"
+    "build": "npm-run-all build:css build-js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "Bob van Oorschot",
   "license": "MIT",
@@ -20,6 +22,10 @@
     "react-dom": "^16.4.0"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.0.27",
+    "@storybook/addon-essentials": "^6.0.27",
+    "@storybook/addon-links": "^6.0.27",
+    "@storybook/react": "^6.0.27",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "7.2.3",
@@ -40,7 +46,8 @@
     "eslint-plugin-react": "7.4.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "jest": "24.5.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "react-is": "^17.0.1"
   },
   "dependencies": {
     "apollo-boost": "^0.1.10",
@@ -55,14 +62,14 @@
     "postcss-cli": "^6.0.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-import": "^12.0.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.4.0",
     "postcss-loader": "2.0.8",
     "postcss-nested": "^4.1.0",
     "postcss-preset-env": "^6.3.0",
+    "react": "^16.14.0",
     "react-apollo": "^2.1.9",
     "react-dates": "^18.4.1",
     "react-dev-utils": "^5.0.1",
+    "react-dom": "^16.4.0",
     "react-intl": "^2.7.2",
     "react-js-pagination": "^3.0.2",
     "style-loader": "0.19.0",
