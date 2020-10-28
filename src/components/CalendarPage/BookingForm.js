@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import * as Sentry from "@sentry/react";
 import Loading from '../icons/loading.svg';
 import FormCreator from './FormCreator';
 import { BOOKING_PRICE_QUERY } from '../../_lib/queries';
@@ -36,7 +35,6 @@ class BookingForm extends React.Component {
               </div>
             );
           if (error) {
-            Sentry.captureException(error);
             return <div>Error</div>;
           }
 

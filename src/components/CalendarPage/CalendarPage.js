@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import * as Sentry from "@sentry/react";
 import Calendar from "./Calendar";
 import BookingForm from "./BookingForm";
 import Loading from "../icons/loading.svg";
@@ -74,7 +73,6 @@ class CalendarPage extends Component {
               </div>
             );
           if (error) {
-            Sentry.captureException(error);
             return <div>Error</div>;
           }
 

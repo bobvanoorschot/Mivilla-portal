@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import * as Sentry from "@sentry/react";
 import Loading from "../icons/loading.svg";
 import format from "../../_lib/format";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -131,7 +130,6 @@ class PriceField extends React.Component {
                     </div>
                   );
                 if (error){
-                    Sentry.captureException(error);
                   return <div className="price-overview--build">Error</div>};
                 const result = data.PortalSite.houses[0].booking_price;
                 return (

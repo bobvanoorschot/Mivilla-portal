@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { FormattedMessage } from 'react-intl';
-import * as Sentry from "@sentry/react";
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import Loading from '../icons/loading.svg';
 import SingleResult from './SingleResult';
@@ -67,7 +66,6 @@ class Results extends Component {
               </div>
             );
           if (error) {
-            Sentry.captureException(error);
             return <div>Error</div>;
           };
 

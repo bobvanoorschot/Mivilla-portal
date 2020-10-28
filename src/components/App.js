@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import Loading from "./icons/loading.svg";
 import "react-dates/initialize";
-import * as Sentry from "@sentry/react";
 
 import { PORTAL_QUERY } from "../_lib/queries";
 
@@ -52,7 +51,6 @@ class App extends Component {
                 </div>
               );
             if (error) {
-              Sentry.captureException(error);
               return <div>Error</div>;
             }
 
