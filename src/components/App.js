@@ -39,10 +39,10 @@ class App extends Component {
   }
 
   render() {
-    const { portalCode, objectCode, pageType, locale, filters } = this.props;
+    const { portalCode, objectCode, pageType, locale, filters, id, className } = this.props;
 
     return (
-      <div ref={this.pageWidth}>
+      <div ref={this.pageWidth} id={id} className={className}>
         <Query query={PORTAL_QUERY} variables={{ id: portalCode, locale }}>
           {({ loading, error, data }) => {
             if (loading)
