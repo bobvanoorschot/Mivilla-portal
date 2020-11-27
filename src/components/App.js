@@ -10,6 +10,7 @@ import { PORTAL_QUERY } from "../_lib/queries";
 import SearchPage from "./SearchPage/SearchPage";
 import CalendarPage from "./CalendarPage/CalendarPage";
 import ReviewsPage from "./ReviewsPage/ReviewsPage";
+import SafeBooking from "./SafeBooking";
 
 // import 'react-dates/lib/css/_datepicker.css';
 
@@ -39,7 +40,15 @@ class App extends Component {
   }
 
   render() {
-    const { portalCode, objectCode, pageType, locale, filters, id, className } = this.props;
+    const {
+      portalCode,
+      objectCode,
+      pageType,
+      locale,
+      filters,
+      id,
+      className,
+    } = this.props;
 
     return (
       <div ref={this.pageWidth} id={id} className={className}>
@@ -101,11 +110,14 @@ class App extends Component {
 
             if (objectCode && objectCode !== null && pageType !== "reviews") {
               return (
-                <CalendarPage
-                  PortalSite={PortalSite}
-                  objectCode={objectCode}
-                  locale={locale}
-                />
+                <section>
+                  <CalendarPage
+                    PortalSite={PortalSite}
+                    objectCode={objectCode}
+                    locale={locale}
+                  />
+                  <SafeBooking locale={locale} />
+                </section>
               );
             } else if (
               objectCode &&
