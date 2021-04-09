@@ -29,6 +29,7 @@ export const OptionalBookingFields = ({
               {bookingField.label}
             </label>
             <Field
+              onKeyPress={e => { e.which === 13 && e.preventDefault() }}
               id={`extra_fields.booking_field_${bookingField.id}`}
               type={bookingField.field_type}
               name={`extra_fields.booking_field_${bookingField.id}`}
