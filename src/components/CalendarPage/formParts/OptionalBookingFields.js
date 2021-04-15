@@ -29,9 +29,10 @@ export const OptionalBookingFields = ({
               {bookingField.label}
             </label>
             <Field
-              onKeyPress={e => { e.which === 13 && e.preventDefault() }}
+              onKeyPress={e => { e.which === 13 && e.preventDefault() && console.log(e)}}
               id={`extra_fields.booking_field_${bookingField.id}`}
               type={bookingField.field_type}
+              component={bookingField.field_type}
               name={`extra_fields.booking_field_${bookingField.id}`}
             />
           </div>
@@ -67,7 +68,7 @@ export const OptionalBookingFields = ({
               {PortalSite[`${input.id.replace(/\./g, "_")}_label`]}{" "}
               {input.required && <span>*</span>}
             </label>
-            <Field type={input.type} name={input.id} />
+            <Field type={input.type} name={input.id} onKeyPress={e => { e.which === 13 && e.preventDefault() }}/>
             {errors[input.id] && touched[input.id] && (
               <div className="error-message">{errors[input.id]}</div>
             )}
