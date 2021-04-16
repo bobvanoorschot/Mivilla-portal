@@ -3,7 +3,6 @@ import App from "./components/App";
 import { IntlProvider } from "react-intl";
 import { addLocaleData } from "react-intl";
 import fetch from "unfetch";
-import * as Sentry from "@sentry/react";
 // import registerServiceWorker from './registerServiceWorker';
 
 import { ApolloProvider } from "react-apollo";
@@ -27,28 +26,12 @@ import it from "./locales/it.json";
 
 import "./index.css";
 
-Sentry.init({
-  // dsn:
-    // "https://1c8907a40e6c4f17b9f2f22efb2ff390@o208128.ingest.sentry.io/1410853",
-  release: "bukazu-portal@" + process.env.npm_package_version,
-  integrations: [
-    new Sentry.Integrations.GlobalHandlers({
-      onunhandledrejection: false,
-    }),
-  ],
-});
-
 class Portal extends Component {
   render() {
-    const { portalCode, objectCode, pageType, locale, filters } = this.props;
+    const { portalCode, objectCode, pageType, locale, filters, api_url } = this.props;
 
-    let uri = "https://bukazu.eu/graphql";
-
-    if (process.env.NODE_ENV !== "production") {
-      // uri = 'https://stage.bukazu.eu/graphql';
-    }
     const httpLink = createHttpLink({
-      uri,
+      uri: api_url,
       fetch: fetch,
     });
 
@@ -93,6 +76,7 @@ class Portal extends Component {
 
 Portal.defaultProps = {
   pageType: null,
+  api_url: "https://bukazu.eu/graphql"
 };
 
-export default Sentry.withProfiler(Portal);
+export default Portal;
