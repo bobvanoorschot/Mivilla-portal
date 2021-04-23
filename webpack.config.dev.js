@@ -1,15 +1,15 @@
-process.env.BABEL_ENV = "production";
-process.env.NODE_ENV = "production";
+process.env.BABEL_ENV = "development";
+process.env.NODE_ENV = "development";
 
 var path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
 
 const cssFilename = "index.css";
 
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/dev.js",
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "index.js",
@@ -44,8 +44,6 @@ module.exports = {
     ]
   },
   optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin()],
   },
   plugins: [  
     new MiniCssExtractPlugin({
