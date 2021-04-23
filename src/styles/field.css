@@ -65,4 +65,19 @@
 #bukazu-app .radioList {
     padding: 0;
     list-style: none;
+    .bu-list-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        
+        label {
+            padding: 4px 0;
+            cursor: 'pointer';
+        }
+    }
+    
+    
+    .bu-disabled {
+        display: none;
+    }
 }

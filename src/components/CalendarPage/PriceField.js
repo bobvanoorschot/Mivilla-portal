@@ -133,45 +133,8 @@ class PriceField extends React.Component {
                   return <div className="price-overview--build">Error</div>};
                 const result = data.PortalSite.houses[0].booking_price;
                 return (
-                  <React.Fragment>
-                    {/* <div className="price-overview--build">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>
-                            <FormattedMessage id="included_in_price" />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="column" colSpan="2">
-                            <FormattedMessage id="rent_price" />
-                          </td>
-                        </tr>
-                        <tr className={result.discount > 0 ? "" : "hidden"}>
-                          <td className="column" colSpan="2">
-                            <FormattedMessage id="discount" />
-                          </td>
-                          <td className="price">{result.discount} %</td>
-                        </tr>
-                        <tr className={result.discount > 0 ? "" : "hidden"}>
-                          <td className="column" colSpan="2">
-                            <FormattedMessage id="price_after_discount" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="column">
-                            <ul>
-                              {result.required_house_costs.map(cost => {
-                                return <li key={cost.id}>{cost.name}</li>;
-                              })}
-                            </ul>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> */}
+                  <>
+        
 
                     <div className="price-overview--book">
                       <div className="price">
@@ -191,7 +154,7 @@ class PriceField extends React.Component {
                         </i>
                       </div>
                     </div>
-                  </React.Fragment>
+                  </>
                 );
               }}
             </Query>

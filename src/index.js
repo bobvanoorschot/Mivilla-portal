@@ -24,7 +24,7 @@ import fr from "./locales/fr.json";
 import es from "./locales/es.json";
 import it from "./locales/it.json";
 
-import "./index.css";
+import "./styles/main.css";
 
 class Portal extends Component {
   render() {

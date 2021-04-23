@@ -35,10 +35,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
           'css-loader',
+          'postcss-loader'
         ],
       }
     ]
@@ -46,8 +44,5 @@ module.exports = {
   optimization: {
   },
   plugins: [  
-    new MiniCssExtractPlugin({
-      filename: cssFilename
-    })
   ],
 };

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
-import './Field.css';
-import ListItem from './inputs/listItem.css';
 import includes from 'array-includes'
 
 class Field extends Component {
@@ -182,10 +180,10 @@ class Field extends Component {
       input = (
         <ul className="radioList">
           {options.map(opt => (
-            <ListItem
+            <li
               key={opt.id}
-              disabled={countries ? !includes(countries, opt.country_id) : false}
-            >
+              className={`bu-list-item ${countries && !includes(countries, opt.country_id) ? 'bu-disabled' : ''}`}
+              >
               <input
                 name={field.id}
                 type="checkbox"
@@ -197,9 +195,9 @@ class Field extends Component {
                 checked={value === opt.id}
                 onBlur={this.handleCheckboxChange}
                 onChange={this.handleCheckboxChange}
-              />
+                />
               <label htmlFor={opt.id}>{opt.name}</label>
-            </ListItem>
+            </li>
           ))}
         </ul>
       );
@@ -207,9 +205,9 @@ class Field extends Component {
       input = (
         <ul className="radioList">
           {options.map(opt => (
-            <ListItem
-              key={opt.id || opt}
-              disabled={countries ? !includes(countries, opt.country_id) : false}
+            <li
+            key={opt.id || opt}
+            className={`bu-list-item ${countries && !includes(countries, opt.country_id) ? 'bu-disabled' : ''}`}
             >
               <input
                 name={field.id}
@@ -224,7 +222,7 @@ class Field extends Component {
                 onChange={this.handleChange}
               />
               <label htmlFor={opt.id || opt}>{opt.name || opt}</label>
-            </ListItem>
+            </li>
           ))}
         </ul>
       );

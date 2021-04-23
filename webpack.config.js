@@ -22,8 +22,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, "src"),
-        exclude: /(node_modules|bower_components|build)/,
+        exclude: /(node_modules|build)/,
         use: {
           loader: "babel-loader",
           options: {
@@ -39,13 +38,22 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
           },
           'css-loader',
+          'postcss-loader'
         ],
       }
     ]
   },
   optimization: {
       minimize: true,
-      minimizer: [new TerserPlugin()],
+      minimizer: [new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      })],
   },
   plugins: [  
     new MiniCssExtractPlugin({
