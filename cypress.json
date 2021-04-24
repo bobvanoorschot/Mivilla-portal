@@ -1,4 +1,6 @@
 {
+  "baseUrl": "http://localhost:8080/",
+  "experimentalStudio": true,
   "component": {
     "testFiles": "**/*.test.{js,ts,jsx,tsx}",
     "componentFolder": "src"
