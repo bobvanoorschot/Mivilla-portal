@@ -2,18 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Portal from './index';
 
-// import '@babel/polyfill';
-
-// import 'bukazu-portal-react/build/index.css';
-
-// require('intl');
-// require('intl/locale-data/jsonp/en.js');
-// require('intl/locale-data/jsonp/de.js');
-// require('intl/locale-data/jsonp/nl.js');
-// require('intl/locale-data/jsonp/fr.js');
-// require('intl/locale-data/jsonp/it.js');
-// require('intl/locale-data/jsonp/es.js');
-
 runTheApp();
 function runTheApp() {
   const elem = document.getElementById('bukazu-app');

@@ -4,34 +4,14 @@ import ArrowRight from '../icons/ArrowRight.svg';
 import ArrowLeft from '../icons/ArrowLeft.svg';
 import Reload from '../icons/Reload.svg';
 
-class CalendarHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.goPrev = this.goPrev.bind(this);
-    this.goNext = this.goNext.bind(this);
-    this.resetDate = this.resetDate.bind(this);
-  }
-
-  goPrev() {
-    this.props.onGoPrev();
-  }
-
-  resetDate() {
-    this.props.onReset();
-  }
-
-  goNext() {
-    this.props.onGoNext();
-  }
-
-  render() {
+function CalendarHeader({ onGoPrev, onReset, onGoNext }) { 
     return (
       <div className="calendars-header">
         <div
           className="col"
           style={{ textAlign: 'center' }}
-          onClick={this.goPrev}
-          onKeyPress={this.goPrev}
+          onClick={onGoPrev}
+          onKeyPress={onGoPrev}
           tabIndex={0}
           role="button"
         >
@@ -42,8 +22,8 @@ class CalendarHeader extends Component {
         </div>
         <div
           className="col"
-          onClick={this.resetDate}
-          onKeyPress={this.resetDate}
+          onClick={onReset}
+          onKeyPress={onReset}
           style={{ textAlign: 'center' }}
           tabIndex={0}
           role="button"
@@ -54,8 +34,8 @@ class CalendarHeader extends Component {
         </div>
         <div
           className="col"
-          onClick={this.goNext}
-          onKeyPress={this.goNext}
+          onClick={onGoNext}
+          onKeyPress={onGoNext}
           style={{ textAlign: 'center' }}
           tabIndex={0}
           role="button"
@@ -66,7 +46,7 @@ class CalendarHeader extends Component {
         </div>
       </div>
     );
-  }
+  
 }
 
 CalendarHeader.propTypes = {
