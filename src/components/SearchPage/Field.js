@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import includes from 'array-includes'
+import List from './filters/List';
 
 class Field extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class Field extends Component {
   }
 
   handleCheckboxChange(event) {
-    this.props.onFilterChange(this.props.field.id, event.target.value);
+    this.props.onFilterChange(this.props.field.id, event);
   }
 
   createNumberArray(max_number) {
@@ -78,7 +79,6 @@ class Field extends Component {
     const value = this.props.value;
     const countries = this.props.filters.countries;
     const regions = this.props.filters.regions;
-    //   const layouts = this.props.filters.layouts || [];
     const properties = this.props.filters.properties || [];
 
     moment.updateLocale('nl', {
@@ -177,30 +177,7 @@ class Field extends Component {
         );
       }
     } else if (field.type === 'list') {
-      input = (
-        <ul className="radioList">
-          {options.map(opt => (
-            <li
-              key={opt.id}
-              className={`bu-list-item ${countries && !includes(countries, opt.country_id) ? 'bu-disabled' : ''}`}
-              >
-              <input
-                name={field.id}
-                type="checkbox"
-                id={opt.id}
-                value={opt.id}
-                disabled={
-                  countries ? !includes(countries, opt.country_id) : false
-                }
-                checked={value === opt.id}
-                onBlur={this.handleCheckboxChange}
-                onChange={this.handleCheckboxChange}
-                />
-              <label htmlFor={opt.id}>{opt.name}</label>
-            </li>
-          ))}
-        </ul>
-      );
+      input = <List countries={countries} field={field} options={options} handleCheckboxChange={this.handleCheckboxChange} value={value} />
     } else if (field.type === 'radio') {
       input = (
         <ul className="radioList">

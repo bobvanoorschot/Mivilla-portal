@@ -8,7 +8,7 @@ function CalendarHeader({ onGoPrev, onReset, onGoNext }) {
     return (
       <div className="calendars-header">
         <div
-          className="col"
+          className="col bu-prev"
           style={{ textAlign: 'center' }}
           onClick={onGoPrev}
           onKeyPress={onGoPrev}
@@ -21,7 +21,7 @@ function CalendarHeader({ onGoPrev, onReset, onGoNext }) {
           </div>
         </div>
         <div
-          className="col"
+          className="col bu-reset"
           onClick={onReset}
           onKeyPress={onReset}
           style={{ textAlign: 'center' }}
@@ -33,7 +33,7 @@ function CalendarHeader({ onGoPrev, onReset, onGoNext }) {
           </div>
         </div>
         <div
-          className="col"
+          className="col bu-next"
           onClick={onGoNext}
           onKeyPress={onGoNext}
           style={{ textAlign: 'center' }}

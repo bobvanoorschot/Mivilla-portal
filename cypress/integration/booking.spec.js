@@ -1,6 +1,14 @@
-describe('Filtering objects', () => {
+describe('Create booking', () => {
   before(() => {
-    cy.visit('/')
+    cy.visit('/calendar.html')
+    cy.get('div.col.cell.arrival').first()
+      .click()
+
+
+    cy.get('div.col.cell.departure').first()
+      .click()
+
+    cy.get('.calendar--picker > .button').click()
   })
 
   it('Filter countries', () => {

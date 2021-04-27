@@ -42,6 +42,7 @@ module.exports = {
     ]
   },
   optimization: {
+    usedExports: true,
   },
   plugins: [  
   ],

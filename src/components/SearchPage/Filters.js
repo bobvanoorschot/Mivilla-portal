@@ -73,7 +73,7 @@ class Filters extends Component {
             <Reload />
           </button>
           {searchFields.map(field => (
-            <div key={field.id} className="bu-field">
+            <div key={field.id} className="bu-field" id={field.id}>
               <label
                 style={{
                   width: '100%',
