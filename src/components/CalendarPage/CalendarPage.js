@@ -117,16 +117,12 @@ class CalendarPage extends Component {
     );
   }
 
-  pageRendering() {
+  render() {
     if (this.state.bookingStarted) {
       return this.bookingForm();
     } else {
       return this.calendar();
     }
-  }
-
-  render() {
-    return this.pageRendering();
   }
 }
 

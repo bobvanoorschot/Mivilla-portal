@@ -72,10 +72,9 @@
         
         label {
             padding: 4px 0;
-            cursor: 'pointer';
+            cursor: pointer;
         }
-    }
-    
+    }    
     
     .bu-disabled {
         display: none;

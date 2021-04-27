@@ -612,7 +612,7 @@
     }
 #bukazu-app .radioList .bu-list-item label {
             padding: 4px 0;
-            cursor: 'pointer';
+            cursor: pointer;
         }
 #bukazu-app .radioList .bu-disabled {
         display: none;
