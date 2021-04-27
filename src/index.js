@@ -2,7 +2,7 @@ import React from "react";
 import App from "./components/App";
 import { IntlProvider, addLocaleData } from "react-intl";
 import fetch from "unfetch";
-// import registerServiceWorker from './registerServiceWorker';
+import { TranslationsProvider } from '@eo-locale/react';
 
 import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
@@ -51,11 +51,39 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
     ...itData,
     ...deData,
   ]);
+  const locales = [
+    {
+    language: 'en',
+    messages: en
+  },
+    {
+    language: 'nl',
+    messages: nl
+  },
+    {
+    language: 'de',
+    messages: de
+  },
+    {
+    language: 'fr',
+    messages: fr
+  },
+    {
+    language: 'es',
+    messages: es
+  },
+    {
+    language: 'it',
+    messages: it
+  },
+]
 
   window.__localeId__ = locale;
 
   return (
     <ApolloProvider client={client}>
+      <TranslationsProvider language={locale} locales={locales}>
+
       <IntlProvider locale={locale} messages={messages[locale]}>
         <App
           portalCode={portalCode}
@@ -63,8 +91,9 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
           pageType={pageType}
           locale={locale}
           filters={filters}
-        />
+          />
       </IntlProvider>
+      </TranslationsProvider>
     </ApolloProvider>
   );
 }
