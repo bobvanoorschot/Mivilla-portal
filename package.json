@@ -55,7 +55,7 @@
     "graphql": "^0.13.2",
     "react": "^16.4.1",
     "react-apollo": "^2.1.9",
-    "react-dates": "^18.4.1",
+    "react-date-picker": "^8.1.1",
     "react-intl": "^2.7.2",
     "react-js-pagination": "^3.0.2",
     "unfetch": "^4.1.0"

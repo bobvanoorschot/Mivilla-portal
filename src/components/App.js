@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import Loading from "./icons/loading.svg";
-import "react-dates/initialize";
+
+import 'react-date-picker/dist/DatePicker.css'
+import 'react-calendar/dist/Calendar.css'
 
 import { PORTAL_QUERY } from "../_lib/queries";
 

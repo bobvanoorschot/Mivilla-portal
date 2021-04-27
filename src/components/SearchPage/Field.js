@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SingleDatePicker } from 'react-dates';
-import moment from 'moment';
+import DatePicker from 'react-date-picker';
 import includes from 'array-includes'
 import List from './filters/List';
+import { format } from 'date-fns'
+
 
 class Field extends Component {
   constructor(props) {
@@ -12,9 +13,6 @@ class Field extends Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.state = {
-      focused: false,
-    };
   }
 
   handleChange(event) {
@@ -39,7 +37,7 @@ class Field extends Component {
 
   handleDateChange(date) {
     if (date) {
-      this.props.onFilterChange(this.props.field.id, date.format('YYYY-MM-DD'));
+      this.props.onFilterChange(this.props.field.id, format(date, 'YYYY-MM-DD'));
     } else {
       this.props.onFilterChange(this.props.field.id, '');
     }
@@ -81,15 +79,6 @@ class Field extends Component {
     const regions = this.props.filters.regions;
     const properties = this.props.filters.properties || [];
 
-    moment.updateLocale('nl', {
-      months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split(
-        '_'
-      ),
-      weekdaysMin: 'Zo_Ma_Di_Wo_Do_Vr_Za'.split('_'),
-      week: {
-        dow: 1,
-      },
-    });
     if (field.id === 'properties') {
       let requiredCategories = PortalSite.options.filtersForm.categories;
       input = [];
@@ -222,24 +211,14 @@ class Field extends Component {
       if (value === '' || !value) {
         tempval = null;
       } else {
-        tempval = moment(value);
+        tempval = new Date(value);
       }
       input = (
-        <SingleDatePicker
-          date={tempval}
-          onDateChange={this.handleDateChange}
-          focused={this.state.focused}
-          onFocusChange={({ focused }) =>
-            this.setState({
-              focused,
-            })
-          }
+        <DatePicker 
           id={field.id}
-          displayFormat="DD-MM-YYYY"
-          showClearDate={false}
-          numberOfMonths={1}
-          noBorder={true}
-          placeholder=""
+          onChange={this.handleDateChange}
+          value={tempval}
+          format='dd-MM-y'
         />
       );
     } else {
