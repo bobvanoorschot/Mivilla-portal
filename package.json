@@ -1,6 +1,6 @@
 {
   "name": "bukazu-portal-react",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
@@ -14,11 +14,7 @@
   "peerDependencies": {
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BUKAZU/React-portal.git"
-  },
+  },  
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@babel/plugin-proposal-class-properties": "^7.13.0",

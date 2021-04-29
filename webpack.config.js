@@ -14,7 +14,6 @@ module.exports = {
     path: path.resolve(__dirname, "build"),
     filename: "index.js",
     library: {
-      name: 'Portal',
       type: 'commonjs2'
     }   
   },
@@ -22,6 +21,7 @@ module.exports = {
     contentBase: './build',
     hot: true
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {

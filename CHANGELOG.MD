@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.3.2
+
+- FIX: Not useable as React Component
 ## 1.3.0
 
 - Removed styled-components from project
