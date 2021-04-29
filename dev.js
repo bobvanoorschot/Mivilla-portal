@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Portal from './index';
+import Portal from './src/index';
 
 runTheApp();
 function runTheApp() {

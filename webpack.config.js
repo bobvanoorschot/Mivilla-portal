@@ -7,12 +7,16 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const cssFilename = "index.css";
 
-
 module.exports = {
   entry: "./src/index.js",
+  mode: 'production',
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "index.js",
+    library: {
+      name: 'Portal',
+      type: 'commonjs2'
+    }   
   },
   devServer: {
     contentBase: './build',
@@ -22,7 +26,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|build)/,
+        exclude: [/(node_modules|build)/],
         use: {
           loader: "babel-loader",
           options: {
