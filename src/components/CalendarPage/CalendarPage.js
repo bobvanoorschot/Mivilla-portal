@@ -86,6 +86,11 @@ class CalendarPage extends Component {
 
           return (
             <div id="calendar-container">
+              {Results.length === 0 && (
+                <div>
+                  <FormattedMessage id='no_house_found' />
+                </div>
+              )}
               {Results.map(result => (
                 <div key={result.id}>
                   <div className="house-name">{result.name}</div>

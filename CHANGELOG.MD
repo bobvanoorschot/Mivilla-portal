@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.3
+
+- Add error message if no house is found in calendar mode
+
 ## 1.3.2
 
 - FIX: Not useable as React Component

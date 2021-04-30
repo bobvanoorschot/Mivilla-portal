@@ -104,5 +104,6 @@
     "house.pick_your_arrivaldate_in_the_calendar": "Kies een aankomstdatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
-    "no": "Nee"
+    "no": "Nee",
+    "no_house_found": "Geen object gevonden voor deze combinatie van Portal-code en Object-code"
   }
