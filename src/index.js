@@ -25,7 +25,13 @@ import it from "./locales/it.json";
 
 import "./styles/main.css";
 
-function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) {  
+function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) { 
+  
+  if (!locale) {
+    console.warn("No locale is set default to English")
+    locale = "en";
+  }
+  
   const httpLink = createHttpLink({
     uri: api_url,
     fetch: fetch,

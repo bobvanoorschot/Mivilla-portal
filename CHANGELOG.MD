@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.3.4
+
+- Backu language for if no language is set
 ## 1.3.3
 
 - Add error message if no house is found in calendar mode
