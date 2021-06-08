@@ -16,6 +16,7 @@ import SuccessMessage from "./formParts/SuccessMessage";
 import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
 import Description from "./Summary/Description";
 import includes from "array-includes";
+import { ApiError } from "../Error";
 
 function byString(o, s) {
   s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
@@ -333,15 +334,15 @@ class FormCreator extends React.Component {
                     this.props.onReturn();
                   }, 15000);
                 }
-              });
+              }).catch(err => {
+                
+              })
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
                 {loading && <div className="return-message">Loading...</div>}
                 {error && (
-                  <Modal show={true}>
-                    <FormattedMessage id="something_went_wrong_please_try_again" />
-                  </Modal>
+                  <ApiError errors={error} modal={true} />
                 )}
                 {data && (
                   <Modal show={true}>
@@ -458,10 +459,7 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                     {errors.max_persons && (
-                      <div className="error-message">{errors.max_persons}</div>
-                    )}
-                    {errors.max_persons && (
-                      <div className="error-message">{errors.max_persons}</div>
+                      <div className="error-message persons">{errors.max_persons}</div>
                     )}
                   </div>
                   <Discount errors={errors} house={house} />
@@ -469,7 +467,7 @@ class FormCreator extends React.Component {
                   <Insurances house={house} />
 
                   {bookingPrice.optional_house_costs.length > 0 ? (
-                    <div className="form-section">
+                    <div className="form-section optional_house_costs">
                       <h2>
                         <FormattedMessage id="extra_costs_bookable" />
                       </h2>
