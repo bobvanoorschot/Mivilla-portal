@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import Calendar from "./Calendar";
 import BookingForm from "./BookingForm";
 import Loading from "../icons/loading.svg";
+import { ApiError } from "../Error";
 
 export const HOUSE_QUERY = gql`
   query PortalSiteHousesQuery($id: ID!, $house_id: String!) {
@@ -73,7 +74,9 @@ class CalendarPage extends Component {
               </div>
             );
           if (error) {
-            return <div>Error</div>;
+            return <div>Something went wrong:
+              <ApiError errors={error} />
+            </div>;
           }
 
           const Results = data.PortalSite.houses;
