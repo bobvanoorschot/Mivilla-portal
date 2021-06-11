@@ -1,3 +1,4 @@
-import ApiError from './ApiError'
+import ApiError from './ApiError';
+import IntegrationError from './IntegrationError';
 
-export {ApiError}
+export { ApiError, IntegrationError };
