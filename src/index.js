@@ -24,12 +24,16 @@ import es from "./locales/es.json";
 import it from "./locales/it.json";
 
 import "./styles/main.css";
+import { IntegrationError } from "./components/Error";
 
 function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) { 
-  
+  const errors = IntegrationError({ portalCode, pageType, locale, filters })
+  if (errors) {
+    return errors
+  }  
+
   if (!locale) {
-    console.warn("No locale is set default to English")
-    locale = "en";
+    locale = 'en'
   }
   
   const httpLink = createHttpLink({
@@ -59,6 +63,8 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
   ]);
 
   window.__localeId__ = locale;
+
+
 
   return (
     <ApolloProvider client={client}>

@@ -1,13 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import Loading from "../icons/loading.svg";
-import format from "../../_lib/format";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { createPeronsArray } from "./formParts/BookingHelpers";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import Loading from '../icons/loading.svg';
+import format from '../../_lib/format';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { createPeronsArray } from './formParts/BookingHelpers';
+import { ApiError } from '../Error';
 
-const dateFormat = "dddd DD MMMM YYYY";
+const dateFormat = 'dddd DD MMMM YYYY';
 
 export const CALENDAR_QUERY = gql`
   query BookingPriceQuery(
@@ -36,11 +37,11 @@ class PriceField extends React.Component {
     super(props);
 
     this.state = {
-      persons: 2
+      persons: 2,
     };
   }
 
-  changePersons = e => {
+  changePersons = (e) => {
     this.setState({ persons: e.target.value });
   };
 
@@ -52,7 +53,7 @@ class PriceField extends React.Component {
       endsAt,
       locale,
       house,
-      disabled
+      disabled,
     } = this.props;
     const { persons } = this.state;
 
@@ -95,11 +96,11 @@ class PriceField extends React.Component {
               value={persons}
               onChange={this.changePersons}
             >
-              {adults.map(person => (
+              {adults.map((person) => (
                 <FormattedMessage
                   id="persons"
                   key={person}
-                  children={text => (
+                  children={(text) => (
                     <option value={person} key={person}>
                       {person} {text}
                     </option>
@@ -119,7 +120,7 @@ class PriceField extends React.Component {
                 starts_at: startsAt,
                 ends_at: endsAt,
                 persons: parseInt(persons),
-                locale: locale
+                locale: locale,
               }}
             >
               {({ loading, data, error }) => {
@@ -129,16 +130,19 @@ class PriceField extends React.Component {
                       <Loading />
                     </div>
                   );
-                if (error){
-                  return <div className="price-overview--build">Error</div>};
+                if (error) {
+                  return (
+                    <div className="price-overview--build">
+                      <ApiError errors={error}></ApiError>
+                    </div>
+                  );
+                }
                 const result = data.PortalSite.houses[0].booking_price;
                 return (
                   <>
-        
-
                     <div className="price-overview--book">
                       <div className="price">
-                        €{" "}
+                        €{' '}
                         <FormattedNumber
                           value={Math.round(result.total_price)}
                           minimumFractionDigits={2}
@@ -164,8 +168,8 @@ class PriceField extends React.Component {
           className="button"
           disabled={!disabled}
           onClick={() => {
-            if (startsAt && endsAt) { 
-              this.props.onStartBooking("false", persons);
+            if (startsAt && endsAt) {
+              this.props.onStartBooking('false', persons);
             }
           }}
         >
@@ -182,7 +186,7 @@ PriceField.propTypes = {
   startsAt: PropTypes.string,
   endsAt: PropTypes.string,
   onStartBooking: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired
+  locale: PropTypes.string.isRequired,
 };
 
 export default PriceField;

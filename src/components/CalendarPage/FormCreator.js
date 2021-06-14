@@ -16,23 +16,11 @@ import SuccessMessage from "./formParts/SuccessMessage";
 import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
 import Description from "./Summary/Description";
 import includes from "array-includes";
-
-function byString(o, s) {
-  s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
-  s = s.replace(/^\./, ""); // strip a leading dot
-  var a = s.split(".");
-  for (var i = 0, n = a.length; i < n; ++i) {
-    var k = a[i];
-    if (k in o) {
-      o = o[k];
-    } else {
-      return;
-    }
-  }
-  return o;
-}
+import { ApiError } from "../Error";
+import { createPeronsArray, initializeBookingFields, byString } from "./formParts/BookingHelpers"
 
 class FormCreator extends React.Component {
+
   state = {
     max_persons: this.props.house.persons,
     adults: 1,
@@ -43,12 +31,9 @@ class FormCreator extends React.Component {
     bookingFields: this.props.options.bookingFields || DefaultBookingFields,
   };
 
-  createPeronsArray(persons) {
-    return Array.apply(null, { length: persons + 1 }).map(Number.call, Number);
-  }
-
   validate = (values) => {
-    const { babies_extra } = this.props.house;
+    const { babies_extra, max_persons } = this.props.house;
+
     let errors = {};
 
     let babies = Number(values.babies) - Number(babies_extra);
@@ -83,8 +68,7 @@ class FormCreator extends React.Component {
   };
 
   calculateCost(cost, values) {
-    const bookingPrice = this.props.house.booking_price;
-    const { babies_extra } = this.props.house;
+    const { babies_extra, booking_price } = this.props.house;
     const { children, adults, babies } = values;
     let babiesNumber = Number(babies) - babies_extra;
     if (babiesNumber < 0) {
@@ -97,7 +81,7 @@ class FormCreator extends React.Component {
       cost.amount,
       Number(values.costs[cost.id]),
       Number(persons),
-      bookingPrice.nights,
+      booking_price.nights,
       this.calculateRentPrice(values).discounted_price
     );
   }
@@ -152,17 +136,7 @@ class FormCreator extends React.Component {
       insurances.push(ins);
     }
     return insurances;
-  }
-
-  translatedOption(id, value) {
-    return (
-      <FormattedMessage id={id}>
-        {(formattedMessage) => (
-          <option value={value}>{formattedMessage}</option>
-        )}
-      </FormattedMessage>
-    );
-  }
+  }  
 
   calculateRentPrice(values) {
     const {
@@ -249,18 +223,11 @@ class FormCreator extends React.Component {
     return total;
   }
 
-  initializeBookingFields() {
-    const fields = this.state.bookingFields;
-    let obj = {};
-    fields.map((field) => {
-      obj[field.id] = "";
-    });
-    return obj;
-  }
-
   render() {
-    let adults = this.createPeronsArray(this.state.max_persons);
-    const children = this.createPeronsArray(this.state.max_persons - 1);
+    const {max_persons, bookingFields} = this.state
+
+    let adults = createPeronsArray(max_persons);
+    const children = createPeronsArray(max_persons - 1);
     const { house, locale, PortalSite, options, booking } = this.props;
     const bookingPrice = house.booking_price;
 
@@ -270,7 +237,7 @@ class FormCreator extends React.Component {
     for (const val of bookingPrice.optional_house_costs) {
       costs[val.id] = "0";
     }
-    const optBookingFieldsInitialized = this.initializeBookingFields();
+    const optBookingFieldsInitialized = initializeBookingFields(bookingFields);
 
     return (
       <Mutation mutation={CREATE_BOOKING_MUTATION}>
@@ -278,7 +245,7 @@ class FormCreator extends React.Component {
           <Formik
             validate={this.validate}
             initialValues={{
-              ...this.props.booking,
+              ...booking,
               ...optBookingFieldsInitialized,
               costs,
               adults: booking.persons,
@@ -333,14 +300,16 @@ class FormCreator extends React.Component {
                     this.props.onReturn();
                   }, 15000);
                 }
-              });
+              }).catch(err => {
+                
+              })
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
                 {loading && <div className="return-message">Loading...</div>}
                 {error && (
                   <Modal show={true}>
-                    <FormattedMessage id="something_went_wrong_please_try_again" />
+                    <ApiError errors={error} modal={true} />
                   </Modal>
                 )}
                 {data && (
@@ -458,10 +427,7 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                     {errors.max_persons && (
-                      <div className="error-message">{errors.max_persons}</div>
-                    )}
-                    {errors.max_persons && (
-                      <div className="error-message">{errors.max_persons}</div>
+                      <div className="error-message persons">{errors.max_persons}</div>
                     )}
                   </div>
                   <Discount errors={errors} house={house} />
@@ -469,7 +435,7 @@ class FormCreator extends React.Component {
                   <Insurances house={house} />
 
                   {bookingPrice.optional_house_costs.length > 0 ? (
-                    <div className="form-section">
+                    <div className="form-section optional_house_costs">
                       <h2>
                         <FormattedMessage id="extra_costs_bookable" />
                       </h2>
@@ -531,7 +497,7 @@ class FormCreator extends React.Component {
                                   component="select"
                                   name={`costs[${cost.id}]`}
                                 >
-                                  {this.createPeronsArray(
+                                  {createPeronsArray(
                                     cost.max_available
                                   ).map((opt) => {
                                     return (

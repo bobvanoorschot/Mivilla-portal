@@ -22,7 +22,6 @@ function runApp(element) {
   const locale = element.getAttribute('language');
   let filters = element.getAttribute('filters');
 
-  // console.log({ filters });
   if (filters) {
     filters = JSON.parse(filters);
   } else {

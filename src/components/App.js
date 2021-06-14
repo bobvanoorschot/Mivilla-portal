@@ -12,6 +12,7 @@ import SearchPage from "./SearchPage/SearchPage";
 import CalendarPage from "./CalendarPage/CalendarPage";
 import ReviewsPage from "./ReviewsPage/ReviewsPage";
 import SafeBooking from "./SafeBooking";
+import { ApiError } from "./Error";
 
 // import 'react-dates/lib/css/_datepicker.css';
 
@@ -62,7 +63,7 @@ class App extends Component {
                 </div>
               );
             if (error) {
-              return <div>Error</div>;
+              return <div><ApiError errors={{...error}} /></div>;
             }
 
             const PortalSite = data.PortalSite;
