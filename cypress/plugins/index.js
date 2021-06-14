@@ -5,7 +5,7 @@ module.exports = (on, config) => {
     const { startDevServer } = require('@cypress/webpack-dev-server')
 
     // Your project's Webpack configuration
-    const webpackConfig = require('../../webpack.config.js')
+    const webpackConfig = require('../../webpack.config.dev.js')
 
     on('dev-server:start', (options) =>
       startDevServer({ options, webpackConfig })

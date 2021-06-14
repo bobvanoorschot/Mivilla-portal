@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import App from "./components/App";
-import { IntlProvider } from "react-intl";
-import { addLocaleData } from "react-intl";
+import { IntlProvider, addLocaleData } from "react-intl";
 import fetch from "unfetch";
 // import registerServiceWorker from './registerServiceWorker';
 
@@ -24,54 +23,56 @@ import fr from "./locales/fr.json";
 import es from "./locales/es.json";
 import it from "./locales/it.json";
 
-import "./index.css";
+import "./styles/main.css";
 
-class Portal extends Component {
-  render() {
-    const { portalCode, objectCode, pageType, locale, filters, api_url } = this.props;
-
-    const httpLink = createHttpLink({
-      uri: api_url,
-      fetch: fetch,
-    });
-
-    const client = new ApolloClient({
-      link: httpLink,
-      cache: new InMemoryCache(),
-      defaultOptions: {
-        watchQuery: {
-          fetchPolicy: "cache-and-network",
-        },
-      },
-    });
-
-    const messages = { en, nl, de, fr, es, it };
-
-    addLocaleData([
-      ...enData,
-      ...frData,
-      ...esData,
-      ...nlData,
-      ...itData,
-      ...deData,
-    ]);
-
-    window.__localeId__ = locale;
-
-    return (
-      <ApolloProvider client={client}>
-        <IntlProvider locale={locale} messages={messages[locale]}>
-          <App
-            portalCode={portalCode}
-            objectCode={objectCode}
-            pageType={pageType}
-            locale={locale}
-            filters={filters}
-          />
-        </IntlProvider>
-      </ApolloProvider>
-    );
+function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) { 
+  
+  if (!locale) {
+    console.warn("No locale is set default to English")
+    locale = "en";
   }
+  
+  const httpLink = createHttpLink({
+    uri: api_url,
+    fetch: fetch,
+  });
+
+  const client = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: "cache-and-network",
+      },
+    },
+  });
+
+  const messages = { en, nl, de, fr, es, it };
+
+  addLocaleData([
+    ...enData,
+    ...frData,
+    ...esData,
+    ...nlData,
+    ...itData,
+    ...deData,
+  ]);
+
+  window.__localeId__ = locale;
+
+  return (
+    <ApolloProvider client={client}>
+      <IntlProvider locale={locale} messages={messages[locale]}>
+        <App
+          portalCode={portalCode}
+          objectCode={objectCode}
+          pageType={pageType}
+          locale={locale}
+          filters={filters}
+        />
+      </IntlProvider>
+    </ApolloProvider>
+  );
 }
 
 Portal.defaultProps = {

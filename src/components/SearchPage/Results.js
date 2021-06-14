@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { FormattedMessage } from 'react-intl';
-import * as Sentry from "@sentry/react";
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import Loading from '../icons/loading.svg';
 import SingleResult from './SingleResult';
@@ -10,18 +9,7 @@ import Paginator from './Paginator';
 
 import { HOUSES_QUERY } from '../../_lib/SearchQueries';
 
-class Results extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      totalAmount: 10,
-    };
-  }
-
-  render() {
-    const { filters, PortalSite, limit, skip, locale } = this.props;
-
+function Results({ filters, PortalSite, limit, skip, locale, onPageChange, activePage }) {
     let min_nights = null;
     if (filters.departure_date && filters.arrival_date) {
       min_nights = differenceInCalendarDays(
@@ -67,7 +55,6 @@ class Results extends Component {
               </div>
             );
           if (error) {
-            Sentry.captureException(error);
             return <div>Error</div>;
           };
 
@@ -84,9 +71,9 @@ class Results extends Component {
             >
               <Paginator
                 variables={variables}
-                activePage={this.props.activePage}
+                activePage={activePage}
                 limit={limit}
-                onPageChange={this.props.onPageChange}
+                onPageChange={onPageChange}
               />{' '}
               {Results.length === 0 ? (
                 <div className="bu-noresults">
@@ -102,16 +89,16 @@ class Results extends Component {
               ))}
               <Paginator
                 variables={variables}
-                activePage={this.props.activePage}
+                activePage={activePage}
                 limit={limit}
-                onPageChange={this.props.onPageChange}
+                onPageChange={onPageChange}
               />
             </div>
           );
         }}
       </Query>
     );
-  }
+  
 }
 
 Results.propTypes = {

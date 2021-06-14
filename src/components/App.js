@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import Loading from "./icons/loading.svg";
-import "react-dates/initialize";
-import * as Sentry from "@sentry/react";
+
+import 'react-date-picker/dist/DatePicker.css'
+import 'react-calendar/dist/Calendar.css'
 
 import { PORTAL_QUERY } from "../_lib/queries";
 
@@ -61,7 +62,6 @@ class App extends Component {
                 </div>
               );
             if (error) {
-              Sentry.captureException(error);
               return <div>Error</div>;
             }
 

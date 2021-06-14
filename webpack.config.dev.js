@@ -1,5 +1,5 @@
-process.env.BABEL_ENV = "production";
-process.env.NODE_ENV = "production";
+process.env.BABEL_ENV = "development";
+process.env.NODE_ENV = "development";
 
 var path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -8,25 +8,22 @@ const TerserPlugin = require("terser-webpack-plugin");
 const cssFilename = "index.css";
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./dev.js",
   mode: 'production',
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "index.js",
-    library: {
-      type: 'commonjs2'
-    }   
   },
   devServer: {
     contentBase: './build',
     hot: true
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: [/(node_modules|build)/],
+        include: path.resolve(__dirname, "src"),
+        exclude: /(node_modules|bower_components|build)/,
         use: {
           loader: "babel-loader",
           options: {
@@ -48,7 +45,7 @@ module.exports = {
     ]
   },
   optimization: {
-      minimize: true,
+    minimize: true,
       minimizer: [new TerserPlugin({
         parallel: true,
         terserOptions: {
@@ -64,4 +61,7 @@ module.exports = {
       filename: cssFilename
     })
   ],
+  externals: {
+    react: "commonjs react"
+  }
 };

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SingleDatePicker } from 'react-dates';
-import moment from 'moment';
-import './Field.css';
-import ListItem from './inputs/listItem.css';
+import DatePicker from 'react-date-picker';
 import includes from 'array-includes'
+import List from './filters/List';
+import { format } from 'date-fns'
+
 
 class Field extends Component {
   constructor(props) {
@@ -13,9 +13,6 @@ class Field extends Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.state = {
-      focused: false,
-    };
   }
 
   handleChange(event) {
@@ -23,7 +20,7 @@ class Field extends Component {
   }
 
   handleCheckboxChange(event) {
-    this.props.onFilterChange(this.props.field.id, event.target.value);
+    this.props.onFilterChange(this.props.field.id, event);
   }
 
   createNumberArray(max_number) {
@@ -40,7 +37,7 @@ class Field extends Component {
 
   handleDateChange(date) {
     if (date) {
-      this.props.onFilterChange(this.props.field.id, date.format('YYYY-MM-DD'));
+      this.props.onFilterChange(this.props.field.id, format(date, 'YYYY-MM-DD'));
     } else {
       this.props.onFilterChange(this.props.field.id, '');
     }
@@ -80,18 +77,8 @@ class Field extends Component {
     const value = this.props.value;
     const countries = this.props.filters.countries;
     const regions = this.props.filters.regions;
-    //   const layouts = this.props.filters.layouts || [];
     const properties = this.props.filters.properties || [];
 
-    moment.updateLocale('nl', {
-      months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split(
-        '_'
-      ),
-      weekdaysMin: 'Zo_Ma_Di_Wo_Do_Vr_Za'.split('_'),
-      week: {
-        dow: 1,
-      },
-    });
     if (field.id === 'properties') {
       let requiredCategories = PortalSite.options.filtersForm.categories;
       input = [];
@@ -179,37 +166,14 @@ class Field extends Component {
         );
       }
     } else if (field.type === 'list') {
-      input = (
-        <ul className="radioList">
-          {options.map(opt => (
-            <ListItem
-              key={opt.id}
-              disabled={countries ? !includes(countries, opt.country_id) : false}
-            >
-              <input
-                name={field.id}
-                type="checkbox"
-                id={opt.id}
-                value={opt.id}
-                disabled={
-                  countries ? !includes(countries, opt.country_id) : false
-                }
-                checked={value === opt.id}
-                onBlur={this.handleCheckboxChange}
-                onChange={this.handleCheckboxChange}
-              />
-              <label htmlFor={opt.id}>{opt.name}</label>
-            </ListItem>
-          ))}
-        </ul>
-      );
+      input = <List countries={countries} field={field} options={options} handleCheckboxChange={this.handleCheckboxChange} value={value} />
     } else if (field.type === 'radio') {
       input = (
         <ul className="radioList">
           {options.map(opt => (
-            <ListItem
-              key={opt.id || opt}
-              disabled={countries ? !includes(countries, opt.country_id) : false}
+            <li
+            key={opt.id || opt}
+            className={`bu-list-item ${countries && !includes(countries, opt.country_id) ? 'bu-disabled' : ''}`}
             >
               <input
                 name={field.id}
@@ -224,7 +188,7 @@ class Field extends Component {
                 onChange={this.handleChange}
               />
               <label htmlFor={opt.id || opt}>{opt.name || opt}</label>
-            </ListItem>
+            </li>
           ))}
         </ul>
       );
@@ -247,24 +211,14 @@ class Field extends Component {
       if (value === '' || !value) {
         tempval = null;
       } else {
-        tempval = moment(value);
+        tempval = new Date(value);
       }
       input = (
-        <SingleDatePicker
-          date={tempval}
-          onDateChange={this.handleDateChange}
-          focused={this.state.focused}
-          onFocusChange={({ focused }) =>
-            this.setState({
-              focused,
-            })
-          }
+        <DatePicker 
           id={field.id}
-          displayFormat="DD-MM-YYYY"
-          showClearDate={false}
-          numberOfMonths={1}
-          noBorder={true}
-          placeholder=""
+          onChange={this.handleDateChange}
+          value={tempval}
+          format='dd-MM-y'
         />
       );
     } else {

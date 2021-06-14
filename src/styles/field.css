@@ -1,13 +1,32 @@
-#bukazu-app input,
-#bukazu-app select {
-    appearance: none;
-    border: 1px solid rgba(69, 74, 83, 0.2);
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 4px 0 8px;
+#bukazu-app {
+    input, select {
+        appearance: none;
+        border: 1px solid rgba(69, 74, 83, 0.2);
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 4px 0 8px;
+    }
+    .react-date-picker__wrapper {
+        border: 1px solid rgba(69, 74, 83, 0.2);
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 4px 0 8px;
+    }
+    .react-date-picker__inputGroup {
+        box-sizing: content-box;
+        input {
+            padding: 0;
+        }
+        input.react-date-picker__inputGroup__input {
+            padding: 0 1px;
+            border: 0;
+            box-sizing: content-box;
+            appearance: textfield;
+        }
+    }
 }
 
 #bukazu-app input[type=radio],
@@ -65,4 +84,18 @@
 #bukazu-app .radioList {
     padding: 0;
     list-style: none;
+    .bu-list-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        
+        label {
+            padding: 4px 0;
+            cursor: pointer;
+        }
+    }    
+    
+    .bu-disabled {
+        display: none;
+    }
 }

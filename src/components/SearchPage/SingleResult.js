@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import ArrowRight from '../icons/ArrowRight.svg';
 
-const SingleResult = ({ result, options }) => {
+function SingleResult({ result, options }) {
   let thisOptions = options || {};
 
   return (
