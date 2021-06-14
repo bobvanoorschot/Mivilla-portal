@@ -9,7 +9,7 @@ const cssFilename = "index.css";
 
 module.exports = {
   entry: "./dev.js",
-  mode: 'production',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "index.js",
@@ -22,12 +22,11 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, "src"),
         exclude: /(node_modules|bower_components|build)/,
         use: {
           loader: "babel-loader",
           options: {
-            compact: true,
+            compact: false,
             presets: ['@babel/react', '@babel/env']
           }
         }
@@ -45,23 +44,10 @@ module.exports = {
     ]
   },
   optimization: {
-    minimize: true,
-      minimizer: [new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          format: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      })],
   },
   plugins: [  
     new MiniCssExtractPlugin({
       filename: cssFilename
     })
   ],
-  externals: {
-    react: "commonjs react"
-  }
 };

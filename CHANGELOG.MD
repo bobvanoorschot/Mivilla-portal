@@ -1,8 +1,16 @@
 # CHANGELOG
 
+## Next release
+
+
+## 1.3.5
+
+- Detailed error messages added for better understanding what went wrong.
+- Check for correct integration of Portal into website
+- Mobile styling issues
 ## 1.3.4
 
-- Backu language for if no language is set
+- Backup language for if no language is set
 ## 1.3.3
 
 - Add error message if no house is found in calendar mode
