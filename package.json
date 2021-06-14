@@ -1,11 +1,12 @@
 {
   "name": "bukazu-portal-react",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
   "scripts": {
     "build": "webpack",
+    "staging": "webpack --config webpack.config.dev",
     "start": "webpack serve --open --config webpack.config.dev",
     "test": "cypress open"
   },

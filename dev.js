@@ -35,6 +35,7 @@ function runApp(element) {
       pageType={pageType}
       locale={locale}
       filters={filters}
+      api_url="https://api.bukazu.com/graphql"
     />,
     element
   );
