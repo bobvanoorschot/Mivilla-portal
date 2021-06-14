@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack serve --open --config webpack.config.dev",
-    "test": "cypress open-ct"
+    "test": "cypress open"
   },
   "author": "Bob van Oorschot",
   "license": "MIT",

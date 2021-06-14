@@ -46,6 +46,8 @@ describe('Create booking', () => {
     cy.get(':nth-child(3) > input').type('test@example.com');
 
     cy.get('.button').click()
+
+    expect(cy.get('.bukazu-modal .bukazu-error-message')).to.exist
   })
 
 })

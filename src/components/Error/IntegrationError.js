@@ -9,13 +9,13 @@ export default function IntegrationError({
   let errors = [];
 
   if (!portalCode) {
-    message = 'No portal code is specified, so portal is not working';
+    let message = 'No portal code is specified, so portal is not working';
     console.error(message);
     errors.push(message);
   }
   
   if (pageType && pageType !== 'reviews') {
-    message = `'${pageType}' is not a valid page`;
+    let message = `'${pageType}' is not a valid page`;
     console.error(message);
     errors.push(message);
   }
@@ -29,7 +29,7 @@ export default function IntegrationError({
   }
   
   if (filters && !isObject(filters)) {
-    message = 'Filters variable is not an object';
+    let message = 'Filters variable is not an object';
     console.error(message, filters);
   }
 
