@@ -2,11 +2,11 @@
 
 ## Next release
 
-- Detailed error messages added for better understanding what went wrong.
-- Check for correct integration of Portal into website
 
 ## 1.3.5
 
+- Detailed error messages added for better understanding what went wrong.
+- Check for correct integration of Portal into website
 - Mobile styling issues
 ## 1.3.4
 
