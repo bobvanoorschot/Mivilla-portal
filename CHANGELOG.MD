@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Next release
+
+- Detailed error messages added for better understanding what went wrong.
+- Check for correct integration of Portal into website
+
 ## 1.3.5
 
 - Mobile styling issues
