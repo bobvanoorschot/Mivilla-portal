@@ -7,6 +7,8 @@ import BookingForm from './BookingForm';
 import Loading from '../icons/loading.svg';
 import { ApiError } from '../Error';
 
+import { FormattedMessage } from 'react-intl';
+
 export const HOUSE_QUERY = gql`
   query PortalSiteHousesQuery($id: ID!, $house_id: String!) {
     PortalSite(id: $id) {

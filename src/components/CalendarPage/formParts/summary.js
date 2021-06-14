@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import format from '../../../_lib/format';
+import { Query } from 'react-apollo';
+import { ApiError } from '../../Error';
 
 export const Summary = ({ house, bookingPrice }) => (
   <React.Fragment>
@@ -33,6 +35,16 @@ export const Summary = ({ house, bookingPrice }) => (
           </tr>
         </tbody>
       </table>
+      <Query query={query}>
+        {({ loading, error, data}) => {
+          if (loading) return <div>Loading...</div>
+          if (error) return <ApiError errors={error} />
+
+          return (
+            <div>Costs summary</div>
+          )
+        }}
+      </Query>
     </div>
   </React.Fragment>
 );

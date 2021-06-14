@@ -4,9 +4,8 @@ import Modal from '../CalendarPage/formParts/Modal';
 import { FormattedMessage } from 'react-intl';
 
 function ApiError(errors, modal) {
-  console.error({ errors });
   const errorMessage = (
-    <div class="bukazu-error-message">
+    <div className="bukazu-error-message">
       <h2>
         <FormattedMessage id="something_went_wrong_please_try_again" />
       </h2>

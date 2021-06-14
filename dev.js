@@ -28,6 +28,8 @@ function runApp(element) {
     filters = {};
   }
 
+  console.log({ env: process.env.REACT_APP_BACKEND_URL });
+
   ReactDOM.render(
     <Portal
       portalCode={portalCode}
@@ -35,6 +37,7 @@ function runApp(element) {
       pageType={pageType}
       locale={locale}
       filters={filters}
+      api_url={process.env.REACT_APP_BACKEND_URL}
     />,
     element
   );

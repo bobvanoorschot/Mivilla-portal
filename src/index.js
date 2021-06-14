@@ -83,7 +83,7 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
 
 Portal.defaultProps = {
   pageType: null,
-  api_url: "https://bukazu.eu/graphql"
+  api_url: "https://stage-api.bukazu.com/graphql"
 };
 
 export default Portal;

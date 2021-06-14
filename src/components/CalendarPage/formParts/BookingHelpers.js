@@ -24,13 +24,3 @@ export function byString(o, s) {
   }
   return o;
 }
-
-export function translatedOption(id, value) {
-  return (
-    <FormattedMessage id={id}>
-      {(formattedMessage) => (
-        <option value={value}>{formattedMessage}</option>
-      )}
-    </FormattedMessage>
-  );
-}
