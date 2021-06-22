@@ -1,6 +1,6 @@
 import React from "react";
 
-const Cost = ({ values, calculateCost, cost }) => {
+function Cost({ values, calculateCost, cost }) {
   let val;
   
   if (cost.on_site) {

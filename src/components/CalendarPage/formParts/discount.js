@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { Field } from "formik";
-import Modal from "./Modal";
 
 const Discount = ({ errors, house }) => {
   if (house.discounts && house.discounts !== "0") {
