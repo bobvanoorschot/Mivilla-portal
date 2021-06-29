@@ -17,9 +17,9 @@ import Description from './Summary/Description';
 import includes from 'array-includes';
 import { ApiError } from '../Error';
 import {
-  createPeronsArray,
   initializeBookingFields,
   byString,
+  validateAge,
 } from './formParts/BookingHelpers';
 import OptionalCosts from './formParts/OptionalCosts';
 import Guests from './formParts/Guests';
@@ -33,7 +33,7 @@ class FormCreator extends React.Component {
   };
 
   validate = (values) => {
-    const { babies_extra, max_persons } = this.props.house;
+    const { babies_extra, persons } = this.props.house;
 
     let errors = {};
 
@@ -61,13 +61,32 @@ class FormCreator extends React.Component {
         <FormattedMessage id="you_need_to_give_reason" />
       );
     }
-    if (values.persons > max_persons) {
+    if (values.persons > persons) {
       errors.max_persons = <FormattedMessage id="max_persons_reached" />;
     }
-    
-    if (values.cancel_insurance !== 0) {
-      errors.extra_flields.date_of_birth = <FormattedMessage id="date_of_birth" />;
-      
+
+    if (
+      values.cancel_insurance !== 0 &&
+      validateAge(values.extra_fields?.date_of_birth)
+    ) {
+      errors['extra_fields.date_of_birth'] = (
+        <FormattedMessage id="at_least_18y_old" />
+      );
+      errors['insurances'] = (
+        <FormattedMessage id="at_least_18y_old" />
+      );
+    }
+
+    if (
+      values.cancel_insurance !== 0 &&
+      !includes(['nl', 'de', 'be'], values.country)
+    ) {
+      errors['insurances'] = (
+        <FormattedMessage id="can_only_take_insurance_in_de_be_nl" />
+      );
+      errors['country'] = (
+        <FormattedMessage id="can_only_take_insurance_in_de_be_nl" />
+      );
     }
 
     return errors;
@@ -189,7 +208,7 @@ class FormCreator extends React.Component {
   }
 
   render() {
-    const { max_persons, bookingFields } = this.state;
+    const { bookingFields } = this.state;
 
     const { house, locale, PortalSite, options, booking } = this.props;
     const bookingPrice = house.booking_price;
@@ -310,7 +329,6 @@ class FormCreator extends React.Component {
                   <Discount errors={errors} house={house} />
 
                   <Insurances house={house} values={values} />
-              
 
                   <OptionalCosts costs={bookingPrice.optional_house_costs} />
 

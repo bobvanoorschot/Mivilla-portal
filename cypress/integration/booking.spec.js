@@ -32,7 +32,7 @@ describe('Create booking', () => {
 
     cy.get('select[name=cancel_insurance]').select('1');
     
-    expect(cy.get('.insurances > input[type=date]')).to.exist
+    expect(cy.get('#insurances > input[type=date]')).to.exist
 
     
   })

@@ -6,14 +6,7 @@ import Modal from '../../Modal';
 import Icon from '../../icons/info.svg';
 import CancelInsuranceText from './CancelInsuranceText';
 import { Date } from '../FormItems';
-
-function translatedOption(id, value) {
-  return (
-    <FormattedMessage id={id}>
-      {(formattedMessage) => <option value={value}>{formattedMessage}</option>}
-    </FormattedMessage>
-  );
-}
+import { translatedOption } from './BookingHelpers'
 
 function cancelInsurance(house) {
   if (house.cancel_insurance) {
@@ -37,10 +30,9 @@ function cancelInsurance(house) {
 }
 
 export const Insurances = ({ house, values }) => {
-  console.log({ values });
   if (house.cancel_insurance) {
     return (
-      <div className="form-section">
+      <div className="form-section" id="insurances">
         <h2>
           <FormattedMessage id="insurances" />
         </h2>
@@ -60,20 +52,6 @@ export const Insurances = ({ house, values }) => {
   } else {
     return <div />;
   }
-};
-
-// Synchronous validation function
-
-const validate = (value) => {
-  let errorMessage;
-  console.log({ value });
-  // if () {
-
-  //   errorMessage = 'Invalid email address';
-
-  // }
-
-  return errorMessage;
 };
 
 Insurances.propTypes = {

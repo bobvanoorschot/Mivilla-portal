@@ -1,8 +1,6 @@
 import React from 'react';
 import { useField } from 'formik';
 import { FormattedMessage } from 'react-intl';
-// import DatePicker from 'react-date-picker';
-// import { format } from 'date-fns';
 
 export default function Date({ label, description, options, ...props }) {
   const [field, meta, helpers] = useField(props);
