@@ -54,8 +54,8 @@ export default function Guests({ options, house }) {
           description={
             <div className="age-description">
               <FormattedMessage
-                id="children_from"
-                defaultMessage="{from} - {til}"
+                id="babies_from"
+                defaultMessage="til {babies_til}"
                 values={{
                   babies: options.bookingForm
                     ? options.bookingForm.babies_til || '2'

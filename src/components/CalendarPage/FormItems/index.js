@@ -1,3 +1,4 @@
 import NumberSelect from "./NumberSelect";
+import Date from "./Date";
 
-export { NumberSelect }
+export { NumberSelect, Date }

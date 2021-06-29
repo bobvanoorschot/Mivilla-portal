@@ -25,8 +25,6 @@ import OptionalCosts from './formParts/OptionalCosts';
 import Guests from './formParts/Guests';
 class FormCreator extends React.Component {
   state = {
-    max_persons: this.props.house.persons,
-    adults: 1,
     rentPrice: this.props.house.booking_price.rent_price,
     discountedPrice: this.props.house.booking_price.discounted_price,
     formValues: {},
@@ -63,8 +61,13 @@ class FormCreator extends React.Component {
         <FormattedMessage id="you_need_to_give_reason" />
       );
     }
-    if (values.persons > this.state.max_persons) {
+    if (values.persons > max_persons) {
       errors.max_persons = <FormattedMessage id="max_persons_reached" />;
+    }
+    
+    if (values.cancel_insurance !== 0) {
+      errors.extra_flields.date_of_birth = <FormattedMessage id="date_of_birth" />;
+      
     }
 
     return errors;
@@ -188,13 +191,10 @@ class FormCreator extends React.Component {
   render() {
     const { max_persons, bookingFields } = this.state;
 
-    let adults = createPeronsArray(max_persons);
-    const children = createPeronsArray(max_persons - 1);
     const { house, locale, PortalSite, options, booking } = this.props;
     const bookingPrice = house.booking_price;
 
     let costs = {};
-    adults.splice(0, 1);
 
     for (const val of bookingPrice.optional_house_costs) {
       costs[val.id] = '0';
@@ -300,7 +300,7 @@ class FormCreator extends React.Component {
                       <FormattedMessage id="stay_details" />
                     </h2>
                     <Guests options={options} house={house} />
-                    
+
                     {errors.max_persons && (
                       <div className="error-message persons">
                         {errors.max_persons}
@@ -310,6 +310,7 @@ class FormCreator extends React.Component {
                   <Discount errors={errors} house={house} />
 
                   <Insurances house={house} values={values} />
+              
 
                   <OptionalCosts costs={bookingPrice.optional_house_costs} />
 

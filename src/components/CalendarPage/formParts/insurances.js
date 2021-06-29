@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'formik';
 import Modal from '../../Modal';
 import Icon from '../../icons/info.svg';
-import CancelInsurance from './CancelInsurance';
+import CancelInsuranceText from './CancelInsuranceText';
+import { Date } from '../FormItems';
 
 function translatedOption(id, value) {
   return (
@@ -14,7 +15,7 @@ function translatedOption(id, value) {
   );
 }
 
-function cancel_insurance(house) {
+function cancelInsurance(house) {
   if (house.cancel_insurance) {
     return (
       <div className="form-row inline">
@@ -28,7 +29,7 @@ function cancel_insurance(house) {
           {translatedOption('none', 0)}
         </Field>
         <Modal buttonText={<Icon />}>
-          <CancelInsurance />
+          <CancelInsuranceText />
         </Modal>
       </div>
     );
@@ -43,18 +44,16 @@ export const Insurances = ({ house, values }) => {
         <h2>
           <FormattedMessage id="insurances" />
         </h2>
-        {cancel_insurance(house)}
+        {cancelInsurance(house)}
         {values.cancel_insurance && values.cancel_insurance !== '0' && (
-          <div className="form-row inline insurances">
-            <label htmlFor='extra_fields.date_of_birth'>
-              <FormattedMessage id="extra_fields.date_of_birth" />
-            </label>
-            <Field id="extra_fields.date_of_birth" type="date" validate={validate}></Field>
-            <div>
+          <Date
+            label="extra_fields.date_of_birth"
+            name="extra_fields.date_of_birth"
+            required="true"
+            description={
               <FormattedMessage id="insurance_company_needs_date_of_birth" />
-
-            </div>
-          </div>
+            }
+          />
         )}
       </div>
     );
@@ -63,11 +62,11 @@ export const Insurances = ({ house, values }) => {
   }
 };
 
- // Synchronous validation function
+// Synchronous validation function
 
- const validate = value => {
+const validate = (value) => {
   let errorMessage;
-  console.log({value});
+  console.log({ value });
   // if () {
 
   //   errorMessage = 'Invalid email address';

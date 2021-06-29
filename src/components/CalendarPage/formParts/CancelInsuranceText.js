@@ -10,7 +10,7 @@ const LocalizedAttachment = {
     "https://insurances.bukazu.com/en/Terms%20to%20Cancellation%20Insurance.pdf",
 };
 
-const CancelInsurance = () => (
+const CancelInsuranceText = () => (
   <React.Fragment>
     <h2>
       <FM id="cancel_insurance" />
@@ -88,4 +88,4 @@ const CancelInsurance = () => (
   </React.Fragment>
 );
 
-export default CancelInsurance;
+export default CancelInsuranceText;
