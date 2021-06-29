@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "../../icons/info.svg";
-import Modal from "../formParts/Modal";
+import Modal from "../../Modal";
 
 function Description({description}) {
   let val = <span />;

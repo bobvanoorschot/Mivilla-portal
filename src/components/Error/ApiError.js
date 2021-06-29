@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from '../CalendarPage/formParts/Modal';
+import Modal from '../Modal';
 
 import { FormattedMessage } from 'react-intl';
 

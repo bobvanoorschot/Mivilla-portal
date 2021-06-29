@@ -1,29 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Formik, Form, Field } from "formik";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { Mutation } from "react-apollo";
-import { CREATE_BOOKING_MUTATION } from "../../_lib/queries";
-import * as calc from "../../_lib/costs";
-import { Insurances } from "./formParts/insurances";
-import Discount from "./formParts/discount";
-import { Summary } from "./formParts/summary";
-import { RadioButton, RadioButtonGroup } from "./formParts/radioButtons";
-import Icon from "../icons/info.svg";
-import Modal from "./formParts/Modal";
-import DefaultBookingFields from "./formParts/DefaultBookingFields";
-import SuccessMessage from "./formParts/SuccessMessage";
-import { OptionalBookingFields } from "./formParts/OptionalBookingFields";
-import Description from "./Summary/Description";
-import includes from "array-includes";
-import { ApiError } from "../Error";
-import { createPeronsArray, initializeBookingFields, byString } from "./formParts/BookingHelpers"
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Formik, Form, Field } from 'formik';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { Mutation } from 'react-apollo';
+import { CREATE_BOOKING_MUTATION } from '../../_lib/queries';
+import * as calc from '../../_lib/costs';
+import { Insurances } from './formParts/insurances';
+import Discount from './formParts/discount';
+import { Summary } from './formParts/summary';
+import { RadioButton, RadioButtonGroup } from './formParts/radioButtons';
+import Modal from '../Modal';
+import DefaultBookingFields from './formParts/DefaultBookingFields';
+import SuccessMessage from './formParts/SuccessMessage';
+import { OptionalBookingFields } from './formParts/OptionalBookingFields';
+import Description from './Summary/Description';
+import includes from 'array-includes';
+import { ApiError } from '../Error';
+import {
+  initializeBookingFields,
+  byString,
+  validateAge,
+} from './formParts/BookingHelpers';
+import OptionalCosts from './formParts/OptionalCosts';
+import Guests from './formParts/Guests';
 class FormCreator extends React.Component {
-
   state = {
-    max_persons: this.props.house.persons,
-    adults: 1,
     rentPrice: this.props.house.booking_price.rent_price,
     discountedPrice: this.props.house.booking_price.discounted_price,
     formValues: {},
@@ -32,7 +33,7 @@ class FormCreator extends React.Component {
   };
 
   validate = (values) => {
-    const { babies_extra, max_persons } = this.props.house;
+    const { babies_extra, persons } = this.props.house;
 
     let errors = {};
 
@@ -46,7 +47,7 @@ class FormCreator extends React.Component {
       if (field.required) {
         const validateValue = byString(values, field.id);
 
-        if (!validateValue || validateValue === "") {
+        if (!validateValue || validateValue === '') {
           errors[field.id] = <FormattedMessage id="required" />;
         }
       }
@@ -60,8 +61,32 @@ class FormCreator extends React.Component {
         <FormattedMessage id="you_need_to_give_reason" />
       );
     }
-    if (values.persons > this.state.max_persons) {
+    if (values.persons > persons) {
       errors.max_persons = <FormattedMessage id="max_persons_reached" />;
+    }
+
+    if (
+      values.cancel_insurance !== 0 &&
+      validateAge(values.extra_fields?.date_of_birth)
+    ) {
+      errors['extra_fields.date_of_birth'] = (
+        <FormattedMessage id="at_least_18y_old" />
+      );
+      errors['insurances'] = (
+        <FormattedMessage id="at_least_18y_old" />
+      );
+    }
+
+    if (
+      values.cancel_insurance !== 0 &&
+      !includes(['nl', 'de', 'be'], values.country)
+    ) {
+      errors['insurances'] = (
+        <FormattedMessage id="can_only_take_insurance_in_de_be_nl" />
+      );
+      errors['country'] = (
+        <FormattedMessage id="can_only_take_insurance_in_de_be_nl" />
+      );
     }
 
     return errors;
@@ -87,64 +112,23 @@ class FormCreator extends React.Component {
   }
 
   calculateInsurances(values) {
-    const house = this.props.house;
     const prices = this.calculateRentPrice(values);
-    const {
-      damage_insurance,
-      cancel_insurance,
-      travel_insurance,
-      children,
-      adults,
-      babies,
-    } = values;
-    let babiesNumber = Number(babies) - Number(house.babies_extra);
-    if (babiesNumber < 0) {
-      babiesNumber = 0;
-    }
-    const persons = Number(children) + Number(adults) + Number(babies);
+    const { cancel_insurance } = values;
 
     let insurances = [];
-    if (house.damage_insurance_required || damage_insurance === "1") {
+    if (cancel_insurance === '1' || cancel_insurance === '2') {
+      let perc = cancel_insurance === '1' ? 6.7 : 8.6;
       let ins = {};
-      ins.name = "damage_insurance";
-      ins.price = prices.discounted_price * (1.81 / 100);
-      insurances.push(ins);
-    }
-    if (cancel_insurance === "1" || cancel_insurance === "2") {
-      let perc = cancel_insurance === "1" ? 6.7 : 8.6;
-      let ins = {};
-      ins.name = "cancel_insurance";
+      ins.name = 'cancel_insurance';
       ins.price = prices.discounted_price * (perc / 100);
       insurances.push(ins);
     }
-    if (travel_insurance === "1") {
-      let ins = {};
-      ins.name = "travel_insurance";
-      ins.price = persons * (house.booking_price.nights + 1) * 2.8;
-      insurances.push(ins);
-    }
-    if (
-      house.damage_insurance_required ||
-      values.damage_insurance === "1" ||
-      values.cancel_insurance === "1" ||
-      values.cancel_insurance === "2" ||
-      values.travel_insurance === "1"
-    ) {
-      let ins = {};
-      ins.name = "insurance_costs";
-      ins.price = 6.95;
-      insurances.push(ins);
-    }
     return insurances;
-  }  
+  }
 
   calculateRentPrice(values) {
-    const {
-      base_price,
-      person_percentages,
-      night_percentages,
-      nights,
-    } = this.props.house.booking_price;
+    const { base_price, person_percentages, night_percentages, nights } =
+      this.props.house.booking_price;
     let discount = this.props.house.booking_price.discount;
     const { children, adults, babies } = values;
 
@@ -195,11 +179,11 @@ class FormCreator extends React.Component {
     }
 
     for (let cost of bookingPrice.required_house_costs) {
-      if (cost.gl === "0120") continue;
+      if (cost.gl === '0120') continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
     for (let cost of bookingPrice.optional_house_costs) {
-      if (cost.gl === "0120") continue;
+      if (cost.gl === '0120') continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
     total = Math.round(total);
@@ -212,11 +196,11 @@ class FormCreator extends React.Component {
     let total = this.calculateSubTotal(values);
 
     for (let cost of bookingPrice.required_house_costs) {
-      if (cost.gl !== "0120") continue;
+      if (cost.gl !== '0120') continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
     for (let cost of bookingPrice.optional_house_costs) {
-      if (cost.gl !== "0120") continue;
+      if (cost.gl !== '0120') continue;
       total += parseFloat(this.calculateCost(cost, values));
     }
 
@@ -224,19 +208,17 @@ class FormCreator extends React.Component {
   }
 
   render() {
-    const {max_persons, bookingFields} = this.state
+    const { bookingFields } = this.state;
 
-    let adults = createPeronsArray(max_persons);
-    const children = createPeronsArray(max_persons - 1);
     const { house, locale, PortalSite, options, booking } = this.props;
     const bookingPrice = house.booking_price;
 
     let costs = {};
-    adults.splice(0, 1);
 
     for (const val of bookingPrice.optional_house_costs) {
-      costs[val.id] = "0";
+      costs[val.id] = '0';
     }
+
     const optBookingFieldsInitialized = initializeBookingFields(bookingFields);
 
     return (
@@ -253,7 +235,7 @@ class FormCreator extends React.Component {
               babies: 0,
               persons: 2,
               discount: 0,
-              country: "nl",
+              country: 'nl',
             }}
             onSubmit={(values, { setSubmitting }) => {
               let variables = {
@@ -262,15 +244,15 @@ class FormCreator extends React.Component {
                 last_name: values.last_name,
                 company_name: values.company_name,
                 is_option: JSON.parse(values.is_option),
-                address: values.address || "",
-                zipcode: values.zipcode || "",
-                city: values.city || "",
-                phone: values.phone || "",
-                phone_mobile: values.phone_mobile || "",
+                address: values.address || '',
+                zipcode: values.zipcode || '',
+                city: values.city || '',
+                phone: values.phone || '',
+                phone_mobile: values.phone_mobile || '',
                 email: values.email,
                 house_code: values.objectCode,
                 portal_code: values.portalCode,
-                comment: values.comment || "",
+                comment: values.comment || '',
                 language: locale,
                 locale: locale,
                 country: values.country.toUpperCase(),
@@ -281,28 +263,28 @@ class FormCreator extends React.Component {
                 damage_insurance: Number(values.damage_insurance) || 0,
                 cancel_insurance: Number(values.cancel_insurance) || 0,
                 travel_insurance: Number(values.travel_insurance) || 0,
-                discount_reason: values.discount_reason || "",
+                discount_reason: values.discount_reason || '',
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
                 costs: JSON.stringify(values.costs),
                 extra_fields: JSON.stringify(values.extra_fields),
               };
 
-              createBooking({ variables }).then(() => {
-                if (
-                  options.bookingForm &&
-                  options.bookingForm.redirectUrl &&
-                  options.bookingForm.redirectUrl !== ""
-                ) {
-                  window.location = options.bookingForm.redirectUrl;
-                } else {
-                  setTimeout(() => {
-                    this.props.onReturn();
-                  }, 15000);
-                }
-              }).catch(err => {
-                
-              })
+              createBooking({ variables })
+                .then(() => {
+                  if (
+                    options.bookingForm &&
+                    options.bookingForm.redirectUrl &&
+                    options.bookingForm.redirectUrl !== ''
+                  ) {
+                    window.location = options.bookingForm.redirectUrl;
+                  } else {
+                    setTimeout(() => {
+                      this.props.onReturn();
+                    }, 15000);
+                  }
+                })
+                .catch((err) => {});
             }}
             render={({ errors, touched, values, status, isSubmitting }) => (
               <Form className="form">
@@ -336,205 +318,20 @@ class FormCreator extends React.Component {
                     <h2>
                       <FormattedMessage id="stay_details" />
                     </h2>
-                    <div className="form-row inline">
-                      <label htmlFor="adults">
-                        <FormattedMessage id="adults" />
-                      </label>
-                      <Field component="select" name="adults">
-                        {adults.map((opt) => {
-                          return (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
-                          );
-                        })}
-                      </Field>
-                      <div className="age-description">
-                        <FormattedMessage
-                          id="adults_from"
-                          defaultMessage="> {age}"
-                          values={{
-                            age: options.bookingForm
-                              ? options.bookingForm.adults_from || "18"
-                              : "18",
-                          }}
-                        />
-                      </div>
-                      {errors.adults && touched.adults && (
-                        <div className="error-message">{errors.adults}</div>
-                      )}
-                    </div>
-                    {options.bookingForm &&
-                    !options.bookingForm.children ? null : (
-                      <div className="form-row inline">
-                        <label htmlFor="children">
-                          <FormattedMessage id="children" />
-                        </label>
-                        <Field component="select" name="children">
-                          {children.map((opt) => {
-                            return (
-                              <option key={opt} value={opt}>
-                                {opt}
-                              </option>
-                            );
-                          })}
-                        </Field>
-                        <div className="age-description">
-                          <FormattedMessage
-                            id="children_from"
-                            defaultMessage="{from} - {til}"
-                            values={{
-                              from: options.bookingForm
-                                ? options.bookingForm.children_from || "3"
-                                : "3",
-                              til: options.bookingForm
-                                ? options.bookingForm.children_til || "17"
-                                : "17",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
+                    <Guests options={options} house={house} />
 
-                    {options.bookingForm &&
-                    !options.bookingForm.babies ? null : (
-                      <div className="form-row inline">
-                        <label htmlFor="babies">
-                          <FormattedMessage id="babies" />
-                        </label>
-                        <Field component="select" name="babies">
-                          {children.map((opt) => {
-                            return (
-                              <option key={opt} value={opt}>
-                                {opt}
-                              </option>
-                            );
-                          })}
-                        </Field>
-                        <div>
-                          <div className="age-description">
-                            <FormattedMessage
-                              id="babies_from"
-                              defaultMessage="< {babies}"
-                              values={{
-                                babies: options.bookingForm
-                                  ? options.bookingForm.babies_til || "2"
-                                  : "2",
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
                     {errors.max_persons && (
-                      <div className="error-message persons">{errors.max_persons}</div>
+                      <div className="error-message persons">
+                        {errors.max_persons}
+                      </div>
                     )}
                   </div>
                   <Discount errors={errors} house={house} />
 
-                  <Insurances house={house} />
+                  <Insurances house={house} values={values} />
 
-                  {bookingPrice.optional_house_costs.length > 0 ? (
-                    <div className="form-section optional_house_costs">
-                      <h2>
-                        <FormattedMessage id="extra_costs_bookable" />
-                      </h2>
-                      <div>
-                        {bookingPrice.optional_house_costs.map((cost) => {
-                          if (
-                            !includes(["none", "total"], cost.method) &&
-                            cost.max_available > 0
-                          ) {
-                            if (cost.max_available === 1) {
-                              return (
-                                <div className="form-row inline" key={cost.id}>
-                                  <label htmlFor={cost.id}>{cost.name}</label>
-                                  <Field
-                                    component="select"
-                                    name={`costs[${cost.id}]`}
-                                  >
-                                    <FormattedMessage id="no">
-                                      {(formattedMessage) => (
-                                        <option value={0}>
-                                          {formattedMessage}
-                                        </option>
-                                      )}
-                                    </FormattedMessage>
-                                    <FormattedMessage id="yes">
-                                      {(formattedMessage) => (
-                                        <option value={1}>
-                                          {formattedMessage}
-                                        </option>
-                                      )}
-                                    </FormattedMessage>
-                                  </Field>
+                  <OptionalCosts costs={bookingPrice.optional_house_costs} />
 
-                                  <div className="price_per">
-                                    €{" "}
-                                    <FormattedNumber
-                                      value={cost.amount}
-                                      minimumFractionDigits={2}
-                                      maximumFractionDigits={2}
-                                    />{" "}
-                                    {cost.method_name}
-                                  </div>
-                                  <div>
-                                    {cost.description ? (
-                                      <div>
-                                        <Modal buttonText={<Icon />}>
-                                          <p>{cost.description}</p>
-                                        </Modal>
-                                      </div>
-                                    ) : null}
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return (
-                              <div className="form-row inline" key={cost.id}>
-                                <label htmlFor={cost.id}>{cost.name}</label>
-                                <Field
-                                  component="select"
-                                  name={`costs[${cost.id}]`}
-                                >
-                                  {createPeronsArray(
-                                    cost.max_available
-                                  ).map((opt) => {
-                                    return (
-                                      <option key={opt} value={opt}>
-                                        {opt}
-                                      </option>
-                                    );
-                                  })}
-                                </Field>
-
-                                <div className="price_per">
-                                  €{" "}
-                                  <FormattedNumber
-                                    value={cost.amount}
-                                    minimumFractionDigits={2}
-                                    maximumFractionDigits={2}
-                                  />{" "}
-                                  {cost.method_name}
-                                </div>
-                                <div>
-                                  {cost.description ? (
-                                    <div>
-                                      <Modal buttonText={<Icon />}>
-                                        <p>{cost.description}</p>
-                                      </Modal>
-                                    </div>
-                                  ) : null}
-                                </div>
-                              </div>
-                            );
-                          } else {
-                            return "";
-                          }
-                        })}
-                      </div>
-                    </div>
-                  ) : null}
                   <OptionalBookingFields
                     bookingFields={this.state.bookingFields}
                     errors={errors}
@@ -577,7 +374,7 @@ class FormCreator extends React.Component {
                             <FormattedMessage id="rent_price" />
                           </td>
                           <td className="price">
-                            €{" "}
+                            €{' '}
                             <FormattedNumber
                               value={Math.round(
                                 this.calculateRentPrice(values).rent_price
@@ -593,7 +390,7 @@ class FormCreator extends React.Component {
                               <FormattedMessage id="discount" />
                             </td>
                             <td className="price">
-                              €{"  "}
+                              €{'  '}
                               <FormattedNumber
                                 value={this.calculateRentPrice(values).discount}
                                 minimumFractionDigits={2}
@@ -608,7 +405,7 @@ class FormCreator extends React.Component {
                               <FormattedMessage id="price_after_discount" />
                             </td>
                             <td className="price">
-                              €{"  "}
+                              €{'  '}
                               <FormattedNumber
                                 value={Math.round(
                                   this.calculateRentPrice(values)
@@ -633,7 +430,7 @@ class FormCreator extends React.Component {
                                 <FormattedMessage id={ins.name} />
                               </td>
                               <td className="price">
-                                €{"  "}
+                                €{'  '}
                                 <FormattedNumber
                                   value={ins.price}
                                   minimumFractionDigits={2}
@@ -644,8 +441,8 @@ class FormCreator extends React.Component {
                           );
                         })}
                         {bookingPrice.required_house_costs.map((cost) => {
-                          if (!cost.on_site && cost.gl !== "0120") {
-                            if (cost.method === "none") {
+                          if (!cost.on_site && cost.gl !== '0120') {
+                            if (cost.method === 'none') {
                               return (
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
@@ -657,7 +454,7 @@ class FormCreator extends React.Component {
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
                                   <td className="price">
-                                    €{"  "}
+                                    €{'  '}
                                     <FormattedNumber
                                       value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
@@ -676,12 +473,12 @@ class FormCreator extends React.Component {
                     <table>
                       <tbody>
                         {bookingPrice.optional_house_costs.map((cost) => {
-                          if (!cost.on_site && cost.gl !== "0120") {
-                            if (cost.method === "none") {
+                          if (!cost.on_site && cost.gl !== '0120') {
+                            if (cost.method === 'none') {
                               return (
                                 <tr key={cost.id}>
                                   <td>
-                                    {cost.name}{" "}
+                                    {cost.name}{' '}
                                     <Description
                                       description={cost.description}
                                     />
@@ -689,24 +486,24 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
-                                        €{" "}
+                                        €{' '}
                                         <FormattedNumber
                                           value={cost.amount}
                                           minimumFractionDigits={2}
                                           maximumFractionDigits={2}
-                                        />{" "}
+                                        />{' '}
                                       </span>
                                     )}
                                     {cost.method_name}
                                   </td>
                                 </tr>
                               );
-                            } else if (cost.method === "on_site") {
+                            } else if (cost.method === 'on_site') {
                               if (Number(values.costs[cost.id]) > 0) {
                                 return (
                                   <tr key={cost.id}>
                                     <td>
-                                      {cost.name}{" "}
+                                      {cost.name}{' '}
                                       <Description
                                         description={cost.description}
                                       />
@@ -714,12 +511,12 @@ class FormCreator extends React.Component {
                                     <td className="price">
                                       {cost.amount && cost.amount > 0 && (
                                         <span>
-                                          €{" "}
+                                          €{' '}
                                           <FormattedNumber
                                             value={cost.amount}
                                             minimumFractionDigits={2}
                                             maximumFractionDigits={2}
-                                          />{" "}
+                                          />{' '}
                                         </span>
                                       )}
                                       {cost.method_name}
@@ -732,13 +529,13 @@ class FormCreator extends React.Component {
                               return (
                                 <tr key={cost.id}>
                                   <td>
-                                    {cost.name}{" "}
+                                    {cost.name}{' '}
                                     <Description
                                       description={cost.description}
                                     />
                                   </td>
                                   <td className="price">
-                                    €{" "}
+                                    €{' '}
                                     <FormattedNumber
                                       value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
@@ -760,8 +557,8 @@ class FormCreator extends React.Component {
                     <table>
                       <tbody>
                         {bookingPrice.required_house_costs.map((cost) => {
-                          if (cost.on_site && cost.gl !== "0120") {
-                            if (cost.method === "none") {
+                          if (cost.on_site && cost.gl !== '0120') {
+                            if (cost.method === 'none') {
                               return (
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
@@ -773,7 +570,7 @@ class FormCreator extends React.Component {
                                 <tr key={cost.id}>
                                   <td>{cost.name}</td>
                                   <td className="price">
-                                    €{"  "}
+                                    €{'  '}
                                     <FormattedNumber
                                       value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
@@ -786,12 +583,12 @@ class FormCreator extends React.Component {
                           }
                         })}
                         {bookingPrice.optional_house_costs.map((cost) => {
-                          if (cost.on_site && cost.gl !== "0120") {
-                            if (cost.method === "none") {
+                          if (cost.on_site && cost.gl !== '0120') {
+                            if (cost.method === 'none') {
                               return (
                                 <tr key={cost.id}>
                                   <td>
-                                    {cost.name}{" "}
+                                    {cost.name}{' '}
                                     <Description
                                       description={cost.description}
                                     />
@@ -799,24 +596,24 @@ class FormCreator extends React.Component {
                                   <td className="price">
                                     {cost.amount && cost.amount > 0 && (
                                       <span>
-                                        €{" "}
+                                        €{' '}
                                         <FormattedNumber
                                           value={cost.amount}
                                           minimumFractionDigits={2}
                                           maximumFractionDigits={2}
-                                        />{" "}
+                                        />{' '}
                                       </span>
                                     )}
                                     {cost.method_name}
                                   </td>
                                 </tr>
                               );
-                            } else if (cost.method === "on_site") {
+                            } else if (cost.method === 'on_site') {
                               if (Number(values.costs[cost.id]) > 0) {
                                 return (
                                   <tr key={cost.id}>
                                     <td>
-                                      {cost.name}{" "}
+                                      {cost.name}{' '}
                                       <Description
                                         description={cost.description}
                                       />
@@ -824,12 +621,12 @@ class FormCreator extends React.Component {
                                     <td className="price">
                                       {cost.amount && cost.amount > 0 && (
                                         <span>
-                                          €{" "}
+                                          €{' '}
                                           <FormattedNumber
                                             value={cost.amount}
                                             minimumFractionDigits={2}
                                             maximumFractionDigits={2}
-                                          />{" "}
+                                          />{' '}
                                         </span>
                                       )}
                                       {cost.method_name}
@@ -842,13 +639,13 @@ class FormCreator extends React.Component {
                               return (
                                 <tr key={cost.id}>
                                   <td>
-                                    {cost.name}{" "}
+                                    {cost.name}{' '}
                                     <Description
                                       description={cost.description}
                                     />
                                   </td>
                                   <td className="price">
-                                    €{" "}
+                                    €{' '}
                                     <FormattedNumber
                                       value={this.calculateCost(cost, values)}
                                       minimumFractionDigits={2}
@@ -869,14 +666,14 @@ class FormCreator extends React.Component {
                         <tr>
                           <th
                             style={{
-                              textAlign: "left",
-                              testTransform: "capitalize",
+                              textAlign: 'left',
+                              testTransform: 'capitalize',
                             }}
                           >
                             <FormattedMessage id="total" />
                           </th>
                           <th className="price" style={{ fontSize: 18 }}>
-                            €{" "}
+                            €{' '}
                             <FormattedNumber
                               value={this.calculateSubTotal(values)}
                               minimumFractionDigits={2}
@@ -891,7 +688,7 @@ class FormCreator extends React.Component {
                     <table>
                       <tbody>
                         {bookingPrice.required_house_costs.map((cost) => {
-                          if (cost.gl === "0120") {
+                          if (cost.gl === '0120') {
                             return (
                               <tr key={cost.id}>
                                 <td>
@@ -899,7 +696,7 @@ class FormCreator extends React.Component {
                                   <Description description={cost.description} />
                                 </td>
                                 <td className="price">
-                                  €{" "}
+                                  €{' '}
                                   <FormattedNumber
                                     value={this.calculateCost(cost, values)}
                                     minimumFractionDigits={2}
@@ -911,7 +708,7 @@ class FormCreator extends React.Component {
                           }
                         })}
                         {bookingPrice.optional_house_costs.map((cost) => {
-                          if (cost.gl === "0120") {
+                          if (cost.gl === '0120') {
                             return (
                               <tr key={cost.id}>
                                 <td>
@@ -919,7 +716,7 @@ class FormCreator extends React.Component {
                                   <Description description={cost.description} />
                                 </td>
                                 <td className="price">
-                                  €{" "}
+                                  €{' '}
                                   <FormattedNumber
                                     value={this.calculateCost(cost, values)}
                                     minimumFractionDigits={2}
@@ -933,14 +730,14 @@ class FormCreator extends React.Component {
                         <tr>
                           <th
                             style={{
-                              textAlign: "left",
-                              testTransform: "capitalize",
+                              textAlign: 'left',
+                              testTransform: 'capitalize',
                             }}
                           >
                             <FormattedMessage id="total" />
                           </th>
                           <td className="price">
-                            €{" "}
+                            €{' '}
                             <FormattedNumber
                               value={this.calculateTotal(values)}
                               minimumFractionDigits={2}
@@ -953,14 +750,14 @@ class FormCreator extends React.Component {
                   </div>
                   {status && status.msg && <div>{status.msg}</div>}
                   <div className="terms">
-                    <FormattedMessage id="agree_with" />{" "}
+                    <FormattedMessage id="agree_with" />{' '}
                     <FormattedMessage id="terms">
                       {(fm) => (
                         <Modal buttonText={fm}>
                           <div
                             style={{
-                              width: "90vh",
-                              height: "90vh",
+                              width: '90vh',
+                              height: '90vh',
                             }}
                           >
                             <iframe

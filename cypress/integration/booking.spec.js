@@ -25,6 +25,18 @@ describe('Create booking', () => {
     
   })
 
+  it('Validate cancel insurance', () => {
+    cy.get('select[name=cancel_insurance]').select('0');
+    
+    cy.get('.insurances > input[type=date]').should('not.exist')
+
+    cy.get('select[name=cancel_insurance]').select('1');
+    
+    expect(cy.get('#insurances > input[type=date]')).to.exist
+
+    
+  })
+
   it('Create booking on invalid booking form', () => {
     cy.visit('/invalid-calendar.html')
     cy.get('div.col.cell.arrival').first()

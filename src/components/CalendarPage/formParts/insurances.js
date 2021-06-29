@@ -1,20 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FormattedMessage } from "react-intl";
-import { Field } from "formik";
-import Modal from "./Modal";
-import Icon from "../../icons/info.svg";
-import CancelInsurance from "./CancelInsurance";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
+import { Field } from 'formik';
+import Modal from '../../Modal';
+import Icon from '../../icons/info.svg';
+import CancelInsuranceText from './CancelInsuranceText';
+import { Date } from '../FormItems';
+import { translatedOption } from './BookingHelpers'
 
-function translatedOption(id, value) {
-  return (
-    <FormattedMessage id={id}>
-      {formattedMessage => <option value={value}>{formattedMessage}</option>}
-    </FormattedMessage>
-  );
-}
-
-function cancel_insurance(house) {
+function cancelInsurance(house) {
   if (house.cancel_insurance) {
     return (
       <div className="form-row inline">
@@ -22,27 +16,37 @@ function cancel_insurance(house) {
           <FormattedMessage id="cancel_insurance" />
         </label>
         <Field component="select" name="cancel_insurance" required={true}>
-          {translatedOption("choose", "")}
-          {translatedOption("cancel_insurance_all_risk", 2)}
-          {translatedOption("cancel_insurance_normal", 1)}
-          {translatedOption("none", 0)}
+          {translatedOption('choose', '')}
+          {translatedOption('cancel_insurance_all_risk', 2)}
+          {translatedOption('cancel_insurance_normal', 1)}
+          {translatedOption('none', 0)}
         </Field>
         <Modal buttonText={<Icon />}>
-          <CancelInsurance />
+          <CancelInsuranceText />
         </Modal>
       </div>
     );
   }
 }
 
-export const Insurances = ({ house }) => {
+export const Insurances = ({ house, values }) => {
   if (house.cancel_insurance) {
     return (
-      <div className="form-section">
+      <div className="form-section" id="insurances">
         <h2>
           <FormattedMessage id="insurances" />
         </h2>
-        {cancel_insurance(house)}
+        {cancelInsurance(house)}
+        {values.cancel_insurance && values.cancel_insurance !== '0' && (
+          <Date
+            label="extra_fields.date_of_birth"
+            name="extra_fields.date_of_birth"
+            required="true"
+            description={
+              <FormattedMessage id="insurance_company_needs_date_of_birth" />
+            }
+          />
+        )}
       </div>
     );
   } else {
@@ -51,5 +55,5 @@ export const Insurances = ({ house }) => {
 };
 
 Insurances.propTypes = {
-  house: PropTypes.object.isRequired
+  house: PropTypes.object.isRequired,
 };

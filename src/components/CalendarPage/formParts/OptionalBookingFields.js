@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Field } from "formik";
-import { FormattedMessage } from "react-intl";
-import { Countries } from "../../../_lib/countries";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Field } from 'formik';
+import { FormattedMessage } from 'react-intl';
+import { Countries } from '../../../_lib/countries';
 
 export const OptionalBookingFields = ({
   bookingFields,
@@ -15,10 +15,10 @@ export const OptionalBookingFields = ({
       <FormattedMessage id="personal_details" />
     </h2>
     {bookingFields.map((input) => {
-      if (input.id === "telephone") {
-        input.id = "phonenumber";
+      if (input.id === 'telephone') {
+        input.id = 'phonenumber';
       }
-      if (input.type === "booking_field") {
+      if (input.type === 'booking_field') {
         const bookingField = PortalSite.booking_fields.find(
           (x) => x.id === input.id
         );
@@ -29,19 +29,29 @@ export const OptionalBookingFields = ({
               {bookingField.label}
             </label>
             <Field
-              onKeyPress={e => { e.which === 13 && e.preventDefault() && console.log(e)}}
+              onKeyPress={(e) => {
+                e.which === 13 && e.preventDefault() && console.log(e);
+              }}
               id={`extra_fields.booking_field_${bookingField.id}`}
-              type={bookingField.field_type}
-              component={bookingField.field_type}
+              type={
+                bookingField.field_type === 'text'
+                  ? 'input'
+                  : bookingField.field_type
+              }
+              component={
+                bookingField.field_type === 'text'
+                  ? 'input'
+                  : bookingField.field_type
+              }
               name={`extra_fields.booking_field_${bookingField.id}`}
             />
           </div>
         );
-      } else if (input.id === "country") {
+      } else if (input.id === 'country') {
         return (
           <div className="form-row" key={input.id}>
             <label htmlFor={input.id}>
-              {PortalSite[`${input.id}_label`]}{" "}
+              {PortalSite[`${input.id}_label`]}{' '}
               {input.required && <span>*</span>}
             </label>
             <Field component="select" name={input.id}>
@@ -63,12 +73,18 @@ export const OptionalBookingFields = ({
           <div className="form-row" key={input.id}>
             <label
               htmlFor={input.id}
-              name={`${input.id.replace(/\./g, "_")}_label`}
+              name={`${input.id.replace(/\./g, '_')}_label`}
             >
-              {PortalSite[`${input.id.replace(/\./g, "_")}_label`]}{" "}
+              {PortalSite[`${input.id.replace(/\./g, '_')}_label`]}{' '}
               {input.required && <span>*</span>}
             </label>
-            <Field type={input.type} name={input.id} onKeyPress={e => { e.which === 13 && e.preventDefault() }}/>
+            <Field
+              type={input.type}
+              name={input.id}
+              onKeyPress={(e) => {
+                e.which === 13 && e.preventDefault();
+              }}
+            />
             {errors[input.id] && touched[input.id] && (
               <div className="error-message">{errors[input.id]}</div>
             )}
