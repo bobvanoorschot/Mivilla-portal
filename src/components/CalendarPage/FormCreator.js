@@ -23,6 +23,7 @@ import {
 } from './formParts/BookingHelpers';
 import OptionalCosts from './formParts/OptionalCosts';
 import Guests from './formParts/Guests';
+import BookingOrOption from './formParts/BookingOrOption';
 class FormCreator extends React.Component {
   state = {
     rentPrice: this.props.house.booking_price.rent_price,
@@ -342,6 +343,8 @@ class FormCreator extends React.Component {
 
                 <div className="form-sum">
                   <Summary house={house} bookingPrice={bookingPrice} />
+
+                  <BookingOrOption house={house} />
 
                   {house.allow_option && (
                     <div>

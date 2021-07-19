@@ -42,10 +42,8 @@ RadioButton.propTypes = {
 
 // Radio group
 export const RadioButtonGroup = ({
-  //   value,
   error,
   touched,
-  //   id,
   label,
   className,
   children,

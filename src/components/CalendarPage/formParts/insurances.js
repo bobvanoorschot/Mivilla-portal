@@ -30,6 +30,7 @@ function cancelInsurance(house) {
 }
 
 export const Insurances = ({ house, values }) => {
+  console.log({ values });
   if (house.cancel_insurance) {
     return (
       <div className="form-section" id="insurances">
@@ -37,6 +38,14 @@ export const Insurances = ({ house, values }) => {
           <FormattedMessage id="insurances" />
         </h2>
         {cancelInsurance(house)}
+        <Date
+          label="extra_fields.date_of_birth"
+          name="extra_fields.date_of_birth"
+          required={true}
+          description={
+            <FormattedMessage id="insurance_company_needs_date_of_birth" />
+          }
+        />
         {values.cancel_insurance && values.cancel_insurance !== '0' && (
           <Date
             label="extra_fields.date_of_birth"
