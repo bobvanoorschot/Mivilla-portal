@@ -164,11 +164,14 @@
     flex-direction: column;
     padding: 8px 0;
     select,
-    input {
+    input, .bukazu-date-picker {
       max-width: 50%;
       @media screen and (max-width: 992px) {
         max-width: 100%;
       }
+    }
+    .bu-input-description {
+      font-style: italic;
     }
     &.inline {
       align-items: center;

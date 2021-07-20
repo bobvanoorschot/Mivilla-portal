@@ -5,7 +5,7 @@ import { Field } from 'formik';
 import Modal from '../../Modal';
 import Icon from '../../icons/info.svg';
 import CancelInsuranceText from './CancelInsuranceText';
-import { Date } from '../FormItems';
+import { DateField } from '../FormItems';
 import { translatedOption } from './BookingHelpers'
 
 function cancelInsurance(house) {
@@ -30,24 +30,15 @@ function cancelInsurance(house) {
 }
 
 export const Insurances = ({ house, values }) => {
-  console.log({ values });
   if (house.cancel_insurance) {
     return (
       <div className="form-section" id="insurances">
         <h2>
           <FormattedMessage id="insurances" />
         </h2>
-        {cancelInsurance(house)}
-        <Date
-          label="extra_fields.date_of_birth"
-          name="extra_fields.date_of_birth"
-          required={true}
-          description={
-            <FormattedMessage id="insurance_company_needs_date_of_birth" />
-          }
-        />
+        {cancelInsurance(house)}       
         {values.cancel_insurance && values.cancel_insurance !== '0' && (
-          <Date
+          <DateField
             label="extra_fields.date_of_birth"
             name="extra_fields.date_of_birth"
             required="true"

@@ -1,4 +1,4 @@
 import NumberSelect from "./NumberSelect";
-import Date from "./Date";
+import DateField from "./Date";
 
-export { NumberSelect, Date }
+export { NumberSelect, DateField }

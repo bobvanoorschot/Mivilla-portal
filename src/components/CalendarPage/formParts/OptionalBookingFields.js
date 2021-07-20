@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
 import { Countries } from '../../../_lib/countries';
+import {DateField} from '../FormItems';
 
 export const OptionalBookingFields = ({
   bookingFields,
@@ -68,7 +69,18 @@ export const OptionalBookingFields = ({
             )}
           </div>
         );
-      } else {
+      } 
+      else if (input.type === 'date') {
+        return (
+        <div className="form-row" key={input.id}>
+          <DateField
+            name={input.id}
+            label={input.id}
+            inline={false}
+          />
+          </div>)
+      }
+      else {
         return (
           <div className="form-row" key={input.id}>
             <label

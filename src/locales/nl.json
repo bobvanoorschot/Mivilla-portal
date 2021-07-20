@@ -105,5 +105,7 @@
     "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
     "no": "Nee",
-    "no_house_found": "Geen object gevonden voor deze combinatie van Portal-code en Object-code"
+    "no_house_found": "Geen object gevonden voor deze combinatie van Portal-code en Object-code",
+    "insurance_company_needs_date_of_birth": "Voor het afsluiten van een verzekering is een geboortedatum verplicht",
+    "extra_fields.date_of_birth": "Geboortedatum"
   }
