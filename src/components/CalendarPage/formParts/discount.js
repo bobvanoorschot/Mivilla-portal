@@ -1,11 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FormattedMessage } from "react-intl";
-import { Field } from "formik";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
+import { Field } from 'formik';
+import DiscountCode from './DiscountCode';
 
-const Discount = ({ errors, house }) => {
-  if (house.discounts && house.discounts !== "0") {
-    let discounts = house.discounts.split(",");
+const Discount = ({ errors, house, options, values }) => {
+  if (house.discounts && house.discounts !== '0') {
+    let discounts = house.discounts.split(',');
     return (
       <div className="form-section">
         <div className="form-row inline">
@@ -32,6 +33,9 @@ const Discount = ({ errors, house }) => {
         <div>
           <i style={{ fontSize: 14 }}>{house.discounts_info}</i>
         </div>
+        {options.bookingForm?.showDiscountCode && (
+          <DiscountCode errors={errors} house={house} values={values} />
+        )}
       </div>
     );
   } else {

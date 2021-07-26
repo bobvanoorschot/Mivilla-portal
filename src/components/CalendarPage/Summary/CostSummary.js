@@ -19,7 +19,7 @@ function CostSummary({ values }) {
         ends_at: JSON.stringify(values.departureDate.date),
         costs: JSON.stringify(values.costs),
         discount: Number(values.discount),
-        cancel_insurance: Number(values.cancel_insurance)
+        cancel_insurance: Number(values.cancel_insurance),
       }}
     >
       {({ loading, error, data }) => {
@@ -29,17 +29,19 @@ function CostSummary({ values }) {
         if (error) {
           return <div>{JSON.stringify(error)}</div>;
         }
-        const prices = data.PortalSite.houses[0].booking_price
-        return (
-          <>
-            <RentAndDiscount prices={prices} />
-            <InsurancesAndRequired prices={prices} />
-            <OptionalNotOnSite prices={prices} />
-            <OnSite prices={prices} />
-            <Totals prices={prices} />
-            {/* {JSON.stringify(data)} */}
-          </>
-        );
+        const prices = data.PortalSite.houses[0].booking_price;
+        if (prices) {
+          return (
+            <>
+              <RentAndDiscount prices={prices} />
+              <InsurancesAndRequired prices={prices} />
+              <OptionalNotOnSite prices={prices} />
+              <OnSite prices={prices} />
+              <Totals prices={prices} />
+              {/* {JSON.stringify(data)} */}
+            </>
+          );
+        }
       }}
     </Query>
   );

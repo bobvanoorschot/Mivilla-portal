@@ -101,6 +101,7 @@ export const BOOKING_PRICE_QUERY = gql`
       zipcode_label
       city_label
       address_label
+      house_number_label
       phone_label
       phone_mobile_label
       country_label
@@ -121,6 +122,7 @@ export const BOOKING_PRICE_QUERY = gql`
       houses(house_code: $house_id) {
         id
         name
+        code
         allow_option
         persons
         image_url

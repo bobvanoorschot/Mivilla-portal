@@ -10,7 +10,7 @@ import Summary from './Summary';
 import Modal from '../Modal';
 import DefaultBookingFields from './formParts/DefaultBookingFields';
 import SuccessMessage from './formParts/SuccessMessage';
-import { OptionalBookingFields } from './formParts/OptionalBookingFields';
+import OptionalBookingFields from './formParts/OptionalBookingFields';
 import includes from 'array-includes';
 import { ApiError } from '../Error';
 import {
@@ -205,7 +205,7 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                   </div>
-                  <Discount errors={errors} house={house} />
+                  <Discount errors={errors} house={house} options={options} values={values} />                  
 
                   <Insurances house={house} values={values} />
 
@@ -216,6 +216,7 @@ class FormCreator extends React.Component {
                     errors={errors}
                     touched={touched}
                     PortalSite={PortalSite}
+                    values={values}
                   />
                 </div>
 
