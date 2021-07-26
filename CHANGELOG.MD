@@ -2,6 +2,8 @@
 
 ## Next release
 
+- Validate age for insurance
+- Validate country for insurance
 
 ## 1.3.5
 

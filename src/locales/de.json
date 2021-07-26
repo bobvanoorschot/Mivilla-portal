@@ -105,5 +105,9 @@
     "house.pick_your_arrivaldate_in_the_calendar": "Wählen Sie das Ankunftsdatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
     "camper.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
-    "no": "Nein"
+    "no": "Nein",
+    "insurance_company_needs_date_of_birth": "Für den Abschluss einer Versicherung wird ein Geburtsdatum benötigt",
+    "extra_fields.date_of_birth": "Geburtsdatum",
+    "no_discount_code_found": "Kein Rabatt mit eingegebenem Code gefunden",
+    "discount_code": "Rabatt-Code"
   }

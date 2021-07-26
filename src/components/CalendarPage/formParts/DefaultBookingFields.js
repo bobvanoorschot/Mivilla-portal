@@ -29,7 +29,15 @@ const DefaultBookingFields = [
     label: 'Adres',
     type: 'text',
     options: ['text'],
-    required: false,
+    required: true,
+    placeholder: '',
+  },
+  {
+    id: 'house_number',
+    label: 'Huisnummer',
+    type: 'text',
+    options: ['text'],
+    required: true,
     placeholder: '',
   },
   {
@@ -37,7 +45,7 @@ const DefaultBookingFields = [
     label: 'Postcode',
     type: 'text',
     options: ['text'],
-    required: false,
+    required: true,
     placeholder: '',
   },
   {

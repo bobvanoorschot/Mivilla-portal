@@ -1,25 +1,53 @@
 import React from 'react';
-import { useField } from 'formik';
+import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
+import DatePicker from 'react-date-picker';
+import { format } from 'date-fns';
 
-export default function Date({ label, description, options, ...props }) {
-  const [field, meta, helpers] = useField(props);
-
-
+function DateField({ label, description, options, name, inline }) {
   return (
-    <div className="form-row inline" id={`bukazu_form_${props.name}`}>
-      <label htmlFor={props.name}>
-        <FormattedMessage id={label} />
-      </label>
-      <input
-        {...field}
-        type='date'
-      />
+    <Field name={name}>
+      {({ field, meta, form }) => {
+        const { value, name } = field;
 
-      {description}
-      {meta.touched && meta.error && (
-        <div className="error-message">{meta.error}</div>
-      )}
-    </div>
+        let tempval;
+        if (value === '' || !value) {
+          tempval = null;
+        } else {
+          tempval = new Date(value);
+        }
+
+        return (
+          <div
+            className={`form-row ${inline && 'inline'}`}
+            id={`bukazu_form_${name}`}
+          >
+            <label htmlFor={name}>
+              <FormattedMessage id={label} />
+            </label>
+            <DatePicker
+              className="bukazu-date-picker"
+              name={name}
+              format="dd-MM-y"
+              value={tempval}
+              onChange={(e) => {
+                field.onChange(format(e, 'YYYY-MM-DD'));
+                form.setFieldValue(name, format(e, 'YYYY-MM-DD'));
+              }}
+            />
+            <span className="bu-input-description">{description}</span>
+            {meta.touched && meta.error && (
+              <div className="error-message">{meta.error}</div>
+            )}
+          </div>
+        );
+      }}
+    </Field>
   );
 }
+
+DateField.defaultValues = {
+  inline: true,
+};
+
+export default DateField;

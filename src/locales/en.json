@@ -102,5 +102,9 @@
     "house.pick_your_arrivaldate_in_the_calendar": "Choose an arrival date",
     "camper.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
     "no": "No",
-    "no_house_found": "No object found for this combination of PortalCode and ObjectCode"
+    "no_house_found": "No object found for this combination of PortalCode and ObjectCode",
+    "insurance_company_needs_date_of_birth": "A date of birth is required for taking out insurance",
+    "extra_fields.date_of_birth": "Date of birth",
+    "no_discount_code_found": "No discount found with entered code",
+    "discount_code": "Discount code"
   }

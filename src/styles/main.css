@@ -59,5 +59,14 @@
     border: none;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;
-  }  
+  }
+
+  .bu_discount_code {
+    width: 100%;
+    display: flex;
+    font-style: italic;
+    div {
+      padding-right: 8px;
+    }
+  }
 }
