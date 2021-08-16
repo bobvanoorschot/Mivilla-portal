@@ -2,8 +2,14 @@
 
 ## Next release
 
+## 1.4.0
+
 - Validate age for insurance
 - Validate country for insurance
+- Add house_number as possible field
+- Discount_code can be activated and entered
+- Calculation of price is done externally
+- Minimum nights message
 
 ## 1.3.5
 

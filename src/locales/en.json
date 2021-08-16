@@ -12,7 +12,6 @@
     "choose_for_option": "Make a short reservation for this period ",
     "included_in_price": "including",
     "rent_price": "Rental price",
-    "discount": "Discount",
     "extra_costs_included": "Extra costs included",
     "optional_costs": "Extra options",
     "price_after_discount": "Rental price incl. discount",
@@ -106,5 +105,6 @@
     "insurance_company_needs_date_of_birth": "A date of birth is required for taking out insurance",
     "extra_fields.date_of_birth": "Date of birth",
     "no_discount_code_found": "No discount found with entered code",
-    "discount_code": "Discount code"
+    "discount_code": "Discount code",
+    "minimum_nights": "At least {minimum} nights"
   }

@@ -150,6 +150,7 @@ export const CREATE_BOOKING_MUTATION = gql`
     $is_option: Boolean!
     $address: String
     $zipcode: String
+    $house_number: String
     $city: String
     $phone: String
     $phone_mobile: String
@@ -181,6 +182,7 @@ export const CREATE_BOOKING_MUTATION = gql`
       is_option: $is_option
       address: $address
       zipcode: $zipcode
+      house_number: $house_number
       city: $city
       phone: $phone
       phone_mobile: $phone_mobile

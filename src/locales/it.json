@@ -7,7 +7,6 @@
   "booked": "Prenotato",
   "booking": "Prenotazione",
   "last_minute_discount": "Sconto last minute",
-  "discount": "Sconto",
   "option": "Opzione",
   "choose_for_option": "Prendi un'opzione per questo periodo",
   "included_in_price": "compreso",
@@ -95,15 +94,12 @@
   "comply_insurance_card": "Sono d'accordo che la carta di assicurazione di annullamento verrà emessa in digitale. Lo ricevo con la mia conferma di prenotazione.",
   "house.you_picked_arrival_date": "La vostra data di arrivo è",
   "camper.you_picked_arrival_date": "La vostra data di ritiro è",
-  "camper.you_picked_arrival_date": "La vostra data di ritiro è",
   "house.pick_your_departure_in_the_calendar": "Selezionare una data di partenza",
-  "camper.pick_your_departure_in_the_calendar": "Seleziona una data di ritorno",
   "camper.pick_your_departure_in_the_calendar": "Seleziona una data di ritorno",
   "house.you_picked_departure_date": "La data di partenza è",
   "camper.you_picked_departure_date": "La data di ritorno è",
-  "camper.you_picked_departure_date": "La data di ritorno è",
   "house.pick_your_arrivaldate_in_the_calendar": "Scegliere una data di arrivo",
   "camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
-  "camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
-  "no": "No"
+  "no": "No",
+  "minimum_nights": "Almeno {minimum} notti"
 }

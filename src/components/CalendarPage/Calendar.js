@@ -28,6 +28,7 @@ class Calendar extends React.Component {
     house: this.props.house,
     arrivalDate: "",
     departureDate: "",
+    minNights: null,
     startBooking: false,
   };
 
@@ -249,6 +250,7 @@ class Calendar extends React.Component {
         startBooking: false,
         selectedDate: dateFns.parse(day.date),
         arrivalDate: day,
+        minNights: day.min_nights,
         departureDate: "",
       });
     }
@@ -278,7 +280,7 @@ class Calendar extends React.Component {
   };
 
   showBooking() {
-    const { startBooking, arrivalDate, departureDate, house } = this.state;
+    const { startBooking, arrivalDate, departureDate, house, minNights } = this.state;
     const { portalCode, objectCode, locale } = this.props;
 
     return (
@@ -288,6 +290,7 @@ class Calendar extends React.Component {
         locale={locale}
         startsAt={arrivalDate.date || null}
         endsAt={departureDate.date || null}
+        minNights={minNights}
         disabled={startBooking}
         onStartBooking={this.bookingStart}
         house={house}
@@ -311,7 +314,7 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const { house, arrivalDate, departureDate } = this.state;
+    const { house, arrivalDate, departureDate, minNights } = this.state;
 
     return (
       <div className="calendar-container ">
@@ -345,6 +348,7 @@ class Calendar extends React.Component {
             house={house}
             arrivalDate={arrivalDate}
             departureDate={departureDate}
+            minNights={minNights}
           />
         </div>
       </div>

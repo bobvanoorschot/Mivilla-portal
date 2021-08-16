@@ -212,7 +212,7 @@ class FormCreator extends React.Component {
                   <OptionalCosts costs={bookingPrice.optional_house_costs} />
 
                   <OptionalBookingFields
-                    bookingFields={this.state.bookingFields}
+                    bookingFields={bookingFields}
                     errors={errors}
                     touched={touched}
                     PortalSite={PortalSite}

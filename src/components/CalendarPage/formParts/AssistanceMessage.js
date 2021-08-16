@@ -4,7 +4,7 @@ import format from "../../../_lib/format";
 
 const dateFormat = "dddd DD MMMM YYYY";
 
-const AssistanceMessage = ({ arrivalDate, departureDate, house }) => {
+const AssistanceMessage = ({ arrivalDate, departureDate, house, minNights }) => {
 
   if (departureDate.date) {
     return (
@@ -29,6 +29,8 @@ const AssistanceMessage = ({ arrivalDate, departureDate, house }) => {
         <FormattedMessage
           id={`${house.house_type}.pick_your_departure_in_the_calendar`}
         />
+        <br />
+        <FormattedMessage id='minimum_nights' values={{ minimum: minNights }} defaultMessage="Minimum {minimum} nights" />
       </div>
     );
   }

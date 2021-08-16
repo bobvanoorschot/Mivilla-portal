@@ -6,6 +6,10 @@ import { Countries } from '../../../_lib/countries';
 import { DateField } from '../FormItems';
 import DefaultBookingFields from './DefaultBookingFields';
 
+function isInt(value) {
+  return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+}
+
 export default function OptionalBookingFields({
   bookingFields,
   errors,
@@ -13,7 +17,7 @@ export default function OptionalBookingFields({
   PortalSite,
   values,
 }) {
-  console.log({ bookingFields });
+
   const requiredFields = ['address', 'house_number', 'zipcode', 'city']
   if (values.cancel_insurance === '1' || values.cancel_insurance === '2') {
     requiredFields.forEach(key => {
@@ -34,7 +38,8 @@ export default function OptionalBookingFields({
           if (input.id === 'telephone') {
             input.id = 'phonenumber';
           }
-          if (input.type === 'booking_field') {
+
+          if (input.type === 'booking_field' || isInt(input.id)) {
             const bookingField = PortalSite.booking_fields.find(
               (x) => x.id === input.id
             );
@@ -48,7 +53,7 @@ export default function OptionalBookingFields({
                 </label>
                 <Field
                   onKeyPress={(e) => {
-                    e.which === 13 && e.preventDefault() && console.log(e);
+                    e.which === 13 && e.preventDefault();
                   }}
                   id={`extra_fields.booking_field_${bookingField.id}`}
                   type={
@@ -119,6 +124,7 @@ export default function OptionalBookingFields({
       </div>
     );
 }
+
 
 OptionalBookingFields.propTypes = {
   bookingFields: PropTypes.array.isRequired,

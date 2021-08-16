@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -32,152 +32,152 @@ export const CALENDAR_QUERY = gql`
   }
 `;
 
-class PriceField extends React.Component {
-  constructor(props) {
-    super(props);
+function PriceField({
+  portalCode,
+  objectCode,
+  startsAt,
+  endsAt,
+  locale,
+  house,
+  disabled,
+  onStartBooking,
+  minNights,
+}) {
+  const [persons, setPersons] = useState(2);
 
-    this.state = {
-      persons: 2,
-    };
-  }
+  let adults = createPeronsArray(house.persons);
 
-  changePersons = (e) => {
-    this.setState({ persons: e.target.value });
-  };
-
-  render() {
-    const {
-      portalCode,
-      objectCode,
-      startsAt,
-      endsAt,
-      locale,
-      house,
-      disabled,
-    } = this.props;
-    const { persons } = this.state;
-
-    let adults = createPeronsArray(house.persons);
-
-    return (
-      <div className="calendar--picker">
-        <div className="calendar--picker--date">
-          <span className="name">
-            <FormattedMessage id={`${house.house_type}.arrival`} />
-          </span>
-          <span className="detail">
-            {startsAt ? (
-              <span>{format(startsAt, dateFormat)}</span>
-            ) : (
-              <FormattedMessage
-                id={`${house.house_type}.pick_your_arrivaldate_in_the_calendar`}
-              />
-            )}
-          </span>
-        </div>
-        <div className="calendar--picker--date">
-          <span className="name">
-            <FormattedMessage id={`${house.house_type}.departure`} />
-          </span>
-          <span className="detail">
-            {endsAt ? (
-              <span>{format(endsAt, dateFormat)}</span>
-            ) : (
-              <FormattedMessage
-                id={`${house.house_type}.pick_your_departure_in_the_calendar`}
-              />
-            )}
-          </span>
-        </div>
-        <div className="calendar--picker--date">
-          <span className="detail">
-            <select
-              className="calendar--picker--persons"
-              value={persons}
-              onChange={this.changePersons}
-            >
-              {adults.map((person) => (
-                <FormattedMessage
-                  id="persons"
-                  key={person}
-                  children={(text) => (
-                    <option value={person} key={person}>
-                      {person} {text}
-                    </option>
-                  )}
-                />
-              ))}
-            </select>
-          </span>
-        </div>
-        <div className="calendar--picker--date">
-          {startsAt && endsAt && (
-            <Query
-              query={CALENDAR_QUERY}
-              variables={{
-                id: portalCode,
-                house_id: objectCode,
-                starts_at: startsAt,
-                ends_at: endsAt,
-                persons: parseInt(persons),
-                locale: locale,
-              }}
-            >
-              {({ loading, data, error }) => {
-                if (loading)
-                  return (
-                    <div className="price-overview--build">
-                      <Loading />
-                    </div>
-                  );
-                if (error) {
-                  return (
-                    <div className="price-overview--build">
-                      <ApiError errors={error}></ApiError>
-                    </div>
-                  );
-                }
-                const result = data.PortalSite.houses[0].booking_price;
-                return (
-                  <>
-                    <div className="price-overview--book">
-                      <div className="price">
-                        €{' '}
-                        <FormattedNumber
-                          value={Math.round(result.total_price)}
-                          minimumFractionDigits={2}
-                          maximumFractionDigits={2}
-                        />
-                      </div>
-                      <div>
-                        <i>
-                          <FormattedMessage
-                            id="based_on_one_person"
-                            values={{ persons }}
-                          />
-                        </i>
-                      </div>
-                    </div>
-                  </>
-                );
-              }}
-            </Query>
+  return (
+    <div className="calendar--picker">
+      <div className="calendar--picker--date">
+        <span className="name">
+          <FormattedMessage id={`${house.house_type}.arrival`} />
+        </span>
+        <span className="detail">
+          {startsAt ? (
+            <span>{format(startsAt, dateFormat)}</span>
+          ) : (
+            <FormattedMessage
+              id={`${house.house_type}.pick_your_arrivaldate_in_the_calendar`}
+            />
           )}
-        </div>
-        <button
-          className="button"
-          disabled={!disabled}
-          onClick={() => {
-            if (startsAt && endsAt) {
-              this.props.onStartBooking('false', persons);
-            }
-          }}
-        >
-          <FormattedMessage id="calculate" />
-        </button>
+        </span>
       </div>
-    );
-  }
+      <div className="calendar--picker--date">
+        <span className="name">
+          <FormattedMessage id={`${house.house_type}.departure`} />
+        </span>
+        <span className="detail">
+          {endsAt ? (
+            <span>{format(endsAt, dateFormat)}</span>
+          ) : (
+            <div>
+              <div>
+                <FormattedMessage
+                  id={`${house.house_type}.pick_your_departure_in_the_calendar`}
+                />
+              </div>
+              {minNights && (
+                <FormattedMessage
+                  id="minimum_nights"
+                  defaultMessage="Minimum {minimum} nights"
+                  values={{ minimum: minNights }}
+                />
+              )}
+            </div>
+          )}
+        </span>
+      </div>
+      <div className="calendar--picker--date">
+        <span className="detail">
+          <select
+            className="calendar--picker--persons"
+            value={persons}
+            onChange={(e) => {
+              setPersons(e.target.value);
+            }}
+          >
+            {adults.map((person) => (
+              <FormattedMessage
+                id="persons"
+                key={person}
+                children={(text) => (
+                  <option value={person} key={person}>
+                    {person} {text}
+                  </option>
+                )}
+              />
+            ))}
+          </select>
+        </span>
+      </div>
+      <div className="calendar--picker--date">
+        {startsAt && endsAt && (
+          <Query
+            query={CALENDAR_QUERY}
+            variables={{
+              id: portalCode,
+              house_id: objectCode,
+              starts_at: startsAt,
+              ends_at: endsAt,
+              persons: parseInt(persons),
+              locale: locale,
+            }}
+          >
+            {({ loading, data, error }) => {
+              if (loading)
+                return (
+                  <div className="price-overview--build">
+                    <Loading />
+                  </div>
+                );
+              if (error) {
+                return (
+                  <div className="price-overview--build">
+                    <ApiError errors={error}></ApiError>
+                  </div>
+                );
+              }
+              const result = data.PortalSite.houses[0].booking_price;
+              return (
+                <>
+                  <div className="price-overview--book">
+                    <div className="price">
+                      €{' '}
+                      <FormattedNumber
+                        value={Math.round(result.total_price)}
+                        minimumFractionDigits={2}
+                        maximumFractionDigits={2}
+                      />
+                    </div>
+                    <div>
+                      <i>
+                        <FormattedMessage
+                          id="based_on_one_person"
+                          values={{ persons }}
+                        />
+                      </i>
+                    </div>
+                  </div>
+                </>
+              );
+            }}
+          </Query>
+        )}
+      </div>
+      <button
+        className="button"
+        disabled={!disabled}
+        onClick={() => {
+          if (startsAt && endsAt) {
+            onStartBooking('false', persons);
+          }
+        }}
+      >
+        <FormattedMessage id="calculate" />
+      </button>
+    </div>
+  );
 }
 
 PriceField.propTypes = {

@@ -94,20 +94,17 @@
     "comply_insurance_card": "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging.",
     "house.you_picked_arrival_date": "Uw aankomstdatum is",
     "camper.you_picked_arrival_date": "Uw ophaaldatum is",
-    "camper.you_picked_arrival_date": "Uw ophaaldatum is",
     "house.pick_your_departure_in_the_calendar": "Kies een vertrekdatum",
-    "camper.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
     "camper.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
     "house.you_picked_departure_date": "Uw vertrekdatum is",
     "camper.you_picked_departure_date": "Uw inleverdatum is",
-    "camper.you_picked_departure_date": "Uw inleverdatum is",
     "house.pick_your_arrivaldate_in_the_calendar": "Kies een aankomstdatum",
-    "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
     "camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
     "no": "Nee",
     "no_house_found": "Geen object gevonden voor deze combinatie van Portal-code en Object-code",
     "insurance_company_needs_date_of_birth": "Voor het afsluiten van een verzekering is een geboortedatum verplicht",
     "extra_fields.date_of_birth": "Geboortedatum",
     "no_discount_code_found": "Geen korting gevonden met ingegeven code",
-    "discount_code": "Kortingscode"
+    "discount_code": "Kortingscode",
+    "minimum_nights": "Minstens {minimum} nachten"
   }

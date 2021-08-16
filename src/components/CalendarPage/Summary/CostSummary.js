@@ -38,7 +38,6 @@ function CostSummary({ values }) {
               <OptionalNotOnSite prices={prices} />
               <OnSite prices={prices} />
               <Totals prices={prices} />
-              {/* {JSON.stringify(data)} */}
             </>
           );
         }
