@@ -1,33 +1,48 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
-function Modal({ show, children, buttonText }) {
-  const [visible, setVisible] = useState(show);
-  if (!visible) {
-    return (
-      <a className="info-button" onClick={() => setVisible(true)}>
-        {buttonText}
-      </a>
-    );
+class Modal extends Component {
+  state = {
+    visible: this.props.show,
+  };
+
+  setVisible(visible) {
+    this.setState({ visible: visible });
   }
 
-  return (
-    <div className="bukazu-modal-container">
-      <div className="bukazu-modal-container-inner">
-        <div className="bukazu-modal-escape"onClick={() => setVisible(false)} ></div>
-        <div className="bukazu-modal">
-          <div className="bukazu-modal-content">{children}</div>
+  render() {
+    const { children, buttonText } = this.props;
 
-          <div className="bukazu-modal-footer">
-            <a onClick={() => setVisible(false)}>
-              <FormattedMessage id="close" />
-            </a>
+    const { visible } = this.state;
+    if (!visible) {
+      return (
+        <a className="info-button" onClick={() => this.setVisible(true)}>
+          {buttonText}
+        </a>
+      );
+    }
+
+    return (
+      <div className="bukazu-modal-container">
+        <div className="bukazu-modal-container-inner">
+          <div
+            className="bukazu-modal-escape"
+            onClick={() => this.setVisible(false)}
+          ></div>
+          <div className="bukazu-modal">
+            <div className="bukazu-modal-content">{children}</div>
+
+            <div className="bukazu-modal-footer">
+              <a onClick={() => this.setVisible(false)}>
+                <FormattedMessage id="close" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 Modal.defaultProps = {

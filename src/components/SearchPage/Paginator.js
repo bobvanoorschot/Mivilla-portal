@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Query } from 'react-apollo';
 import Pagination from 'react-js-pagination';
 import { FormattedMessage } from 'react-intl';
