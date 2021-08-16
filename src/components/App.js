@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
-import Loading from "./icons/loading.svg";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import Loading from './icons/loading.svg';
 
-import 'react-date-picker/dist/DatePicker.css'
-import 'react-calendar/dist/Calendar.css'
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
-import { PORTAL_QUERY } from "../_lib/queries";
+import { PORTAL_QUERY } from '../_lib/queries';
 
-import SearchPage from "./SearchPage/SearchPage";
-import CalendarPage from "./CalendarPage/CalendarPage";
-import ReviewsPage from "./ReviewsPage/ReviewsPage";
-import SafeBooking from "./SafeBooking";
-import { ApiError } from "./Error";
+import SearchPage from './SearchPage/SearchPage';
+import CalendarPage from './CalendarPage/CalendarPage';
+import ReviewsPage from './ReviewsPage/ReviewsPage';
+import SafeBooking from './SafeBooking';
+import { ApiError } from './Error';
+import ErrorBoundary from './ErrorBoundary';
 
 // import 'react-dates/lib/css/_datepicker.css';
 
@@ -28,7 +29,7 @@ class App extends Component {
    */
   updateDimensions() {
     if (this.pageWidth.current.offsetWidth < 1200) {
-      this.pageWidth.current.classList.add("bu-smaller");
+      this.pageWidth.current.classList.add('bu-smaller');
     } else {
     }
   }
@@ -42,15 +43,8 @@ class App extends Component {
   }
 
   render() {
-    const {
-      portalCode,
-      objectCode,
-      pageType,
-      locale,
-      filters,
-      id,
-      className,
-    } = this.props;
+    const { portalCode, objectCode, pageType, locale, filters, id, className } =
+      this.props;
 
     return (
       <div ref={this.pageWidth} id={id} className={className}>
@@ -63,7 +57,11 @@ class App extends Component {
                 </div>
               );
             if (error) {
-              return <div><ApiError errors={{...error}} /></div>;
+              return (
+                <div>
+                  <ApiError errors={{ ...error }} />
+                </div>
+              );
             }
 
             const PortalSite = data.PortalSite;
@@ -72,58 +70,60 @@ class App extends Component {
             let root = document.documentElement;
 
             root.style.setProperty(
-              "--bukazu-discount",
-              `${options.colors ? options.colors.discount : "orange"}`
+              '--bukazu-discount',
+              `${options.colors ? options.colors.discount : 'orange'}`
             );
             root.style.setProperty(
-              "--bukazu-cell",
-              `${options.colors ? options.colors.cell : "#fff"}`
+              '--bukazu-cell',
+              `${options.colors ? options.colors.cell : '#fff'}`
             );
             root.style.setProperty(
-              "--bukazu-arrival",
-              `${options.colors ? options.colors.arrival : "#6eeb83"}`
+              '--bukazu-arrival',
+              `${options.colors ? options.colors.arrival : '#6eeb83'}`
             );
             root.style.setProperty(
-              "--bukazu-booked",
-              `${options.colors ? options.colors.booked : "#ea2b1f"}`
+              '--bukazu-booked',
+              `${options.colors ? options.colors.booked : '#ea2b1f'}`
             );
             root.style.setProperty(
-              "--bukazu-departure",
-              `${options.colors ? options.colors.departure : "yellow"}`
+              '--bukazu-departure',
+              `${options.colors ? options.colors.departure : 'yellow'}`
             );
 
             root.style.setProperty(
-              "--bukazu-button",
+              '--bukazu-button',
               `${
                 options.colors
                   ? options.colors.button
-                  : "rgba(23, 190, 187, 0.75)"
+                  : 'rgba(23, 190, 187, 0.75)'
               }`
             );
             root.style.setProperty(
-              "--bukazu-button_cta",
-              `${options.colors ? options.colors.buttonCta : "#e28413"}`
+              '--bukazu-button_cta',
+              `${options.colors ? options.colors.buttonCta : '#e28413'}`
             );
             root.style.setProperty(
-              "--bukazu-background_month",
-              `${options.colors ? options.colors.month_background : "#e28413"}`
+              '--bukazu-background_month',
+              `${options.colors ? options.colors.month_background : '#e28413'}`
             );
 
-            if (objectCode && objectCode !== null && pageType !== "reviews") {
+            if (objectCode && objectCode !== null && pageType !== 'reviews') {
               return (
                 <section>
-                  <CalendarPage
-                    PortalSite={PortalSite}
-                    objectCode={objectCode}
-                    locale={locale}
-                  />
-                  <SafeBooking locale={locale} />
+                  <ErrorBoundary>
+                    <CalendarPage
+                      PortalSite={PortalSite}
+                      objectCode={objectCode}
+                      locale={locale}
+                    />
+                    <SafeBooking locale={locale} />
+                  </ErrorBoundary>
                 </section>
               );
             } else if (
               objectCode &&
               objectCode !== null &&
-              pageType === "reviews"
+              pageType === 'reviews'
             ) {
               return (
                 <ReviewsPage
