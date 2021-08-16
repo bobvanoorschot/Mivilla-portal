@@ -43,7 +43,7 @@ function PriceField({
   onStartBooking,
   minNights,
 }) {
-  const [persons, setPersons] = useState(2);
+  const [persons, setPersons] = useState('2');
 
   let adults = createPeronsArray(house.persons);
 
@@ -187,6 +187,7 @@ PriceField.propTypes = {
   endsAt: PropTypes.string,
   onStartBooking: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
+  minNights: PropTypes.number,
 };
 
 export default PriceField;
