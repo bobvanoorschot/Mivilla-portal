@@ -59,7 +59,7 @@
     "date-fns": "^1.29.0",
     "formik": "^2.2.9",
     "graphql": "^15.5.1",
-    "react": "^16.8.1",
+    "react": "16.8",
     "react-apollo": "^2.1.9",
     "react-date-picker": "^8.1.1",
     "react-intl": "^2.7.2",
