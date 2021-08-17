@@ -7,7 +7,6 @@ import format from '../../_lib/format';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { createPeronsArray } from './formParts/BookingHelpers';
 import { ApiError } from '../Error';
-import { render } from 'react-dom';
 
 const dateFormat = 'dddd DD MMMM YYYY';
 
