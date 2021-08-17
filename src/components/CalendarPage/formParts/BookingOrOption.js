@@ -1,11 +1,9 @@
 import React from 'react';
 import { RadioButtonGroup, RadioButton } from './radioButtons';
-import { Field, useField } from 'formik';
+import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
 
 export default function BookingOrOption({ house, ...props }) {
-  const [field, meta] = useField(props)
-
   return (
     <>
       {house.allow_option && (

@@ -1,28 +1,39 @@
 import React from 'react';
-import { useField } from 'formik';
+import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
 
-export default function Select({ label, description, options, ...props }) {
-  const [field, meta] = useField(props);
+export default function Select({
+  label,
+  description,
+  options,
+  name,
+  ...props
+}) {
 
   return (
-    <div className="form-row inline" id={`bukazu_form_${props.name}`}>
-      <label htmlFor={props.name}>
-        <FormattedMessage id={label} />
-      </label>
-      <select {...field} {...props}>
-        {options.map((opt) => {
-          return (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          );
-        })}
-      </select>
-      {description}
-      {meta.touched && meta.error && (
-        <div className="error-message">{meta.error}</div>
-      )}
-    </div>
+    <Field name={name}>
+      {({ field, meta }) => {
+        return (
+          <div className="form-row inline" id={`bukazu_form_${props.name}`}>
+            <label htmlFor={props.name}>
+              <FormattedMessage id={label} />
+            </label>
+            <select {...field} {...props}>
+              {options.map((opt) => {
+                return (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                );
+              })}
+            </select>
+            {description}
+            {meta.touched && meta.error && (
+              <div className="error-message">{meta.error}</div>
+            )}
+          </div>
+        );
+      }}
+    </Field>
   );
 }
