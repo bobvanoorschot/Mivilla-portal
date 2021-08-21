@@ -101,6 +101,7 @@ export const BOOKING_PRICE_QUERY = gql`
       zipcode_label
       city_label
       address_label
+      house_number_label
       phone_label
       phone_mobile_label
       country_label
@@ -147,6 +148,7 @@ export const CREATE_BOOKING_MUTATION = gql`
     $company_name: String
     $is_option: Boolean!
     $address: String
+    $house_number: String
     $zipcode: String
     $city: String
     $phone: String
@@ -177,6 +179,7 @@ export const CREATE_BOOKING_MUTATION = gql`
       last_name: $last_name
       is_option: $is_option
       address: $address
+      house_number: $house_number
       zipcode: $zipcode
       city: $city
       phone: $phone
