@@ -1,34 +1,34 @@
-._react-date-picker_1xn59_1 {
+.react-date-picker {
   display: inline-flex;
   position: relative;
 }
-._react-date-picker_1xn59_1,
-._react-date-picker_1xn59_1 *,
-._react-date-picker_1xn59_1 *:before,
-._react-date-picker_1xn59_1 *:after {
+.react-date-picker,
+.react-date-picker *,
+.react-date-picker *:before,
+.react-date-picker *:after {
   box-sizing: border-box;
 }
-._react-date-picker--disabled_1xn59_13 {
+.react-date-picker--disabled {
   background-color: #f0f0f0;
   color: #6d6d6d;
 }
-._react-date-picker__wrapper_1xn59_17 {
+.react-date-picker__wrapper {
   display: flex;
   flex-grow: 1;
   flex-shrink: 0;
   border: thin solid gray;
 }
-._react-date-picker__inputGroup_1xn59_23 {
+.react-date-picker__inputGroup {
   min-width: calc((4px * 3) +  0.54em * 8  +  0.217em * 2);
   flex-grow: 1;
   padding: 0 2px;
   box-sizing: content-box;
 }
-._react-date-picker__inputGroup__divider_1xn59_29 {
+.react-date-picker__inputGroup__divider {
   padding: 1px 0;
   white-space: pre;
 }
-._react-date-picker__inputGroup__input_1xn59_33 {
+.react-date-picker__inputGroup__input {
   min-width: 0.54em;
   height: 100%;
   position: relative;
@@ -39,37 +39,37 @@
   box-sizing: content-box;
   -moz-appearance: textfield;
 }
-._react-date-picker__inputGroup__input_1xn59_33::-webkit-outer-spin-button,
-._react-date-picker__inputGroup__input_1xn59_33::-webkit-inner-spin-button {
+.react-date-picker__inputGroup__input::-webkit-outer-spin-button,
+.react-date-picker__inputGroup__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-._react-date-picker__inputGroup__input_1xn59_33:invalid {
+.react-date-picker__inputGroup__input:invalid {
   background: rgba(255, 0, 0, 0.1);
 }
-._react-date-picker__inputGroup__input--hasLeadingZero_1xn59_52 {
+.react-date-picker__inputGroup__input--hasLeadingZero {
   margin-left: -0.54em;
   padding-left: calc(1px +  0.54em);
 }
-._react-date-picker__button_1xn59_56 {
+.react-date-picker__button {
   border: 0;
   background: transparent;
   padding: 4px 6px;
 }
-._react-date-picker__button_1xn59_56:enabled {
+.react-date-picker__button:enabled {
   cursor: pointer;
 }
-._react-date-picker__button_1xn59_56:enabled:hover ._react-date-picker__button__icon_1xn59_64,
-._react-date-picker__button_1xn59_56:enabled:focus ._react-date-picker__button__icon_1xn59_64 {
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon,
+.react-date-picker__button:enabled:focus .react-date-picker__button__icon {
   stroke: #0078d7;
 }
-._react-date-picker__button_1xn59_56:disabled ._react-date-picker__button__icon_1xn59_64 {
+.react-date-picker__button:disabled .react-date-picker__button__icon {
   stroke: #6d6d6d;
 }
-._react-date-picker__button_1xn59_56 svg {
+.react-date-picker__button svg {
   display: inherit;
 }
-._react-date-picker__calendar_1xn59_74 {
+.react-date-picker__calendar {
   width: 350px;
   max-width: 100vw;
   position: absolute;
@@ -77,14 +77,14 @@
   left: 0;
   z-index: 1;
 }
-._react-date-picker__calendar--closed_1xn59_82 {
+.react-date-picker__calendar--closed {
   display: none;
 }
-._react-date-picker__calendar_1xn59_74 ._react-calendar_1xn59_85 {
+.react-date-picker__calendar .react-calendar {
   border-width: thin;
 }
 
-._react-calendar_8n8mz_1 {
+.react-calendar {
   width: 350px;
   max-width: 100%;
   background: white;
@@ -92,163 +92,163 @@
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
 }
-._react-calendar--doubleView_8n8mz_9 {
+.react-calendar--doubleView {
   width: 700px;
 }
-._react-calendar--doubleView_8n8mz_9 ._react-calendar__viewContainer_8n8mz_12 {
+.react-calendar--doubleView .react-calendar__viewContainer {
   display: flex;
   margin: -0.5em;
 }
-._react-calendar--doubleView_8n8mz_9 ._react-calendar__viewContainer_8n8mz_12 > * {
+.react-calendar--doubleView .react-calendar__viewContainer > * {
   width: 50%;
   margin: 0.5em;
 }
-._react-calendar_8n8mz_1,
-._react-calendar_8n8mz_1 *,
-._react-calendar_8n8mz_1 *:before,
-._react-calendar_8n8mz_1 *:after {
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
   box-sizing: border-box;
 }
-._react-calendar_8n8mz_1 button {
+.react-calendar button {
   margin: 0;
   border: 0;
   outline: none;
 }
-._react-calendar_8n8mz_1 button:enabled:hover {
+.react-calendar button:enabled:hover {
   cursor: pointer;
 }
-._react-calendar__navigation_8n8mz_36 {
+.react-calendar__navigation {
   height: 44px;
   margin-bottom: 1em;
 }
-._react-calendar__navigation_8n8mz_36 button {
+.react-calendar__navigation button {
   min-width: 44px;
   background: none;
 }
-._react-calendar__navigation_8n8mz_36 button:enabled:hover,
-._react-calendar__navigation_8n8mz_36 button:enabled:focus {
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
   background-color: #e6e6e6;
 }
-._react-calendar__navigation_8n8mz_36 button[disabled] {
+.react-calendar__navigation button[disabled] {
   background-color: #f0f0f0;
 }
-._react-calendar__month-view__weekdays_8n8mz_51 {
+.react-calendar__month-view__weekdays {
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.75em;
 }
-._react-calendar__month-view__weekdays__weekday_8n8mz_57 {
+.react-calendar__month-view__weekdays__weekday {
   padding: 0.5em;
 }
-._react-calendar__month-view__weekNumbers_8n8mz_60 {
+.react-calendar__month-view__weekNumbers {
   font-weight: bold;
 }
-._react-calendar__month-view__weekNumbers_8n8mz_60 ._react-calendar__tile_8n8mz_63 {
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75em;
   padding: calc(0.75em / 0.75) calc(0.5em / 0.75);
 }
-._react-calendar__month-view__days__day--weekend_8n8mz_70 {
+.react-calendar__month-view__days__day--weekend {
   color: #d10000;
 }
-._react-calendar__month-view__days__day--neighboringMonth_8n8mz_73 {
+.react-calendar__month-view__days__day--neighboringMonth {
   color: #757575;
 }
-._react-calendar__year-view_8n8mz_76 ._react-calendar__tile_8n8mz_63,
-._react-calendar__decade-view_8n8mz_77 ._react-calendar__tile_8n8mz_63,
-._react-calendar__century-view_8n8mz_78 ._react-calendar__tile_8n8mz_63 {
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
   padding: 2em 0.5em;
 }
-._react-calendar__tile_8n8mz_63 {
+.react-calendar__tile {
   max-width: 100%;
   text-align: center;
   padding: 0.75em 0.5em;
   background: none;
 }
-._react-calendar__tile_8n8mz_63:disabled {
+.react-calendar__tile:disabled {
   background-color: #f0f0f0;
 }
-._react-calendar__tile_8n8mz_63:enabled:hover,
-._react-calendar__tile_8n8mz_63:enabled:focus {
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
   background-color: #e6e6e6;
 }
-._react-calendar__tile--now_8n8mz_94 {
+.react-calendar__tile--now {
   background: #ffff76;
 }
-._react-calendar__tile--now_8n8mz_94:enabled:hover,
-._react-calendar__tile--now_8n8mz_94:enabled:focus {
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
   background: #ffffa9;
 }
-._react-calendar__tile--hasActive_8n8mz_101 {
+.react-calendar__tile--hasActive {
   background: #76baff;
 }
-._react-calendar__tile--hasActive_8n8mz_101:enabled:hover,
-._react-calendar__tile--hasActive_8n8mz_101:enabled:focus {
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
   background: #a9d4ff;
 }
-._react-calendar__tile--active_8n8mz_108 {
+.react-calendar__tile--active {
   background: #006edc;
   color: white;
 }
-._react-calendar__tile--active_8n8mz_108:enabled:hover,
-._react-calendar__tile--active_8n8mz_108:enabled:focus {
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
   background: #1087ff;
 }
-._react-calendar--selectRange_8n8mz_116 ._react-calendar__tile--hover_8n8mz_116 {
+.react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
 }
 
 
   @media screen and (min-width: 1400px) {
-    #_bukazu-app_106u5_1 div._calendar-container_106u5_1 {
+    #bukazu-app div.calendar-container {
       display: flex;
       align-items: flex-start;
     }
-      #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._calendar-section_106u5_1 {
+      #bukazu-app div.calendar-container .calendar-section {
         width: 75%;
         order: 1;
       }
-      #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._price-overview_106u5_1 {
+      #bukazu-app div.calendar-container .price-overview {
         width: 25%;
         order: 2;
       }
-        #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 {
+        #bukazu-app div.calendar-container .price-overview .calendar--picker {
           flex-direction: column;
         }
-          #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._price-overview_106u5_1 ._calendar--picker--date_106u5_1, #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1 {
+          #bukazu-app div.calendar-container .price-overview .calendar--picker--date, #bukazu-app div.calendar-container .price-overview .calendar--picker .button {
             width: auto;
           }
-          #_bukazu-app_106u5_1 div._calendar-container_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1 {
+          #bukazu-app div.calendar-container .price-overview .calendar--picker .button {
             padding: 12px;
           }
   }
 @media screen and (max-width: 993px) {
-        #_bukazu-app_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 {
+        #bukazu-app .price-overview .calendar--picker {
           flex-direction: column;
         }
-          #_bukazu-app_106u5_1 ._price-overview_106u5_1 ._calendar--picker--date_106u5_1, #_bukazu-app_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1 {
+          #bukazu-app .price-overview .calendar--picker--date, #bukazu-app .price-overview .calendar--picker .button {
             width: auto;
           }
-          #_bukazu-app_106u5_1 ._price-overview_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1 {
+          #bukazu-app .price-overview .calendar--picker .button {
             padding: 12px;
           }
     
   }
-#_bukazu-app_106u5_1 ._calendars-header_106u5_1 {
+#bukazu-app .calendars-header {
     display: flex;
     flex-direction: row;
     justify-content: space-around
   }
 @media screen and (max-width: 992px) {
       /* flex-direction: column; */
-      #_bukazu-app_106u5_1 ._calendars-header_106u5_1 ._col_106u5_1 {
+      #bukazu-app .calendars-header .col {
         margin: 4px 8px;
       }
     }
-#_bukazu-app_106u5_1 ._calendars-header_106u5_1 ._col_106u5_1 ._icon_106u5_1 {
+#bukazu-app .calendars-header .col .icon {
         padding: 8px 40px;
         background-color: rgb(23, 190, 187);
         background: var(--bukazu-button);
@@ -258,24 +258,24 @@
         align-items: center;
         justify-content: center;
       }
-#_bukazu-app_106u5_1 ._calendars-header_106u5_1 ._col_106u5_1 ._icon_106u5_1 svg {
+#bukazu-app .calendars-header .col .icon svg {
           height: 18px;
         }
-#_bukazu-app_106u5_1 ._calendars-header_106u5_1 ._col_106u5_1 ._icon_106u5_1:hover {
+#bukazu-app .calendars-header .col .icon:hover {
           box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
         }
-#_bukazu-app_106u5_1 ._assistance_106u5_1 {
+#bukazu-app .assistance {
     padding: 16px;
   }
-#_bukazu-app_106u5_1 ._assistance_106u5_1 span {
+#bukazu-app .assistance span {
       font-weight: bold;
     }
-#_bukazu-app_106u5_1 ._calendars-row_106u5_1 {
+#bukazu-app .calendars-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
   }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 {
+#bukazu-app .calendar {
     min-width: 48%;
     padding: 16px 1%;
     box-sizing: border-box;
@@ -283,30 +283,30 @@
     /* box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25); */
     /* margin: 16px 8px; */
   }
-#_bukazu-app_106u5_1 ._calendar_106u5_1._calendar-1_106u5_1 {
+#bukazu-app .calendar.calendar-1 {
       min-width: 98%;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1._calendar-2_106u5_1 {
+#bukazu-app .calendar.calendar-2 {
       min-width: 48%;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1._calendar-3_106u5_1 {
+#bukazu-app .calendar.calendar-3 {
       min-width: 32%;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1._calendar-4_106u5_1 {
+#bukazu-app .calendar.calendar-4 {
       min-width: calc(25% - 16px);
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._header_106u5_1 {
+#bukazu-app .calendar .header {
       background-color: rgba(211, 211, 211, 0.2);
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._row_106u5_1 {
+#bukazu-app .calendar .row {
       width: 100%;
       display: flex;
       flex: 1 1 auto
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._row_106u5_1._days_106u5_1 {
+#bukazu-app .calendar .row.days {
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
       }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._col_106u5_1 {
+#bukazu-app .calendar .col {
       width: 100%;
       /* border: solid 1px #fff; */
       padding: 4px;
@@ -314,30 +314,30 @@
       text-align: center;
       transition: all 0.5s ease;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._col-center_106u5_1 {
+#bukazu-app .calendar .col-center {
         text-align: center;
       }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._col-start_106u5_1 {
+#bukazu-app .calendar .col-start {
         text-align: left;
       }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._col-end_106u5_1 {
+#bukazu-app .calendar .col-end {
         text-align: right;
       }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._cell_106u5_1 {
+#bukazu-app .calendar .cell {
       background: #6eeb83;
       background: var(--bukazu-cell);
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._disabled_106u5_1 {
+#bukazu-app .calendar .disabled {
       opacity: 0;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._arrival_106u5_1 {
+#bukazu-app .calendar .arrival {
       background: #6eeb83;
       background: var(--bukazu-arrival);
       cursor: pointer;
       font-weight: bold;
       text-decoration: underline;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._discount_106u5_1 {
+#bukazu-app .calendar .discount {
       background: orange;
       background: var(--bukazu-discount);
     }
@@ -348,30 +348,30 @@
         var(--bukazu-arrival) 50%
       ); 
     } */
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._booked-departure_106u5_1 {
+#bukazu-app .calendar .booked-departure {
       background: linear-gradient(
         45deg,
         var(--bukazu-cell) 50%,
         var(--bukazu-booked) 50%
       );
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._discount_106u5_1._booked-departure_106u5_1 {
+#bukazu-app .calendar .discount.booked-departure {
       background: linear-gradient(
         45deg,
         var(--bukazu-discount) 50%,
         var(--bukazu-booked) 50%
       );
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._departure_106u5_1._discount_106u5_1._booked-departure_106u5_1,
-    #_bukazu-app_106u5_1 ._calendar_106u5_1 ._departure_106u5_1._booked-departure_106u5_1,
-    #_bukazu-app_106u5_1 ._calendar_106u5_1 ._departure_106u5_1._booked_106u5_1 {
+#bukazu-app .calendar .departure.discount.booked-departure,
+    #bukazu-app .calendar .departure.booked-departure,
+    #bukazu-app .calendar .departure.booked {
       background: linear-gradient(
         45deg,
         var(--bukazu-departure) 50%,
         var(--bukazu-booked) 50%
       );
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._departure-arrival_106u5_1 {
+#bukazu-app .calendar .departure-arrival {
       background: linear-gradient(
         45deg,
         var(--bukazu-booked) 50%,
@@ -379,82 +379,82 @@
       ) !important;
       cursor: pointer;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._discount_106u5_1._departure-arrival_106u5_1 {
+#bukazu-app .calendar .discount.departure-arrival {
       background: linear-gradient(
         45deg,
         var(--bukazu-booked) 50%,
         var(--bukazu-discount) 50%
       ) !important;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._icon_106u5_1 {
+#bukazu-app .calendar .icon {
       cursor: pointer;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._discount_106u5_1._arrival_106u5_1._departure_106u5_1,
-    #_bukazu-app_106u5_1 ._calendar_106u5_1 ._departure_106u5_1 {
+#bukazu-app .calendar .discount.arrival.departure,
+    #bukazu-app .calendar .departure {
       font-weight: bold;
       background: yellow;
       background: var(--bukazu-departure);
       cursor: pointer;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._selected_106u5_1 {
+#bukazu-app .calendar .selected {
       background: rgb(23, 190, 187) !important;
       background: var(--bukazu-button) !important;
     }
-#_bukazu-app_106u5_1 ._calendar_106u5_1 ._booked_106u5_1 {
+#bukazu-app .calendar .booked {
       background: #ea2b1f;
       background: var(--bukazu-booked);
       color: #000;
       /* filter: invert(100%) */
     }
-#_bukazu-app_106u5_1 ._legend_106u5_1 {
+#bukazu-app .legend {
     display: flex;
     flex-wrap: wrap;
     padding: 8px 16px
   }
 @media screen and (max-width: 992px) {
-  #_bukazu-app_106u5_1 ._legend_106u5_1 {
+  #bukazu-app .legend {
       flex-direction: column
   }
     }
-#_bukazu-app_106u5_1 ._legend_106u5_1 > div {
+#bukazu-app .legend > div {
       display: flex;
       padding: 0 16px
     }
 @media screen and (max-width: 992px) {
-    #_bukazu-app_106u5_1 ._legend_106u5_1 > div {
+    #bukazu-app .legend > div {
         padding: 4px 8px
     }
       }
-#_bukazu-app_106u5_1 ._legend-field_106u5_1 {
+#bukazu-app .legend-field {
       display: block;
       width: 16px;
       height: 16px;
       margin: 0 8px 0 0
     }
-#_bukazu-app_106u5_1 ._legend-field_106u5_1._booked_106u5_1 {
+#bukazu-app .legend-field.booked {
         background: #ea2b1f;
         background: var(--bukazu-booked);
       }
-#_bukazu-app_106u5_1 ._legend-field_106u5_1._arrival_106u5_1 {
+#bukazu-app .legend-field.arrival {
         background: #6eeb83;
         background: var(--bukazu-arrival);
       }
-#_bukazu-app_106u5_1 ._legend-field_106u5_1._departure_106u5_1 {
+#bukazu-app .legend-field.departure {
         background: yellow;
         background: var(--bukazu-departure);
       }
-#_bukazu-app_106u5_1 ._legend-field_106u5_1._last_minute_discount_106u5_1 {
+#bukazu-app .legend-field.last_minute_discount {
         background: orange;
         background: var(--bukazu-discount);
       }
-#_bukazu-app_106u5_1 ._calendar--picker_106u5_1 {
+#bukazu-app .calendar--picker {
     padding: 8px;
     display: flex;
     justify-content: space-around;
     width: 100%;
     box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
   }
-#_bukazu-app_106u5_1 ._calendar--picker--date_106u5_1 {
+#bukazu-app .calendar--picker--date {
       width: 20%;
       display: flex;
       flex-direction: column;
@@ -462,17 +462,17 @@
       align-items: center;
       padding: 8px 16px;
     }
-#_bukazu-app_106u5_1 ._calendar--picker--date_106u5_1 span._name_106u5_1 {
+#bukazu-app .calendar--picker--date span.name {
         font-size: 18px;
         border-bottom: 1px solid #ccc;
         padding: 4px 0
       }
 @media screen and (max-width: 1200px) {
-      #_bukazu-app_106u5_1 ._calendar--picker--date_106u5_1 span._name_106u5_1 {
+      #bukazu-app .calendar--picker--date span.name {
     font-size: 16px
       }
   }
-#_bukazu-app_106u5_1 ._calendar--picker--date_106u5_1 span._detail_106u5_1 {
+#bukazu-app .calendar--picker--date span.detail {
         display: flex;
         padding: 4px 0;
         opacity: 0.9;
@@ -481,11 +481,11 @@
         align-items: center
       }
 @media screen and (max-width: 1200px) {
-      #_bukazu-app_106u5_1 ._calendar--picker--date_106u5_1 span._detail_106u5_1 {
+      #bukazu-app .calendar--picker--date span.detail {
                   font-size: 14px
       }
                 }
-#_bukazu-app_106u5_1 ._calendar--picker--persons_106u5_1 {
+#bukazu-app .calendar--picker--persons {
       border: 1px solid #ccc;
       width: 100%;
       -webkit-appearance: none;
@@ -493,7 +493,7 @@
               appearance: none;
       font-size: 16px;
     }
-#_bukazu-app_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1 {
+#bukazu-app .calendar--picker .button {
       width: 20%;
       background: var(--bukazu-button_cta);
       color: #fff;
@@ -506,14 +506,14 @@
       box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
       cursor: pointer
     }
-#_bukazu-app_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1:disabled {
+#bukazu-app .calendar--picker .button:disabled {
        background: #ccc;
        cursor: not-allowed;
       }
-#_bukazu-app_106u5_1 ._calendar--picker_106u5_1 ._button_106u5_1:hover {
+#bukazu-app .calendar--picker .button:hover {
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
       }
-#_bukazu-app_106u5_1 ._form_106u5_1 {
+#bukazu-app .form {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
@@ -521,46 +521,46 @@
   position: relative
 }
 @media screen and (max-width: 992px) {
-#_bukazu-app_106u5_1 ._form_106u5_1 {
+#bukazu-app .form {
     flex-direction: column
 }
   }
-#_bukazu-app_106u5_1 ._form_106u5_1 h2 {
+#bukazu-app .form h2 {
     padding: 16px 0 24px;
     margin: 0;
   }
-#_bukazu-app_106u5_1 ._form_106u5_1 ._return-link_106u5_1 {
+#bukazu-app .form .return-link {
     color: var(--bukazu-button);
     cursor: pointer;
     text-decoration: underline;
   }
-#_bukazu-app_106u5_1 ._form_106u5_1 > div {
+#bukazu-app .form > div {
     /* flex: 1; */
   }
-#_bukazu-app_106u5_1 ._form_106u5_1 ._error-message_106u5_1 {
+#bukazu-app .form .error-message {
     width: 100%;
     color: red;
     font-size: 14px;
     padding-bottom: 4px;
   }
-#_bukazu-app_106u5_1 ._form-content_106u5_1 {
+#bukazu-app .form-content {
     width: 70%
   }
 @media screen and (max-width: 992px) {
-  #_bukazu-app_106u5_1 ._form-content_106u5_1 {
+  #bukazu-app .form-content {
       width: 100%
   }
     }
-#_bukazu-app_106u5_1 ._form-section_106u5_1 {
+#bukazu-app .form-section {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #aeacac;
     padding: 16px;
   }
-#_bukazu-app_106u5_1 ._form-section_106u5_1 ._age-description_106u5_1 {
+#bukazu-app .form-section .age-description {
       padding: 0 0 0 16px;
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 {
+#bukazu-app .form-sum {
     padding: 16px;
     background: #fff;
     box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.25);
@@ -572,28 +572,28 @@
     align-self: flex-start
   }
 @media screen and (max-width: 992px) {
-  #_bukazu-app_106u5_1 ._form-sum_106u5_1 {
+  #bukazu-app .form-sum {
       min-width: 100%
   }
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._house-details_106u5_1 {
+#bukazu-app .form-sum .house-details {
       padding: 0 0 16px;
       border-bottom: 1px solid #aeacac;
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._house-details_106u5_1 img {
+#bukazu-app .form-sum .house-details img {
         padding: 16px 0;
         height: 200px
       }
 @media screen and (max-width: 992px) {
-      #_bukazu-app_106u5_1 ._form-sum_106u5_1 ._house-details_106u5_1 img {
+      #bukazu-app .form-sum .house-details img {
           max-width: 100%;
           height: auto
       }
         }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._house-details_106u5_1 th {
+#bukazu-app .form-sum .house-details th {
         text-align: left;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 {
+#bukazu-app .form-sum .booking_option {
       border: none;
       display: flex;
       flex-direction: row;
@@ -604,27 +604,27 @@
       overflow: hidden;
       margin: 16px 0;
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 div {
+#bukazu-app .form-sum .booking_option div {
         width: 50%;
         text-align: center;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 ._legend_106u5_1 {
+#bukazu-app .form-sum .booking_option .legend {
         width: 100%;
         display: none;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 input {
+#bukazu-app .form-sum .booking_option input {
         display: none;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 input:checked + label {
+#bukazu-app .form-sum .booking_option input:checked + label {
         background: var(--bukazu-button);
         /* color: #fff; */
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 input:disabled + label {
+#bukazu-app .form-sum .booking_option input:disabled + label {
         background: #efefef;
         color: #ccc;
         /* color: #fff; */
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._booking_option_106u5_1 label {
+#bukazu-app .form-sum .booking_option label {
         border-radius: 16px;
         display: block;
         flex: 1 1 auto;
@@ -634,26 +634,26 @@
         cursor: pointer;
         margin: 0;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._costs-section_106u5_1 {
+#bukazu-app .form-sum .costs-section {
       padding: 16px 0;
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._costs-section_106u5_1 table {
+#bukazu-app .form-sum .costs-section table {
         width: 100%;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._costs-section_106u5_1 table tr {
+#bukazu-app .form-sum .costs-section table tr {
           width: 100%;
         }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._costs-section_106u5_1 table tr td {
+#bukazu-app .form-sum .costs-section table tr td {
             width: 60%;
           }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._costs-section_106u5_1 ._price_106u5_1 {
+#bukazu-app .form-sum .costs-section .price {
         text-align: right;
         width: 40%;
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._terms_106u5_1 {
+#bukazu-app .form-sum .terms {
       padding: 8px 0;
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._terms_106u5_1 button {
+#bukazu-app .form-sum .terms button {
         padding: 0 4px;
         background: 0;
         display: inline;
@@ -667,11 +667,11 @@
         outline: inherit;
         color: var(--bukazu-button)
       }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 ._terms_106u5_1 button:hover {
+#bukazu-app .form-sum .terms button:hover {
           box-shadow: none;
           text-decoration: underline;
         }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 button {
+#bukazu-app .form-sum button {
       width: 100%;
       padding: 16px;
       border: 0;
@@ -680,30 +680,30 @@
       background: var(--bukazu-button_cta);
       cursor: pointer
     }
-#_bukazu-app_106u5_1 ._form-sum_106u5_1 button:hover {
+#bukazu-app .form-sum button:hover {
         box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.25);
       }
-#_bukazu-app_106u5_1 ._form-row_106u5_1 {
+#bukazu-app .form-row {
     display: flex;
     flex-direction: column;
     padding: 8px 0;
   }
-#_bukazu-app_106u5_1 ._form-row_106u5_1 select,
-    #_bukazu-app_106u5_1 ._form-row_106u5_1 input,
-    #_bukazu-app_106u5_1 ._form-row_106u5_1 ._bukazu-date-picker_106u5_1 {
+#bukazu-app .form-row select,
+    #bukazu-app .form-row input,
+    #bukazu-app .form-row .bukazu-date-picker {
       max-width: 50%
     }
 @media screen and (max-width: 992px) {
-    #_bukazu-app_106u5_1 ._form-row_106u5_1 select,
-    #_bukazu-app_106u5_1 ._form-row_106u5_1 input,
-    #_bukazu-app_106u5_1 ._form-row_106u5_1 ._bukazu-date-picker_106u5_1 {
+    #bukazu-app .form-row select,
+    #bukazu-app .form-row input,
+    #bukazu-app .form-row .bukazu-date-picker {
         max-width: 100%
     }
       }
-#_bukazu-app_106u5_1 ._form-row_106u5_1 ._bu-input-description_106u5_1 {
+#bukazu-app .form-row .bu-input-description {
       font-style: italic;
     }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 {
+#bukazu-app .form-row.inline {
       align-items: center;
       display: flex;
       flex-direction: row;
@@ -711,44 +711,44 @@
       flex-wrap: wrap;
       width: 100%
     }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1._hidden_106u5_1 {
+#bukazu-app .form-row.inline.hidden {
         display: none;
       }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 label {
+#bukazu-app .form-row.inline label {
         width: 30%;
         font-size: 16px
       }
 @media screen and (max-width: 992px) {
-      #_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 label {
+      #bukazu-app .form-row.inline label {
           width: auto
       }
         }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 select,
-      #_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 input {
+#bukazu-app .form-row.inline select,
+      #bukazu-app .form-row.inline input {
         width: auto;
         min-width: 150px;
         padding: 8px 64px 8px 16px
       }
 @media screen and (max-width: 992px) {
-      #_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 select,
-      #_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 input {
+      #bukazu-app .form-row.inline select,
+      #bukazu-app .form-row.inline input {
           order: 3;
           width: 100%
       }
         }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 ._info-button_106u5_58 {
+#bukazu-app .form-row.inline .info-button {
         margin: 0 0 0 8px;
       }
-#_bukazu-app_106u5_1 ._form-row_106u5_1._inline_106u5_1 ._price_per_106u5_1 {
+#bukazu-app .form-row.inline .price_per {
         padding: 0 0 0 50px;
       }
-#_bukazu-app_106u5_1 ._form_106u5_1 ._return-message_106u5_1 {
+#bukazu-app .form .return-message {
     position: fixed;
     top: 20%;
     left: 50%;
     transform: translate(-50%, 0);
   }
-#_bukazu-app_106u5_1 input, #_bukazu-app_106u5_1 select {
+#bukazu-app input, #bukazu-app select {
         -webkit-appearance: none;
            -moz-appearance: none;
                 appearance: none;
@@ -760,19 +760,19 @@
         box-sizing: border-box;
         margin: 4px 0 8px;
     }
-#_bukazu-app_106u5_1 ._react-date-picker__wrapper_106u5_1 {
+#bukazu-app .react-date-picker__wrapper {
         border: 1px solid rgba(69, 74, 83, 0.2);
         border-radius: 8px;
         padding: 8px 16px;
         margin: 4px 0 8px;
     }
-#_bukazu-app_106u5_1 ._react-date-picker__inputGroup_106u5_1 {
+#bukazu-app .react-date-picker__inputGroup {
         box-sizing: content-box;
     }
-#_bukazu-app_106u5_1 ._react-date-picker__inputGroup_106u5_1 input {
+#bukazu-app .react-date-picker__inputGroup input {
             padding: 0;
         }
-#_bukazu-app_106u5_1 ._react-date-picker__inputGroup_106u5_1 input._react-date-picker__inputGroup__input_106u5_1 {
+#bukazu-app .react-date-picker__inputGroup input.react-date-picker__inputGroup__input {
             padding: 0 1px;
             border: 0;
             box-sizing: content-box;
@@ -780,8 +780,8 @@
                -moz-appearance: textfield;
                     appearance: textfield;
         }
-#_bukazu-app_106u5_1 input[type=radio],
-#_bukazu-app_106u5_1 input[type=checkbox] {
+#bukazu-app input[type=radio],
+#bukazu-app input[type=checkbox] {
     width: 8px;
     height: 8px;
     padding: 8px;
@@ -789,14 +789,14 @@
     position: relative;
     border-radius: 16px;
 }
-#_bukazu-app_106u5_1 input[type=checkbox] {    
+#bukazu-app input[type=checkbox] {    
     border-radius: 0;
 }
-#_bukazu-app_106u5_1 input[type=checkbox]:checked+label,
-#_bukazu-app_106u5_1 input[type=radio]:checked+label {
+#bukazu-app input[type=checkbox]:checked+label,
+#bukazu-app input[type=radio]:checked+label {
     font-weight: bold;
 }
-#_bukazu-app_106u5_1 input[type=radio]:checked::after {
+#bukazu-app input[type=radio]:checked::after {
     content: '';
     position: absolute;
     top: 0;
@@ -809,7 +809,7 @@
     border-radius: 16px;
     background: var(--bukazu-button);
 }
-#_bukazu-app_106u5_1 input[type=checkbox]:checked::after {   
+#bukazu-app input[type=checkbox]:checked::after {   
     /*Add another block-level blank space*/
     content: '';
     display: block;
@@ -828,26 +828,26 @@
     /*Rotate the L 45 degrees to turn it into a checkmark*/
     transform: rotate(45deg);  
 }
-#_bukazu-app_106u5_1 ._radioList_106u5_1 {
+#bukazu-app .radioList {
     padding: 0;
     list-style: none;
 }
-#_bukazu-app_106u5_1 ._radioList_106u5_1 ._bu-list-item_106u5_1 {
+#bukazu-app .radioList .bu-list-item {
         display: flex;
         align-items: center;
         cursor: pointer;
     }
-#_bukazu-app_106u5_1 ._radioList_106u5_1 ._bu-list-item_106u5_1 label {
+#bukazu-app .radioList .bu-list-item label {
             padding: 4px 0;
             cursor: pointer;
         }
-#_bukazu-app_106u5_1 ._radioList_106u5_1 ._bu-disabled_106u5_1 {
+#bukazu-app .radioList .bu-disabled {
         display: none;
     }
-#_bukazu-app_106u5_1 ._PresetDateRangePicker_panel_106u5_1 {
+#bukazu-app .PresetDateRangePicker_panel {
     padding: 0 22px 11px;
   }
-#_bukazu-app_106u5_1 ._PresetDateRangePicker_button_106u5_1 {
+#bukazu-app .PresetDateRangePicker_button {
     position: relative;
     height: 100%;
     text-align: center;
@@ -863,34 +863,34 @@
     box-sizing: border-box;
     cursor: pointer;
   }
-#_bukazu-app_106u5_1 ._PresetDateRangePicker_button_106u5_1:active {
+#bukazu-app .PresetDateRangePicker_button:active {
     outline: 0;
   }
-#_bukazu-app_106u5_1 ._PresetDateRangePicker_button__selected_106u5_1 {
+#bukazu-app .PresetDateRangePicker_button__selected {
     color: #fff;
     background: #00a699;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_106u5_1 {
+#bukazu-app .SingleDatePickerInput {
     display: inline-block;
     background-color: #fff;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput__withBorder_106u5_1 {
+#bukazu-app .SingleDatePickerInput__withBorder {
     border-radius: 2px;
     border: 1px solid #dbdbdb;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput__rtl_106u5_1 {
+#bukazu-app .SingleDatePickerInput__rtl {
     direction: rtl;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput__disabled_106u5_1 {
+#bukazu-app .SingleDatePickerInput__disabled {
     background-color: #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput__block_106u5_1 {
+#bukazu-app .SingleDatePickerInput__block {
     display: block;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput__showClearDate_106u5_1 {
+#bukazu-app .SingleDatePickerInput__showClearDate {
     padding-right: 30px;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate_106u5_1 {
+#bukazu-app .SingleDatePickerInput_clearDate {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -905,27 +905,27 @@
     top: 50%;
     transform: translateY(-50%);
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate__default_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate__default_106u5_1:hover {
+#bukazu-app .SingleDatePickerInput_clearDate__default:focus,
+  #bukazu-app .SingleDatePickerInput_clearDate__default:hover {
     background: #dbdbdb;
     border-radius: 50%;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate__small_106u5_1 {
+#bukazu-app .SingleDatePickerInput_clearDate__small {
     padding: 6px;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate__hide_106u5_1 {
+#bukazu-app .SingleDatePickerInput_clearDate__hide {
     visibility: hidden;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate_svg_106u5_1 {
+#bukazu-app .SingleDatePickerInput_clearDate_svg {
     fill: #82888a;
     height: 12px;
     width: 15px;
     vertical-align: middle;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_clearDate_svg__small_106u5_1 {
+#bukazu-app .SingleDatePickerInput_clearDate_svg__small {
     height: 9px;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_calendarIcon_106u5_1 {
+#bukazu-app .SingleDatePickerInput_calendarIcon {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -938,34 +938,34 @@
     padding: 10px;
     margin: 0 5px 0 10px;
   }
-#_bukazu-app_106u5_1 ._SingleDatePickerInput_calendarIcon_svg_106u5_1 {
+#bukazu-app .SingleDatePickerInput_calendarIcon_svg {
     fill: #82888a;
     height: 15px;
     width: 14px;
     vertical-align: middle;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_106u5_1 {
+#bukazu-app .SingleDatePicker {
     position: relative;
     display: inline-block;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker__block_106u5_1 {
+#bukazu-app .SingleDatePicker__block {
     display: block;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker_106u5_1 {
+#bukazu-app .SingleDatePicker_picker {
     z-index: 1;
     background-color: #fff;
     position: absolute;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker__rtl_106u5_1 {
+#bukazu-app .SingleDatePicker_picker__rtl {
     direction: rtl;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker__directionLeft_106u5_1 {
+#bukazu-app .SingleDatePicker_picker__directionLeft {
     left: 0;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker__directionRight_106u5_1 {
+#bukazu-app .SingleDatePicker_picker__directionRight {
     right: 0;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker__portal_106u5_1 {
+#bukazu-app .SingleDatePicker_picker__portal {
     background-color: rgba(0, 0, 0, 0.3);
     position: fixed;
     top: 0;
@@ -973,10 +973,10 @@
     height: 100%;
     width: 100%;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_picker__fullScreenPortal_106u5_1 {
+#bukazu-app .SingleDatePicker_picker__fullScreenPortal {
     background-color: #fff;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_closeButton_106u5_1 {
+#bukazu-app .SingleDatePicker_closeButton {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -990,17 +990,17 @@
     padding: 15px;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_closeButton_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._SingleDatePicker_closeButton_106u5_1:hover {
+#bukazu-app .SingleDatePicker_closeButton:focus,
+  #bukazu-app .SingleDatePicker_closeButton:hover {
     color: darken(#cacccd, 10%);
     text-decoration: none;
   }
-#_bukazu-app_106u5_1 ._SingleDatePicker_closeButton_svg_106u5_1 {
+#bukazu-app .SingleDatePicker_closeButton_svg {
     height: 15px;
     width: 15px;
     fill: #cacccd;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_buttonReset_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_buttonReset {
     background: 0 0;
     border: 0;
     border-radius: 0;
@@ -1012,76 +1012,76 @@
     cursor: pointer;
     font-size: 14px;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_buttonReset_106u5_1:active {
+#bukazu-app .DayPickerKeyboardShortcuts_buttonReset:active {
     outline: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_show {
     width: 33px;
     height: 26px;
     position: absolute;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show_106u5_1::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show::before {
     content: "";
     display: block;
     position: absolute;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__bottomRight_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_show__bottomRight {
     bottom: 0;
     right: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__bottomRight_106u5_1::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__bottomRight::before {
     border-top: 26px solid transparent;
     border-right: 33px solid #00a699;
     bottom: 0;
     right: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__bottomRight_106u5_1:hover::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
     border-right: 33px solid #008489;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topRight_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topRight {
     top: 0;
     right: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topRight_106u5_1::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topRight::before {
     border-bottom: 26px solid transparent;
     border-right: 33px solid #00a699;
     top: 0;
     right: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topRight_106u5_1:hover::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topRight:hover::before {
     border-right: 33px solid #008489;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topLeft_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topLeft {
     top: 0;
     left: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topLeft_106u5_1::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topLeft::before {
     border-bottom: 26px solid transparent;
     border-left: 33px solid #00a699;
     top: 0;
     left: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_show__topLeft_106u5_1:hover::before {
+#bukazu-app .DayPickerKeyboardShortcuts_show__topLeft:hover::before {
     border-left: 33px solid #008489;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_showSpan_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_showSpan {
     color: #fff;
     position: absolute;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_showSpan__bottomRight_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_showSpan__bottomRight {
     bottom: 0;
     right: 5px;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_showSpan__topRight_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_showSpan__topRight {
     top: 1px;
     right: 5px;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_showSpan__topLeft_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_showSpan__topLeft {
     top: 1px;
     left: 5px;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_panel_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_panel {
     overflow: auto;
     background: #fff;
     border: 1px solid #dbdbdb;
@@ -1096,137 +1096,137 @@
     margin: 33px;
     text-align: left;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_title_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_title {
     font-size: 16px;
     font-weight: 700;
     margin: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_list_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_list {
     list-style: none;
     padding: 0;
     font-size: 14px;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_close_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_close {
     position: absolute;
     right: 22px;
     top: 22px;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_close_106u5_1:active {
+#bukazu-app .DayPickerKeyboardShortcuts_close:active {
     outline: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_closeSvg_106u5_1 {
+#bukazu-app .DayPickerKeyboardShortcuts_closeSvg {
     height: 15px;
     width: 15px;
     fill: #cacccd;
   }
-#_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_closeSvg_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._DayPickerKeyboardShortcuts_closeSvg_106u5_1:hover {
+#bukazu-app .DayPickerKeyboardShortcuts_closeSvg:focus,
+  #bukazu-app .DayPickerKeyboardShortcuts_closeSvg:hover {
     fill: #82888a;
   }
-#_bukazu-app_106u5_1 ._CalendarDay_106u5_1 {
+#bukazu-app .CalendarDay {
     box-sizing: border-box;
     cursor: pointer;
     font-size: 14px;
     text-align: center;
     padding: 0;
   }
-#_bukazu-app_106u5_1 ._CalendarDay_106u5_1:active {
+#bukazu-app .CalendarDay:active {
     outline: 0;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__defaultCursor_106u5_1 {
+#bukazu-app .CalendarDay__defaultCursor {
     cursor: default;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__default_106u5_1 {
+#bukazu-app .CalendarDay__default {
     border: 1px solid #e4e7e7;
     color: #484848;
     background: #fff;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__default_106u5_1:hover {
+#bukazu-app .CalendarDay__default:hover {
     background: #e4e7e7;
     border: 1px solid #e4e7e7;
     color: inherit;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__hovered_offset_106u5_1 {
+#bukazu-app .CalendarDay__hovered_offset {
     background: #f4f5f5;
     border: 1px double #e4e7e7;
     color: inherit;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__outside_106u5_1 {
+#bukazu-app .CalendarDay__outside {
     border: 0;
     background: #fff;
     color: #484848;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__outside_106u5_1:hover {
+#bukazu-app .CalendarDay__outside:hover {
     border: 0;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__blocked_minimum_nights_106u5_1 {
+#bukazu-app .CalendarDay__blocked_minimum_nights {
     background: #fff;
     border: 1px solid #eceeee;
     color: #cacccd;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__blocked_minimum_nights_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__blocked_minimum_nights_106u5_1:hover {
+#bukazu-app .CalendarDay__blocked_minimum_nights:active,
+  #bukazu-app .CalendarDay__blocked_minimum_nights:hover {
     background: #fff;
     color: #cacccd;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__highlighted_calendar_106u5_1 {
+#bukazu-app .CalendarDay__highlighted_calendar {
     background: #ffe8bc;
     color: #484848;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__highlighted_calendar_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__highlighted_calendar_106u5_1:hover {
+#bukazu-app .CalendarDay__highlighted_calendar:active,
+  #bukazu-app .CalendarDay__highlighted_calendar:hover {
     background: #ffce71;
     color: #484848;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__selected_span_106u5_1 {
+#bukazu-app .CalendarDay__selected_span {
     background: #66e2da;
     border: 1px double #33dacd;
     color: #fff;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__selected_span_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__selected_span_106u5_1:hover {
+#bukazu-app .CalendarDay__selected_span:active,
+  #bukazu-app .CalendarDay__selected_span:hover {
     background: #33dacd;
     border: 1px double #33dacd;
     color: #fff;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__last_in_range_106u5_1,
-  #_bukazu-app_106u5_1 ._CalendarDay__last_in_range_106u5_1:hover {
+#bukazu-app .CalendarDay__last_in_range,
+  #bukazu-app .CalendarDay__last_in_range:hover {
     border-style: solid;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__selected_106u5_1,
-  #_bukazu-app_106u5_1 ._CalendarDay__selected_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__selected_106u5_1:hover {
+#bukazu-app .CalendarDay__selected,
+  #bukazu-app .CalendarDay__selected:active,
+  #bukazu-app .CalendarDay__selected:hover {
     background: #00a699;
     border: 1px double #00a699;
     color: #fff;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__hovered_span_106u5_1,
-  #_bukazu-app_106u5_1 ._CalendarDay__hovered_span_106u5_1:hover {
+#bukazu-app .CalendarDay__hovered_span,
+  #bukazu-app .CalendarDay__hovered_span:hover {
     background: #b2f1ec;
     border: 1px double #80e8e0;
     color: #007a87;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__hovered_span_106u5_1:active {
+#bukazu-app .CalendarDay__hovered_span:active {
     background: #80e8e0;
     border: 1px double #80e8e0;
     color: #007a87;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__blocked_calendar_106u5_1,
-  #_bukazu-app_106u5_1 ._CalendarDay__blocked_calendar_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__blocked_calendar_106u5_1:hover {
+#bukazu-app .CalendarDay__blocked_calendar,
+  #bukazu-app .CalendarDay__blocked_calendar:active,
+  #bukazu-app .CalendarDay__blocked_calendar:hover {
     background: #cacccd;
     border: 1px solid #cacccd;
     color: #82888a;
   }
-#_bukazu-app_106u5_1 ._CalendarDay__blocked_out_of_range_106u5_1,
-  #_bukazu-app_106u5_1 ._CalendarDay__blocked_out_of_range_106u5_1:active,
-  #_bukazu-app_106u5_1 ._CalendarDay__blocked_out_of_range_106u5_1:hover {
+#bukazu-app .CalendarDay__blocked_out_of_range,
+  #bukazu-app .CalendarDay__blocked_out_of_range:active,
+  #bukazu-app .CalendarDay__blocked_out_of_range:hover {
     background: #fff;
     border: 1px solid #e4e7e7;
     color: #cacccd;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_106u5_1 {
+#bukazu-app .CalendarMonth {
     background: #fff;
     text-align: center;
     vertical-align: top;
@@ -1235,14 +1235,14 @@
     -ms-user-select: none;
     user-select: none;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_table_106u5_1 {
+#bukazu-app .CalendarMonth_table {
     border-collapse: collapse;
     border-spacing: 0;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_verticalSpacing_106u5_1 {
+#bukazu-app .CalendarMonth_verticalSpacing {
     border-collapse: separate;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_caption_106u5_1 {
+#bukazu-app .CalendarMonth_caption {
     color: #484848;
     font-size: 18px;
     text-align: center;
@@ -1251,61 +1251,61 @@
     caption-side: top;
     caption-side: initial;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_caption__verticalScrollable_106u5_1 {
+#bukazu-app .CalendarMonth_caption__verticalScrollable {
     padding-top: 12px;
     padding-bottom: 7px;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid_106u5_1 {
+#bukazu-app .CalendarMonthGrid {
     background: #fff;
     text-align: left;
     z-index: 0;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid__animating_106u5_1 {
+#bukazu-app .CalendarMonthGrid__animating {
     z-index: 1;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid__horizontal_106u5_1 {
+#bukazu-app .CalendarMonthGrid__horizontal {
     position: absolute;
     left: 9px;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid__vertical_106u5_1 {
+#bukazu-app .CalendarMonthGrid__vertical {
     margin: 0 auto;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid__vertical_scrollable_106u5_1 {
+#bukazu-app .CalendarMonthGrid__vertical_scrollable {
     margin: 0 auto;
     overflow-y: scroll;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid_month__horizontal_106u5_1 {
+#bukazu-app .CalendarMonthGrid_month__horizontal {
     display: inline-block;
     vertical-align: top;
     min-height: 100%;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid_month__hideForAnimation_106u5_1 {
+#bukazu-app .CalendarMonthGrid_month__hideForAnimation {
     position: absolute;
     z-index: -1;
     opacity: 0;
     pointer-events: none;
   }
-#_bukazu-app_106u5_1 ._CalendarMonthGrid_month__hidden_106u5_1 {
+#bukazu-app .CalendarMonthGrid_month__hidden {
     visibility: hidden;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_106u5_1 {
+#bukazu-app .DayPickerNavigation {
     position: relative;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation__horizontal_106u5_1 {
+#bukazu-app .DayPickerNavigation__horizontal {
     height: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation__verticalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation__verticalDefault {
     position: absolute;
     width: 100%;
     height: 52px;
     bottom: 0;
     left: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation__verticalScrollableDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation__verticalScrollableDefault {
     position: relative;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button_106u5_1 {
+#bukazu-app .DayPickerNavigation_button {
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -1315,43 +1315,43 @@
     padding: 0;
     margin: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__default_106u5_1 {
+#bukazu-app .DayPickerNavigation_button__default {
     border: 1px solid #e4e7e7;
     background-color: #fff;
     color: #757575;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__default_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._DayPickerNavigation_button__default_106u5_1:hover {
+#bukazu-app .DayPickerNavigation_button__default:focus,
+  #bukazu-app .DayPickerNavigation_button__default:hover {
     border: 1px solid #c4c4c4;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__default_106u5_1:active {
+#bukazu-app .DayPickerNavigation_button__default:active {
     background: #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__disabled_106u5_1 {
+#bukazu-app .DayPickerNavigation_button__disabled {
     cursor: default;
     border: 1px solid #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__disabled_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._DayPickerNavigation_button__disabled_106u5_1:hover {
+#bukazu-app .DayPickerNavigation_button__disabled:focus,
+  #bukazu-app .DayPickerNavigation_button__disabled:hover {
     border: 1px solid #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__disabled_106u5_1:active {
+#bukazu-app .DayPickerNavigation_button__disabled:active {
     background: 0 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__horizontalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_button__horizontalDefault {
     position: absolute;
     top: 18px;
     line-height: 0.78;
     border-radius: 3px;
     padding: 6px 9px;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_leftButton__horizontalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_leftButton__horizontalDefault {
     left: 22px;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_rightButton__horizontalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_rightButton__horizontalDefault {
     right: 22px;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_button__verticalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_button__verticalDefault {
     padding: 5px;
     background: #fff;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
@@ -1361,79 +1361,79 @@
     height: 100%;
     width: 50%;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_nextButton__verticalDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_nextButton__verticalDefault {
     border-left: 0;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_nextButton__verticalScrollableDefault_106u5_1 {
+#bukazu-app .DayPickerNavigation_nextButton__verticalScrollableDefault {
     width: 100%;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_svg__horizontal_106u5_1 {
+#bukazu-app .DayPickerNavigation_svg__horizontal {
     height: 19px;
     width: 19px;
     fill: #82888a;
     display: block;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_svg__vertical_106u5_1 {
+#bukazu-app .DayPickerNavigation_svg__vertical {
     height: 42px;
     width: 42px;
     fill: #484848;
   }
-#_bukazu-app_106u5_1 ._DayPickerNavigation_svg__disabled_106u5_1 {
+#bukazu-app .DayPickerNavigation_svg__disabled {
     fill: #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._DayPicker_106u5_1 {
+#bukazu-app .DayPicker {
     background: #fff;
     position: relative;
     text-align: left;
   }
-#_bukazu-app_106u5_1 ._DayPicker__horizontal_106u5_1 {
+#bukazu-app .DayPicker__horizontal {
     background: #fff;
   }
-#_bukazu-app_106u5_1 ._DayPicker__verticalScrollable_106u5_1 {
+#bukazu-app .DayPicker__verticalScrollable {
     height: 100%;
   }
-#_bukazu-app_106u5_1 ._DayPicker__hidden_106u5_1 {
+#bukazu-app .DayPicker__hidden {
     visibility: hidden;
   }
-#_bukazu-app_106u5_1 ._DayPicker__withBorder_106u5_1 {
+#bukazu-app .DayPicker__withBorder {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.07);
     border-radius: 3px;
   }
-#_bukazu-app_106u5_1 ._DayPicker_portal__horizontal_106u5_1 {
+#bukazu-app .DayPicker_portal__horizontal {
     box-shadow: none;
     position: absolute;
     left: 50%;
     top: 50%;
   }
-#_bukazu-app_106u5_1 ._DayPicker_portal__vertical_106u5_1 {
+#bukazu-app .DayPicker_portal__vertical {
     position: static;
     position: initial;
   }
-#_bukazu-app_106u5_1 ._DayPicker_focusRegion_106u5_1 {
+#bukazu-app .DayPicker_focusRegion {
     outline: 0;
   }
-#_bukazu-app_106u5_1 ._DayPicker_calendarInfo__horizontal_106u5_1,
-  #_bukazu-app_106u5_1 ._DayPicker_wrapper__horizontal_106u5_1 {
+#bukazu-app .DayPicker_calendarInfo__horizontal,
+  #bukazu-app .DayPicker_wrapper__horizontal {
     display: inline-block;
     vertical-align: top;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeaders_106u5_1 {
+#bukazu-app .DayPicker_weekHeaders {
     position: relative;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeaders__horizontal_106u5_1 {
+#bukazu-app .DayPicker_weekHeaders__horizontal {
     margin-left: 9px;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeader_106u5_1 {
+#bukazu-app .DayPicker_weekHeader {
     color: #757575;
     position: absolute;
     top: 62px;
     z-index: 2;
     text-align: left;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeader__vertical_106u5_1 {
+#bukazu-app .DayPicker_weekHeader__vertical {
     left: 50%;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeader__verticalScrollable_106u5_1 {
+#bukazu-app .DayPicker_weekHeader__verticalScrollable {
     top: 0;
     display: table-row;
     border-bottom: 1px solid #dbdbdb;
@@ -1443,28 +1443,28 @@
     width: 100%;
     text-align: center;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeader_ul_106u5_1 {
+#bukazu-app .DayPicker_weekHeader_ul {
     list-style: none;
     margin: 1px 0;
     padding: 0;
     font-size: 14px;
   }
-#_bukazu-app_106u5_1 ._DayPicker_weekHeader_li_106u5_1 {
+#bukazu-app .DayPicker_weekHeader_li {
     display: inline-block;
     text-align: center;
   }
-#_bukazu-app_106u5_1 ._DayPicker_transitionContainer_106u5_1 {
+#bukazu-app .DayPicker_transitionContainer {
     position: relative;
     overflow: hidden;
     border-radius: 3px;
   }
-#_bukazu-app_106u5_1 ._DayPicker_transitionContainer__horizontal_106u5_1 {
+#bukazu-app .DayPicker_transitionContainer__horizontal {
     transition: height 0.2s ease-in-out;
   }
-#_bukazu-app_106u5_1 ._DayPicker_transitionContainer__vertical_106u5_1 {
+#bukazu-app .DayPicker_transitionContainer__vertical {
     width: 100%;
   }
-#_bukazu-app_106u5_1 ._DayPicker_transitionContainer__verticalScrollable_106u5_1 {
+#bukazu-app .DayPicker_transitionContainer__verticalScrollable {
     padding-top: 20px;
     height: 100%;
     position: absolute;
@@ -1474,7 +1474,7 @@
     left: 0;
     overflow-y: scroll;
   }
-#_bukazu-app_106u5_1 ._DateInput_106u5_1 {
+#bukazu-app .DateInput {
     margin: 0;
     padding: 0;
     background: #fff;
@@ -1483,17 +1483,17 @@
     width: 130px;
     vertical-align: middle;
   }
-#_bukazu-app_106u5_1 ._DateInput__small_106u5_1 {
+#bukazu-app .DateInput__small {
     width: 97px;
   }
-#_bukazu-app_106u5_1 ._DateInput__block_106u5_1 {
+#bukazu-app .DateInput__block {
     width: 100%;
   }
-#_bukazu-app_106u5_1 ._DateInput__disabled_106u5_1 {
+#bukazu-app .DateInput__disabled {
     background: #f2f2f2;
     color: #dbdbdb;
   }
-#_bukazu-app_106u5_1 ._DateInput_input_106u5_1 {
+#bukazu-app .DateInput_input {
     font-weight: 200;
     font-size: 19px;
     line-height: 24px;
@@ -1508,22 +1508,22 @@
     border-left: 0;
     border-radius: 0;
   }
-#_bukazu-app_106u5_1 ._DateInput_input__small_106u5_1 {
+#bukazu-app .DateInput_input__small {
     font-size: 15px;
     line-height: 18px;
     letter-spacing: 0.2px;
     padding: 7px 7px 5px;
   }
-#_bukazu-app_106u5_1 ._DateInput_input__regular_106u5_1 {
+#bukazu-app .DateInput_input__regular {
     font-weight: auto;
   }
-#_bukazu-app_106u5_1 ._DateInput_input__readOnly_106u5_1 {
+#bukazu-app .DateInput_input__readOnly {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
   }
-#_bukazu-app_106u5_1 ._DateInput_input__focused_106u5_1 {
+#bukazu-app .DateInput_input__focused {
     outline: 0;
     background: #fff;
     border: 0;
@@ -1532,11 +1532,11 @@
     border-bottom: 2px solid #008489;
     border-left: 0;
   }
-#_bukazu-app_106u5_1 ._DateInput_input__disabled_106u5_1 {
+#bukazu-app .DateInput_input__disabled {
     background: #f2f2f2;
     font-style: italic;
   }
-#_bukazu-app_106u5_1 ._DateInput_screenReaderMessage_106u5_1 {
+#bukazu-app .DateInput_screenReaderMessage {
     border: 0;
     clip: rect(0, 0, 0, 0);
     height: 1px;
@@ -1546,52 +1546,52 @@
     position: absolute;
     width: 1px;
   }
-#_bukazu-app_106u5_1 ._DateInput_fang_106u5_1 {
+#bukazu-app .DateInput_fang {
     position: absolute;
     width: 20px;
     height: 10px;
     left: 22px;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._DateInput_fangShape_106u5_1 {
+#bukazu-app .DateInput_fangShape {
     fill: #fff;
   }
-#_bukazu-app_106u5_1 ._DateInput_fangStroke_106u5_1 {
+#bukazu-app .DateInput_fangStroke {
     stroke: #dbdbdb;
     fill: transparent;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_106u5_1 {
+#bukazu-app .DateRangePickerInput {
     background-color: #fff;
     display: inline-block;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput__disabled_106u5_1 {
+#bukazu-app .DateRangePickerInput__disabled {
     background: #f2f2f2;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput__withBorder_106u5_1 {
+#bukazu-app .DateRangePickerInput__withBorder {
     border-radius: 2px;
     border: 1px solid #dbdbdb;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput__rtl_106u5_1 {
+#bukazu-app .DateRangePickerInput__rtl {
     direction: rtl;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput__block_106u5_1 {
+#bukazu-app .DateRangePickerInput__block {
     display: block;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput__showClearDates_106u5_1 {
+#bukazu-app .DateRangePickerInput__showClearDates {
     padding-right: 30px;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_arrow_106u5_1 {
+#bukazu-app .DateRangePickerInput_arrow {
     display: inline-block;
     vertical-align: middle;
     color: #484848;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_arrow_svg_106u5_1 {
+#bukazu-app .DateRangePickerInput_arrow_svg {
     vertical-align: middle;
     fill: #484848;
     height: 24px;
     width: 24px;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates_106u5_1 {
+#bukazu-app .DateRangePickerInput_clearDates {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -1606,27 +1606,27 @@
     top: 50%;
     transform: translateY(-50%);
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates__small_106u5_1 {
+#bukazu-app .DateRangePickerInput_clearDates__small {
     padding: 6px;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates_default_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates_default_106u5_1:hover {
+#bukazu-app .DateRangePickerInput_clearDates_default:focus,
+  #bukazu-app .DateRangePickerInput_clearDates_default:hover {
     background: #dbdbdb;
     border-radius: 50%;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates__hide_106u5_1 {
+#bukazu-app .DateRangePickerInput_clearDates__hide {
     visibility: hidden;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates_svg_106u5_1 {
+#bukazu-app .DateRangePickerInput_clearDates_svg {
     fill: #82888a;
     height: 12px;
     width: 15px;
     vertical-align: middle;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_clearDates_svg__small_106u5_1 {
+#bukazu-app .DateRangePickerInput_clearDates_svg__small {
     height: 9px;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_calendarIcon_106u5_1 {
+#bukazu-app .DateRangePickerInput_calendarIcon {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -1639,34 +1639,34 @@
     padding: 10px;
     margin: 0 5px 0 10px;
   }
-#_bukazu-app_106u5_1 ._DateRangePickerInput_calendarIcon_svg_106u5_1 {
+#bukazu-app .DateRangePickerInput_calendarIcon_svg {
     fill: #82888a;
     height: 15px;
     width: 14px;
     vertical-align: middle;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_106u5_1 {
+#bukazu-app .DateRangePicker {
     position: relative;
     display: inline-block;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker__block_106u5_1 {
+#bukazu-app .DateRangePicker__block {
     display: block;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker_106u5_1 {
+#bukazu-app .DateRangePicker_picker {
     z-index: 1;
     background-color: #fff;
     position: absolute;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker__rtl_106u5_1 {
+#bukazu-app .DateRangePicker_picker__rtl {
     direction: rtl;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker__directionLeft_106u5_1 {
+#bukazu-app .DateRangePicker_picker__directionLeft {
     left: 0;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker__directionRight_106u5_1 {
+#bukazu-app .DateRangePicker_picker__directionRight {
     right: 0;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker__portal_106u5_1 {
+#bukazu-app .DateRangePicker_picker__portal {
     background-color: rgba(0, 0, 0, 0.3);
     position: fixed;
     top: 0;
@@ -1674,10 +1674,10 @@
     height: 100%;
     width: 100%;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_picker__fullScreenPortal_106u5_1 {
+#bukazu-app .DateRangePicker_picker__fullScreenPortal {
     background-color: #fff;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_closeButton_106u5_1 {
+#bukazu-app .DateRangePicker_closeButton {
     background: 0 0;
     border: 0;
     color: inherit;
@@ -1691,20 +1691,20 @@
     padding: 15px;
     z-index: 2;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_closeButton_106u5_1:focus,
-  #_bukazu-app_106u5_1 ._DateRangePicker_closeButton_106u5_1:hover {
+#bukazu-app .DateRangePicker_closeButton:focus,
+  #bukazu-app .DateRangePicker_closeButton:hover {
     color: darken(#cacccd, 10%);
     text-decoration: none;
   }
-#_bukazu-app_106u5_1 ._DateRangePicker_closeButton_svg_106u5_1 {
+#bukazu-app .DateRangePicker_closeButton_svg {
     height: 15px;
     width: 15px;
     fill: #cacccd;
   }
-#_bukazu-app_106u5_1 ._CalendarMonth_table_106u5_1 tr td {
+#bukazu-app .CalendarMonth_table tr td {
     padding: 0;
   }
-._bukazu-modal-container_106u5_1 {
+.bukazu-modal-container {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -1715,11 +1715,11 @@
   z-index: 1
 }
 @media screen and (max-width: 992px) {
-._bukazu-modal-container_106u5_1 {
+.bukazu-modal-container {
     padding: 50px 16px
 }
   }
-._bukazu-modal-container-inner_106u5_1 {
+.bukazu-modal-container-inner {
   position: relative;
   left: 0;
   top: 0;
@@ -1728,13 +1728,13 @@
   display: flex;
     align-items: center;
 }
-._bukazu-modal-escape_106u5_1 {
+.bukazu-modal-escape {
   position: absolute;
   z-index: 2;
   width: 100%;
   height: 100%;
 }
-._bukazu-modal_106u5_1 {
+.bukazu-modal {
   position: absolute;
   background-color: #fff;
   width: 500px;
@@ -1751,21 +1751,21 @@
     display: flex;
     flex-direction: column;
 }
-._bukazu-modal_106u5_1 ._bukazu-modal-content_106u5_1 {
+.bukazu-modal .bukazu-modal-content {
     flex: 1 1 auto;
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
     padding: 16px 0 32px;
   }
-._bukazu-modal_106u5_1 ._bukazu-modal-footer_106u5_1 {
+.bukazu-modal .bukazu-modal-footer {
     position: absolute;
     height: 50px;
     width: 100%;
     left: 0;
     bottom: 0;
   }
-._bukazu-modal_106u5_1 ._bukazu-modal-footer_106u5_1 a {
+.bukazu-modal .bukazu-modal-footer a {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1783,52 +1783,52 @@
       border-radius: 0 0 5px 5px;
 
     }
-._price-overview_106u5_1 {
+.price-overview {
   padding: 16px;
   display: flex;
   flex-wrap: wrap;
   background-color: #fff
 }
 @media screen and (max-width: 992px) {
-._price-overview_106u5_1 {
+.price-overview {
     flex-direction: column
 }
   }
-._price-overview_106u5_1 table {
+.price-overview table {
     width: 100%;
   }
-._price-overview_106u5_1 th {
+.price-overview th {
     text-align: left;
   }
-._price-overview_106u5_1 tr {
+.price-overview tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.25)
   }
-._price-overview_106u5_1 tr._hidden_106u5_1 {
+.price-overview tr.hidden {
       display: none;
     }
-._price-overview_106u5_1 td {
+.price-overview td {
     padding: 4px;
     width: 50%
   }
-._price-overview_106u5_1 td._price_106u5_1 {
+.price-overview td.price {
       text-align: right;
     }
-._price-overview_106u5_1 td._column_106u5_1 {
+.price-overview td.column {
     width: 30%;
   }
-._price-overview_106u5_1 ._price-list_106u5_1 {
+.price-overview .price-list {
     list-style: none;
     padding: 0;
     text-align: right;
   }
-._price-overview_106u5_1 ul {
+.price-overview ul {
     padding: 0;
     list-style: none;
   }
-._price-overview_106u5_1 ul li {
+.price-overview ul li {
       padding: 4px 0;
     }
-._price-overview--build_106u5_1 {
+.price-overview--build {
     display: flex;
     flex-direction: row;
     /* width: 30%; */
@@ -1840,12 +1840,12 @@
     padding: 16px
   }
 @media screen and (max-width: 992px) {
-  ._price-overview--build_106u5_1 {
+  .price-overview--build {
       padding: 16px 0;
       min-height: 0px
   }
     }
-._price-overview--extra_106u5_1 {
+.price-overview--extra {
     display: flex;
     padding: 16px;
     flex-direction: column;
@@ -1854,15 +1854,15 @@
     align-items: center;
   }
 /* width: 30%; */
-._price-overview--extra_106u5_1 ._data-label_106u5_1 {
+.price-overview--extra .data-label {
       font-size: 18px;
     }
-._price-overview--extra_106u5_1 ._data_106u5_1 {
+.price-overview--extra .data {
       padding: 16px;
       font-size: 20px;
       font-weight: bold;
     }
-._price-overview--book_106u5_1 {
+.price-overview--book {
     flex: 1 1 auto;
     /* width: 30%; */
     padding: 4px;
@@ -1873,43 +1873,43 @@
 
   }
 @media screen and (max-width: 992px) {
-  ._price-overview--book_106u5_1 {
+  .price-overview--book {
       padding: 16px 0
 
   }
     }
-._price-overview--book_106u5_1 > div {
+.price-overview--book > div {
       padding: 4px 0;
     }
-._price-overview--book_106u5_1 ._price_106u5_1 {
+.price-overview--book .price {
       font-size: 28px;
     }
 @media screen and (min-width: 1200px) {
-    ._price-overview--book_106u5_1 ._price_106u5_1 {
+    .price-overview--book .price {
         font-size: 32px;
     }
       }
-._price-overview--book_106u5_1 ._price_106u5_1 {
+.price-overview--book .price {
       font-weight: bold;
     }
-._price-overview--book_106u5_1 i {
+.price-overview--book i {
       font-size: 14px
     }
 @media screen and (min-width: 1200px) {
-    ._price-overview--book_106u5_1 i {
+    .price-overview--book i {
         font-size: 16px
     }
       }
-._success-message_106u5_1 {
+.success-message {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
 }
-._success-message_106u5_1 p {
+.success-message p {
         max-width: 75ch;
     }
-._bukazu-result_106u5_1 {
+.bukazu-result {
   width: 300px;
   margin: 8px;
   overflow: hidden;
@@ -1922,11 +1922,11 @@
   border-radius: 16px;
   transition: all 0.5s ease
 }
-._bukazu-result_106u5_1:hover {
+.bukazu-result:hover {
     box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.25);
     text-decoration: none;
   }
-._bukazu-result-inner_106u5_1 {
+.bukazu-result-inner {
     overflow: hidden;
     color: rgba(26, 25, 25, 1);
     border: 1px solid rgba(69, 74, 83, 0.2);
@@ -1934,13 +1934,13 @@
     display: flex;
     flex-direction: column;
   }
-._bukazu-result-inner_106u5_1 ._image-holder_106u5_1 {
+.bukazu-result-inner .image-holder {
       padding-top: 75%;
       position: relative;
       width: 100%;
       overflow: hidden;
     }
-._bukazu-result-inner_106u5_1 ._image-holder_106u5_1 img {
+.bukazu-result-inner .image-holder img {
         position: absolute;
         top: 0;
         left: 0;
@@ -1949,7 +1949,7 @@
         height: 100%;
         min-height: 100%;
       }
-._bukazu-result-inner_106u5_1 ._result_106u5_1 {
+.bukazu-result-inner .result {
       flex: 1 1 auto;
       display: flex;
       flex-direction: column;
@@ -1957,36 +1957,36 @@
       background: #fff;
       text-decoration: none;
     }
-._bukazu-result-inner_106u5_1 ._result-title_106u5_1 {
+.bukazu-result-inner .result-title {
         padding: 8px;
         font-weight: bold;
       }
-._bukazu-result-inner_106u5_1 ._result-place_106u5_1 {
+.bukazu-result-inner .result-place {
         padding: 4px 8px;
       }
-._bukazu-result-inner_106u5_1 ._result-description_106u5_1 {
+.bukazu-result-inner .result-description {
         padding: 8px;
         flex: 1 1 auto;
       }
-._bukazu-result-inner_106u5_1 ._result-details_106u5_1 {
+.bukazu-result-inner .result-details {
         padding: 8px;
         display: flex;
         justify-content: space-evenly;
         border-bottom: 1px solid rgba(69, 74, 83, 0.2);
       }
-._bukazu-result-inner_106u5_1 ._result-price_106u5_1 {
+.bukazu-result-inner .result-price {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 12px 8px;
       }
-._bukazu-result-inner_106u5_1 ._result-price_106u5_1 span._price_106u5_1 {
+.bukazu-result-inner .result-price span.price {
             padding: 8px 0 0;
           font-size: 18px;
           font-weight: bold;
         }
-._bukazu-result-inner_106u5_1 ._result-button_106u5_1 {
+.bukazu-result-inner .result-button {
         background: var(--bukazu-button_cta);
         text-align: center;
         padding: 8px;
@@ -1995,10 +1995,10 @@
         align-items: center;
         justify-content: center;
       }
-._bukazu-result-inner_106u5_1 ._result-button_106u5_1 svg {
+.bukazu-result-inner .result-button svg {
           width: 18px;
         }
-._bukazu-result-inner_106u5_1 ._result-button_106u5_1:before {
+.bukazu-result-inner .result-button:before {
           position: absolute;
           height: 100%;
           content: "";
@@ -2010,33 +2010,33 @@
           bottom: 0;
           transition: all 0.8s ease;
         }
-._bukazu-result-inner_106u5_1 ._result-button_106u5_1:hover:before {
+.bukazu-result-inner .result-button:hover:before {
             width: 100%;
           }
 @media screen and (min-width: 992px) {
-._list_106u5_1 ._bukazu-result_106u5_1 {
+.list .bukazu-result {
     width: 100%;
 }
-    ._list_106u5_1 ._bukazu-result_106u5_1 ._bukazu-result-inner_106u5_1 {
+    .list .bukazu-result .bukazu-result-inner {
       flex-direction: row;
     }
-      ._list_106u5_1 ._bukazu-result_106u5_1 ._bukazu-result-inner_106u5_1 ._image-holder_106u5_1 {
+      .list .bukazu-result .bukazu-result-inner .image-holder {
         width: 400px;
         height: 300px;
         padding: 0;
       }
-        ._list_106u5_1 ._bukazu-result_106u5_1 ._bukazu-result-inner_106u5_1 ._image-holder_106u5_1 img {
+        .list .bukazu-result .bukazu-result-inner .image-holder img {
           width: 100%;
           height: auto;
         }
-        ._list_106u5_1 ._bukazu-result_106u5_1 ._bukazu-result-inner_106u5_1 ._result-description_106u5_1 {
+        .list .bukazu-result .bukazu-result-inner .result-description {
           max-width: 90ch;
         }
   }
-#_bukazu-app_106u5_1 ._bu-smaller_106u5_1 #_results_106u5_1 {
+#bukazu-app .bu-smaller #results {
   padding: 8px;
 }
-#_bukazu-app_106u5_1 #_results_106u5_1 {
+#bukazu-app #results {
   display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -2045,84 +2045,84 @@
   align-content: flex-start
 }
 @media screen and (max-width: 992px) {
-#_bukazu-app_106u5_1 #_results_106u5_1 {
+#bukazu-app #results {
     justify-content: space-around
 }
   }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 {
+#bukazu-app #results .bu-paginator {
         display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 8px 16px 0;
   }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 {
+#bukazu-app #results .bu-paginator .pagination {
     display: flex;
     list-style: none;
   }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 li {
+#bukazu-app #results .bu-paginator .pagination li {
       padding: 8px;
     }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 li a {
+#bukazu-app #results .bu-paginator .pagination li a {
         text-decoration: none;
         color: #000;
       }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 li._disabled_106u5_1 a {
+#bukazu-app #results .bu-paginator .pagination li.disabled a {
           color: rgba(0, 0, 0, 0.5);
         }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 li._active_106u5_1 {
+#bukazu-app #results .bu-paginator .pagination li.active {
         border: 1px solid var(--bukazu-button);
       }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._bu-paginator_106u5_1 ._pagination_106u5_1 li._active_106u5_1 a {
+#bukazu-app #results .bu-paginator .pagination li.active a {
           color: #000 !important;
         }
-#_bukazu-app_106u5_1 #_results_106u5_1 ._object-inner_106u5_1 {
+#bukazu-app #results .object-inner {
   color: rgba(26, 25, 25, 1);
   border: 1px solid rgba(69, 74, 83, 0.2);
   border-radius: 5px;
 }
-#_bukazu-app_106u5_1 #_search-page_106u5_1 {
+#bukazu-app #search-page {
     display: flex;
     flex-direction: row;
 }
-#_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters-button_106u5_1 {
+#bukazu-app #search-page .filters-button {
         display: none;
         background: var(--bukazu-button);
         padding: 8px;
         border: 0;
         font-weight: bold
     }
-#_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters-button_106u5_1._fixed-mobile_106u5_1 {
+#bukazu-app #search-page .filters-button.fixed-mobile {
             position: fixed;
             width: 100%;
             bottom: 0;
             left: 0;
             z-index: 9999;
         }
-#_bukazu-app_106u5_1 ._bu-smaller_106u5_1 #_search-page_106u5_1 ._filters_106u5_20 {
+#bukazu-app .bu-smaller #search-page .filters {
     width: 175px;
     min-width: 175px;
 }
-#_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters_106u5_20 {
+#bukazu-app #search-page .filters {
     padding: 8px;
     width: 250px;
 }
 @media (max-width: 825px) {
-    #_bukazu-app_106u5_1 #_search-page_106u5_1 {
+    #bukazu-app #search-page {
         flex-direction: column;
     }
-        #_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters-button_106u5_1 {
+        #bukazu-app #search-page .filters-button {
             display: block;
         }
-    #_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters_106u5_20 {
+    #bukazu-app #search-page .filters {
         width: 100%;
         display: none;
         transition: all 0.3s ease
     }
-        #_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters_106u5_20._showOnMobile_106u5_1 {
+        #bukazu-app #search-page .filters.showOnMobile {
             display: block
         }
-        #_bukazu-app_106u5_1 #_search-page_106u5_1 ._filters_106u5_20._fixed-mobile_106u5_1 {
+        #bukazu-app #search-page .filters.fixed-mobile {
             position: fixed;
             width: 100%;
             bottom: 0;
@@ -2135,46 +2135,46 @@
         }
 
 }
-#_bukazu-app_106u5_1 ._filters-hidden_106u5_1 {
+#bukazu-app .filters-hidden {
         display: none;
     }
-#_bukazu-app_106u5_1 ._filters_106u5_20 {
+#bukazu-app .filters {
         min-width: 250px;
     }
-#_bukazu-app_106u5_1 ._filters-reload_106u5_24 {
+#bukazu-app .filters-reload {
             background: var(--bukazu-button);
             border: 0;
             border-radius: 5px;
             padding: 4px 8px;
             float: right;
         }
-#_bukazu-app_106u5_1 ._bu-properties_106u5_1 {
+#bukazu-app .bu-properties {
         padding: 8px;
     }
-#_bukazu-app_106u5_1 ._bu-properties_106u5_1 ul {
+#bukazu-app .bu-properties ul {
             list-style: none;
             margin: 0;
             padding: 8px 0 16px;
         }
-#_bukazu-app_106u5_1 ._bu-properties_106u5_1 ul li {
+#bukazu-app .bu-properties ul li {
              padding: 4px 0;   
             }
-#_bukazu-app_106u5_1 ._bu-properties_106u5_1 ul li label {
+#bukazu-app .bu-properties ul li label {
                  display: flex;
                  align-items: center;
              }
-#_bukazu-app_106u5_1 ._SingleDatePicker_106u5_1, #_bukazu-app_106u5_1 ._SingleDatePickerInput_106u5_1, #_bukazu-app_106u5_1 ._DateInput_106u5_1 {
+#bukazu-app .SingleDatePicker, #bukazu-app .SingleDatePickerInput, #bukazu-app .DateInput {
         width: 100%;
         display: block;
         background: rgba(0, 0, 0, 0);
     }
-._bu-pagination_106u5_1 {
+.bu-pagination {
   display: flex;
   padding-left: 0;
   list-style: none;
   border-radius: 0.25rem;
 }
-._bu-pagination_106u5_1 li {
+.bu-pagination li {
     position: relative;
     display: block;
     padding: 0.5rem 0.75rem;
@@ -2184,105 +2184,105 @@
     background-color: #fff;
     border: 1px solid #dee2e6
   }
-._bu-pagination_106u5_1 li:hover {
+.bu-pagination li:hover {
       z-index: 2;
       color: #0056b3;
       text-decoration: none;
       background-color: #e9ecef;
       border-color: #dee2e6;
     }
-._bu-pagination_106u5_1 li:focus {
+.bu-pagination li:focus {
       z-index: 2;
       outline: 0;
       box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
-._bu-pagination_106u5_1 li:not(:disabled):not(._disabled_106u5_1) {
+.bu-pagination li:not(:disabled):not(.disabled) {
       cursor: pointer;
     }
-._bu-pagination_106u5_1 li:first-child a {
+.bu-pagination li:first-child a {
   margin-left: 0;
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }
-._bu-pagination_106u5_1 li:last-child a {
+.bu-pagination li:last-child a {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }
-._bu-pagination_106u5_1 li._active_106u5_1 {
+.bu-pagination li.active {
   z-index: 1;
   color: #fff;
   background-color: var(--bukazu-button);
   border-color: var(--bukazu-button);
 }
-._bu-pagination_106u5_1 li._active_106u5_1 a {
+.bu-pagination li.active a {
     color: #000;
   }
-._bu-pagination_106u5_1 li._disabled_106u5_1 a {
+.bu-pagination li.disabled a {
   color: #6c757d;
   pointer-events: none;
   cursor: auto;
   /* background-color: #fff; */
   border-color: #dee2e6;
 }
-._bu-pagination-lg_106u5_1 a {
+.bu-pagination-lg a {
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
   line-height: 1.5;
 }
-._bu-pagination-lg_106u5_1 li:first-child a {
+.bu-pagination-lg li:first-child a {
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
 }
-._bu-pagination-lg_106u5_1 li:last-child a {
+.bu-pagination-lg li:last-child a {
   border-top-right-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
 }
-._bu-pagination-sm_106u5_1 a {
+.bu-pagination-sm a {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
 }
-._bu-pagination-sm_106u5_1 li:first-child a {
+.bu-pagination-sm li:first-child a {
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem;
 }
-._bu-pagination-sm_106u5_1 li:last-child a {
+.bu-pagination-sm li:last-child a {
   border-top-right-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
 }
-#_bukazu-app_106u5_1 #_search-page_106u5_1._bu-reverse_106u5_15 {
+#bukazu-app #search-page.bu-reverse {
       flex-direction: row-reverse;
     }
-#_bukazu-app_106u5_1 #_search-page_106u5_1._bu-column_106u5_18 {
+#bukazu-app #search-page.bu-column {
       flex-direction: column;
     }
-#_bukazu-app_106u5_1 #_search-page_106u5_1._bu-column_106u5_18 ._filters_106u5_20 {
+#bukazu-app #search-page.bu-column .filters {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
       }
-#_bukazu-app_106u5_1 #_search-page_106u5_1._bu-column_106u5_18 ._filters_106u5_20 ._filters-reload_106u5_24 {
+#bukazu-app #search-page.bu-column .filters .filters-reload {
           max-height: 24px;
           order: 3;
         }
-#_bukazu-app_106u5_1 #_search-page_106u5_1._bu-column_106u5_18 ._filters_106u5_20 ._bu-field_106u5_28 {
+#bukazu-app #search-page.bu-column .filters .bu-field {
           padding: 8px;
           width: 200px;
         }
-#_bukazu-app_106u5_1 div {
+#bukazu-app div {
     box-sizing: border-box;
   }
-#_bukazu-app_106u5_1 tr {
+#bukazu-app tr {
     border: 0;
   }
-#_bukazu-app_106u5_1 ._align-center_106u5_41 {
+#bukazu-app .align-center {
     display: flex;
     align-items: center;
   }
-#_bukazu-app_106u5_1 ._house-name_106u5_45 {
+#bukazu-app .house-name {
     padding: 16px;
   }
-#_bukazu-app_106u5_1 select {
+#bukazu-app select {
     background: #fff;
     background-image: linear-gradient(45deg, transparent 50%, gray 50%),
       linear-gradient(135deg, gray 50%, transparent 50%),
@@ -2292,16 +2292,16 @@
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
   }
-#_bukazu-app_106u5_1 ._info-button_106u5_58 {    
+#bukazu-app .info-button {    
     border: none;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;
   }
-#_bukazu-app_106u5_1 ._bu_discount_code_106u5_64 {
+#bukazu-app .bu_discount_code {
     width: 100%;
     display: flex;
     font-style: italic;
   }
-#_bukazu-app_106u5_1 ._bu_discount_code_106u5_64 div {
+#bukazu-app .bu_discount_code div {
       padding-right: 8px;
     }
