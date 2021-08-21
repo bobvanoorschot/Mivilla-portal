@@ -82,8 +82,8 @@ function _defineProperty$e(obj, key, value) {
   return obj;
 }
 
-function _extends$e() {
-  _extends$e = Object.assign || function (target) {
+function _extends$f() {
+  _extends$f = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -97,7 +97,7 @@ function _extends$e() {
     return target;
   };
 
-  return _extends$e.apply(this, arguments);
+  return _extends$f.apply(this, arguments);
 }
 
 function _inherits$3(subClass, superClass) {
@@ -144,7 +144,7 @@ function _isNativeReflectConstruct$3() {
   }
 }
 
-function _objectWithoutPropertiesLoose$a(source, excluded) {
+function _objectWithoutPropertiesLoose$b(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -162,7 +162,7 @@ function _objectWithoutPropertiesLoose$a(source, excluded) {
 function _objectWithoutProperties$a(source, excluded) {
   if (source == null) return {};
 
-  var target = _objectWithoutPropertiesLoose$a(source, excluded);
+  var target = _objectWithoutPropertiesLoose$b(source, excluded);
 
   var key, i;
 
@@ -554,8 +554,8 @@ object-assign
 @license MIT
 */
 /* eslint-disable no-unused-vars */
-var getOwnPropertySymbols$1 = Object.getOwnPropertySymbols;
-var hasOwnProperty$e = Object.prototype.hasOwnProperty;
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty$f = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
 function toObject(val) {
@@ -619,13 +619,13 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
 		from = Object(arguments[s]);
 
 		for (var key in from) {
-			if (hasOwnProperty$e.call(from, key)) {
+			if (hasOwnProperty$f.call(from, key)) {
 				to[key] = from[key];
 			}
 		}
 
-		if (getOwnPropertySymbols$1) {
-			symbols = getOwnPropertySymbols$1(from);
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
 			for (var i = 0; i < symbols.length; i++) {
 				if (propIsEnumerable.call(from, symbols[i])) {
 					to[symbols[i]] = from[symbols[i]];
@@ -655,14 +655,14 @@ var ReactPropTypesSecret_1 = ReactPropTypesSecret$3;
  * LICENSE file in the root directory of this source tree.
  */
 
-var printWarning$2 = function() {};
+var printWarning$1 = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
   var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
   var loggedTypeFailures = {};
   var has$2 = Function.call.bind(Object.prototype.hasOwnProperty);
 
-  printWarning$2 = function(text) {
+  printWarning$1 = function(text) {
     var message = 'Warning: ' + text;
     if (typeof console !== 'undefined') {
       console.error(message);
@@ -711,7 +711,7 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
           error = ex;
         }
         if (error && !(error instanceof Error)) {
-          printWarning$2(
+          printWarning$1(
             (componentName || 'React class') + ': type specification of ' +
             location + ' `' + typeSpecName + '` is invalid; the type checker ' +
             'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
@@ -727,7 +727,7 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
 
           var stack = getStack ? getStack() : '';
 
-          printWarning$2(
+          printWarning$1(
             'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
           );
         }
@@ -763,10 +763,10 @@ var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
 var checkPropTypes = checkPropTypes_1;
 
 var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
-var printWarning$1 = function() {};
+var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  printWarning$1 = function(text) {
+  printWarning = function(text) {
     var message = 'Warning: ' + text;
     if (typeof console !== 'undefined') {
       console.error(message);
@@ -942,7 +942,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
             // Avoid spamming the console because they are often not actionable except for lib authors
             manualPropTypeWarningCount < 3
           ) {
-            printWarning$1(
+            printWarning(
               'You are manually calling a React.PropTypes validation ' +
               'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
@@ -1055,12 +1055,12 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     if (!Array.isArray(expectedValues)) {
       if (process.env.NODE_ENV !== 'production') {
         if (arguments.length > 1) {
-          printWarning$1(
+          printWarning(
             'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
             'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
           );
         } else {
-          printWarning$1('Invalid argument supplied to oneOf, expected an array.');
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
         }
       }
       return emptyFunctionThatReturnsNull;
@@ -1111,14 +1111,14 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function createUnionTypeChecker(arrayOfTypeCheckers) {
     if (!Array.isArray(arrayOfTypeCheckers)) {
-      process.env.NODE_ENV !== 'production' ? printWarning$1('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
       return emptyFunctionThatReturnsNull;
     }
 
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
       if (typeof checker !== 'function') {
-        printWarning$1(
+        printWarning(
           'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
           'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
         );
@@ -1348,9 +1348,9 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
 var ReactPropTypesSecret = ReactPropTypesSecret_1;
 
-function emptyFunction$2() {}
+function emptyFunction() {}
 function emptyFunctionWithReset() {}
-emptyFunctionWithReset.resetWarningCache = emptyFunction$2;
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
 
 var factoryWithThrowingShims = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -1392,7 +1392,7 @@ var factoryWithThrowingShims = function() {
     exact: getShim,
 
     checkPropTypes: emptyFunctionWithReset,
-    resetWarningCache: emptyFunction$2
+    resetWarningCache: emptyFunction
   };
 
   ReactPropTypes.PropTypes = ReactPropTypes;
@@ -1521,10 +1521,10 @@ function __spreadArrays() {
 }
 
 var genericMessage = "Invariant Violation";
-var _a$2 = Object.setPrototypeOf, setPrototypeOf = _a$2 === void 0 ? function (obj, proto) {
+var _a$1 = Object.setPrototypeOf, setPrototypeOf = _a$1 === void 0 ? function (obj, proto) {
     obj.__proto__ = proto;
     return obj;
-} : _a$2;
+} : _a$1;
 var InvariantError = /** @class */ (function (_super) {
     __extends(InvariantError, _super);
     function InvariantError(message) {
@@ -2085,7 +2085,7 @@ var fastJsonStableStringify = function (data, opts) {
     })(data);
 };
 
-var _a$1 = Object.prototype, toString$4 = _a$1.toString, hasOwnProperty$d = _a$1.hasOwnProperty;
+var _a = Object.prototype, toString$4 = _a.toString, hasOwnProperty$e = _a.hasOwnProperty;
 var previousComparisons = new Map();
 /**
  * Performs a deep equality check on two JavaScript values, tolerating cycles.
@@ -2132,7 +2132,7 @@ function check(a, b) {
                 return false;
             // Now make sure they have the same keys.
             for (var k = 0; k < keyCount; ++k) {
-                if (!hasOwnProperty$d.call(b, aKeys[k])) {
+                if (!hasOwnProperty$e.call(b, aKeys[k])) {
                     return false;
                 }
             }
@@ -2935,7 +2935,7 @@ function maybeDeepFreeze(obj) {
     return obj;
 }
 
-var hasOwnProperty$c = Object.prototype.hasOwnProperty;
+var hasOwnProperty$d = Object.prototype.hasOwnProperty;
 function mergeDeep() {
     var sources = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -2965,7 +2965,7 @@ function mergeHelper(target, source, pastCopies) {
         }
         Object.keys(source).forEach(function (sourceKey) {
             var sourceValue = source[sourceKey];
-            if (hasOwnProperty$c.call(target, sourceKey)) {
+            if (hasOwnProperty$d.call(target, sourceKey)) {
                 var targetValue = target[sourceKey];
                 if (sourceValue !== targetValue) {
                     target[sourceKey] = mergeHelper(shallowCopyForMerge(targetValue, pastCopies), sourceValue, pastCopies);
@@ -4717,7 +4717,7 @@ function asyncMap(observable, mapFn) {
     });
 }
 
-var hasOwnProperty$b = Object.prototype.hasOwnProperty;
+var hasOwnProperty$c = Object.prototype.hasOwnProperty;
 var QueryManager = (function () {
     function QueryManager(_a) {
         var link = _a.link, _b = _a.queryDeduplication, queryDeduplication = _b === void 0 ? false : _b, store = _a.store, _c = _a.onBroadcast, onBroadcast = _c === void 0 ? function () { return undefined; } : _c, _d = _a.ssrMode, ssrMode = _d === void 0 ? false : _d, _e = _a.clientAwareness, clientAwareness = _e === void 0 ? {} : _e, localState = _a.localState, assumeImmutableResults = _a.assumeImmutableResults;
@@ -4776,7 +4776,7 @@ var QueryManager = (function () {
                                     if (observableQuery) {
                                         var queryName = observableQuery.queryName;
                                         if (queryName &&
-                                            hasOwnProperty$b.call(updateQueriesByName, queryName)) {
+                                            hasOwnProperty$c.call(updateQueriesByName, queryName)) {
                                             ret[queryId] = {
                                                 updater: updateQueriesByName[queryName],
                                                 query: _this.queryStore.get(queryId),
@@ -7762,33 +7762,6 @@ module.exports = isEqual;
 var isEqual$1 = lodash_isequal.exports;
 
 var reactIs = reactIs$1.exports;
-
-/**
- * Copyright 2015, Yahoo! Inc.
- * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-var REACT_STATICS = {
-  childContextTypes: true,
-  contextType: true,
-  contextTypes: true,
-  defaultProps: true,
-  displayName: true,
-  getDefaultProps: true,
-  getDerivedStateFromError: true,
-  getDerivedStateFromProps: true,
-  mixins: true,
-  propTypes: true,
-  type: true
-};
-var KNOWN_STATICS = {
-  name: true,
-  length: true,
-  prototype: true,
-  caller: true,
-  callee: true,
-  arguments: true,
-  arity: true
-};
 var FORWARD_REF_STATICS = {
   '$$typeof': true,
   render: true,
@@ -7807,61 +7780,6 @@ var MEMO_STATICS = {
 var TYPE_STATICS = {};
 TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
 TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
-
-function getStatics(component) {
-  // React v16.11 and below
-  if (reactIs.isMemo(component)) {
-    return MEMO_STATICS;
-  } // React v16.12 and above
-
-
-  return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
-}
-
-var defineProperty$5 = Object.defineProperty;
-var getOwnPropertyNames = Object.getOwnPropertyNames;
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var getPrototypeOf = Object.getPrototypeOf;
-var objectPrototype = Object.prototype;
-function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-  if (typeof sourceComponent !== 'string') {
-    // don't hoist over string (html) components
-    if (objectPrototype) {
-      var inheritedComponent = getPrototypeOf(sourceComponent);
-
-      if (inheritedComponent && inheritedComponent !== objectPrototype) {
-        hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
-      }
-    }
-
-    var keys = getOwnPropertyNames(sourceComponent);
-
-    if (getOwnPropertySymbols) {
-      keys = keys.concat(getOwnPropertySymbols(sourceComponent));
-    }
-
-    var targetStatics = getStatics(targetComponent);
-    var sourceStatics = getStatics(sourceComponent);
-
-    for (var i = 0; i < keys.length; ++i) {
-      var key = keys[i];
-
-      if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
-        var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
-
-        try {
-          // Avoid failures from read-only properties
-          defineProperty$5(targetComponent, key, descriptor);
-        } catch (e) {}
-      }
-    }
-  }
-
-  return targetComponent;
-}
-
-var hoistNonReactStatics_cjs = hoistNonReactStatics;
 
 var ApolloContext = React.createContext &&
     React.createContext(undefined);
@@ -7959,7 +7877,7 @@ function getClient(props, context) {
     return client;
 }
 
-var hasOwnProperty$a = Object.prototype.hasOwnProperty;
+var hasOwnProperty$b = Object.prototype.hasOwnProperty;
 function is(x, y) {
     if (x === y) {
         return x !== 0 || y !== 0 || 1 / x === 1 / y;
@@ -7980,7 +7898,7 @@ function shallowEqual(objA, objB) {
     if (keys.length !== Object.keys(objB).length) {
         return false;
     }
-    return keys.every(function (key) { return hasOwnProperty$a.call(objB, key) && is(objA[key], objB[key]); });
+    return keys.every(function (key) { return hasOwnProperty$b.call(objB, key) && is(objA[key], objB[key]); });
 }
 
 function observableQueryFields(observable) {
@@ -11835,14 +11753,14 @@ var reIsOctal = /^0o[0-7]+$/i;
 var freeParseInt = parseInt;
 
 /** Used for built-in method references. */
-var objectProto$d = Object.prototype;
+var objectProto$e = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var objectToString$1 = objectProto$d.toString;
+var objectToString$1 = objectProto$e.toString;
 
 /**
  * Creates a function that invokes `func`, with the `this` binding and arguments
@@ -13272,7 +13190,7 @@ Navigation.propTypes = {
   views: isViews.isRequired
 };
 
-function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
+function _extends$e() { _extends$e = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$e.apply(this, arguments); }
 
 function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -13280,9 +13198,9 @@ function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$c(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _objectWithoutProperties$9(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$9(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$9(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$a(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$9(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$a(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function toPercent(num) {
   return "".concat(num, "%");
@@ -13298,7 +13216,7 @@ function Flex(_ref) {
       wrap = _ref.wrap,
       otherProps = _objectWithoutProperties$9(_ref, ["children", "className", "direction", "count", "offset", "style", "wrap"]);
 
-  return /*#__PURE__*/React__default['default'].createElement("div", _extends$d({
+  return /*#__PURE__*/React__default['default'].createElement("div", _extends$e({
     className: className,
     style: _objectSpread$c({
       display: 'flex',
@@ -13451,11 +13369,11 @@ function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$b(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
+function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
 
-function _objectWithoutProperties$8(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$8(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$8(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$9(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$8(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$9(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function TileGroup(_ref) {
   var className = _ref.className,
       _ref$count = _ref.count,
@@ -13477,7 +13395,7 @@ function TileGroup(_ref) {
 
   for (var point = start; point <= end; point += step) {
     var date = dateTransform(point);
-    tiles.push( /*#__PURE__*/React__default['default'].createElement(Tile, _extends$c({
+    tiles.push( /*#__PURE__*/React__default['default'].createElement(Tile, _extends$d({
       key: date.getTime(),
       classes: getTileClasses({
         value: value,
@@ -13648,11 +13566,11 @@ function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$9(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
+function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
 
-function _objectWithoutProperties$7(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$7(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$7(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$8(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$8(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var className$4 = 'react-calendar__century-view__decades__decade';
 function Decade(_ref) {
   var classes = _ref.classes,
@@ -13662,7 +13580,7 @@ function Decade(_ref) {
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$b({}, otherProps, {
+  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$c({}, otherProps, {
     classes: [].concat(classes, className$4),
     maxDateTransform: getDecadeEnd,
     minDateTransform: getDecadeStart,
@@ -13679,12 +13597,12 @@ function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$8(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
+function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
 function Decades(props) {
   var activeStartDate = props.activeStartDate;
   var start = getBeginOfCenturyYear(activeStartDate);
   var end = start + 99;
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$a({}, props, {
+  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$b({}, props, {
     className: "react-calendar__century-view__decades",
     dateTransform: getDecadeStart,
     dateType: "decade",
@@ -13712,11 +13630,11 @@ function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$7(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
+function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
 
-function _objectWithoutProperties$6(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$6(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$6(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$7(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var className$3 = 'react-calendar__decade-view__years__year';
 function Year(_ref) {
   var classes = _ref.classes,
@@ -13726,7 +13644,7 @@ function Year(_ref) {
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$9({}, otherProps, {
+  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$a({}, otherProps, {
     classes: [].concat(classes, className$3),
     maxDateTransform: getYearEnd,
     minDateTransform: getYearStart,
@@ -13743,12 +13661,12 @@ function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$6(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
+function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
 function Years(props) {
   var activeStartDate = props.activeStartDate;
   var start = getBeginOfDecadeYear(activeStartDate);
   var end = start + 9;
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$8({}, props, {
+  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$9({}, props, {
     className: "react-calendar__decade-view__years",
     dateTransform: function dateTransform(year) {
       var date = new Date();
@@ -13780,11 +13698,11 @@ function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$5(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
+function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
 
-function _objectWithoutProperties$5(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$5(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$5(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$6(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var className$2 = 'react-calendar__year-view__months__month';
 function Month(_ref) {
   var classes = _ref.classes,
@@ -13796,7 +13714,7 @@ function Month(_ref) {
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$7({}, otherProps, {
+  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$8({}, otherProps, {
     classes: [].concat(classes, className$2),
     formatAbbr: formatMonthYear$1,
     maxDateTransform: getMonthEnd,
@@ -13815,13 +13733,13 @@ function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$4(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
+function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
 function Months(props) {
   var activeStartDate = props.activeStartDate;
   var start = 0;
   var end = 11;
   var year = getYear$1(activeStartDate);
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$6({}, props, {
+  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$7({}, props, {
     className: "react-calendar__year-view__months",
     dateTransform: function dateTransform(monthIndex) {
       var date = new Date();
@@ -13855,11 +13773,11 @@ function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$3(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
+function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
 
-function _objectWithoutProperties$4(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$4(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$4(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$5(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 var className$1 = 'react-calendar__month-view__days__day';
 function Day(_ref) {
   var _ref$formatDay = _ref.formatDay,
@@ -13873,7 +13791,7 @@ function Day(_ref) {
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$5({}, otherProps, {
+  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$6({}, otherProps, {
     classes: [].concat(classes, className$1, isWeekend$1(date, calendarType) ? "".concat(className$1, "--weekend") : null, date.getMonth() !== currentMonthIndex ? "".concat(className$1, "--neighboringMonth") : null),
     formatAbbr: formatLongDate$1,
     maxDateTransform: getDayEnd,
@@ -13893,11 +13811,11 @@ function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
+function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
 
-function _objectWithoutProperties$3(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$3(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$3(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$4(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$3(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function Days(props) {
   var activeStartDate = props.activeStartDate,
       calendarType = props.calendarType;
@@ -13943,7 +13861,7 @@ function Days(props) {
     return daysInMonth;
   }();
 
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$4({}, otherProps, {
+  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$5({}, otherProps, {
     className: "react-calendar__month-view__days",
     count: 7,
     currentMonthIndex: monthIndex,
@@ -14005,7 +13923,7 @@ Weekdays.propTypes = {
   onMouseLeave: PropTypes.func
 };
 
-function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
 function WeekNumber(_ref) {
   var date = _ref.date,
       onClickWeekNumber = _ref.onClickWeekNumber,
@@ -14017,7 +13935,7 @@ function WeekNumber(_ref) {
     }
   };
   var children = /*#__PURE__*/React__default['default'].createElement("span", null, weekNumber);
-  return onClickWeekNumber ? /*#__PURE__*/React__default['default'].createElement("button", _extends$3({}, props, {
+  return onClickWeekNumber ? /*#__PURE__*/React__default['default'].createElement("button", _extends$4({}, props, {
     onClick: function onClick(event) {
       return onClickWeekNumber(weekNumber, date, event);
     },
@@ -14091,11 +14009,11 @@ WeekNumbers.propTypes = {
   showFixedNumberOfWeeks: PropTypes.bool
 };
 
-function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
 
-function _objectWithoutProperties$2(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$2(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$2(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$3(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$2(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$3(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function getCalendarTypeFromLocale(locale) {
   return Object.keys(CALENDAR_TYPE_LOCALES).find(function (calendarType) {
@@ -14140,7 +14058,7 @@ function MonthView(props) {
   }
 
   function renderDays() {
-    return /*#__PURE__*/React__default['default'].createElement(Days, _extends$2({
+    return /*#__PURE__*/React__default['default'].createElement(Days, _extends$3({
       calendarType: calendarType
     }, childProps));
   }
@@ -14171,7 +14089,7 @@ MonthView.propTypes = {
   showWeekNumbers: PropTypes.bool
 };
 
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 
 function _typeof$3(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$3 = function _typeof(obj) { return typeof obj; }; } else { _typeof$3 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$3(obj); }
 
@@ -14201,9 +14119,9 @@ function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _objectWithoutProperties$1(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$1(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$1(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$2(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$1(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$2(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _toConsumableArray$2(arr) { return _arrayWithoutHoles$2(arr) || _iterableToArray$2(arr) || _unsupportedIterableToArray$2(arr) || _nonIterableSpread$2(); }
 
@@ -14668,7 +14586,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         case 'century':
           {
             var formatYear = this.props.formatYear;
-            return /*#__PURE__*/React__default['default'].createElement(CenturyView, _extends$1({
+            return /*#__PURE__*/React__default['default'].createElement(CenturyView, _extends$2({
               formatYear: formatYear
             }, commonProps));
           }
@@ -14676,7 +14594,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         case 'decade':
           {
             var _formatYear = this.props.formatYear;
-            return /*#__PURE__*/React__default['default'].createElement(DecadeView, _extends$1({
+            return /*#__PURE__*/React__default['default'].createElement(DecadeView, _extends$2({
               formatYear: _formatYear
             }, commonProps));
           }
@@ -14686,7 +14604,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
             var _this$props5 = this.props,
                 formatMonth = _this$props5.formatMonth,
                 formatMonthYear = _this$props5.formatMonthYear;
-            return /*#__PURE__*/React__default['default'].createElement(YearView, _extends$1({
+            return /*#__PURE__*/React__default['default'].createElement(YearView, _extends$2({
               formatMonth: formatMonth,
               formatMonthYear: formatMonthYear
             }, commonProps));
@@ -14704,7 +14622,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
                 showNeighboringMonth = _this$props6.showNeighboringMonth,
                 showWeekNumbers = _this$props6.showWeekNumbers;
             var onMouseLeave = this.onMouseLeave;
-            return /*#__PURE__*/React__default['default'].createElement(MonthView, _extends$1({
+            return /*#__PURE__*/React__default['default'].createElement(MonthView, _extends$2({
               calendarType: calendarType,
               formatDay: formatDay,
               formatLongDate: formatLongDate,
@@ -15030,9 +14948,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$1(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$1(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -17724,13 +17642,13 @@ if (!Object.keys) {
 		return theKeys;
 	};
 }
-var implementation$6 = keysShim$1;
+var implementation$5 = keysShim$1;
 
 var slice$1 = Array.prototype.slice;
 var isArgs = isArguments$2;
 
 var origKeys = Object.keys;
-var keysShim = origKeys ? function keys(o) { return origKeys(o); } : implementation$6;
+var keysShim = origKeys ? function keys(o) { return origKeys(o); } : implementation$5;
 
 var originalKeys = Object.keys;
 
@@ -17874,7 +17792,7 @@ var slice = Array.prototype.slice;
 var toStr$5 = Object.prototype.toString;
 var funcType = '[object Function]';
 
-var implementation$5 = function bind(that) {
+var implementation$4 = function bind(that) {
     var target = this;
     if (typeof target !== 'function' || toStr$5.call(target) !== funcType) {
         throw new TypeError(ERROR_MESSAGE + target);
@@ -17918,9 +17836,9 @@ var implementation$5 = function bind(that) {
     return bound;
 };
 
-var implementation$4 = implementation$5;
+var implementation$3 = implementation$4;
 
-var functionBind = Function.prototype.bind || implementation$4;
+var functionBind = Function.prototype.bind || implementation$3;
 
 var bind$1 = functionBind;
 
@@ -18840,7 +18758,7 @@ var isString$1 = isString$2;
 var $charAt = callBound$1('String.prototype.charAt');
 var $indexOf = GetIntrinsic('%Array.prototype.indexOf%'); // TODO: use callBind.apply without breaking IE 8
 
-var implementation$3 = function includes(searchElement) {
+var implementation$2 = function includes(searchElement) {
 	var fromIndex = arguments.length > 1 ? ToInteger(arguments[1]) : 0;
 	if ($indexOf && !$isNaN(searchElement) && $isFinite(fromIndex) && typeof searchElement !== 'undefined') {
 		return $indexOf.apply(this, arguments) > -1;
@@ -18861,10 +18779,10 @@ var implementation$3 = function includes(searchElement) {
 	return false;
 };
 
-var implementation$2 = implementation$3;
+var implementation$1 = implementation$2;
 
 var polyfill$1 = function getPolyfill() {
-	return Array.prototype.includes || implementation$2;
+	return Array.prototype.includes || implementation$1;
 };
 
 var define$1 = defineProperties_1;
@@ -18885,7 +18803,7 @@ var RequireObjectCoercible = RequireObjectCoercible$2;
 var callBind = callBind$3.exports;
 var callBound = callBound$3;
 
-var implementation$1 = implementation$3;
+var implementation = implementation$2;
 var getPolyfill = polyfill$1;
 var polyfill = callBind.apply(getPolyfill());
 var shim = shim$1;
@@ -18900,7 +18818,7 @@ var boundShim = function includes(array, searchElement) {
 };
 define(boundShim, {
 	getPolyfill: getPolyfill,
-	implementation: implementation$1,
+	implementation: implementation,
 	shim: shim
 });
 
@@ -29412,7 +29330,7 @@ var createClass = function () {
   };
 }();
 
-var _extends = Object.assign || function (target) {
+var _extends$1 = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -29544,7 +29462,7 @@ var intlFormatPropTypes = {
   formatHTMLMessage: funcReq
 };
 
-var intlShape = shape(_extends({}, intlConfigPropTypes, intlFormatPropTypes, {
+var intlShape = shape(_extends$1({}, intlConfigPropTypes, intlFormatPropTypes, {
   formatters: object,
   now: funcReq
 }));
@@ -29781,7 +29699,7 @@ function formatDate(config, state, value) {
 
   var onError = config.onError || defaultErrorHandler;
   var date = new Date(value);
-  var defaults$$1 = _extends({}, timeZone && { timeZone: timeZone }, format && getNamedFormat(formats, 'date', format, onError));
+  var defaults$$1 = _extends$1({}, timeZone && { timeZone: timeZone }, format && getNamedFormat(formats, 'date', format, onError));
   var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults$$1);
 
   try {
@@ -29803,12 +29721,12 @@ function formatTime(config, state, value) {
 
   var onError = config.onError || defaultErrorHandler;
   var date = new Date(value);
-  var defaults$$1 = _extends({}, timeZone && { timeZone: timeZone }, format && getNamedFormat(formats, 'time', format, onError));
+  var defaults$$1 = _extends$1({}, timeZone && { timeZone: timeZone }, format && getNamedFormat(formats, 'time', format, onError));
   var filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults$$1);
 
   if (!filteredOptions.hour && !filteredOptions.minute && !filteredOptions.second) {
     // Add default formatting options if hour, minute, or second isn't defined.
-    filteredOptions = _extends({}, filteredOptions, { hour: 'numeric', minute: 'numeric' });
+    filteredOptions = _extends$1({}, filteredOptions, { hour: 'numeric', minute: 'numeric' });
   }
 
   try {
@@ -29835,7 +29753,7 @@ function formatRelative(config, state, value) {
 
   // Capture the current threshold values, then temporarily override them with
   // specific values just for this render.
-  var oldThresholds = _extends({}, IntlRelativeFormat.thresholds);
+  var oldThresholds = _extends$1({}, IntlRelativeFormat.thresholds);
   updateRelativeFormatThresholds(RELATIVE_FORMAT_THRESHOLDS);
 
   try {
@@ -30045,7 +29963,7 @@ var IntlProvider = function (_Component) {
       getPluralFormat: memoizeFormatConstructor(IntlPluralFormat)
     } : _ref$formatters;
 
-    _this.state = _extends({}, formatters, {
+    _this.state = _extends$1({}, formatters, {
 
       // Wrapper to provide stable "now" time for initial render.
       now: function now() {
@@ -30089,7 +30007,7 @@ var IntlProvider = function (_Component) {
         // The `messages` are overridden to the `defaultProps` empty object
         // to maintain referential equality across re-renders. It's assumed
         // each <FormattedMessage> contains a `defaultMessage` prop.
-        config = _extends({}, config, {
+        config = _extends$1({}, config, {
           locale: defaultLocale,
           formats: defaultFormats,
           messages: defaultProps.messages
@@ -30120,7 +30038,7 @@ var IntlProvider = function (_Component) {
 
 
       return {
-        intl: _extends({}, config, boundFormatFns, {
+        intl: _extends$1({}, config, boundFormatFns, {
           formatters: formatters,
           now: now
         })
@@ -30156,7 +30074,7 @@ IntlProvider.contextTypes = {
 IntlProvider.childContextTypes = {
   intl: intlShape.isRequired
 };
-process.env.NODE_ENV !== "production" ? IntlProvider.propTypes = _extends({}, intlConfigPropTypes, {
+process.env.NODE_ENV !== "production" ? IntlProvider.propTypes = _extends$1({}, intlConfigPropTypes, {
   children: PropTypes.element.isRequired,
   initialNow: PropTypes.any
 }) : void 0;
@@ -30219,7 +30137,7 @@ FormattedDate.displayName = 'FormattedDate';
 FormattedDate.contextTypes = {
   intl: intlShape
 };
-process.env.NODE_ENV !== "production" ? FormattedDate.propTypes = _extends({}, dateTimeFormatPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedDate.propTypes = _extends$1({}, dateTimeFormatPropTypes, {
   value: PropTypes.any.isRequired,
   format: PropTypes.string,
   children: PropTypes.func
@@ -30283,7 +30201,7 @@ FormattedTime.displayName = 'FormattedTime';
 FormattedTime.contextTypes = {
   intl: intlShape
 };
-process.env.NODE_ENV !== "production" ? FormattedTime.propTypes = _extends({}, dateTimeFormatPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedTime.propTypes = _extends$1({}, dateTimeFormatPropTypes, {
   value: PropTypes.any.isRequired,
   format: PropTypes.string,
   children: PropTypes.func
@@ -30449,7 +30367,7 @@ var FormattedRelative = function (_Component) {
           children = _props.children;
 
 
-      var formattedRelative = formatRelative(value, _extends({}, this.props, this.state));
+      var formattedRelative = formatRelative(value, _extends$1({}, this.props, this.state));
 
       if (typeof children === 'function') {
         return children(formattedRelative);
@@ -30472,7 +30390,7 @@ FormattedRelative.contextTypes = {
 FormattedRelative.defaultProps = {
   updateInterval: 1000 * 10
 };
-process.env.NODE_ENV !== "production" ? FormattedRelative.propTypes = _extends({}, relativeFormatPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedRelative.propTypes = _extends$1({}, relativeFormatPropTypes, {
   value: PropTypes.any.isRequired,
   format: PropTypes.string,
   updateInterval: PropTypes.number,
@@ -30538,7 +30456,7 @@ FormattedNumber.displayName = 'FormattedNumber';
 FormattedNumber.contextTypes = {
   intl: intlShape
 };
-process.env.NODE_ENV !== "production" ? FormattedNumber.propTypes = _extends({}, numberFormatPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedNumber.propTypes = _extends$1({}, numberFormatPropTypes, {
   value: PropTypes.any.isRequired,
   format: PropTypes.string,
   children: PropTypes.func
@@ -30607,7 +30525,7 @@ FormattedPlural.contextTypes = {
 FormattedPlural.defaultProps = {
   style: 'cardinal'
 };
-process.env.NODE_ENV !== "production" ? FormattedPlural.propTypes = _extends({}, pluralFormatPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedPlural.propTypes = _extends$1({}, pluralFormatPropTypes, {
   value: PropTypes.any.isRequired,
 
   other: PropTypes.node.isRequired,
@@ -30661,7 +30579,7 @@ var FormattedMessage$1 = function (_Component) {
       // Since `values` has already been checked, we know they're not
       // different, so the current `values` are carried over so the shallow
       // equals comparison on the other props isn't affected by the `values`.
-      var nextPropsToCheck = _extends({}, nextProps, {
+      var nextPropsToCheck = _extends$1({}, nextProps, {
         values: values
       });
 
@@ -30771,7 +30689,7 @@ FormattedMessage$1.contextTypes = {
 FormattedMessage$1.defaultProps = {
   values: {}
 };
-process.env.NODE_ENV !== "production" ? FormattedMessage$1.propTypes = _extends({}, messageDescriptorPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedMessage$1.propTypes = _extends$1({}, messageDescriptorPropTypes, {
   values: PropTypes.object,
   tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   children: PropTypes.func
@@ -30809,7 +30727,7 @@ var FormattedHTMLMessage = function (_Component) {
       // Since `values` has already been checked, we know they're not
       // different, so the current `values` are carried over so the shallow
       // equals comparison on the other props isn't affected by the `values`.
-      var nextPropsToCheck = _extends({}, nextProps, {
+      var nextPropsToCheck = _extends$1({}, nextProps, {
         values: values
       });
 
@@ -30864,7 +30782,7 @@ FormattedHTMLMessage.contextTypes = {
 FormattedHTMLMessage.defaultProps = {
   values: {}
 };
-process.env.NODE_ENV !== "production" ? FormattedHTMLMessage.propTypes = _extends({}, messageDescriptorPropTypes, {
+process.env.NODE_ENV !== "production" ? FormattedHTMLMessage.propTypes = _extends$1({}, messageDescriptorPropTypes, {
   values: PropTypes.object,
   tagName: PropTypes.string,
   children: PropTypes.func
@@ -33920,347 +33838,213 @@ deepmerge.all = function deepmergeAll(array, options) {
 
 var deepmerge_1 = deepmerge;
 
-var lib = {exports: {}};
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
-var implementation = {exports: {}};
+var freeGlobal$1 = freeGlobal;
 
-var key = '__global_unique_id__';
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
-var gud = function() {
-  return commonjsGlobal[key] = (commonjsGlobal[key] || 0) + 1;
-};
+/** Used as a reference to the global object. */
+var root = freeGlobal$1 || freeSelf || Function('return this')();
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
+var root$1 = root;
 
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
+/** Built-in value references. */
+var Symbol$1 = root$1.Symbol;
 
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction$1 = function emptyFunction() {};
+var Symbol$2 = Symbol$1;
 
-emptyFunction$1.thatReturns = makeEmptyFunction;
-emptyFunction$1.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction$1.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction$1.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction$1.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction$1.thatReturnsArgument = function (arg) {
-  return arg;
-};
+/** Used for built-in method references. */
+var objectProto$d = Object.prototype;
 
-var emptyFunction_1 = emptyFunction$1;
+/** Used to check objects for own properties. */
+var hasOwnProperty$a = objectProto$d.hasOwnProperty;
 
 /**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
  */
+var nativeObjectToString$1 = objectProto$d.toString;
 
-var emptyFunction = emptyFunction_1;
+/** Built-in value references. */
+var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : undefined;
 
 /**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
  */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty$a.call(value, symToStringTag$1),
+      tag = value[symToStringTag$1];
 
-var warning$1 = emptyFunction;
+  try {
+    value[symToStringTag$1] = undefined;
+    var unmasked = true;
+  } catch (e) {}
 
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
+  var result = nativeObjectToString$1.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
     }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning$1 = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-var warning_1 = warning$1;
-
-(function (module, exports) {
-
-exports.__esModule = true;
-
-var _react = React__default['default'];
-
-_interopRequireDefault(_react);
-
-var _propTypes = propTypes$1.exports;
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _gud = gud;
-
-var _gud2 = _interopRequireDefault(_gud);
-
-var _warning = warning_1;
-
-var _warning2 = _interopRequireDefault(_warning);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MAX_SIGNED_31_BIT_INT = 1073741823;
-
-// Inlined Object.is polyfill.
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-function objectIs(x, y) {
-  if (x === y) {
-    return x !== 0 || 1 / x === 1 / y;
-  } else {
-    return x !== x && y !== y;
   }
+  return result;
 }
 
-function createEventEmitter(value) {
-  var handlers = [];
-  return {
-    on: function on(handler) {
-      handlers.push(handler);
-    },
-    off: function off(handler) {
-      handlers = handlers.filter(function (h) {
-        return h !== handler;
-      });
-    },
-    get: function get() {
-      return value;
-    },
-    set: function set(newValue, changedBits) {
-      value = newValue;
-      handlers.forEach(function (handler) {
-        return handler(value, changedBits);
-      });
-    }
-  };
+/** Used for built-in method references. */
+var objectProto$c = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto$c.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString.call(value);
 }
 
-function onlyChild(children) {
-  return Array.isArray(children) ? children[0] : children;
-}
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
 
-function createReactContext(defaultValue, calculateChangedBits) {
-  var _Provider$childContex, _Consumer$contextType;
+/** Built-in value references. */
+var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : undefined;
 
-  var contextProp = '__create-react-context-' + (0, _gud2.default)() + '__';
-
-  var Provider = function (_Component) {
-    _inherits(Provider, _Component);
-
-    function Provider() {
-      var _temp, _this, _ret;
-
-      _classCallCheck(this, Provider);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.emitter = createEventEmitter(_this.props.value), _temp), _possibleConstructorReturn(_this, _ret);
-    }
-
-    Provider.prototype.getChildContext = function getChildContext() {
-      var _ref;
-
-      return _ref = {}, _ref[contextProp] = this.emitter, _ref;
-    };
-
-    Provider.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-      if (this.props.value !== nextProps.value) {
-        var oldValue = this.props.value;
-        var newValue = nextProps.value;
-        var changedBits = void 0;
-
-        if (objectIs(oldValue, newValue)) {
-          changedBits = 0; // No change
-        } else {
-          changedBits = typeof calculateChangedBits === 'function' ? calculateChangedBits(oldValue, newValue) : MAX_SIGNED_31_BIT_INT;
-          if (process.env.NODE_ENV !== 'production') {
-            (0, _warning2.default)((changedBits & MAX_SIGNED_31_BIT_INT) === changedBits, 'calculateChangedBits: Expected the return value to be a ' + '31-bit integer. Instead received: %s', changedBits);
-          }
-
-          changedBits |= 0;
-
-          if (changedBits !== 0) {
-            this.emitter.set(nextProps.value, changedBits);
-          }
-        }
-      }
-    };
-
-    Provider.prototype.render = function render() {
-      return this.props.children;
-    };
-
-    return Provider;
-  }(_react.Component);
-
-  Provider.childContextTypes = (_Provider$childContex = {}, _Provider$childContex[contextProp] = _propTypes2.default.object.isRequired, _Provider$childContex);
-
-  var Consumer = function (_Component2) {
-    _inherits(Consumer, _Component2);
-
-    function Consumer() {
-      var _temp2, _this2, _ret2;
-
-      _classCallCheck(this, Consumer);
-
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, _Component2.call.apply(_Component2, [this].concat(args))), _this2), _this2.state = {
-        value: _this2.getValue()
-      }, _this2.onUpdate = function (newValue, changedBits) {
-        var observedBits = _this2.observedBits | 0;
-        if ((observedBits & changedBits) !== 0) {
-          _this2.setState({ value: _this2.getValue() });
-        }
-      }, _temp2), _possibleConstructorReturn(_this2, _ret2);
-    }
-
-    Consumer.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-      var observedBits = nextProps.observedBits;
-
-      this.observedBits = observedBits === undefined || observedBits === null ? MAX_SIGNED_31_BIT_INT // Subscribe to all changes by default
-      : observedBits;
-    };
-
-    Consumer.prototype.componentDidMount = function componentDidMount() {
-      if (this.context[contextProp]) {
-        this.context[contextProp].on(this.onUpdate);
-      }
-      var observedBits = this.props.observedBits;
-
-      this.observedBits = observedBits === undefined || observedBits === null ? MAX_SIGNED_31_BIT_INT // Subscribe to all changes by default
-      : observedBits;
-    };
-
-    Consumer.prototype.componentWillUnmount = function componentWillUnmount() {
-      if (this.context[contextProp]) {
-        this.context[contextProp].off(this.onUpdate);
-      }
-    };
-
-    Consumer.prototype.getValue = function getValue() {
-      if (this.context[contextProp]) {
-        return this.context[contextProp].get();
-      } else {
-        return defaultValue;
-      }
-    };
-
-    Consumer.prototype.render = function render() {
-      return onlyChild(this.props.children)(this.state.value);
-    };
-
-    return Consumer;
-  }(_react.Component);
-
-  Consumer.contextTypes = (_Consumer$contextType = {}, _Consumer$contextType[contextProp] = _propTypes2.default.object, _Consumer$contextType);
-
-
-  return {
-    Provider: Provider,
-    Consumer: Consumer
-  };
-}
-
-exports.default = createReactContext;
-module.exports = exports['default'];
-}(implementation, implementation.exports));
-
-(function (module, exports) {
-
-exports.__esModule = true;
-
-var _react = React__default['default'];
-
-var _react2 = _interopRequireDefault(_react);
-
-var _implementation = implementation.exports;
-
-var _implementation2 = _interopRequireDefault(_implementation);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _react2.default.createContext || _implementation2.default;
-module.exports = exports['default'];
-}(lib, lib.exports));
-
-var createContext = /*@__PURE__*/getDefaultExportFromCjs(lib.exports);
-
-var isProduction = process.env.NODE_ENV === 'production';
-function warning(condition, message) {
-  if (!isProduction) {
-    if (condition) {
-      return;
-    }
-
-    var text = "Warning: " + message;
-
-    if (typeof console !== 'undefined') {
-      console.warn(text);
-    }
-
-    try {
-      throw Error(text);
-    } catch (x) {}
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
   }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? getRawTag(value)
+    : objectToString(value);
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/** Built-in value references. */
+var getPrototype = overArg(Object.getPrototypeOf, Object);
+
+var getPrototype$1 = getPrototype;
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+/** `Object#toString` result references. */
+var objectTag$3 = '[object Object]';
+
+/** Used for built-in method references. */
+var funcProto$2 = Function.prototype,
+    objectProto$b = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString$2 = funcProto$2.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$9 = objectProto$b.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString$2.call(Object);
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!isObjectLike(value) || baseGetTag(value) != objectTag$3) {
+    return false;
+  }
+  var proto = getPrototype$1(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty$9.call(proto, 'constructor') && proto.constructor;
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString$2.call(Ctor) == objectCtorString;
 }
 
 /**
@@ -34491,111 +34275,6 @@ function stackGet(key) {
  */
 function stackHas(key) {
   return this.__data__.has(key);
-}
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-var freeGlobal$1 = freeGlobal;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal$1 || freeSelf || Function('return this')();
-
-var root$1 = root;
-
-/** Built-in value references. */
-var Symbol$1 = root$1.Symbol;
-
-var Symbol$2 = Symbol$1;
-
-/** Used for built-in method references. */
-var objectProto$c = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString$1 = objectProto$c.toString;
-
-/** Built-in value references. */
-var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
- */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty$9.call(value, symToStringTag$1),
-      tag = value[symToStringTag$1];
-
-  try {
-    value[symToStringTag$1] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString$1.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag$1] = tag;
-    } else {
-      delete value[symToStringTag$1];
-    }
-  }
-  return result;
-}
-
-/** Used for built-in method references. */
-var objectProto$b = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto$b.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString.call(value);
-}
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-  return (symToStringTag && symToStringTag in Object(value))
-    ? getRawTag(value)
-    : objectToString(value);
 }
 
 /**
@@ -35214,34 +34893,6 @@ function baseTimes(n, iteratee) {
   return result;
 }
 
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
 /** `Object#toString` result references. */
 var argsTag$2 = '[object Arguments]';
 
@@ -35607,20 +35258,6 @@ function isPrototype(value) {
   return value === proto;
 }
 
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function(arg) {
-    return func(transform(arg));
-  };
-}
-
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
 
@@ -35968,11 +35605,6 @@ function arrayPush(array, values) {
   }
   return array;
 }
-
-/** Built-in value references. */
-var getPrototype = overArg(Object.getPrototypeOf, Object);
-
-var getPrototype$1 = getPrototype;
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
@@ -36842,50 +36474,99 @@ function toPath(value) {
   return isSymbol(value) ? [value] : copyArray(stringToPath$1(toString$1(value)));
 }
 
-var _a;
-var FormikProvider = (_a =
-/*#__PURE__*/
-createContext({}), _a.Provider),
-    FormikConsumer = _a.Consumer;
-function connect(Comp) {
-  var C = function (props) {
-    return React.createElement(FormikConsumer, null, function (formik) {
-      return React.createElement(Comp, __assign$1({}, props, {
-        formik: formik
-      }));
-    });
-  };
+var isProduction = process.env.NODE_ENV === 'production';
+function warning(condition, message) {
+  if (!isProduction) {
+    if (condition) {
+      return;
+    }
 
-  var componentDisplayName = Comp.displayName || Comp.name || Comp.constructor && Comp.constructor.name || 'Component';
-  C.WrappedComponent = Comp;
-  C.displayName = "FormikConnect(" + componentDisplayName + ")";
-  return hoistNonReactStatics_cjs(C, Comp);
+    var text = "Warning: " + message;
+
+    if (typeof console !== 'undefined') {
+      console.warn(text);
+    }
+
+    try {
+      throw Error(text);
+    } catch (x) {}
+  }
 }
 
-var isFunction = function (obj) {
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+/** @private is the given object a Function? */
+
+var isFunction = function isFunction(obj) {
   return typeof obj === 'function';
 };
-var isObject = function (obj) {
+/** @private is the given object an Object? */
+
+var isObject = function isObject(obj) {
   return obj !== null && typeof obj === 'object';
 };
-var isInteger = function (obj) {
+/** @private is the given object an integer? */
+
+var isInteger = function isInteger(obj) {
   return String(Math.floor(Number(obj))) === obj;
 };
-var isString = function (obj) {
+/** @private is the given object a string? */
+
+var isString = function isString(obj) {
   return Object.prototype.toString.call(obj) === '[object String]';
 };
-var isNaN$1 = function (obj) {
-  return obj !== obj;
-};
-var isEmptyChildren = function (children) {
+/** @private Does a React component have exactly 0 children? */
+
+var isEmptyChildren = function isEmptyChildren(children) {
   return React.Children.count(children) === 0;
 };
-var isPromise = function (value) {
+/** @private is the given object/value a promise? */
+
+var isPromise = function isPromise(value) {
   return isObject(value) && isFunction(value.then);
 };
-var isInputEvent = function (value) {
-  return value && isObject(value) && isObject(value.target);
-};
+/**
+ * Same as document.activeElement but wraps in a try-catch block. In IE it is
+ * not safe to call document.activeElement if there is nothing focused.
+ *
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
+ *
+ * @param {?Document} doc Defaults to current document.
+ * @return {Element | null}
+ * @see https://github.com/facebook/fbjs/blob/master/packages/fbjs/src/core/dom/getActiveElement.js
+ */
+
 function getActiveElement(doc) {
   doc = doc || (typeof document !== 'undefined' ? document : undefined);
 
@@ -36899,23 +36580,10 @@ function getActiveElement(doc) {
     return doc.body;
   }
 }
-function makeCancelable(promise) {
-  var hasCanceled = false;
-  var wrappedPromise = new Promise(function (resolve, reject) {
-    promise.then(function (val) {
-      return hasCanceled ? reject({
-        isCanceled: true
-      }) : resolve(val);
-    }, function (error) {
-      return hasCanceled ? reject({
-        isCanceled: true
-      }) : reject(error);
-    });
-  });
-  return [wrappedPromise, function cancel() {
-    hasCanceled = true;
-  }];
-}
+/**
+ * Deeply get a value from an object via its path.
+ */
+
 function getIn(obj, key, def, p) {
   if (p === void 0) {
     p = 0;
@@ -36929,8 +36597,34 @@ function getIn(obj, key, def, p) {
 
   return obj === undefined ? def : obj;
 }
+/**
+ * Deeply set a value from in object via it's path. If the value at `path`
+ * has changed, return a shallow copy of obj with `value` set at `path`.
+ * If `value` has not changed, return the original `obj`.
+ *
+ * Existing objects / arrays along `path` are also shallow copied. Sibling
+ * objects along path retain the same internal js reference. Since new
+ * objects / arrays are only created along `path`, we can test if anything
+ * changed in a nested structure by comparing the object's reference in
+ * the old and new object, similar to how russian doll cache invalidation
+ * works.
+ *
+ * In earlier versions of this function, which used cloneDeep, there were
+ * issues whereby settings a nested value would mutate the parent
+ * instead of creating a new object. `clone` avoids that bug making a
+ * shallow copy of the objects along the update path
+ * so no object is mutated in place.
+ *
+ * Before changing this function, please read through the following
+ * discussions.
+ *
+ * @see https://github.com/developit/linkstate
+ * @see https://github.com/jaredpalmer/formik/pull/123
+ */
+
 function setIn(obj, path, value) {
-  var res = clone(obj);
+  var res = clone(obj); // this keeps inheritance when obj is a class
+
   var resVal = res;
   var i = 0;
   var pathArray = toPath(path);
@@ -36939,13 +36633,14 @@ function setIn(obj, path, value) {
     var currentPath = pathArray[i];
     var currentObj = getIn(obj, pathArray.slice(0, i + 1));
 
-    if (currentObj) {
+    if (currentObj && (isObject(currentObj) || Array.isArray(currentObj))) {
       resVal = resVal[currentPath] = clone(currentObj);
     } else {
       var nextPath = pathArray[i + 1];
       resVal = resVal[currentPath] = isInteger(nextPath) && Number(nextPath) >= 0 ? [] : {};
     }
-  }
+  } // Return original object if new value is the same as current
+
 
   if ((i === 0 ? obj : resVal)[pathArray[i]] === value) {
     return obj;
@@ -36955,7 +36650,9 @@ function setIn(obj, path, value) {
     delete resVal[pathArray[i]];
   } else {
     resVal[pathArray[i]] = value;
-  }
+  } // If the path array has a single element, the loop did not run.
+  // Deleting on `resVal` had no effect in this scenario, so we delete on the result instead.
+
 
   if (i === 0 && value === undefined) {
     delete res[pathArray[i]];
@@ -36963,6 +36660,14 @@ function setIn(obj, path, value) {
 
   return res;
 }
+/**
+ * Recursively a set the same value for all keys and arrays nested object, cloning
+ * @param object
+ * @param value
+ * @param visited
+ * @param response
+ */
+
 function setNestedObjectValues(object, value, visited, response) {
   if (visited === void 0) {
     visited = new WeakMap();
@@ -36972,13 +36677,16 @@ function setNestedObjectValues(object, value, visited, response) {
     response = {};
   }
 
-  for (var _i = 0, _a = Object.keys(object); _i < _a.length; _i++) {
-    var k = _a[_i];
+  for (var _i = 0, _Object$keys = Object.keys(object); _i < _Object$keys.length; _i++) {
+    var k = _Object$keys[_i];
     var val = object[k];
 
     if (isObject(val)) {
       if (!visited.get(val)) {
-        visited.set(val, true);
+        visited.set(val, true); // In order to keep array values consistent for both dot path  and
+        // bracket syntax, we need to check if this is an array so that
+        // this will output  { friends: [true] } and not { friends: { "0": true } }
+
         response[k] = Array.isArray(val) ? [] : {};
         setNestedObjectValues(val, value, visited, response[k]);
       }
@@ -36990,599 +36698,884 @@ function setNestedObjectValues(object, value, visited, response) {
   return response;
 }
 
-var Formik =
-/*#__PURE__*/
-function (_super) {
-  __extends(Formik, _super);
+var FormikContext = /*#__PURE__*/React.createContext(undefined);
+FormikContext.displayName = 'FormikContext';
+var FormikProvider = FormikContext.Provider;
+FormikContext.Consumer;
+function useFormikContext() {
+  var formik = React.useContext(FormikContext);
+  !!!formik ? process.env.NODE_ENV !== "production" ? warning(false, "Formik context is undefined, please verify you are calling useFormikContext() as child of a <Formik> component.") : warning(false) : void 0;
+  return formik;
+}
 
-  function Formik(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this.hcCache = {};
-    _this.hbCache = {};
-
-    _this.registerField = function (name, Comp) {
-      _this.fields[name] = Comp;
-    };
-
-    _this.unregisterField = function (name) {
-      delete _this.fields[name];
-    };
-
-    _this.setErrors = function (errors) {
-      _this.setState({
-        errors: errors
+function formikReducer(state, msg) {
+  switch (msg.type) {
+    case 'SET_VALUES':
+      return _extends({}, state, {
+        values: msg.payload
       });
-    };
 
-    _this.setTouched = function (touched) {
-      _this.setState({
-        touched: touched
-      }, function () {
-        if (_this.props.validateOnBlur) {
-          _this.runValidations(_this.state.values);
-        }
+    case 'SET_TOUCHED':
+      return _extends({}, state, {
+        touched: msg.payload
       });
-    };
 
-    _this.setValues = function (values) {
-      _this.setState({
-        values: values
-      }, function () {
-        if (_this.props.validateOnChange) {
-          _this.runValidations(values);
-        }
-      });
-    };
-
-    _this.setStatus = function (status) {
-      _this.setState({
-        status: status
-      });
-    };
-
-    _this.setError = function (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn("Warning: Formik's setError(error) is deprecated and may be removed in future releases. Please use Formik's setStatus(status) instead. It works identically. For more info see https://github.com/jaredpalmer/formik#setstatus-status-any--void");
+    case 'SET_ERRORS':
+      if (reactFastCompare(state.errors, msg.payload)) {
+        return state;
       }
 
-      _this.setState({
-        error: error
-      });
-    };
-
-    _this.setSubmitting = function (isSubmitting) {
-      if (_this.didMount) {
-        _this.setState({
-          isSubmitting: isSubmitting
-        });
-      }
-    };
-
-    _this.validateField = function (field) {
-      _this.setState({
-        isValidating: true
+      return _extends({}, state, {
+        errors: msg.payload
       });
 
-      return _this.runSingleFieldLevelValidation(field, getIn(_this.state.values, field)).then(function (error) {
-        if (_this.didMount) {
-          _this.setState({
-            errors: setIn(_this.state.errors, field, error),
-            isValidating: false
-          });
-        }
-
-        return error;
-      });
-    };
-
-    _this.runSingleFieldLevelValidation = function (field, value) {
-      return new Promise(function (resolve) {
-        return resolve(_this.fields[field].props.validate(value));
-      }).then(function (x) {
-        return x;
-      }, function (e) {
-        return e;
-      });
-    };
-
-    _this.runValidationSchema = function (values) {
-      return new Promise(function (resolve) {
-        var validationSchema = _this.props.validationSchema;
-        var schema = isFunction(validationSchema) ? validationSchema() : validationSchema;
-        validateYupSchema(values, schema).then(function () {
-          resolve({});
-        }, function (err) {
-          resolve(yupToFormErrors(err));
-        });
-      });
-    };
-
-    _this.runValidations = function (values) {
-      if (values === void 0) {
-        values = _this.state.values;
-      }
-
-      if (_this.validator) {
-        _this.validator();
-      }
-
-      var _a = makeCancelable(Promise.all([_this.runFieldLevelValidations(values), _this.props.validationSchema ? _this.runValidationSchema(values) : {}, _this.props.validate ? _this.runValidateHandler(values) : {}]).then(function (_a) {
-        var fieldErrors = _a[0],
-            schemaErrors = _a[1],
-            handlerErrors = _a[2];
-        return deepmerge_1.all([fieldErrors, schemaErrors, handlerErrors], {
-          arrayMerge: arrayMerge
-        });
-      })),
-          promise = _a[0],
-          cancel = _a[1];
-
-      _this.validator = cancel;
-      return promise.then(function (errors) {
-        if (_this.didMount) {
-          _this.setState(function (prevState) {
-            if (!reactFastCompare(prevState.errors, errors)) {
-              return {
-                errors: errors
-              };
-            }
-
-            return null;
-          });
-        }
-
-        return errors;
-      }).catch(function (x) {
-        return x;
-      });
-    };
-
-    _this.handleChange = function (eventOrPath) {
-      var executeChange = function (eventOrValue, maybePath) {
-        var field = maybePath;
-        var value;
-
-        if (isInputEvent(eventOrValue)) {
-          var event_1 = eventOrValue;
-
-          if (event_1.persist) {
-            event_1.persist();
-          }
-
-          var _a = event_1.target,
-              type = _a.type,
-              name_1 = _a.name,
-              id = _a.id,
-              checked = _a.checked,
-              outerHTML = _a.outerHTML;
-          field = maybePath ? maybePath : name_1 ? name_1 : id;
-
-          if (!field && process.env.NODE_ENV !== 'production') {
-            warnAboutMissingIdentifier({
-              htmlContent: outerHTML,
-              documentationAnchorLink: 'handlechange-e-reactchangeeventany--void',
-              handlerName: 'handleChange'
-            });
-          }
-
-          value = event_1.target.value;
-
-          if (/number|range/.test(type)) {
-            var parsed = parseFloat(event_1.target.value);
-            value = isNaN$1(parsed) ? '' : parsed;
-          }
-
-          if (/checkbox/.test(type)) {
-            value = checked;
-          }
-        } else {
-          value = eventOrValue;
-        }
-
-        if (field) {
-          _this.setState(function (prevState) {
-            return __assign$1({}, prevState, {
-              values: setIn(prevState.values, field, value)
-            });
-          }, function () {
-            if (_this.props.validateOnChange) {
-              _this.runValidations(setIn(_this.state.values, field, value));
-            }
-          });
-        }
-      };
-
-      if (isString(eventOrPath)) {
-        var path_1 = eventOrPath;
-
-        if (!isFunction(_this.hcCache[path_1])) {
-          _this.hcCache[path_1] = function (eventOrValue) {
-            return executeChange(eventOrValue, path_1);
-          };
-        }
-
-        return _this.hcCache[path_1];
-      } else {
-        var event_2 = eventOrPath;
-        executeChange(event_2);
-      }
-    };
-
-    _this.setFieldValue = function (field, value, shouldValidate) {
-      if (shouldValidate === void 0) {
-        shouldValidate = true;
-      }
-
-      if (_this.didMount) {
-        _this.setState(function (prevState) {
-          return __assign$1({}, prevState, {
-            values: setIn(prevState.values, field, value)
-          });
-        }, function () {
-          if (_this.props.validateOnChange && shouldValidate) {
-            _this.runValidations(_this.state.values);
-          }
-        });
-      }
-    };
-
-    _this.handleSubmit = function (e) {
-      if (e && e.preventDefault) {
-        e.preventDefault();
-      }
-
-      if (process.env.NODE_ENV !== 'production' && typeof document !== 'undefined') {
-        var activeElement = getActiveElement();
-
-        if (activeElement !== null && activeElement instanceof HTMLButtonElement) {
-          process.env.NODE_ENV !== "production" ? warning(!!(activeElement.attributes && activeElement.attributes.getNamedItem('type')), 'You submitted a Formik form using a button with an unspecified `type` attribute.  Most browsers default button elements to `type="submit"`. If this is not a submit button, please add `type="button"`.') : void 0;
-        }
-      }
-
-      _this.submitForm();
-    };
-
-    _this.submitForm = function () {
-      _this.setState(function (prevState) {
-        return {
-          touched: setNestedObjectValues(prevState.values, true),
-          isSubmitting: true,
-          isValidating: true,
-          submitCount: prevState.submitCount + 1
-        };
+    case 'SET_STATUS':
+      return _extends({}, state, {
+        status: msg.payload
       });
 
-      return _this.runValidations(_this.state.values).then(function (combinedErrors) {
-        if (_this.didMount) {
-          _this.setState({
-            isValidating: false
-          });
-        }
-
-        var isValid = Object.keys(combinedErrors).length === 0;
-
-        if (isValid) {
-          _this.executeSubmit();
-        } else if (_this.didMount) {
-          _this.setState({
-            isSubmitting: false
-          });
-        }
-      });
-    };
-
-    _this.executeSubmit = function () {
-      _this.props.onSubmit(_this.state.values, _this.getFormikActions());
-    };
-
-    _this.handleBlur = function (eventOrPath) {
-      var executeBlur = function (maybeEvent, maybePath) {
-        var field = maybePath;
-
-        if (isInputEvent(maybeEvent)) {
-          var event_3 = maybeEvent;
-
-          if (event_3.persist) {
-            event_3.persist();
-          }
-
-          var _a = event_3.target,
-              name_2 = _a.name,
-              id = _a.id,
-              outerHTML = _a.outerHTML;
-          field = name_2 ? name_2 : id;
-
-          if (!field && process.env.NODE_ENV !== 'production') {
-            warnAboutMissingIdentifier({
-              htmlContent: outerHTML,
-              documentationAnchorLink: 'handleblur-e-reactfocuseventany--void',
-              handlerName: 'handleBlur'
-            });
-          }
-        }
-
-        _this.setState(function (prevState) {
-          return {
-            touched: setIn(prevState.touched, field, true)
-          };
-        });
-
-        if (_this.props.validateOnBlur) {
-          _this.runValidations(_this.state.values);
-        }
-      };
-
-      if (isString(eventOrPath)) {
-        var path_2 = eventOrPath;
-
-        if (!isFunction(_this.hbCache[path_2])) {
-          _this.hbCache[path_2] = function (event) {
-            return executeBlur(event, path_2);
-          };
-        }
-
-        return _this.hbCache[path_2];
-      } else {
-        var event_4 = eventOrPath;
-        executeBlur(event_4);
-      }
-    };
-
-    _this.setFieldTouched = function (field, touched, shouldValidate) {
-      if (touched === void 0) {
-        touched = true;
-      }
-
-      if (shouldValidate === void 0) {
-        shouldValidate = true;
-      }
-
-      _this.setState(function (prevState) {
-        return __assign$1({}, prevState, {
-          touched: setIn(prevState.touched, field, touched)
-        });
-      }, function () {
-        if (_this.props.validateOnBlur && shouldValidate) {
-          _this.runValidations(_this.state.values);
-        }
-      });
-    };
-
-    _this.setFieldError = function (field, message) {
-      _this.setState(function (prevState) {
-        return __assign$1({}, prevState, {
-          errors: setIn(prevState.errors, field, message)
-        });
-      });
-    };
-
-    _this.resetForm = function (nextValues) {
-      var values = nextValues ? nextValues : _this.props.initialValues;
-      _this.initialValues = values;
-
-      _this.setState({
-        isSubmitting: false,
-        isValidating: false,
-        errors: {},
-        touched: {},
-        error: undefined,
-        status: _this.props.initialStatus,
-        values: values,
-        submitCount: 0
-      });
-    };
-
-    _this.handleReset = function () {
-      if (_this.props.onReset) {
-        var maybePromisedOnReset = _this.props.onReset(_this.state.values, _this.getFormikActions());
-
-        if (isPromise(maybePromisedOnReset)) {
-          maybePromisedOnReset.then(_this.resetForm);
-        } else {
-          _this.resetForm();
-        }
-      } else {
-        _this.resetForm();
-      }
-    };
-
-    _this.setFormikState = function (s, callback) {
-      return _this.setState(s, callback);
-    };
-
-    _this.validateForm = function (values) {
-      _this.setState({
-        isValidating: true
+    case 'SET_ISSUBMITTING':
+      return _extends({}, state, {
+        isSubmitting: msg.payload
       });
 
-      return _this.runValidations(values).then(function (errors) {
-        if (_this.didMount) {
-          _this.setState({
-            isValidating: false
-          });
-        }
-
-        return errors;
+    case 'SET_ISVALIDATING':
+      return _extends({}, state, {
+        isValidating: msg.payload
       });
-    };
 
-    _this.getFormikActions = function () {
-      return {
-        resetForm: _this.resetForm,
-        submitForm: _this.submitForm,
-        validateForm: _this.validateForm,
-        validateField: _this.validateField,
-        setError: _this.setError,
-        setErrors: _this.setErrors,
-        setFieldError: _this.setFieldError,
-        setFieldTouched: _this.setFieldTouched,
-        setFieldValue: _this.setFieldValue,
-        setStatus: _this.setStatus,
-        setSubmitting: _this.setSubmitting,
-        setTouched: _this.setTouched,
-        setValues: _this.setValues,
-        setFormikState: _this.setFormikState
-      };
-    };
-
-    _this.getFormikComputedProps = function () {
-      var isInitialValid = _this.props.isInitialValid;
-      var dirty = !reactFastCompare(_this.initialValues, _this.state.values);
-      return {
-        dirty: dirty,
-        isValid: dirty ? _this.state.errors && Object.keys(_this.state.errors).length === 0 : isInitialValid !== false && isFunction(isInitialValid) ? isInitialValid(_this.props) : isInitialValid,
-        initialValues: _this.initialValues
-      };
-    };
-
-    _this.getFormikBag = function () {
-      return __assign$1({}, _this.state, _this.getFormikActions(), _this.getFormikComputedProps(), {
-        registerField: _this.registerField,
-        unregisterField: _this.unregisterField,
-        handleBlur: _this.handleBlur,
-        handleChange: _this.handleChange,
-        handleReset: _this.handleReset,
-        handleSubmit: _this.handleSubmit,
-        validateOnChange: _this.props.validateOnChange,
-        validateOnBlur: _this.props.validateOnBlur
+    case 'SET_FIELD_VALUE':
+      return _extends({}, state, {
+        values: setIn(state.values, msg.payload.field, msg.payload.value)
       });
-    };
 
-    _this.getFormikContext = function () {
-      return __assign$1({}, _this.getFormikBag(), {
-        validationSchema: _this.props.validationSchema,
-        validate: _this.props.validate,
-        initialValues: _this.initialValues
+    case 'SET_FIELD_TOUCHED':
+      return _extends({}, state, {
+        touched: setIn(state.touched, msg.payload.field, msg.payload.value)
       });
-    };
 
-    _this.state = {
-      values: props.initialValues || {},
-      errors: {},
-      touched: {},
-      isSubmitting: false,
-      isValidating: false,
-      submitCount: 0,
-      status: props.initialStatus
-    };
-    _this.didMount = false;
-    _this.fields = {};
-    _this.initialValues = props.initialValues || {};
-    process.env.NODE_ENV !== "production" ? warning(!(props.component && props.render), 'You should not use <Formik component> and <Formik render> in the same <Formik> component; <Formik render> will be ignored') : void 0;
-    process.env.NODE_ENV !== "production" ? warning(!(props.component && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik component> and <Formik children> in the same <Formik> component; <Formik children> will be ignored') : void 0;
-    process.env.NODE_ENV !== "production" ? warning(!(props.render && props.children && !isEmptyChildren(props.children)), 'You should not use <Formik render> and <Formik children> in the same <Formik> component; <Formik children> will be ignored') : void 0;
-    return _this;
+    case 'SET_FIELD_ERROR':
+      return _extends({}, state, {
+        errors: setIn(state.errors, msg.payload.field, msg.payload.value)
+      });
+
+    case 'RESET_FORM':
+      return _extends({}, state, msg.payload);
+
+    case 'SET_FORMIK_STATE':
+      return msg.payload(state);
+
+    case 'SUBMIT_ATTEMPT':
+      return _extends({}, state, {
+        touched: setNestedObjectValues(state.values, true),
+        isSubmitting: true,
+        submitCount: state.submitCount + 1
+      });
+
+    case 'SUBMIT_FAILURE':
+      return _extends({}, state, {
+        isSubmitting: false
+      });
+
+    case 'SUBMIT_SUCCESS':
+      return _extends({}, state, {
+        isSubmitting: false
+      });
+
+    default:
+      return state;
+  }
+} // Initial empty states // objects
+
+
+var emptyErrors = {};
+var emptyTouched = {};
+function useFormik(_ref) {
+  var _ref$validateOnChange = _ref.validateOnChange,
+      validateOnChange = _ref$validateOnChange === void 0 ? true : _ref$validateOnChange,
+      _ref$validateOnBlur = _ref.validateOnBlur,
+      validateOnBlur = _ref$validateOnBlur === void 0 ? true : _ref$validateOnBlur,
+      _ref$validateOnMount = _ref.validateOnMount,
+      validateOnMount = _ref$validateOnMount === void 0 ? false : _ref$validateOnMount,
+      isInitialValid = _ref.isInitialValid,
+      _ref$enableReinitiali = _ref.enableReinitialize,
+      enableReinitialize = _ref$enableReinitiali === void 0 ? false : _ref$enableReinitiali,
+      onSubmit = _ref.onSubmit,
+      rest = _objectWithoutPropertiesLoose(_ref, ["validateOnChange", "validateOnBlur", "validateOnMount", "isInitialValid", "enableReinitialize", "onSubmit"]);
+
+  var props = _extends({
+    validateOnChange: validateOnChange,
+    validateOnBlur: validateOnBlur,
+    validateOnMount: validateOnMount,
+    onSubmit: onSubmit
+  }, rest);
+
+  var initialValues = React.useRef(props.initialValues);
+  var initialErrors = React.useRef(props.initialErrors || emptyErrors);
+  var initialTouched = React.useRef(props.initialTouched || emptyTouched);
+  var initialStatus = React.useRef(props.initialStatus);
+  var isMounted = React.useRef(false);
+  var fieldRegistry = React.useRef({});
+
+  if (process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    React.useEffect(function () {
+      !(typeof isInitialValid === 'undefined') ? process.env.NODE_ENV !== "production" ? warning(false, 'isInitialValid has been deprecated and will be removed in future versions of Formik. Please use initialErrors or validateOnMount instead.') : warning(false) : void 0; // eslint-disable-next-line
+    }, []);
   }
 
-  Formik.prototype.componentDidMount = function () {
-    this.didMount = true;
-  };
+  React.useEffect(function () {
+    isMounted.current = true;
+    return function () {
+      isMounted.current = false;
+    };
+  }, []);
 
-  Formik.prototype.componentWillUnmount = function () {
-    this.didMount = false;
+  var _React$useReducer = React.useReducer(formikReducer, {
+    values: props.initialValues,
+    errors: props.initialErrors || emptyErrors,
+    touched: props.initialTouched || emptyTouched,
+    status: props.initialStatus,
+    isSubmitting: false,
+    isValidating: false,
+    submitCount: 0
+  }),
+      state = _React$useReducer[0],
+      dispatch = _React$useReducer[1];
 
-    if (this.validator) {
-      this.validator();
-    }
-  };
+  var runValidateHandler = React.useCallback(function (values, field) {
+    return new Promise(function (resolve, reject) {
+      var maybePromisedErrors = props.validate(values, field);
 
-  Formik.prototype.componentDidUpdate = function (prevProps) {
-    if (this.props.enableReinitialize && !reactFastCompare(prevProps.initialValues, this.props.initialValues)) {
-      this.initialValues = this.props.initialValues;
-      this.resetForm(this.props.initialValues);
-    }
-  };
+      if (maybePromisedErrors == null) {
+        // use loose null check here on purpose
+        resolve(emptyErrors);
+      } else if (isPromise(maybePromisedErrors)) {
+        maybePromisedErrors.then(function (errors) {
+          resolve(errors || emptyErrors);
+        }, function (actualException) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn("Warning: An unhandled error was caught during validation in <Formik validate />", actualException);
+          }
 
-  Formik.prototype.runFieldLevelValidations = function (values) {
-    var _this = this;
-
-    var fieldKeysWithValidation = Object.keys(this.fields).filter(function (f) {
-      return _this.fields && _this.fields[f] && _this.fields[f].props.validate && isFunction(_this.fields[f].props.validate);
+          reject(actualException);
+        });
+      } else {
+        resolve(maybePromisedErrors);
+      }
     });
+  }, [props.validate]);
+  /**
+   * Run validation against a Yup schema and optionally run a function if successful
+   */
+
+  var runValidationSchema = React.useCallback(function (values, field) {
+    var validationSchema = props.validationSchema;
+    var schema = isFunction(validationSchema) ? validationSchema(field) : validationSchema;
+    var promise = field && schema.validateAt ? schema.validateAt(field, values) : validateYupSchema(values, schema);
+    return new Promise(function (resolve, reject) {
+      promise.then(function () {
+        resolve(emptyErrors);
+      }, function (err) {
+        // Yup will throw a validation error if validation fails. We catch those and
+        // resolve them into Formik errors. We can sniff if something is a Yup error
+        // by checking error.name.
+        // @see https://github.com/jquense/yup#validationerrorerrors-string--arraystring-value-any-path-string
+        if (err.name === 'ValidationError') {
+          resolve(yupToFormErrors(err));
+        } else {
+          // We throw any other errors
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn("Warning: An unhandled error was caught during validation in <Formik validationSchema />", err);
+          }
+
+          reject(err);
+        }
+      });
+    });
+  }, [props.validationSchema]);
+  var runSingleFieldLevelValidation = React.useCallback(function (field, value) {
+    return new Promise(function (resolve) {
+      return resolve(fieldRegistry.current[field].validate(value));
+    });
+  }, []);
+  var runFieldLevelValidations = React.useCallback(function (values) {
+    var fieldKeysWithValidation = Object.keys(fieldRegistry.current).filter(function (f) {
+      return isFunction(fieldRegistry.current[f].validate);
+    }); // Construct an array with all of the field validation functions
+
     var fieldValidations = fieldKeysWithValidation.length > 0 ? fieldKeysWithValidation.map(function (f) {
-      return _this.runSingleFieldLevelValidation(f, getIn(values, f));
-    }) : [Promise.resolve('DO_NOT_DELETE_YOU_WILL_BE_FIRED')];
+      return runSingleFieldLevelValidation(f, getIn(values, f));
+    }) : [Promise.resolve('DO_NOT_DELETE_YOU_WILL_BE_FIRED')]; // use special case ;)
+
     return Promise.all(fieldValidations).then(function (fieldErrorsList) {
       return fieldErrorsList.reduce(function (prev, curr, index) {
         if (curr === 'DO_NOT_DELETE_YOU_WILL_BE_FIRED') {
           return prev;
         }
 
-        if (!!curr) {
+        if (curr) {
           prev = setIn(prev, fieldKeysWithValidation[index], curr);
         }
 
         return prev;
       }, {});
     });
-  };
+  }, [runSingleFieldLevelValidation]); // Run all validations and return the result
 
-  Formik.prototype.runValidateHandler = function (values) {
-    var _this = this;
+  var runAllValidations = React.useCallback(function (values) {
+    return Promise.all([runFieldLevelValidations(values), props.validationSchema ? runValidationSchema(values) : {}, props.validate ? runValidateHandler(values) : {}]).then(function (_ref2) {
+      var fieldErrors = _ref2[0],
+          schemaErrors = _ref2[1],
+          validateErrors = _ref2[2];
+      var combinedErrors = deepmerge_1.all([fieldErrors, schemaErrors, validateErrors], {
+        arrayMerge: arrayMerge
+      });
+      return combinedErrors;
+    });
+  }, [props.validate, props.validationSchema, runFieldLevelValidations, runValidateHandler, runValidationSchema]); // Run all validations methods and update state accordingly
 
-    return new Promise(function (resolve) {
-      var maybePromisedErrors = _this.props.validate(values);
+  var validateFormWithHighPriority = useEventCallback(function (values) {
+    if (values === void 0) {
+      values = state.values;
+    }
 
-      if (maybePromisedErrors === undefined) {
-        resolve({});
-      } else if (isPromise(maybePromisedErrors)) {
-        maybePromisedErrors.then(function () {
-          resolve({});
-        }, function (errors) {
-          resolve(errors);
+    dispatch({
+      type: 'SET_ISVALIDATING',
+      payload: true
+    });
+    return runAllValidations(values).then(function (combinedErrors) {
+      if (!!isMounted.current) {
+        dispatch({
+          type: 'SET_ISVALIDATING',
+          payload: false
+        });
+        dispatch({
+          type: 'SET_ERRORS',
+          payload: combinedErrors
+        });
+      }
+
+      return combinedErrors;
+    });
+  });
+  React.useEffect(function () {
+    if (validateOnMount && isMounted.current === true && reactFastCompare(initialValues.current, props.initialValues)) {
+      validateFormWithHighPriority(initialValues.current);
+    }
+  }, [validateOnMount, validateFormWithHighPriority]);
+  var resetForm = React.useCallback(function (nextState) {
+    var values = nextState && nextState.values ? nextState.values : initialValues.current;
+    var errors = nextState && nextState.errors ? nextState.errors : initialErrors.current ? initialErrors.current : props.initialErrors || {};
+    var touched = nextState && nextState.touched ? nextState.touched : initialTouched.current ? initialTouched.current : props.initialTouched || {};
+    var status = nextState && nextState.status ? nextState.status : initialStatus.current ? initialStatus.current : props.initialStatus;
+    initialValues.current = values;
+    initialErrors.current = errors;
+    initialTouched.current = touched;
+    initialStatus.current = status;
+
+    var dispatchFn = function dispatchFn() {
+      dispatch({
+        type: 'RESET_FORM',
+        payload: {
+          isSubmitting: !!nextState && !!nextState.isSubmitting,
+          errors: errors,
+          touched: touched,
+          status: status,
+          values: values,
+          isValidating: !!nextState && !!nextState.isValidating,
+          submitCount: !!nextState && !!nextState.submitCount && typeof nextState.submitCount === 'number' ? nextState.submitCount : 0
+        }
+      });
+    };
+
+    if (props.onReset) {
+      var maybePromisedOnReset = props.onReset(state.values, imperativeMethods);
+
+      if (isPromise(maybePromisedOnReset)) {
+        maybePromisedOnReset.then(dispatchFn);
+      } else {
+        dispatchFn();
+      }
+    } else {
+      dispatchFn();
+    }
+  }, [props.initialErrors, props.initialStatus, props.initialTouched]);
+  React.useEffect(function () {
+    if (isMounted.current === true && !reactFastCompare(initialValues.current, props.initialValues)) {
+      if (enableReinitialize) {
+        initialValues.current = props.initialValues;
+        resetForm();
+      }
+
+      if (validateOnMount) {
+        validateFormWithHighPriority(initialValues.current);
+      }
+    }
+  }, [enableReinitialize, props.initialValues, resetForm, validateOnMount, validateFormWithHighPriority]);
+  React.useEffect(function () {
+    if (enableReinitialize && isMounted.current === true && !reactFastCompare(initialErrors.current, props.initialErrors)) {
+      initialErrors.current = props.initialErrors || emptyErrors;
+      dispatch({
+        type: 'SET_ERRORS',
+        payload: props.initialErrors || emptyErrors
+      });
+    }
+  }, [enableReinitialize, props.initialErrors]);
+  React.useEffect(function () {
+    if (enableReinitialize && isMounted.current === true && !reactFastCompare(initialTouched.current, props.initialTouched)) {
+      initialTouched.current = props.initialTouched || emptyTouched;
+      dispatch({
+        type: 'SET_TOUCHED',
+        payload: props.initialTouched || emptyTouched
+      });
+    }
+  }, [enableReinitialize, props.initialTouched]);
+  React.useEffect(function () {
+    if (enableReinitialize && isMounted.current === true && !reactFastCompare(initialStatus.current, props.initialStatus)) {
+      initialStatus.current = props.initialStatus;
+      dispatch({
+        type: 'SET_STATUS',
+        payload: props.initialStatus
+      });
+    }
+  }, [enableReinitialize, props.initialStatus, props.initialTouched]);
+  var validateField = useEventCallback(function (name) {
+    // This will efficiently validate a single field by avoiding state
+    // changes if the validation function is synchronous. It's different from
+    // what is called when using validateForm.
+    if (fieldRegistry.current[name] && isFunction(fieldRegistry.current[name].validate)) {
+      var value = getIn(state.values, name);
+      var maybePromise = fieldRegistry.current[name].validate(value);
+
+      if (isPromise(maybePromise)) {
+        // Only flip isValidating if the function is async.
+        dispatch({
+          type: 'SET_ISVALIDATING',
+          payload: true
+        });
+        return maybePromise.then(function (x) {
+          return x;
+        }).then(function (error) {
+          dispatch({
+            type: 'SET_FIELD_ERROR',
+            payload: {
+              field: name,
+              value: error
+            }
+          });
+          dispatch({
+            type: 'SET_ISVALIDATING',
+            payload: false
+          });
         });
       } else {
-        resolve(maybePromisedErrors);
+        dispatch({
+          type: 'SET_FIELD_ERROR',
+          payload: {
+            field: name,
+            value: maybePromise
+          }
+        });
+        return Promise.resolve(maybePromise);
+      }
+    } else if (props.validationSchema) {
+      dispatch({
+        type: 'SET_ISVALIDATING',
+        payload: true
+      });
+      return runValidationSchema(state.values, name).then(function (x) {
+        return x;
+      }).then(function (error) {
+        dispatch({
+          type: 'SET_FIELD_ERROR',
+          payload: {
+            field: name,
+            value: error[name]
+          }
+        });
+        dispatch({
+          type: 'SET_ISVALIDATING',
+          payload: false
+        });
+      });
+    }
+
+    return Promise.resolve();
+  });
+  var registerField = React.useCallback(function (name, _ref3) {
+    var validate = _ref3.validate;
+    fieldRegistry.current[name] = {
+      validate: validate
+    };
+  }, []);
+  var unregisterField = React.useCallback(function (name) {
+    delete fieldRegistry.current[name];
+  }, []);
+  var setTouched = useEventCallback(function (touched, shouldValidate) {
+    dispatch({
+      type: 'SET_TOUCHED',
+      payload: touched
+    });
+    var willValidate = shouldValidate === undefined ? validateOnBlur : shouldValidate;
+    return willValidate ? validateFormWithHighPriority(state.values) : Promise.resolve();
+  });
+  var setErrors = React.useCallback(function (errors) {
+    dispatch({
+      type: 'SET_ERRORS',
+      payload: errors
+    });
+  }, []);
+  var setValues = useEventCallback(function (values, shouldValidate) {
+    var resolvedValues = isFunction(values) ? values(state.values) : values;
+    dispatch({
+      type: 'SET_VALUES',
+      payload: resolvedValues
+    });
+    var willValidate = shouldValidate === undefined ? validateOnChange : shouldValidate;
+    return willValidate ? validateFormWithHighPriority(resolvedValues) : Promise.resolve();
+  });
+  var setFieldError = React.useCallback(function (field, value) {
+    dispatch({
+      type: 'SET_FIELD_ERROR',
+      payload: {
+        field: field,
+        value: value
       }
     });
-  };
+  }, []);
+  var setFieldValue = useEventCallback(function (field, value, shouldValidate) {
+    dispatch({
+      type: 'SET_FIELD_VALUE',
+      payload: {
+        field: field,
+        value: value
+      }
+    });
+    var willValidate = shouldValidate === undefined ? validateOnChange : shouldValidate;
+    return willValidate ? validateFormWithHighPriority(setIn(state.values, field, value)) : Promise.resolve();
+  });
+  var executeChange = React.useCallback(function (eventOrTextValue, maybePath) {
+    // By default, assume that the first argument is a string. This allows us to use
+    // handleChange with React Native and React Native Web's onChangeText prop which
+    // provides just the value of the input.
+    var field = maybePath;
+    var val = eventOrTextValue;
+    var parsed; // If the first argument is not a string though, it has to be a synthetic React Event (or a fake one),
+    // so we handle like we would a normal HTML change event.
 
-  Formik.prototype.render = function () {
-    var _a = this.props,
-        component = _a.component,
-        render = _a.render,
-        children = _a.children;
-    var props = this.getFormikBag();
-    var ctx = this.getFormikContext();
-    return React.createElement(FormikProvider, {
-      value: ctx
-    }, component ? React.createElement(component, props) : render ? render(props) : children ? isFunction(children) ? children(props) : !isEmptyChildren(children) ? React.Children.only(children) : null : null);
-  };
+    if (!isString(eventOrTextValue)) {
+      // If we can, persist the event
+      // @see https://reactjs.org/docs/events.html#event-pooling
+      if (eventOrTextValue.persist) {
+        eventOrTextValue.persist();
+      }
 
-  Formik.defaultProps = {
-    validateOnChange: true,
-    validateOnBlur: true,
-    isInitialValid: false,
-    enableReinitialize: false
-  };
-  return Formik;
-}(React.Component);
+      var target = eventOrTextValue.target ? eventOrTextValue.target : eventOrTextValue.currentTarget;
+      var type = target.type,
+          name = target.name,
+          id = target.id,
+          value = target.value,
+          checked = target.checked,
+          outerHTML = target.outerHTML,
+          options = target.options,
+          multiple = target.multiple;
+      field = maybePath ? maybePath : name ? name : id;
 
-function warnAboutMissingIdentifier(_a) {
-  var htmlContent = _a.htmlContent,
-      documentationAnchorLink = _a.documentationAnchorLink,
-      handlerName = _a.handlerName;
-  console.warn("Warning: Formik called `" + handlerName + "`, but you forgot to pass an `id` or `name` attribute to your input:\n\n    " + htmlContent + "\n\n    Formik cannot determine which value to update. For more info see https://github.com/jaredpalmer/formik#" + documentationAnchorLink + "\n  ");
+      if (!field && process.env.NODE_ENV !== "production") {
+        warnAboutMissingIdentifier({
+          htmlContent: outerHTML,
+          documentationAnchorLink: 'handlechange-e-reactchangeeventany--void',
+          handlerName: 'handleChange'
+        });
+      }
+
+      val = /number|range/.test(type) ? (parsed = parseFloat(value), isNaN(parsed) ? '' : parsed) : /checkbox/.test(type) // checkboxes
+      ? getValueForCheckbox(getIn(state.values, field), checked, value) : options && multiple // <select multiple>
+      ? getSelectedValues(options) : value;
+    }
+
+    if (field) {
+      // Set form fields by name
+      setFieldValue(field, val);
+    }
+  }, [setFieldValue, state.values]);
+  var handleChange = useEventCallback(function (eventOrPath) {
+    if (isString(eventOrPath)) {
+      return function (event) {
+        return executeChange(event, eventOrPath);
+      };
+    } else {
+      executeChange(eventOrPath);
+    }
+  });
+  var setFieldTouched = useEventCallback(function (field, touched, shouldValidate) {
+    if (touched === void 0) {
+      touched = true;
+    }
+
+    dispatch({
+      type: 'SET_FIELD_TOUCHED',
+      payload: {
+        field: field,
+        value: touched
+      }
+    });
+    var willValidate = shouldValidate === undefined ? validateOnBlur : shouldValidate;
+    return willValidate ? validateFormWithHighPriority(state.values) : Promise.resolve();
+  });
+  var executeBlur = React.useCallback(function (e, path) {
+    if (e.persist) {
+      e.persist();
+    }
+
+    var _e$target = e.target,
+        name = _e$target.name,
+        id = _e$target.id,
+        outerHTML = _e$target.outerHTML;
+    var field = path ? path : name ? name : id;
+
+    if (!field && process.env.NODE_ENV !== "production") {
+      warnAboutMissingIdentifier({
+        htmlContent: outerHTML,
+        documentationAnchorLink: 'handleblur-e-any--void',
+        handlerName: 'handleBlur'
+      });
+    }
+
+    setFieldTouched(field, true);
+  }, [setFieldTouched]);
+  var handleBlur = useEventCallback(function (eventOrString) {
+    if (isString(eventOrString)) {
+      return function (event) {
+        return executeBlur(event, eventOrString);
+      };
+    } else {
+      executeBlur(eventOrString);
+    }
+  });
+  var setFormikState = React.useCallback(function (stateOrCb) {
+    if (isFunction(stateOrCb)) {
+      dispatch({
+        type: 'SET_FORMIK_STATE',
+        payload: stateOrCb
+      });
+    } else {
+      dispatch({
+        type: 'SET_FORMIK_STATE',
+        payload: function payload() {
+          return stateOrCb;
+        }
+      });
+    }
+  }, []);
+  var setStatus = React.useCallback(function (status) {
+    dispatch({
+      type: 'SET_STATUS',
+      payload: status
+    });
+  }, []);
+  var setSubmitting = React.useCallback(function (isSubmitting) {
+    dispatch({
+      type: 'SET_ISSUBMITTING',
+      payload: isSubmitting
+    });
+  }, []);
+  var submitForm = useEventCallback(function () {
+    dispatch({
+      type: 'SUBMIT_ATTEMPT'
+    });
+    return validateFormWithHighPriority().then(function (combinedErrors) {
+      // In case an error was thrown and passed to the resolved Promise,
+      // `combinedErrors` can be an instance of an Error. We need to check
+      // that and abort the submit.
+      // If we don't do that, calling `Object.keys(new Error())` yields an
+      // empty array, which causes the validation to pass and the form
+      // to be submitted.
+      var isInstanceOfError = combinedErrors instanceof Error;
+      var isActuallyValid = !isInstanceOfError && Object.keys(combinedErrors).length === 0;
+
+      if (isActuallyValid) {
+        // Proceed with submit...
+        //
+        // To respect sync submit fns, we can't simply wrap executeSubmit in a promise and
+        // _always_ dispatch SUBMIT_SUCCESS because isSubmitting would then always be false.
+        // This would be fine in simple cases, but make it impossible to disable submit
+        // buttons where people use callbacks or promises as side effects (which is basically
+        // all of v1 Formik code). Instead, recall that we are inside of a promise chain already,
+        //  so we can try/catch executeSubmit(), if it returns undefined, then just bail.
+        // If there are errors, throw em. Otherwise, wrap executeSubmit in a promise and handle
+        // cleanup of isSubmitting on behalf of the consumer.
+        var promiseOrUndefined;
+
+        try {
+          promiseOrUndefined = executeSubmit(); // Bail if it's sync, consumer is responsible for cleaning up
+          // via setSubmitting(false)
+
+          if (promiseOrUndefined === undefined) {
+            return;
+          }
+        } catch (error) {
+          throw error;
+        }
+
+        return Promise.resolve(promiseOrUndefined).then(function (result) {
+          if (!!isMounted.current) {
+            dispatch({
+              type: 'SUBMIT_SUCCESS'
+            });
+          }
+
+          return result;
+        })["catch"](function (_errors) {
+          if (!!isMounted.current) {
+            dispatch({
+              type: 'SUBMIT_FAILURE'
+            }); // This is a legit error rejected by the onSubmit fn
+            // so we don't want to break the promise chain
+
+            throw _errors;
+          }
+        });
+      } else if (!!isMounted.current) {
+        // ^^^ Make sure Formik is still mounted before updating state
+        dispatch({
+          type: 'SUBMIT_FAILURE'
+        }); // throw combinedErrors;
+
+        if (isInstanceOfError) {
+          throw combinedErrors;
+        }
+      }
+
+      return;
+    });
+  });
+  var handleSubmit = useEventCallback(function (e) {
+    if (e && e.preventDefault && isFunction(e.preventDefault)) {
+      e.preventDefault();
+    }
+
+    if (e && e.stopPropagation && isFunction(e.stopPropagation)) {
+      e.stopPropagation();
+    } // Warn if form submission is triggered by a <button> without a
+    // specified `type` attribute during development. This mitigates
+    // a common gotcha in forms with both reset and submit buttons,
+    // where the dev forgets to add type="button" to the reset button.
+
+
+    if (process.env.NODE_ENV !== "production" && typeof document !== 'undefined') {
+      // Safely get the active element (works with IE)
+      var activeElement = getActiveElement();
+
+      if (activeElement !== null && activeElement instanceof HTMLButtonElement) {
+        !(activeElement.attributes && activeElement.attributes.getNamedItem('type')) ? process.env.NODE_ENV !== "production" ? warning(false, 'You submitted a Formik form using a button with an unspecified `type` attribute.  Most browsers default button elements to `type="submit"`. If this is not a submit button, please add `type="button"`.') : warning(false) : void 0;
+      }
+    }
+
+    submitForm()["catch"](function (reason) {
+      console.warn("Warning: An unhandled error was caught from submitForm()", reason);
+    });
+  });
+  var imperativeMethods = {
+    resetForm: resetForm,
+    validateForm: validateFormWithHighPriority,
+    validateField: validateField,
+    setErrors: setErrors,
+    setFieldError: setFieldError,
+    setFieldTouched: setFieldTouched,
+    setFieldValue: setFieldValue,
+    setStatus: setStatus,
+    setSubmitting: setSubmitting,
+    setTouched: setTouched,
+    setValues: setValues,
+    setFormikState: setFormikState,
+    submitForm: submitForm
+  };
+  var executeSubmit = useEventCallback(function () {
+    return onSubmit(state.values, imperativeMethods);
+  });
+  var handleReset = useEventCallback(function (e) {
+    if (e && e.preventDefault && isFunction(e.preventDefault)) {
+      e.preventDefault();
+    }
+
+    if (e && e.stopPropagation && isFunction(e.stopPropagation)) {
+      e.stopPropagation();
+    }
+
+    resetForm();
+  });
+  var getFieldMeta = React.useCallback(function (name) {
+    return {
+      value: getIn(state.values, name),
+      error: getIn(state.errors, name),
+      touched: !!getIn(state.touched, name),
+      initialValue: getIn(initialValues.current, name),
+      initialTouched: !!getIn(initialTouched.current, name),
+      initialError: getIn(initialErrors.current, name)
+    };
+  }, [state.errors, state.touched, state.values]);
+  var getFieldHelpers = React.useCallback(function (name) {
+    return {
+      setValue: function setValue(value, shouldValidate) {
+        return setFieldValue(name, value, shouldValidate);
+      },
+      setTouched: function setTouched(value, shouldValidate) {
+        return setFieldTouched(name, value, shouldValidate);
+      },
+      setError: function setError(value) {
+        return setFieldError(name, value);
+      }
+    };
+  }, [setFieldValue, setFieldTouched, setFieldError]);
+  var getFieldProps = React.useCallback(function (nameOrOptions) {
+    var isAnObject = isObject(nameOrOptions);
+    var name = isAnObject ? nameOrOptions.name : nameOrOptions;
+    var valueState = getIn(state.values, name);
+    var field = {
+      name: name,
+      value: valueState,
+      onChange: handleChange,
+      onBlur: handleBlur
+    };
+
+    if (isAnObject) {
+      var type = nameOrOptions.type,
+          valueProp = nameOrOptions.value,
+          is = nameOrOptions.as,
+          multiple = nameOrOptions.multiple;
+
+      if (type === 'checkbox') {
+        if (valueProp === undefined) {
+          field.checked = !!valueState;
+        } else {
+          field.checked = !!(Array.isArray(valueState) && ~valueState.indexOf(valueProp));
+          field.value = valueProp;
+        }
+      } else if (type === 'radio') {
+        field.checked = valueState === valueProp;
+        field.value = valueProp;
+      } else if (is === 'select' && multiple) {
+        field.value = field.value || [];
+        field.multiple = true;
+      }
+    }
+
+    return field;
+  }, [handleBlur, handleChange, state.values]);
+  var dirty = React.useMemo(function () {
+    return !reactFastCompare(initialValues.current, state.values);
+  }, [initialValues.current, state.values]);
+  var isValid = React.useMemo(function () {
+    return typeof isInitialValid !== 'undefined' ? dirty ? state.errors && Object.keys(state.errors).length === 0 : isInitialValid !== false && isFunction(isInitialValid) ? isInitialValid(props) : isInitialValid : state.errors && Object.keys(state.errors).length === 0;
+  }, [isInitialValid, dirty, state.errors, props]);
+
+  var ctx = _extends({}, state, {
+    initialValues: initialValues.current,
+    initialErrors: initialErrors.current,
+    initialTouched: initialTouched.current,
+    initialStatus: initialStatus.current,
+    handleBlur: handleBlur,
+    handleChange: handleChange,
+    handleReset: handleReset,
+    handleSubmit: handleSubmit,
+    resetForm: resetForm,
+    setErrors: setErrors,
+    setFormikState: setFormikState,
+    setFieldTouched: setFieldTouched,
+    setFieldValue: setFieldValue,
+    setFieldError: setFieldError,
+    setStatus: setStatus,
+    setSubmitting: setSubmitting,
+    setTouched: setTouched,
+    setValues: setValues,
+    submitForm: submitForm,
+    validateForm: validateFormWithHighPriority,
+    validateField: validateField,
+    isValid: isValid,
+    dirty: dirty,
+    unregisterField: unregisterField,
+    registerField: registerField,
+    getFieldProps: getFieldProps,
+    getFieldMeta: getFieldMeta,
+    getFieldHelpers: getFieldHelpers,
+    validateOnBlur: validateOnBlur,
+    validateOnChange: validateOnChange,
+    validateOnMount: validateOnMount
+  });
+
+  return ctx;
 }
+function Formik(props) {
+  var formikbag = useFormik(props);
+  var component = props.component,
+      children = props.children,
+      render = props.render,
+      innerRef = props.innerRef; // This allows folks to pass a ref to <Formik />
+
+  React.useImperativeHandle(innerRef, function () {
+    return formikbag;
+  });
+
+  if (process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    React.useEffect(function () {
+      !!props.render ? process.env.NODE_ENV !== "production" ? warning(false, "<Formik render> has been deprecated and will be removed in future versions of Formik. Please use a child callback function instead. To get rid of this warning, replace <Formik render={(props) => ...} /> with <Formik>{(props) => ...}</Formik>") : warning(false) : void 0; // eslint-disable-next-line
+    }, []);
+  }
+
+  return React.createElement(FormikProvider, {
+    value: formikbag
+  }, component ? React.createElement(component, formikbag) : render ? render(formikbag) : children // children come last, always called
+  ? isFunction(children) ? children(formikbag) : !isEmptyChildren(children) ? React.Children.only(children) : null : null);
+}
+
+function warnAboutMissingIdentifier(_ref4) {
+  var htmlContent = _ref4.htmlContent,
+      documentationAnchorLink = _ref4.documentationAnchorLink,
+      handlerName = _ref4.handlerName;
+  console.warn("Warning: Formik called `" + handlerName + "`, but you forgot to pass an `id` or `name` attribute to your input:\n    " + htmlContent + "\n    Formik cannot determine which value to update. For more info see https://formik.org/docs/api/formik#" + documentationAnchorLink + "\n  ");
+}
+/**
+ * Transform Yup ValidationError to a more usable object
+ */
+
 
 function yupToFormErrors(yupError) {
   var errors = {};
 
-  if (yupError.inner.length === 0) {
-    return setIn(errors, yupError.path, yupError.message);
-  }
+  if (yupError.inner) {
+    if (yupError.inner.length === 0) {
+      return setIn(errors, yupError.path, yupError.message);
+    }
 
-  for (var _i = 0, _a = yupError.inner; _i < _a.length; _i++) {
-    var err = _a[_i];
+    for (var _iterator = yupError.inner, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+      var _ref5;
 
-    if (!errors[err.path]) {
-      errors = setIn(errors, err.path, err.message);
+      if (_isArray) {
+        if (_i >= _iterator.length) break;
+        _ref5 = _iterator[_i++];
+      } else {
+        _i = _iterator.next();
+        if (_i.done) break;
+        _ref5 = _i.value;
+      }
+
+      var err = _ref5;
+
+      if (!getIn(errors, err.path)) {
+        errors = setIn(errors, err.path, err.message);
+      }
     }
   }
 
   return errors;
 }
+/**
+ * Validate a yup schema.
+ */
+
 function validateYupSchema(values, schema, sync, context) {
   if (sync === void 0) {
     sync = false;
@@ -37592,24 +37585,49 @@ function validateYupSchema(values, schema, sync, context) {
     context = {};
   }
 
-  var validateData = {};
-
-  for (var k in values) {
-    if (values.hasOwnProperty(k)) {
-      var key = String(k);
-      validateData[key] = values[key] !== '' ? values[key] : undefined;
-    }
-  }
-
+  var validateData = prepareDataForValidation(values);
   return schema[sync ? 'validateSync' : 'validate'](validateData, {
     abortEarly: false,
     context: context
   });
 }
+/**
+ * Recursively prepare values.
+ */
+
+function prepareDataForValidation(values) {
+  var data = Array.isArray(values) ? [] : {};
+
+  for (var k in values) {
+    if (Object.prototype.hasOwnProperty.call(values, k)) {
+      var key = String(k);
+
+      if (Array.isArray(values[key]) === true) {
+        data[key] = values[key].map(function (value) {
+          if (Array.isArray(value) === true || isPlainObject(value)) {
+            return prepareDataForValidation(value);
+          } else {
+            return value !== '' ? value : undefined;
+          }
+        });
+      } else if (isPlainObject(values[key])) {
+        data[key] = prepareDataForValidation(values[key]);
+      } else {
+        data[key] = values[key] !== '' ? values[key] : undefined;
+      }
+    }
+  }
+
+  return data;
+}
+/**
+ * deepmerge array merging algorithm
+ * https://github.com/KyleAMathews/deepmerge#combine-array
+ */
 
 function arrayMerge(target, source, options) {
   var destination = target.slice();
-  source.forEach(function (e, i) {
+  source.forEach(function merge(e, i) {
     if (typeof destination[i] === 'undefined') {
       var cloneRequested = options.clone !== false;
       var shouldClone = cloneRequested && options.isMergeableObject(e);
@@ -37622,112 +37640,181 @@ function arrayMerge(target, source, options) {
   });
   return destination;
 }
+/** Return multi select values based on an array of options */
 
-var FieldInner =
-/*#__PURE__*/
-function (_super) {
-  __extends(FieldInner, _super);
 
-  function FieldInner(props) {
-    var _this = _super.call(this, props) || this;
+function getSelectedValues(options) {
+  return Array.from(options).filter(function (el) {
+    return el.selected;
+  }).map(function (el) {
+    return el.value;
+  });
+}
+/** Return the next value for a checkbox */
 
-    var render = props.render,
-        children = props.children,
-        component = props.component;
-    process.env.NODE_ENV !== "production" ? warning(!(component && render), 'You should not use <Field component> and <Field render> in the same <Field> component; <Field component> will be ignored') : void 0;
-    process.env.NODE_ENV !== "production" ? warning(!(component && children && isFunction(children)), 'You should not use <Field component> and <Field children> as a function in the same <Field> component; <Field component> will be ignored.') : void 0;
-    process.env.NODE_ENV !== "production" ? warning(!(render && children && !isEmptyChildren(children)), 'You should not use <Field render> and <Field children> in the same <Field> component; <Field children> will be ignored') : void 0;
-    return _this;
+
+function getValueForCheckbox(currentValue, checked, valueProp) {
+  // If the current value was a boolean, return a boolean
+  if (typeof currentValue === 'boolean') {
+    return Boolean(checked);
+  } // If the currentValue was not a boolean we want to return an array
+
+
+  var currentArrayOfValues = [];
+  var isValueInArray = false;
+  var index = -1;
+
+  if (!Array.isArray(currentValue)) {
+    // eslint-disable-next-line eqeqeq
+    if (!valueProp || valueProp == 'true' || valueProp == 'false') {
+      return Boolean(checked);
+    }
+  } else {
+    // If the current value is already an array, use it
+    currentArrayOfValues = currentValue;
+    index = currentValue.indexOf(valueProp);
+    isValueInArray = index >= 0;
+  } // If the checkbox was checked and the value is not already present in the aray we want to add the new value to the array of values
+
+
+  if (checked && valueProp && !isValueInArray) {
+    return currentArrayOfValues.concat(valueProp);
+  } // If the checkbox was unchecked and the value is not in the array, simply return the already existing array of values
+
+
+  if (!isValueInArray) {
+    return currentArrayOfValues;
+  } // If the checkbox was unchecked and the value is in the array, remove the value and return the array
+
+
+  return currentArrayOfValues.slice(0, index).concat(currentArrayOfValues.slice(index + 1));
+} // React currently throws a warning when using useLayoutEffect on the server.
+// To get around it, we can conditionally useEffect on the server (no-op) and
+// useLayoutEffect in the browser.
+// @see https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
+
+
+var useIsomorphicLayoutEffect = typeof window !== 'undefined' && typeof window.document !== 'undefined' && typeof window.document.createElement !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
+function useEventCallback(fn) {
+  var ref = React.useRef(fn); // we copy a ref to the callback scoped to the current state/props on each render
+
+  useIsomorphicLayoutEffect(function () {
+    ref.current = fn;
+  });
+  return React.useCallback(function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return ref.current.apply(void 0, args);
+  }, []);
+}
+function Field(_ref) {
+  var validate = _ref.validate,
+      name = _ref.name,
+      render = _ref.render,
+      children = _ref.children,
+      is = _ref.as,
+      component = _ref.component,
+      props = _objectWithoutPropertiesLoose(_ref, ["validate", "name", "render", "children", "as", "component"]);
+
+  var _useFormikContext = useFormikContext(),
+      formik = _objectWithoutPropertiesLoose(_useFormikContext, ["validate", "validationSchema"]);
+
+  if (process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    React.useEffect(function () {
+      !!render ? process.env.NODE_ENV !== "production" ? warning(false, "<Field render> has been deprecated and will be removed in future versions of Formik. Please use a child callback function instead. To get rid of this warning, replace <Field name=\"" + name + "\" render={({field, form}) => ...} /> with <Field name=\"" + name + "\">{({field, form, meta}) => ...}</Field>") : warning(false) : void 0;
+      !!(is && children && isFunction(children)) ? process.env.NODE_ENV !== "production" ? warning(false, 'You should not use <Field as> and <Field children> as a function in the same <Field> component; <Field as> will be ignored.') : warning(false) : void 0;
+      !!(component && children && isFunction(children)) ? process.env.NODE_ENV !== "production" ? warning(false, 'You should not use <Field component> and <Field children> as a function in the same <Field> component; <Field component> will be ignored.') : warning(false) : void 0;
+      !!(render && children && !isEmptyChildren(children)) ? process.env.NODE_ENV !== "production" ? warning(false, 'You should not use <Field render> and <Field children> in the same <Field> component; <Field children> will be ignored') : warning(false) : void 0; // eslint-disable-next-line
+    }, []);
+  } // Register field and field-level validation with parent <Formik>
+
+
+  var registerField = formik.registerField,
+      unregisterField = formik.unregisterField;
+  React.useEffect(function () {
+    registerField(name, {
+      validate: validate
+    });
+    return function () {
+      unregisterField(name);
+    };
+  }, [registerField, unregisterField, name, validate]);
+  var field = formik.getFieldProps(_extends({
+    name: name
+  }, props));
+  var meta = formik.getFieldMeta(name);
+  var legacyBag = {
+    field: field,
+    form: formik
+  };
+
+  if (render) {
+    return render(_extends({}, legacyBag, {
+      meta: meta
+    }));
   }
 
-  FieldInner.prototype.componentDidMount = function () {
-    this.props.formik.registerField(this.props.name, this);
-  };
+  if (isFunction(children)) {
+    return children(_extends({}, legacyBag, {
+      meta: meta
+    }));
+  }
 
-  FieldInner.prototype.componentDidUpdate = function (prevProps) {
-    if (this.props.name !== prevProps.name) {
-      this.props.formik.unregisterField(prevProps.name);
-      this.props.formik.registerField(this.props.name, this);
-    }
-
-    if (this.props.validate !== prevProps.validate) {
-      this.props.formik.registerField(this.props.name, this);
-    }
-  };
-
-  FieldInner.prototype.componentWillUnmount = function () {
-    this.props.formik.unregisterField(this.props.name);
-  };
-
-  FieldInner.prototype.render = function () {
-    var _a = this.props;
-        _a.validate;
-        var name = _a.name,
-        render = _a.render,
-        children = _a.children,
-        _b = _a.component,
-        component = _b === void 0 ? 'input' : _b,
-        formik = _a.formik,
-        props = __rest(_a, ["validate", "name", "render", "children", "component", "formik"]);
-
-    formik.validate;
-        formik.validationSchema;
-        var restOfFormik = __rest(formik, ["validate", "validationSchema"]);
-
-    var field = {
-      value: props.type === 'radio' || props.type === 'checkbox' ? props.value : getIn(formik.values, name),
-      name: name,
-      onChange: formik.handleChange,
-      onBlur: formik.handleBlur
-    };
-    var bag = {
-      field: field,
-      form: restOfFormik
-    };
-
-    if (render) {
-      return render(bag);
-    }
-
-    if (isFunction(children)) {
-      return children(bag);
-    }
-
+  if (component) {
+    // This behavior is backwards compat with earlier Formik 0.9 to 1.x
     if (typeof component === 'string') {
       var innerRef = props.innerRef,
-          rest = __rest(props, ["innerRef"]);
+          rest = _objectWithoutPropertiesLoose(props, ["innerRef"]);
 
-      return React.createElement(component, __assign$1({
+      return React.createElement(component, _extends({
         ref: innerRef
-      }, field, rest, {
-        children: children
-      }));
-    }
+      }, field, rest), children);
+    } // We don't pass `meta` for backwards compat
 
-    return React.createElement(component, __assign$1({}, bag, props, {
-      children: children
-    }));
-  };
 
-  return FieldInner;
-}(React.Component);
+    return React.createElement(component, _extends({
+      field: field,
+      form: formik
+    }, props), children);
+  } // default to input here so we can check for both `as` and `children` above
 
-var Field =
-/*#__PURE__*/
-connect(FieldInner);
 
-var Form =
-/*#__PURE__*/
-connect(function (_a) {
-  var _b = _a.formik,
-      handleReset = _b.handleReset,
-      handleSubmit = _b.handleSubmit,
-      props = __rest(_a, ["formik"]);
+  var asElement = is || 'input';
 
-  return React.createElement("form", __assign$1({
+  if (typeof asElement === 'string') {
+    var _innerRef = props.innerRef,
+        _rest = _objectWithoutPropertiesLoose(props, ["innerRef"]);
+
+    return React.createElement(asElement, _extends({
+      ref: _innerRef
+    }, field, _rest), children);
+  }
+
+  return React.createElement(asElement, _extends({}, field, props), children);
+}
+
+var Form = /*#__PURE__*/React.forwardRef(function (props, ref) {
+  // iOS needs an "action" attribute for nice input: https://stackoverflow.com/a/39485162/406725
+  // We default the action to "#" in case the preventDefault fails (just updates the URL hash)
+  var action = props.action,
+      rest = _objectWithoutPropertiesLoose(props, ["action"]);
+
+  var _action = action != null ? action : '#';
+
+  var _useFormikContext = useFormikContext(),
+      handleReset = _useFormikContext.handleReset,
+      handleSubmit = _useFormikContext.handleSubmit;
+
+  return React.createElement("form", Object.assign({
+    onSubmit: handleSubmit,
+    ref: ref,
     onReset: handleReset,
-    onSubmit: handleSubmit
-  }, props));
+    action: _action
+  }, rest));
 });
 Form.displayName = 'Form';
 
@@ -37838,7 +37925,7 @@ function NumberSelect(_ref) {
       htmlFor: props.name
     }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
       id: label
-    })), /*#__PURE__*/React__default['default'].createElement("select", _extends$e({}, field, props), numbers.map(function (opt) {
+    })), /*#__PURE__*/React__default['default'].createElement("select", _extends$f({}, field, props), numbers.map(function (opt) {
       return /*#__PURE__*/React__default['default'].createElement("option", {
         key: opt,
         value: opt
@@ -39938,7 +40025,7 @@ function DiscountCode(_ref) {
     }, function (_ref3) {
       var field = _ref3.field,
           form = _ref3.form;
-      return /*#__PURE__*/React__default['default'].createElement("input", _extends$e({}, field, {
+      return /*#__PURE__*/React__default['default'].createElement("input", _extends$f({}, field, {
         onChange: function onChange(e) {
           // console.log({ code: house.code, e: e.target.value });
           checkCode({
@@ -40042,7 +40129,7 @@ var RadioButton = function RadioButton(_ref2) {
       label = _ref2.label,
       props = _objectWithoutProperties$a(_ref2, _excluded$1);
 
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", _extends$e({
+  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", _extends$f({
     name: name,
     id: id,
     type: "radio",
@@ -40170,7 +40257,7 @@ function InsurancesAndRequired(_ref) {
   })), prices.required_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
           key: cost.id
         }, cost));
       } else {
@@ -40224,14 +40311,14 @@ function OptionalNotOnSite(_ref) {
   }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.optional_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if (not_on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -40244,7 +40331,7 @@ function OptionalNotOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
             key: cost.id
           }, cost, {
             amount: amount
@@ -40262,14 +40349,14 @@ function OptionalOnSite(_ref) {
   return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, prices.optional_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if ((on_site === null || on_site === void 0 ? void 0 : on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items) > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -40282,7 +40369,7 @@ function OptionalOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
             key: cost.id
           }, cost, {
             amount: amount
@@ -40304,14 +40391,14 @@ function OnSite(_ref) {
   })), /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.required_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
           key: cost.id
         }, cost));
       } else {
         var amount = on_site.find(function (x) {
           return x.id == cost.id;
         }).amount;
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
           key: cost.id,
           amount: amount
         }, cost));
@@ -40384,7 +40471,7 @@ function Deposit(_ref2) {
     });
 
     if (cost.gl === '0120' && (price === null || price === void 0 ? void 0 : price.amount) > 0) {
-      return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+      return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
         key: cost.id
       }, cost, {
         amount: price.amount
@@ -47336,7 +47423,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.3",
+	version: "2.0.4",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -47406,7 +47493,7 @@ var pjson = {
 		"array-includes": "^3.0.3",
 		"array-sort": "^1.0.0",
 		"date-fns": "^1.29.0",
-		formik: "^1.3.1",
+		formik: "^2.2.9",
 		graphql: "^14.0.0",
 		"react-apollo": "^2.1.9",
 		"react-date-picker": "^8.1.1",

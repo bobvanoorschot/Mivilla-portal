@@ -10,11 +10,12 @@ export default {
     {
       file: 'build/index.js',
       format: 'cjs',
-    }
+      exports: 'auto',
+    },
   ],
   plugins: [
     babel({
-      exclude: "node_modules/**"
+      exclude: 'node_modules/**',
     }),
     postcss({
       extract: true,
@@ -23,7 +24,7 @@ export default {
     resolve(),
     json({
       namedExports: false,
-    })
+    }),
   ],
-  external: ['react', 'react-dom']
-}
+  external: ['react', 'react-dom'],
+};
