@@ -36,7 +36,6 @@ export const OptionalBookingFields = ({
               onKeyPress={e => { e.which === 13 && e.preventDefault() && console.log(e)}}
               id={`extra_fields.booking_field_${bookingField.id}`}
               type={bookingField.field_type}
-              component={bookingField.field_type}
               name={`extra_fields.booking_field_${bookingField.id}`}
             />
           </div>
