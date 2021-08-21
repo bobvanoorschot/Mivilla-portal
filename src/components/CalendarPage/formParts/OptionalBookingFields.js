@@ -4,6 +4,10 @@ import { Field } from "formik";
 import { FormattedMessage } from "react-intl";
 import { Countries } from "../../../_lib/countries";
 
+function isInt(value) {
+  return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+}
+
 export const OptionalBookingFields = ({
   bookingFields,
   errors,
@@ -18,7 +22,7 @@ export const OptionalBookingFields = ({
       if (input.id === "telephone") {
         input.id = "phonenumber";
       }
-      if (input.type === "booking_field") {
+      if (input.type === "booking_field" || isInt(input.id)) {
         const bookingField = PortalSite.booking_fields.find(
           (x) => x.id === input.id
         );
