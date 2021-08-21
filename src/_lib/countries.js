@@ -1,8 +1,15 @@
+import nl from './countries/nl.json'
+import en from './countries/en.json'
+import de from './countries/de.json'
+import fr from './countries/fr.json'
+import es from './countries/es.json'
+import it from './countries/it.json'
+
 export const Countries = {
-  en: require('./countries/en.json'),
-  nl: require('./countries/nl.json'),
-  de: require('./countries/de.json'),
-  fr: require('./countries/fr.json'),
-  es: require('./countries/es.json'),
-  it: require('./countries/it.json'),
+  en,
+  nl,
+  de,
+  fr,
+  es,
+  it
 };

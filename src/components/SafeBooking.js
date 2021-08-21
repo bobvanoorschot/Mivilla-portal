@@ -1,5 +1,5 @@
 import React from "react";
-var pjson = require('../../package.json');
+import pjson from '../../package.json';
 
 const style = {
   width: "100%",

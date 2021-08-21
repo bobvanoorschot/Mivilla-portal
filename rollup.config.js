@@ -34,7 +34,9 @@ export default {
     }),
     commonjs(),
     resolve(),
-    json()
+    json({
+      namedExports: false,
+    })
   ],
   external: ['react', 'react-dom']
 }

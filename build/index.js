@@ -45,7 +45,7 @@ function _objectSpread2(target) {
   return target;
 }
 
-function _classCallCheck$7(instance, Constructor) {
+function _classCallCheck$4(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
@@ -82,8 +82,8 @@ function _defineProperty$e(obj, key, value) {
   return obj;
 }
 
-function _extends$f() {
-  _extends$f = Object.assign || function (target) {
+function _extends$e() {
+  _extends$e = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -97,7 +97,7 @@ function _extends$f() {
     return target;
   };
 
-  return _extends$f.apply(this, arguments);
+  return _extends$e.apply(this, arguments);
 }
 
 function _inherits$3(subClass, superClass) {
@@ -1539,7 +1539,7 @@ var InvariantError = /** @class */ (function (_super) {
     }
     return InvariantError;
 }(Error));
-function invariant$2(condition, message) {
+function invariant$1(condition, message) {
     if (!condition) {
         throw new InvariantError(message);
     }
@@ -1552,7 +1552,7 @@ function wrapConsoleMethod(method) {
 (function (invariant) {
     invariant.warn = wrapConsoleMethod("warn");
     invariant.error = wrapConsoleMethod("error");
-})(invariant$2 || (invariant$2 = {}));
+})(invariant$1 || (invariant$1 = {}));
 // Code that uses ts-invariant with rollup-plugin-invariant may want to
 // import this process stub to avoid errors evaluating process.env.NODE_ENV.
 // However, because most ESM-to-CJS compilers will rewrite the process import
@@ -1576,43 +1576,146 @@ else
         // or define an appropriate global.process polyfill.
     }
 
+var nodejsCustomInspectSymbol = typeof Symbol === 'function' && typeof Symbol.for === 'function' ? Symbol.for('nodejs.util.inspect.custom') : undefined;
+var nodejsCustomInspectSymbol$1 = nodejsCustomInspectSymbol;
+
+function _typeof$7(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$7 = function _typeof(obj) { return typeof obj; }; } else { _typeof$7 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$7(obj); }
+var MAX_ARRAY_LENGTH = 10;
+var MAX_RECURSIVE_DEPTH = 2;
 /**
- * A visitor is comprised of visit functions, which are called on each node
- * during the visitor's traversal.
+ * Used to print values in error messages.
  */
 
+function inspect(value) {
+  return formatValue(value, []);
+}
 
-/**
- * A visitor is provided to visit, it contains the collection of
- * relevant functions to be called during the visitor's traversal.
- */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
+function formatValue(value, seenValues) {
+  switch (_typeof$7(value)) {
+    case 'string':
+      return JSON.stringify(value);
+
+    case 'function':
+      return value.name ? "[function ".concat(value.name, "]") : '[function]';
+
+    case 'object':
+      if (value === null) {
+        return 'null';
+      }
+
+      return formatObjectValue(value, seenValues);
+
+    default:
+      return String(value);
+  }
+}
+
+function formatObjectValue(value, previouslySeenValues) {
+  if (previouslySeenValues.indexOf(value) !== -1) {
+    return '[Circular]';
+  }
+
+  var seenValues = [].concat(previouslySeenValues, [value]);
+  var customInspectFn = getCustomFn(value);
+
+  if (customInspectFn !== undefined) {
+    // $FlowFixMe(>=0.90.0)
+    var customValue = customInspectFn.call(value); // check for infinite recursion
+
+    if (customValue !== value) {
+      return typeof customValue === 'string' ? customValue : formatValue(customValue, seenValues);
+    }
+  } else if (Array.isArray(value)) {
+    return formatArray(value, seenValues);
+  }
+
+  return formatObject(value, seenValues);
+}
+
+function formatObject(object, seenValues) {
+  var keys = Object.keys(object);
+
+  if (keys.length === 0) {
+    return '{}';
+  }
+
+  if (seenValues.length > MAX_RECURSIVE_DEPTH) {
+    return '[' + getObjectTag(object) + ']';
+  }
+
+  var properties = keys.map(function (key) {
+    var value = formatValue(object[key], seenValues);
+    return key + ': ' + value;
+  });
+  return '{ ' + properties.join(', ') + ' }';
+}
+
+function formatArray(array, seenValues) {
+  if (array.length === 0) {
+    return '[]';
+  }
+
+  if (seenValues.length > MAX_RECURSIVE_DEPTH) {
+    return '[Array]';
+  }
+
+  var len = Math.min(MAX_ARRAY_LENGTH, array.length);
+  var remaining = array.length - len;
+  var items = [];
+
+  for (var i = 0; i < len; ++i) {
+    items.push(formatValue(array[i], seenValues));
+  }
+
+  if (remaining === 1) {
+    items.push('... 1 more item');
+  } else if (remaining > 1) {
+    items.push("... ".concat(remaining, " more items"));
+  }
+
+  return '[' + items.join(', ') + ']';
+}
+
+function getCustomFn(object) {
+  var customInspectFn = object[String(nodejsCustomInspectSymbol$1)];
+
+  if (typeof customInspectFn === 'function') {
+    return customInspectFn;
+  }
+
+  if (typeof object.inspect === 'function') {
+    return object.inspect;
+  }
+}
+
+function getObjectTag(object) {
+  var tag = Object.prototype.toString.call(object).replace(/^\[object /, '').replace(/]$/, '');
+
+  if (tag === 'Object' && typeof object.constructor === 'function') {
+    var name = object.constructor.name;
+
+    if (typeof name === 'string' && name !== '') {
+      return name;
+    }
+  }
+
+  return tag;
+}
 
 var QueryDocumentKeys = {
   Name: [],
-
   Document: ['definitions'],
   OperationDefinition: ['name', 'variableDefinitions', 'directives', 'selectionSet'],
-  VariableDefinition: ['variable', 'type', 'defaultValue'],
+  VariableDefinition: ['variable', 'type', 'defaultValue', 'directives'],
   Variable: ['name'],
   SelectionSet: ['selections'],
   Field: ['alias', 'name', 'arguments', 'directives', 'selectionSet'],
   Argument: ['name', 'value'],
-
   FragmentSpread: ['name', 'directives'],
   InlineFragment: ['typeCondition', 'directives', 'selectionSet'],
-  FragmentDefinition: ['name',
-  // Note: fragment variable definitions are experimental and may be changed
+  FragmentDefinition: ['name', // Note: fragment variable definitions are experimental and may be changed
   // or removed in the future.
   'variableDefinitions', 'typeCondition', 'directives', 'selectionSet'],
-
   IntValue: [],
   FloatValue: [],
   StringValue: [],
@@ -1622,16 +1725,12 @@ var QueryDocumentKeys = {
   ListValue: ['values'],
   ObjectValue: ['fields'],
   ObjectField: ['name', 'value'],
-
   Directive: ['name', 'arguments'],
-
   NamedType: ['name'],
   ListType: ['type'],
   NonNullType: ['type'],
-
   SchemaDefinition: ['directives', 'operationTypes'],
   OperationTypeDefinition: ['type'],
-
   ScalarTypeDefinition: ['description', 'name', 'directives'],
   ObjectTypeDefinition: ['description', 'name', 'interfaces', 'directives', 'fields'],
   FieldDefinition: ['description', 'name', 'arguments', 'type', 'directives'],
@@ -1641,24 +1740,16 @@ var QueryDocumentKeys = {
   EnumTypeDefinition: ['description', 'name', 'directives', 'values'],
   EnumValueDefinition: ['description', 'name', 'directives'],
   InputObjectTypeDefinition: ['description', 'name', 'directives', 'fields'],
-
+  DirectiveDefinition: ['description', 'name', 'arguments', 'locations'],
+  SchemaExtension: ['directives', 'operationTypes'],
   ScalarTypeExtension: ['name', 'directives'],
   ObjectTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
   InterfaceTypeExtension: ['name', 'directives', 'fields'],
   UnionTypeExtension: ['name', 'directives', 'types'],
   EnumTypeExtension: ['name', 'directives', 'values'],
-  InputObjectTypeExtension: ['name', 'directives', 'fields'],
-
-  DirectiveDefinition: ['description', 'name', 'arguments', 'locations']
+  InputObjectTypeExtension: ['name', 'directives', 'fields']
 };
-
-/**
- * A KeyMap describes each the traversable properties of each kind of node.
- */
-
-
-var BREAK = {};
-
+var BREAK = Object.freeze({});
 /**
  * visit() will walk through an AST using a depth first traversal, calling
  * the visitor's enter function at each node in the traversal, and calling the
@@ -1745,6 +1836,7 @@ var BREAK = {};
  *       }
  *     })
  */
+
 function visit(root, visitor) {
   var visitorKeys = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : QueryDocumentKeys;
 
@@ -1766,29 +1858,36 @@ function visit(root, visitor) {
     index++;
     var isLeaving = index === keys.length;
     var isEdited = isLeaving && edits.length !== 0;
+
     if (isLeaving) {
       key = ancestors.length === 0 ? undefined : path[path.length - 1];
       node = parent;
       parent = ancestors.pop();
+
       if (isEdited) {
         if (inArray) {
           node = node.slice();
         } else {
           var clone = {};
-          for (var k in node) {
-            if (node.hasOwnProperty(k)) {
-              clone[k] = node[k];
-            }
+
+          for (var _i2 = 0, _Object$keys2 = Object.keys(node); _i2 < _Object$keys2.length; _i2++) {
+            var k = _Object$keys2[_i2];
+            clone[k] = node[k];
           }
+
           node = clone;
         }
+
         var editOffset = 0;
+
         for (var ii = 0; ii < edits.length; ii++) {
           var editKey = edits[ii][0];
           var editValue = edits[ii][1];
+
           if (inArray) {
             editKey -= editOffset;
           }
+
           if (inArray && editValue === null) {
             node.splice(editKey, 1);
             editOffset++;
@@ -1797,6 +1896,7 @@ function visit(root, visitor) {
           }
         }
       }
+
       index = stack.index;
       keys = stack.keys;
       edits = stack.edits;
@@ -1805,20 +1905,25 @@ function visit(root, visitor) {
     } else {
       key = parent ? inArray ? index : keys[index] : undefined;
       node = parent ? parent[key] : newRoot;
+
       if (node === null || node === undefined) {
         continue;
       }
+
       if (parent) {
         path.push(key);
       }
     }
 
     var result = void 0;
+
     if (!Array.isArray(node)) {
       if (!isNode(node)) {
-        throw new Error('Invalid AST Node: ' + JSON.stringify(node));
+        throw new Error('Invalid AST Node: ' + inspect(node));
       }
+
       var visitFn = getVisitFn(visitor, node.kind, isLeaving);
+
       if (visitFn) {
         result = visitFn.call(visitor, node, key, parent, path, ancestors);
 
@@ -1833,6 +1938,7 @@ function visit(root, visitor) {
           }
         } else if (result !== undefined) {
           edits.push([key, result]);
+
           if (!isLeaving) {
             if (isNode(result)) {
               node = result;
@@ -1852,14 +1958,22 @@ function visit(root, visitor) {
     if (isLeaving) {
       path.pop();
     } else {
-      stack = { inArray: inArray, index: index, keys: keys, edits: edits, prev: stack };
+      stack = {
+        inArray: inArray,
+        index: index,
+        keys: keys,
+        edits: edits,
+        prev: stack
+      };
       inArray = Array.isArray(node);
       keys = inArray ? node : visitorKeys[node.kind] || [];
       index = -1;
       edits = [];
+
       if (parent) {
         ancestors.push(parent);
       }
+
       parent = node;
     }
   } while (stack !== undefined);
@@ -1874,31 +1988,37 @@ function visit(root, visitor) {
 function isNode(maybeNode) {
   return Boolean(maybeNode && typeof maybeNode.kind === 'string');
 }
-
 /**
  * Given a visitor instance, if it is leaving or not, and a node kind, return
  * the function the visitor runtime should call.
  */
+
 function getVisitFn(visitor, kind, isLeaving) {
   var kindVisitor = visitor[kind];
+
   if (kindVisitor) {
     if (!isLeaving && typeof kindVisitor === 'function') {
       // { Kind() {} }
       return kindVisitor;
     }
+
     var kindSpecificVisitor = isLeaving ? kindVisitor.leave : kindVisitor.enter;
+
     if (typeof kindSpecificVisitor === 'function') {
       // { Kind: { enter() {}, leave() {} } }
       return kindSpecificVisitor;
     }
   } else {
     var specificVisitor = isLeaving ? visitor.leave : visitor.enter;
+
     if (specificVisitor) {
       if (typeof specificVisitor === 'function') {
         // { enter() {}, leave() {} }
         return specificVisitor;
       }
+
       var specificKindVisitor = specificVisitor[kind];
+
       if (typeof specificKindVisitor === 'function') {
         // { enter: { Kind() {} }, leave: { Kind() {} } }
         return specificKindVisitor;
@@ -2281,7 +2401,7 @@ function shouldInclude(selection, variables) {
         var evaledValue = false;
         if (ifArgument.value.kind === 'Variable') {
             evaledValue = variables[ifArgument.value.name.value];
-            process.env.NODE_ENV === "production" ? invariant$2(evaledValue !== void 0, 13) : invariant$2(evaledValue !== void 0, "Invalid variable referenced in @" + directive.name.value + " directive.");
+            process.env.NODE_ENV === "production" ? invariant$1(evaledValue !== void 0, 13) : invariant$1(evaledValue !== void 0, "Invalid variable referenced in @" + directive.name.value + " directive.");
         }
         else {
             evaledValue = ifArgument.value.value;
@@ -2314,12 +2434,12 @@ function getInclusionDirectives(directives) {
     return directives ? directives.filter(isInclusionDirective).map(function (directive) {
         var directiveArguments = directive.arguments;
         var directiveName = directive.name.value;
-        process.env.NODE_ENV === "production" ? invariant$2(directiveArguments && directiveArguments.length === 1, 14) : invariant$2(directiveArguments && directiveArguments.length === 1, "Incorrect number of arguments for the @" + directiveName + " directive.");
+        process.env.NODE_ENV === "production" ? invariant$1(directiveArguments && directiveArguments.length === 1, 14) : invariant$1(directiveArguments && directiveArguments.length === 1, "Incorrect number of arguments for the @" + directiveName + " directive.");
         var ifArgument = directiveArguments[0];
-        process.env.NODE_ENV === "production" ? invariant$2(ifArgument.name && ifArgument.name.value === 'if', 15) : invariant$2(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @" + directiveName + " directive.");
+        process.env.NODE_ENV === "production" ? invariant$1(ifArgument.name && ifArgument.name.value === 'if', 15) : invariant$1(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @" + directiveName + " directive.");
         var ifValue = ifArgument.value;
-        process.env.NODE_ENV === "production" ? invariant$2(ifValue &&
-            (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), 16) : invariant$2(ifValue &&
+        process.env.NODE_ENV === "production" ? invariant$1(ifValue &&
+            (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), 16) : invariant$1(ifValue &&
             (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), "Argument for the @" + directiveName + " directive must be a variable or a boolean value.");
         return { directive: directive, ifArgument: ifArgument };
     }) : [];
@@ -2338,7 +2458,7 @@ function getFragmentQueryDocument(document, fragmentName) {
         }
     });
     if (typeof actualFragmentName === 'undefined') {
-        process.env.NODE_ENV === "production" ? invariant$2(fragments.length === 1, 12) : invariant$2(fragments.length === 1, "Found " + fragments.length + " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.");
+        process.env.NODE_ENV === "production" ? invariant$1(fragments.length === 1, 12) : invariant$1(fragments.length === 1, "Found " + fragments.length + " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.");
         actualFragmentName = fragments[0].name.value;
     }
     var query = __assign$1(__assign$1({}, document), { definitions: __spreadArrays([
@@ -2378,7 +2498,7 @@ function assign(target) {
     return target;
 }
 function checkDocument(doc) {
-    process.env.NODE_ENV === "production" ? invariant$2(doc && doc.kind === 'Document', 2) : invariant$2(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
+    process.env.NODE_ENV === "production" ? invariant$1(doc && doc.kind === 'Document', 2) : invariant$1(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
     var operations = doc.definitions
         .filter(function (d) { return d.kind !== 'FragmentDefinition'; })
         .map(function (definition) {
@@ -2387,7 +2507,7 @@ function checkDocument(doc) {
         }
         return definition;
     });
-    process.env.NODE_ENV === "production" ? invariant$2(operations.length <= 1, 4) : invariant$2(operations.length <= 1, "Ambiguous GraphQL document: contains " + operations.length + " operations");
+    process.env.NODE_ENV === "production" ? invariant$1(operations.length <= 1, 4) : invariant$1(operations.length <= 1, "Ambiguous GraphQL document: contains " + operations.length + " operations");
     return doc;
 }
 function getOperationDefinition(doc) {
@@ -2406,14 +2526,14 @@ function getFragmentDefinitions(doc) {
 }
 function getQueryDefinition(doc) {
     var queryDef = getOperationDefinition(doc);
-    process.env.NODE_ENV === "production" ? invariant$2(queryDef && queryDef.operation === 'query', 6) : invariant$2(queryDef && queryDef.operation === 'query', 'Must contain a query definition.');
+    process.env.NODE_ENV === "production" ? invariant$1(queryDef && queryDef.operation === 'query', 6) : invariant$1(queryDef && queryDef.operation === 'query', 'Must contain a query definition.');
     return queryDef;
 }
 function getFragmentDefinition(doc) {
-    process.env.NODE_ENV === "production" ? invariant$2(doc.kind === 'Document', 7) : invariant$2(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
-    process.env.NODE_ENV === "production" ? invariant$2(doc.definitions.length <= 1, 8) : invariant$2(doc.definitions.length <= 1, 'Fragment must have exactly one definition.');
+    process.env.NODE_ENV === "production" ? invariant$1(doc.kind === 'Document', 7) : invariant$1(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
+    process.env.NODE_ENV === "production" ? invariant$1(doc.definitions.length <= 1, 8) : invariant$1(doc.definitions.length <= 1, 'Fragment must have exactly one definition.');
     var fragmentDef = doc.definitions[0];
-    process.env.NODE_ENV === "production" ? invariant$2(fragmentDef.kind === 'FragmentDefinition', 9) : invariant$2(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.');
+    process.env.NODE_ENV === "production" ? invariant$1(fragmentDef.kind === 'FragmentDefinition', 9) : invariant$1(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.');
     return fragmentDef;
 }
 function getMainDefinition(queryDoc) {
@@ -2605,7 +2725,7 @@ var connectionRemoveConfig = {
         if (willRemove) {
             if (!directive.arguments ||
                 !directive.arguments.some(function (arg) { return arg.name.value === 'key'; })) {
-                process.env.NODE_ENV === "production" || invariant$2.warn('Removing an @connection directive even though it does not have a key. ' +
+                process.env.NODE_ENV === "production" || invariant$1.warn('Removing an @connection directive even though it does not have a key. ' +
                     'You may want to use the key parameter to specify a store key.');
             }
         }
@@ -2881,7 +3001,7 @@ Object.defineProperty(Observable$4, "__esModule", {
 });
 Observable$4.Observable = void 0;
 
-function _classCallCheck$6(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties$3(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -3059,7 +3179,7 @@ var Subscription =
 /*#__PURE__*/
 function () {
   function Subscription(observer, subscriber) {
-    _classCallCheck$6(this, Subscription);
+    _classCallCheck$3(this, Subscription);
 
     // ASSERT: observer is an object
     // ASSERT: subscriber is callable
@@ -3100,7 +3220,7 @@ var SubscriptionObserver =
 /*#__PURE__*/
 function () {
   function SubscriptionObserver(subscription) {
-    _classCallCheck$6(this, SubscriptionObserver);
+    _classCallCheck$3(this, SubscriptionObserver);
 
     this._subscription = subscription;
   }
@@ -3134,7 +3254,7 @@ var Observable$3 =
 /*#__PURE__*/
 function () {
   function Observable(subscriber) {
-    _classCallCheck$6(this, Observable);
+    _classCallCheck$3(this, Observable);
 
     if (!(this instanceof Observable)) throw new TypeError('Observable cannot be called as a function');
     if (typeof subscriber !== 'function') throw new TypeError('Observable initializer must be a function');
@@ -3611,7 +3731,7 @@ function split(test, left, right) {
 var concat$1 = function (first, second) {
     var firstLink = toLink(first);
     if (isTerminating(firstLink)) {
-        process.env.NODE_ENV === "production" || invariant$2.warn(new LinkError("You are calling concat on a terminating link, which will have no effect", firstLink));
+        process.env.NODE_ENV === "production" || invariant$1.warn(new LinkError("You are calling concat on a terminating link, which will have no effect", firstLink));
         return firstLink;
     }
     var nextLink = toLink(second);
@@ -3918,7 +4038,7 @@ var ObservableQuery = (function (_super) {
     };
     ObservableQuery.prototype.fetchMore = function (fetchMoreOptions) {
         var _this = this;
-        process.env.NODE_ENV === "production" ? invariant$2(fetchMoreOptions.updateQuery, 2) : invariant$2(fetchMoreOptions.updateQuery, 'updateQuery option is required. This function defines how to update the query data with the new results.');
+        process.env.NODE_ENV === "production" ? invariant$1(fetchMoreOptions.updateQuery, 2) : invariant$1(fetchMoreOptions.updateQuery, 'updateQuery option is required. This function defines how to update the query data with the new results.');
         var combinedOptions = __assign$1(__assign$1({}, (fetchMoreOptions.query ? fetchMoreOptions : __assign$1(__assign$1(__assign$1({}, this.options), fetchMoreOptions), { variables: __assign$1(__assign$1({}, this.variables), fetchMoreOptions.variables) }))), { fetchPolicy: 'network-only' });
         var qid = this.queryManager.generateQueryId();
         return this.queryManager
@@ -3962,7 +4082,7 @@ var ObservableQuery = (function (_super) {
                     options.onError(err);
                     return;
                 }
-                process.env.NODE_ENV === "production" || invariant$2.error('Unhandled GraphQL subscription error', err);
+                process.env.NODE_ENV === "production" || invariant$1.error('Unhandled GraphQL subscription error', err);
             },
         });
         this.subscriptions.add(subscription);
@@ -4110,7 +4230,7 @@ var ObservableQuery = (function (_super) {
     return ObservableQuery;
 }(Observable));
 function defaultSubscriptionObserverErrorCallback(error) {
-    process.env.NODE_ENV === "production" || invariant$2.error('Unhandled error', error.message, error.stack);
+    process.env.NODE_ENV === "production" || invariant$1.error('Unhandled error', error.message, error.stack);
 }
 function iterateObserversSafely(observers, method, argument) {
     var observersWithMethod = [];
@@ -4119,7 +4239,7 @@ function iterateObserversSafely(observers, method, argument) {
 }
 function assertNotCacheFirstOrOnly(obsQuery) {
     var fetchPolicy = obsQuery.options.fetchPolicy;
-    process.env.NODE_ENV === "production" ? invariant$2(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 3) : invariant$2(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 'Queries that specify the cache-first and cache-only fetchPolicies cannot also be polling queries.');
+    process.env.NODE_ENV === "production" ? invariant$1(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 3) : invariant$1(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 'Queries that specify the cache-first and cache-only fetchPolicies cannot also be polling queries.');
 }
 
 var MutationStore = (function () {
@@ -4172,9 +4292,9 @@ var QueryStore = (function () {
     };
     QueryStore.prototype.initQuery = function (query) {
         var previousQuery = this.store[query.queryId];
-        process.env.NODE_ENV === "production" ? invariant$2(!previousQuery ||
+        process.env.NODE_ENV === "production" ? invariant$1(!previousQuery ||
             previousQuery.document === query.document ||
-            equal$1(previousQuery.document, query.document), 19) : invariant$2(!previousQuery ||
+            equal$1(previousQuery.document, query.document), 19) : invariant$1(!previousQuery ||
             previousQuery.document === query.document ||
             equal$1(previousQuery.document, query.document), 'Internal Error: may not update existing query string in store');
         var isSetVariables = false;
@@ -4326,7 +4446,7 @@ var LocalState = (function () {
             if (this.resolvers) {
                 return document;
             }
-            process.env.NODE_ENV === "production" || invariant$2.warn('Found @client directives in a query but no ApolloClient resolvers ' +
+            process.env.NODE_ENV === "production" || invariant$1.warn('Found @client directives in a query but no ApolloClient resolvers ' +
                 'were specified. This means ApolloClient local resolver handling ' +
                 'has been disabled, and @client directives will be passed through ' +
                 'to your link chain.');
@@ -4344,7 +4464,7 @@ var LocalState = (function () {
                     return cache.config.dataIdFromObject(obj);
                 }
                 else {
-                    process.env.NODE_ENV === "production" ? invariant$2(false, 6) : invariant$2(false, 'To use context.getCacheKey, you need to use a cache that has ' +
+                    process.env.NODE_ENV === "production" ? invariant$1(false, 6) : invariant$1(false, 'To use context.getCacheKey, you need to use a cache that has ' +
                         'a configurable dataIdFromObject, like apollo-cache-inmemory.');
                 }
             } });
@@ -4452,7 +4572,7 @@ var LocalState = (function () {
                         }
                         else {
                             fragment = fragmentMap[selection.name.value];
-                            process.env.NODE_ENV === "production" ? invariant$2(fragment, 7) : invariant$2(fragment, "No fragment named " + selection.name.value);
+                            process.env.NODE_ENV === "production" ? invariant$1(fragment, 7) : invariant$1(fragment, "No fragment named " + selection.name.value);
                         }
                         if (fragment && fragment.typeCondition) {
                             typeCondition = fragment.typeCondition.name.value;
@@ -4636,8 +4756,8 @@ var QueryManager = (function () {
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
-                        process.env.NODE_ENV === "production" ? invariant$2(mutation, 9) : invariant$2(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.');
-                        process.env.NODE_ENV === "production" ? invariant$2(!fetchPolicy || fetchPolicy === 'no-cache', 10) : invariant$2(!fetchPolicy || fetchPolicy === 'no-cache', "Mutations only support a 'no-cache' fetchPolicy. If you don't want to disable the cache, remove your fetchPolicy setting to proceed with the default mutation behavior.");
+                        process.env.NODE_ENV === "production" ? invariant$1(mutation, 9) : invariant$1(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.');
+                        process.env.NODE_ENV === "production" ? invariant$1(!fetchPolicy || fetchPolicy === 'no-cache', 10) : invariant$1(!fetchPolicy || fetchPolicy === 'no-cache', "Mutations only support a 'no-cache' fetchPolicy. If you don't want to disable the cache, remove your fetchPolicy setting to proceed with the default mutation behavior.");
                         mutationId = this.generateQueryId();
                         mutation = this.transform(mutation).document;
                         this.setQuery(mutationId, function () { return ({ document: mutation }); });
@@ -4892,11 +5012,11 @@ var QueryManager = (function () {
                     observer[method](argument);
                 }
                 catch (e) {
-                    process.env.NODE_ENV === "production" || invariant$2.error(e);
+                    process.env.NODE_ENV === "production" || invariant$1.error(e);
                 }
             }
             else if (method === 'error') {
-                process.env.NODE_ENV === "production" || invariant$2.error(argument);
+                process.env.NODE_ENV === "production" || invariant$1.error(argument);
             }
         }
         return function (queryStoreValue, newData) {
@@ -5014,7 +5134,7 @@ var QueryManager = (function () {
     };
     QueryManager.prototype.watchQuery = function (options, shouldSubscribe) {
         if (shouldSubscribe === void 0) { shouldSubscribe = true; }
-        process.env.NODE_ENV === "production" ? invariant$2(options.fetchPolicy !== 'standby', 11) : invariant$2(options.fetchPolicy !== 'standby', 'client.watchQuery cannot be called with fetchPolicy set to "standby"');
+        process.env.NODE_ENV === "production" ? invariant$1(options.fetchPolicy !== 'standby', 11) : invariant$1(options.fetchPolicy !== 'standby', 'client.watchQuery cannot be called with fetchPolicy set to "standby"');
         options.variables = this.getVariables(options.query, options.variables);
         if (typeof options.notifyOnNetworkStatusChange === 'undefined') {
             options.notifyOnNetworkStatusChange = false;
@@ -5028,11 +5148,11 @@ var QueryManager = (function () {
     };
     QueryManager.prototype.query = function (options) {
         var _this = this;
-        process.env.NODE_ENV === "production" ? invariant$2(options.query, 12) : invariant$2(options.query, 'query option is required. You must specify your GraphQL document ' +
+        process.env.NODE_ENV === "production" ? invariant$1(options.query, 12) : invariant$1(options.query, 'query option is required. You must specify your GraphQL document ' +
             'in the query option.');
-        process.env.NODE_ENV === "production" ? invariant$2(options.query.kind === 'Document', 13) : invariant$2(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.');
-        process.env.NODE_ENV === "production" ? invariant$2(!options.returnPartialData, 14) : invariant$2(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.');
-        process.env.NODE_ENV === "production" ? invariant$2(!options.pollInterval, 15) : invariant$2(!options.pollInterval, 'pollInterval option only supported on watchQuery.');
+        process.env.NODE_ENV === "production" ? invariant$1(options.query.kind === 'Document', 13) : invariant$1(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.');
+        process.env.NODE_ENV === "production" ? invariant$1(!options.returnPartialData, 14) : invariant$1(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.');
+        process.env.NODE_ENV === "production" ? invariant$1(!options.pollInterval, 15) : invariant$1(!options.pollInterval, 'pollInterval option only supported on watchQuery.');
         return new Promise(function (resolve, reject) {
             var watchedQuery = _this.watchQuery(options, false);
             _this.fetchQueryRejectFns.set("query:" + watchedQuery.queryId, reject);
@@ -5143,7 +5263,7 @@ var QueryManager = (function () {
         return this.fetchQuery(queryId, options);
     };
     QueryManager.prototype.startQuery = function (queryId, options, listener) {
-        process.env.NODE_ENV === "production" || invariant$2.warn("The QueryManager.startQuery method has been deprecated");
+        process.env.NODE_ENV === "production" || invariant$1.warn("The QueryManager.startQuery method has been deprecated");
         this.addQueryListener(queryId, listener);
         this.fetchQuery(queryId, options)
             .catch(function () { return undefined; });
@@ -5219,7 +5339,7 @@ var QueryManager = (function () {
         var observableQuery;
         if (typeof queryIdOrObservable === 'string') {
             var foundObserveableQuery = this.getQuery(queryIdOrObservable).observableQuery;
-            process.env.NODE_ENV === "production" ? invariant$2(foundObserveableQuery, 17) : invariant$2(foundObserveableQuery, "ObservableQuery with this id doesn't exist: " + queryIdOrObservable);
+            process.env.NODE_ENV === "production" ? invariant$1(foundObserveableQuery, 17) : invariant$1(foundObserveableQuery, "ObservableQuery with this id doesn't exist: " + queryIdOrObservable);
             observableQuery = foundObserveableQuery;
         }
         else {
@@ -5408,7 +5528,7 @@ var QueryManager = (function () {
     QueryManager.prototype.startPollingQuery = function (options, queryId, listener) {
         var _this = this;
         var pollInterval = options.pollInterval;
-        process.env.NODE_ENV === "production" ? invariant$2(pollInterval, 18) : invariant$2(pollInterval, 'Attempted to start a polling query without a polling interval.');
+        process.env.NODE_ENV === "production" ? invariant$1(pollInterval, 18) : invariant$1(pollInterval, 'Attempted to start a polling query without a polling interval.');
         if (!this.ssrMode) {
             var info = this.pollingInfoByQueryId.get(queryId);
             if (!info) {
@@ -5683,7 +5803,7 @@ var ApolloClient = (function () {
         if (this.defaultOptions.query) {
             options = __assign$1(__assign$1({}, this.defaultOptions.query), options);
         }
-        process.env.NODE_ENV === "production" ? invariant$2(options.fetchPolicy !== 'cache-and-network', 5) : invariant$2(options.fetchPolicy !== 'cache-and-network', 'The cache-and-network fetchPolicy does not work with client.query, because ' +
+        process.env.NODE_ENV === "production" ? invariant$1(options.fetchPolicy !== 'cache-and-network', 5) : invariant$1(options.fetchPolicy !== 'cache-and-network', 'The cache-and-network fetchPolicy does not work with client.query, because ' +
             'client.query can only return a single result. Please use client.watchQuery ' +
             'to receive multiple results from the cache and the network, or consider ' +
             'using a different fetchPolicy, such as cache-first or network-only.');
@@ -5731,7 +5851,7 @@ var ApolloClient = (function () {
         return execute(this.link, payload);
     };
     ApolloClient.prototype.initQueryManager = function () {
-        process.env.NODE_ENV === "production" || invariant$2.warn('Calling the initQueryManager method is no longer necessary, ' +
+        process.env.NODE_ENV === "production" || invariant$1.warn('Calling the initQueryManager method is no longer necessary, ' +
             'and it will be removed from ApolloClient in version 3.0.');
         return this.queryManager;
     };
@@ -7757,7 +7877,7 @@ var ApolloProvider = (function (_super) {
     function ApolloProvider(props, context) {
         var _this = _super.call(this, props, context) || this;
         _this.operations = new Map();
-        process.env.NODE_ENV === "production" ? invariant$2(props.client) : invariant$2(props.client, 'ApolloProvider was not passed a client instance. Make ' +
+        process.env.NODE_ENV === "production" ? invariant$1(props.client) : invariant$1(props.client, 'ApolloProvider was not passed a client instance. Make ' +
             'sure you pass in your client via the "client" prop.');
         if (!props.client.__operations_cache__) {
             props.client.__operations_cache__ = _this.operations;
@@ -7796,18 +7916,18 @@ function parser$1(document) {
     if (cached)
         return cached;
     var variables, type, name;
-    process.env.NODE_ENV === "production" ? invariant$2(!!document && !!document.kind) : invariant$2(!!document && !!document.kind, "Argument of " + document + " passed to parser was not a valid GraphQL " +
+    process.env.NODE_ENV === "production" ? invariant$1(!!document && !!document.kind) : invariant$1(!!document && !!document.kind, "Argument of " + document + " passed to parser was not a valid GraphQL " +
         "DocumentNode. You may need to use 'graphql-tag' or another method " +
         "to convert your operation into a document");
     var fragments = document.definitions.filter(function (x) { return x.kind === 'FragmentDefinition'; });
     var queries = document.definitions.filter(function (x) { return x.kind === 'OperationDefinition' && x.operation === 'query'; });
     var mutations = document.definitions.filter(function (x) { return x.kind === 'OperationDefinition' && x.operation === 'mutation'; });
     var subscriptions = document.definitions.filter(function (x) { return x.kind === 'OperationDefinition' && x.operation === 'subscription'; });
-    process.env.NODE_ENV === "production" ? invariant$2(
+    process.env.NODE_ENV === "production" ? invariant$1(
         !fragments.length || (queries.length || mutations.length || subscriptions.length)
-    ) : invariant$2(!fragments.length || (queries.length || mutations.length || subscriptions.length), "Passing only a fragment to 'graphql' is not yet supported. " +
+    ) : invariant$1(!fragments.length || (queries.length || mutations.length || subscriptions.length), "Passing only a fragment to 'graphql' is not yet supported. " +
         "You must include a query, subscription or mutation as well");
-    process.env.NODE_ENV === "production" ? invariant$2(queries.length + mutations.length + subscriptions.length <= 1) : invariant$2(queries.length + mutations.length + subscriptions.length <= 1, "react-apollo only supports a query, subscription, or a mutation per HOC. " +
+    process.env.NODE_ENV === "production" ? invariant$1(queries.length + mutations.length + subscriptions.length <= 1) : invariant$1(queries.length + mutations.length + subscriptions.length <= 1, "react-apollo only supports a query, subscription, or a mutation per HOC. " +
         (document + " had " + queries.length + " queries, " + subscriptions.length + " ") +
         ("subscriptions and " + mutations.length + " mutations. ") +
         "You can use 'compose' to join multiple operation types to a component");
@@ -7815,7 +7935,7 @@ function parser$1(document) {
     if (!queries.length && !mutations.length)
         type = DocumentType.Subscription;
     var definitions = queries.length ? queries : mutations.length ? mutations : subscriptions;
-    process.env.NODE_ENV === "production" ? invariant$2(definitions.length === 1) : invariant$2(definitions.length === 1, "react-apollo only supports one definition per HOC. " + document + " had " +
+    process.env.NODE_ENV === "production" ? invariant$1(definitions.length === 1) : invariant$1(definitions.length === 1, "react-apollo only supports one definition per HOC. " + document + " had " +
         (definitions.length + " definitions. ") +
         "You can use 'compose' to join multiple operation types to a component");
     var definition = definitions[0];
@@ -7833,7 +7953,7 @@ function parser$1(document) {
 
 function getClient(props, context) {
     var client = props.client || context.client;
-    process.env.NODE_ENV === "production" ? invariant$2(!!client) : invariant$2(!!client, 'Could not find "client" in the context or passed in as a prop. ' +
+    process.env.NODE_ENV === "production" ? invariant$1(!!client) : invariant$1(!!client, 'Could not find "client" in the context or passed in as a prop. ' +
         'Wrap the root component in an <ApolloProvider>, or pass an ' +
         'ApolloClient instance in via props.');
     return client;
@@ -8078,7 +8198,7 @@ var Query = (function (_super) {
     };
     Query.prototype.extractOptsFromProps = function (props) {
         this.operation = parser$1(props.query);
-        process.env.NODE_ENV === "production" ? invariant$2(this.operation.type === DocumentType.Query) : invariant$2(this.operation.type === DocumentType.Query, "The <Query /> component requires a graphql query, but got a " + (this.operation.type === DocumentType.Mutation ? 'mutation' : 'subscription') + ".");
+        process.env.NODE_ENV === "production" ? invariant$1(this.operation.type === DocumentType.Query) : invariant$1(this.operation.type === DocumentType.Query, "The <Query /> component requires a graphql query, but got a " + (this.operation.type === DocumentType.Mutation ? 'mutation' : 'subscription') + ".");
         var displayName = props.displayName || 'Query';
         return __assign$1({}, props, { displayName: displayName, context: props.context || {}, metadata: { reactComponent: { displayName: displayName } } });
     };
@@ -8229,7 +8349,7 @@ var Mutation = (function (_super) {
         };
         _this.verifyDocumentIsMutation = function (mutation) {
             var operation = parser$1(mutation);
-            process.env.NODE_ENV === "production" ? invariant$2(operation.type === DocumentType.Mutation) : invariant$2(operation.type === DocumentType.Mutation, "The <Mutation /> component requires a graphql mutation, but got a " + (operation.type === DocumentType.Query ? 'query' : 'subscription') + ".");
+            process.env.NODE_ENV === "production" ? invariant$1(operation.type === DocumentType.Mutation) : invariant$1(operation.type === DocumentType.Mutation, "The <Mutation /> component requires a graphql mutation, but got a " + (operation.type === DocumentType.Query ? 'query' : 'subscription') + ".");
         };
         _this.client = getClient(props, context);
         _this.verifyDocumentIsMutation(props.mutation);
@@ -8413,7 +8533,7 @@ var Mutation = (function (_super) {
         return _this;
     }
     GraphQLBase.prototype.getWrappedInstance = function () {
-        process.env.NODE_ENV === "production" ? invariant$2(this.withRef) : invariant$2(this.withRef, "To access the wrapped instance, you need to specify " + "{ withRef: true } in the options");
+        process.env.NODE_ENV === "production" ? invariant$1(this.withRef) : invariant$1(this.withRef, "To access the wrapped instance, you need to specify " + "{ withRef: true } in the options");
         return this.wrappedInstance;
     };
     GraphQLBase.prototype.setWrappedInstance = function (ref) {
@@ -8550,2373 +8670,37 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
-var instanceOf = process && process.env.NODE_ENV !== 'production' ? // eslint-disable-next-line no-shadow
-function instanceOf(value, constructor) {
-  if (value instanceof constructor) {
-    return true;
-  }
-  if (value) {
-    var valueClass = value.constructor;
-    var className = constructor.name;
-    if (valueClass && valueClass.name === className) {
-      throw new Error('Cannot use ' + className + ' "' + value + '" from another module or realm.\n\nEnsure that there is only one instance of "graphql" in the node_modules\ndirectory. If different versions of "graphql" are the dependencies of other\nrelied on modules, use "resolutions" to ensure only one version is installed.\n\nhttps://yarnpkg.com/en/docs/selective-version-resolutions\n\nDuplicate "graphql" modules cannot be used at the same time since different\nversions may have different capabilities and behavior. The data from one\nversion used in the function from another could produce confusing and\nspurious results.');
-    }
-  }
-  return false;
-} : // eslint-disable-next-line no-shadow
-function instanceOf(value, constructor) {
-  return value instanceof constructor;
-}; /**
-    * Copyright (c) 2015-present, Facebook, Inc.
-    *
-    * This source code is licensed under the MIT license found in the
-    * LICENSE file in the root directory of this source tree.
-    *
-    *  strict
-    */
+function devAssert(condition, message) {
+  var booleanCondition = Boolean(condition);
 
-/**
- * A replacement for instanceof which includes an error warning when multi-realm
- * constructors are detected.
- */
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-function invariant$1(condition, message) {
-  /* istanbul ignore else */
-  if (!condition) {
+  if (!booleanCondition) {
     throw new Error(message);
   }
 }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
+ * The `defineToJSON()` function defines toJSON() and inspect() prototype
+ * methods, if no function provided they become aliases for toString().
  */
 
-/**
- * Returns true if a value is undefined, or NaN.
- */
-function isInvalid(value) {
-  return value === undefined || value !== value;
-}
+function defineToJSON(classObject) {
+  var fn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : classObject.prototype.toString;
+  classObject.prototype.toJSON = fn;
+  classObject.prototype.inspect = fn;
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-/**
- * The set of allowed kind values for AST nodes.
- */
-var Kind = Object.freeze({
-  // Name
-  NAME: 'Name',
-
-  // Document
-  DOCUMENT: 'Document',
-  OPERATION_DEFINITION: 'OperationDefinition',
-  VARIABLE_DEFINITION: 'VariableDefinition',
-  VARIABLE: 'Variable',
-  SELECTION_SET: 'SelectionSet',
-  FIELD: 'Field',
-  ARGUMENT: 'Argument',
-
-  // Fragments
-  FRAGMENT_SPREAD: 'FragmentSpread',
-  INLINE_FRAGMENT: 'InlineFragment',
-  FRAGMENT_DEFINITION: 'FragmentDefinition',
-
-  // Values
-  INT: 'IntValue',
-  FLOAT: 'FloatValue',
-  STRING: 'StringValue',
-  BOOLEAN: 'BooleanValue',
-  NULL: 'NullValue',
-  ENUM: 'EnumValue',
-  LIST: 'ListValue',
-  OBJECT: 'ObjectValue',
-  OBJECT_FIELD: 'ObjectField',
-
-  // Directives
-  DIRECTIVE: 'Directive',
-
-  // Types
-  NAMED_TYPE: 'NamedType',
-  LIST_TYPE: 'ListType',
-  NON_NULL_TYPE: 'NonNullType',
-
-  // Type System Definitions
-  SCHEMA_DEFINITION: 'SchemaDefinition',
-  OPERATION_TYPE_DEFINITION: 'OperationTypeDefinition',
-
-  // Type Definitions
-  SCALAR_TYPE_DEFINITION: 'ScalarTypeDefinition',
-  OBJECT_TYPE_DEFINITION: 'ObjectTypeDefinition',
-  FIELD_DEFINITION: 'FieldDefinition',
-  INPUT_VALUE_DEFINITION: 'InputValueDefinition',
-  INTERFACE_TYPE_DEFINITION: 'InterfaceTypeDefinition',
-  UNION_TYPE_DEFINITION: 'UnionTypeDefinition',
-  ENUM_TYPE_DEFINITION: 'EnumTypeDefinition',
-  ENUM_VALUE_DEFINITION: 'EnumValueDefinition',
-  INPUT_OBJECT_TYPE_DEFINITION: 'InputObjectTypeDefinition',
-
-  // Type Extensions
-  SCALAR_TYPE_EXTENSION: 'ScalarTypeExtension',
-  OBJECT_TYPE_EXTENSION: 'ObjectTypeExtension',
-  INTERFACE_TYPE_EXTENSION: 'InterfaceTypeExtension',
-  UNION_TYPE_EXTENSION: 'UnionTypeExtension',
-  ENUM_TYPE_EXTENSION: 'EnumTypeExtension',
-  INPUT_OBJECT_TYPE_EXTENSION: 'InputObjectTypeExtension',
-
-  // Directive Definitions
-  DIRECTIVE_DEFINITION: 'DirectiveDefinition'
-});
-
-/**
- * The enum type representing the possible kind values of AST nodes.
- */
-
-/**
- * Creates a keyed JS object from an array, given a function to produce the keys
- * and a function to produce the values from each item in the array.
- *
- *     const phoneBook = [
- *       { name: 'Jon', num: '555-1234' },
- *       { name: 'Jenny', num: '867-5309' }
- *     ]
- *
- *     // { Jon: '555-1234', Jenny: '867-5309' }
- *     const phonesByName = keyValMap(
- *       phoneBook,
- *       entry => entry.name,
- *       entry => entry.num
- *     )
- *
- */
-function keyValMap(list, keyFn, valFn) {
-  return list.reduce(function (map, item) {
-    return map[keyFn(item)] = valFn(item), map;
-  }, Object.create(null));
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   *  strict
-   */
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-
-/**
- * Produces a JavaScript value given a GraphQL Value AST.
- *
- * Unlike `valueFromAST()`, no type is provided. The resulting JavaScript value
- * will reflect the provided GraphQL value AST.
- *
- * | GraphQL Value        | JavaScript Value |
- * | -------------------- | ---------------- |
- * | Input Object         | Object           |
- * | List                 | Array            |
- * | Boolean              | Boolean          |
- * | String / Enum        | String           |
- * | Int / Float          | Number           |
- * | Null                 | null             |
- *
- */
-function valueFromASTUntyped(valueNode, variables) {
-  switch (valueNode.kind) {
-    case Kind.NULL:
-      return null;
-    case Kind.INT:
-      return parseInt(valueNode.value, 10);
-    case Kind.FLOAT:
-      return parseFloat(valueNode.value);
-    case Kind.STRING:
-    case Kind.ENUM:
-    case Kind.BOOLEAN:
-      return valueNode.value;
-    case Kind.LIST:
-      return valueNode.values.map(function (node) {
-        return valueFromASTUntyped(node, variables);
-      });
-    case Kind.OBJECT:
-      return keyValMap(valueNode.fields, function (field) {
-        return field.name.value;
-      }, function (field) {
-        return valueFromASTUntyped(field.value, variables);
-      });
-    case Kind.VARIABLE:
-      var variableName = valueNode.name.value;
-      return variables && !isInvalid(variables[variableName]) ? variables[variableName] : undefined;
-  }
-  /* istanbul ignore next */
-  throw new Error('Unexpected value kind: ' + valueNode.kind);
-}
-
-var _typeof$7 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _extends$e = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _classCallCheck$5(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Predicates & Assertions
-
-/**
- * These are all of the possible kinds of types.
- */
-
-
-function isType(type) {
-  return isScalarType(type) || isObjectType(type) || isInterfaceType(type) || isUnionType(type) || isEnumType(type) || isInputObjectType(type) || isListType(type) || isNonNullType(type);
-}
-
-function assertType(type) {
-  !isType(type) ? invariant$1(0, 'Expected ' + String(type) + ' to be a GraphQL type.') : void 0;
-  return type;
-}
-
-/**
- * There are predicates for each kind of GraphQL type.
- */
-
-// eslint-disable-next-line no-redeclare
-function isScalarType(type) {
-  return instanceOf(type, GraphQLScalarType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isObjectType(type) {
-  return instanceOf(type, GraphQLObjectType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isInterfaceType(type) {
-  return instanceOf(type, GraphQLInterfaceType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isUnionType(type) {
-  return instanceOf(type, GraphQLUnionType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isEnumType(type) {
-  return instanceOf(type, GraphQLEnumType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isInputObjectType(type) {
-  return instanceOf(type, GraphQLInputObjectType);
-}
-
-// eslint-disable-next-line no-redeclare
-function isListType(type) {
-  return instanceOf(type, GraphQLList);
-}
-
-// eslint-disable-next-line no-redeclare
-function isNonNullType(type) {
-  return instanceOf(type, GraphQLNonNull);
-}
-
-/**
- * These types may describe the parent context of a selection set.
- */
-
-
-function isAbstractType(type) {
-  return isInterfaceType(type) || isUnionType(type);
-}
-
-/**
- * List Type Wrapper
- *
- * A list is a wrapping type which points to another type.
- * Lists are often created within the context of defining the fields of
- * an object type.
- *
- * Example:
- *
- *     const PersonType = new GraphQLObjectType({
- *       name: 'Person',
- *       fields: () => ({
- *         parents: { type: GraphQLList(PersonType) },
- *         children: { type: GraphQLList(PersonType) },
- *       })
- *     })
- *
- */
-
-// eslint-disable-next-line no-redeclare
-function GraphQLList(ofType) {
-  if (this instanceof GraphQLList) {
-    this.ofType = assertType(ofType);
-  } else {
-    return new GraphQLList(ofType);
+  if (nodejsCustomInspectSymbol$1) {
+    classObject.prototype[nodejsCustomInspectSymbol$1] = fn;
   }
 }
 
-// Also provide toJSON and inspect aliases for toString.
-var listProto = GraphQLList.prototype;
-listProto.toString = listProto.toJSON = listProto.inspect = function toString() {
-  return '[' + String(this.ofType) + ']';
-};
+function _typeof$6(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$6 = function _typeof(obj) { return typeof obj; }; } else { _typeof$6 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$6(obj); }
 
 /**
- * Non-Null Type Wrapper
- *
- * A non-null is a wrapping type which points to another type.
- * Non-null types enforce that their values are never null and can ensure
- * an error is raised if this ever occurs during a request. It is useful for
- * fields which you can make a strong guarantee on non-nullability, for example
- * usually the id field of a database row will never be null.
- *
- * Example:
- *
- *     const RowType = new GraphQLObjectType({
- *       name: 'Row',
- *       fields: () => ({
- *         id: { type: GraphQLNonNull(GraphQLString) },
- *       })
- *     })
- *
- * Note: the enforcement of non-nullability occurs within the executor.
+ * Return true if `value` is object-like. A value is object-like if it's not
+ * `null` and has a `typeof` result of "object".
  */
-
-// eslint-disable-next-line no-redeclare
-function GraphQLNonNull(ofType) {
-  if (this instanceof GraphQLNonNull) {
-    this.ofType = assertNullableType(ofType);
-  } else {
-    return new GraphQLNonNull(ofType);
-  }
-}
-
-// Also provide toJSON and inspect aliases for toString.
-var nonNullProto = GraphQLNonNull.prototype;
-nonNullProto.toString = nonNullProto.toJSON = nonNullProto.inspect = function toString() {
-  return String(this.ofType) + '!';
-};
-
-/**
- * These types can all accept null as a value.
- */
-
-
-function isNullableType(type) {
-  return isType(type) && !isNonNullType(type);
-}
-
-function assertNullableType(type) {
-  !isNullableType(type) ? invariant$1(0, 'Expected ' + String(type) + ' to be a GraphQL nullable type.') : void 0;
-  return type;
-}
-
-/**
- * Used while defining GraphQL types to allow for circular references in
- * otherwise immutable type definitions.
- */
-
-
-function resolveThunk(thunk) {
-  return typeof thunk === 'function' ? thunk() : thunk;
-}
-
-/**
- * Scalar Type Definition
- *
- * The leaf values of any request and input values to arguments are
- * Scalars (or Enums) and are defined with a name and a series of functions
- * used to parse input from ast or variables and to ensure validity.
- *
- * If a type's serialize function does not return a value (i.e. it returns
- * `undefined`) then an error will be raised and a `null` value will be returned
- * in the response. If the serialize function returns `null`, then no error will
- * be included in the response.
- *
- * Example:
- *
- *     const OddType = new GraphQLScalarType({
- *       name: 'Odd',
- *       serialize(value) {
- *         if (value % 2 === 1) {
- *           return value;
- *         }
- *       }
- *     });
- *
- */
-var GraphQLScalarType = function () {
-  function GraphQLScalarType(config) {
-    _classCallCheck$5(this, GraphQLScalarType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this._scalarConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-    !(typeof config.serialize === 'function') ? invariant$1(0, this.name + ' must provide "serialize" function. If this custom Scalar ' + 'is also used as an input type, ensure "parseValue" and "parseLiteral" ' + 'functions are also provided.') : void 0;
-    if (config.parseValue || config.parseLiteral) {
-      !(typeof config.parseValue === 'function' && typeof config.parseLiteral === 'function') ? invariant$1(0, this.name + ' must provide both "parseValue" and "parseLiteral" ' + 'functions.') : void 0;
-    }
-  }
-
-  // Serializes an internal value to include in a response.
-
-
-  GraphQLScalarType.prototype.serialize = function serialize(value) {
-    var serializer = this._scalarConfig.serialize;
-    return serializer(value);
-  };
-
-  // Parses an externally provided value to use as an input.
-
-
-  GraphQLScalarType.prototype.parseValue = function parseValue(value) {
-    var parser = this._scalarConfig.parseValue;
-    if (isInvalid(value)) {
-      return undefined;
-    }
-    return parser ? parser(value) : value;
-  };
-
-  // Parses an externally provided literal value to use as an input.
-
-
-  GraphQLScalarType.prototype.parseLiteral = function parseLiteral(valueNode, variables) {
-    var parser = this._scalarConfig.parseLiteral;
-    return parser ? parser(valueNode, variables) : valueFromASTUntyped(valueNode, variables);
-  };
-
-  GraphQLScalarType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLScalarType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLScalarType.prototype.toJSON = GraphQLScalarType.prototype.inspect = GraphQLScalarType.prototype.toString;
-
-/**
- * Object Type Definition
- *
- * Almost all of the GraphQL types you define will be object types. Object types
- * have a name, but most importantly describe their fields.
- *
- * Example:
- *
- *     const AddressType = new GraphQLObjectType({
- *       name: 'Address',
- *       fields: {
- *         street: { type: GraphQLString },
- *         number: { type: GraphQLInt },
- *         formatted: {
- *           type: GraphQLString,
- *           resolve(obj) {
- *             return obj.number + ' ' + obj.street
- *           }
- *         }
- *       }
- *     });
- *
- * When two types need to refer to each other, or a type needs to refer to
- * itself in a field, you can use a function expression (aka a closure or a
- * thunk) to supply the fields lazily.
- *
- * Example:
- *
- *     const PersonType = new GraphQLObjectType({
- *       name: 'Person',
- *       fields: () => ({
- *         name: { type: GraphQLString },
- *         bestFriend: { type: PersonType },
- *       })
- *     });
- *
- */
-var GraphQLObjectType = function () {
-  function GraphQLObjectType(config) {
-    _classCallCheck$5(this, GraphQLObjectType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this.extensionASTNodes = config.extensionASTNodes;
-    this.isTypeOf = config.isTypeOf;
-    this._typeConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-    if (config.isTypeOf) {
-      !(typeof config.isTypeOf === 'function') ? invariant$1(0, this.name + ' must provide "isTypeOf" as a function.') : void 0;
-    }
-  }
-
-  GraphQLObjectType.prototype.getFields = function getFields() {
-    return this._fields || (this._fields = defineFieldMap(this, this._typeConfig.fields));
-  };
-
-  GraphQLObjectType.prototype.getInterfaces = function getInterfaces() {
-    return this._interfaces || (this._interfaces = defineInterfaces(this, this._typeConfig.interfaces));
-  };
-
-  GraphQLObjectType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLObjectType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLObjectType.prototype.toJSON = GraphQLObjectType.prototype.inspect = GraphQLObjectType.prototype.toString;
-
-function defineInterfaces(type, interfacesThunk) {
-  var interfaces = resolveThunk(interfacesThunk) || [];
-  !Array.isArray(interfaces) ? invariant$1(0, type.name + ' interfaces must be an Array or a function which returns ' + 'an Array.') : void 0;
-  return interfaces;
-}
-
-function defineFieldMap(type, fieldsThunk) {
-  var fieldMap = resolveThunk(fieldsThunk) || {};
-  !isPlainObj(fieldMap) ? invariant$1(0, type.name + ' fields must be an object with field names as keys or a ' + 'function which returns such an object.') : void 0;
-
-  var resultFieldMap = Object.create(null);
-  Object.keys(fieldMap).forEach(function (fieldName) {
-    var fieldConfig = fieldMap[fieldName];
-    !isPlainObj(fieldConfig) ? invariant$1(0, type.name + '.' + fieldName + ' field config must be an object') : void 0;
-    !!fieldConfig.hasOwnProperty('isDeprecated') ? invariant$1(0, type.name + '.' + fieldName + ' should provide "deprecationReason" instead ' + 'of "isDeprecated".') : void 0;
-    var field = _extends$e({}, fieldConfig, {
-      isDeprecated: Boolean(fieldConfig.deprecationReason),
-      name: fieldName
-    });
-    !isValidResolver(field.resolve) ? invariant$1(0, type.name + '.' + fieldName + ' field resolver must be a function if ' + ('provided, but got: ' + String(field.resolve) + '.')) : void 0;
-    var argsConfig = fieldConfig.args;
-    if (!argsConfig) {
-      field.args = [];
-    } else {
-      !isPlainObj(argsConfig) ? invariant$1(0, type.name + '.' + fieldName + ' args must be an object with argument ' + 'names as keys.') : void 0;
-      field.args = Object.keys(argsConfig).map(function (argName) {
-        var arg = argsConfig[argName];
-        return {
-          name: argName,
-          description: arg.description === undefined ? null : arg.description,
-          type: arg.type,
-          defaultValue: arg.defaultValue,
-          astNode: arg.astNode
-        };
-      });
-    }
-    resultFieldMap[fieldName] = field;
-  });
-  return resultFieldMap;
-}
-
-function isPlainObj(obj) {
-  return obj && (typeof obj === 'undefined' ? 'undefined' : _typeof$7(obj)) === 'object' && !Array.isArray(obj);
-}
-
-// If a resolver is defined, it must be a function.
-function isValidResolver(resolver) {
-  return resolver == null || typeof resolver === 'function';
-}
-
-/**
- * Interface Type Definition
- *
- * When a field can return one of a heterogeneous set of types, a Interface type
- * is used to describe what types are possible, what fields are in common across
- * all types, as well as a function to determine which type is actually used
- * when the field is resolved.
- *
- * Example:
- *
- *     const EntityType = new GraphQLInterfaceType({
- *       name: 'Entity',
- *       fields: {
- *         name: { type: GraphQLString }
- *       }
- *     });
- *
- */
-var GraphQLInterfaceType = function () {
-  function GraphQLInterfaceType(config) {
-    _classCallCheck$5(this, GraphQLInterfaceType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this.extensionASTNodes = config.extensionASTNodes;
-    this.resolveType = config.resolveType;
-    this._typeConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-    if (config.resolveType) {
-      !(typeof config.resolveType === 'function') ? invariant$1(0, this.name + ' must provide "resolveType" as a function.') : void 0;
-    }
-  }
-
-  GraphQLInterfaceType.prototype.getFields = function getFields() {
-    return this._fields || (this._fields = defineFieldMap(this, this._typeConfig.fields));
-  };
-
-  GraphQLInterfaceType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLInterfaceType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLInterfaceType.prototype.toJSON = GraphQLInterfaceType.prototype.inspect = GraphQLInterfaceType.prototype.toString;
-
-/**
- * Union Type Definition
- *
- * When a field can return one of a heterogeneous set of types, a Union type
- * is used to describe what types are possible as well as providing a function
- * to determine which type is actually used when the field is resolved.
- *
- * Example:
- *
- *     const PetType = new GraphQLUnionType({
- *       name: 'Pet',
- *       types: [ DogType, CatType ],
- *       resolveType(value) {
- *         if (value instanceof Dog) {
- *           return DogType;
- *         }
- *         if (value instanceof Cat) {
- *           return CatType;
- *         }
- *       }
- *     });
- *
- */
-var GraphQLUnionType = function () {
-  function GraphQLUnionType(config) {
-    _classCallCheck$5(this, GraphQLUnionType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this.resolveType = config.resolveType;
-    this._typeConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-    if (config.resolveType) {
-      !(typeof config.resolveType === 'function') ? invariant$1(0, this.name + ' must provide "resolveType" as a function.') : void 0;
-    }
-  }
-
-  GraphQLUnionType.prototype.getTypes = function getTypes() {
-    return this._types || (this._types = defineTypes(this, this._typeConfig.types));
-  };
-
-  GraphQLUnionType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLUnionType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLUnionType.prototype.toJSON = GraphQLUnionType.prototype.inspect = GraphQLUnionType.prototype.toString;
-
-function defineTypes(unionType, typesThunk) {
-  var types = resolveThunk(typesThunk) || [];
-  !Array.isArray(types) ? invariant$1(0, 'Must provide Array of types or a function which returns ' + ('such an array for Union ' + unionType.name + '.')) : void 0;
-  return types;
-}
-
-/**
- * Enum Type Definition
- *
- * Some leaf values of requests and input values are Enums. GraphQL serializes
- * Enum values as strings, however internally Enums can be represented by any
- * kind of type, often integers.
- *
- * Example:
- *
- *     const RGBType = new GraphQLEnumType({
- *       name: 'RGB',
- *       values: {
- *         RED: { value: 0 },
- *         GREEN: { value: 1 },
- *         BLUE: { value: 2 }
- *       }
- *     });
- *
- * Note: If a value is not provided in a definition, the name of the enum value
- * will be used as its internal value.
- */
-var GraphQLEnumType /* <T> */ = function () {
-  function GraphQLEnumType(config /* <T> */) {
-    _classCallCheck$5(this, GraphQLEnumType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this._enumConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-  }
-
-  GraphQLEnumType.prototype.getValues = function getValues() {
-    return this._values || (this._values = defineEnumValues(this, this._enumConfig.values));
-  };
-
-  GraphQLEnumType.prototype.getValue = function getValue(name) {
-    return this._getNameLookup()[name];
-  };
-
-  GraphQLEnumType.prototype.serialize = function serialize(value /* T */) {
-    var enumValue = this._getValueLookup().get(value);
-    if (enumValue) {
-      return enumValue.name;
-    }
-  };
-
-  GraphQLEnumType.prototype.parseValue = function parseValue(value) /* T */{
-    if (typeof value === 'string') {
-      var enumValue = this._getNameLookup()[value];
-      if (enumValue) {
-        return enumValue.value;
-      }
-    }
-  };
-
-  GraphQLEnumType.prototype.parseLiteral = function parseLiteral(valueNode, _variables) /* T */{
-    // Note: variables will be resolved to a value before calling this function.
-    if (valueNode.kind === Kind.ENUM) {
-      var enumValue = this._getNameLookup()[valueNode.value];
-      if (enumValue) {
-        return enumValue.value;
-      }
-    }
-  };
-
-  GraphQLEnumType.prototype._getValueLookup = function _getValueLookup() {
-    if (!this._valueLookup) {
-      var lookup = new Map();
-      this.getValues().forEach(function (value) {
-        lookup.set(value.value, value);
-      });
-      this._valueLookup = lookup;
-    }
-    return this._valueLookup;
-  };
-
-  GraphQLEnumType.prototype._getNameLookup = function _getNameLookup() {
-    if (!this._nameLookup) {
-      var lookup = Object.create(null);
-      this.getValues().forEach(function (value) {
-        lookup[value.name] = value;
-      });
-      this._nameLookup = lookup;
-    }
-    return this._nameLookup;
-  };
-
-  GraphQLEnumType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLEnumType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLEnumType.prototype.toJSON = GraphQLEnumType.prototype.inspect = GraphQLEnumType.prototype.toString;
-
-function defineEnumValues(type, valueMap /* <T> */
-) {
-  !isPlainObj(valueMap) ? invariant$1(0, type.name + ' values must be an object with value names as keys.') : void 0;
-  return Object.keys(valueMap).map(function (valueName) {
-    var value = valueMap[valueName];
-    !isPlainObj(value) ? invariant$1(0, type.name + '.' + valueName + ' must refer to an object with a "value" key ' + ('representing an internal value but got: ' + String(value) + '.')) : void 0;
-    !!value.hasOwnProperty('isDeprecated') ? invariant$1(0, type.name + '.' + valueName + ' should provide "deprecationReason" instead ' + 'of "isDeprecated".') : void 0;
-    return {
-      name: valueName,
-      description: value.description,
-      isDeprecated: Boolean(value.deprecationReason),
-      deprecationReason: value.deprecationReason,
-      astNode: value.astNode,
-      value: value.hasOwnProperty('value') ? value.value : valueName
-    };
-  });
-} /* <T> */
-
-
-/**
- * Input Object Type Definition
- *
- * An input object defines a structured collection of fields which may be
- * supplied to a field argument.
- *
- * Using `NonNull` will ensure that a value must be provided by the query
- *
- * Example:
- *
- *     const GeoPoint = new GraphQLInputObjectType({
- *       name: 'GeoPoint',
- *       fields: {
- *         lat: { type: GraphQLNonNull(GraphQLFloat) },
- *         lon: { type: GraphQLNonNull(GraphQLFloat) },
- *         alt: { type: GraphQLFloat, defaultValue: 0 },
- *       }
- *     });
- *
- */
-var GraphQLInputObjectType = function () {
-  function GraphQLInputObjectType(config) {
-    _classCallCheck$5(this, GraphQLInputObjectType);
-
-    this.name = config.name;
-    this.description = config.description;
-    this.astNode = config.astNode;
-    this._typeConfig = config;
-    !(typeof config.name === 'string') ? invariant$1(0, 'Must provide name.') : void 0;
-  }
-
-  GraphQLInputObjectType.prototype.getFields = function getFields() {
-    return this._fields || (this._fields = this._defineFieldMap());
-  };
-
-  GraphQLInputObjectType.prototype._defineFieldMap = function _defineFieldMap() {
-    var _this = this;
-
-    var fieldMap = resolveThunk(this._typeConfig.fields) || {};
-    !isPlainObj(fieldMap) ? invariant$1(0, this.name + ' fields must be an object with field names as keys or a ' + 'function which returns such an object.') : void 0;
-    var resultFieldMap = Object.create(null);
-    Object.keys(fieldMap).forEach(function (fieldName) {
-      var field = _extends$e({}, fieldMap[fieldName], {
-        name: fieldName
-      });
-      !!field.hasOwnProperty('resolve') ? invariant$1(0, _this.name + '.' + fieldName + ' field type has a resolve property, but ' + 'Input Types cannot define resolvers.') : void 0;
-      resultFieldMap[fieldName] = field;
-    });
-    return resultFieldMap;
-  };
-
-  GraphQLInputObjectType.prototype.toString = function toString() {
-    return this.name;
-  };
-
-  return GraphQLInputObjectType;
-}();
-
-// Also provide toJSON and inspect aliases for toString.
-GraphQLInputObjectType.prototype.toJSON = GraphQLInputObjectType.prototype.toString;
-GraphQLInputObjectType.prototype.inspect = GraphQLInputObjectType.prototype.toString;
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-// As per the GraphQL Spec, Integers are only treated as valid when a valid
-// 32-bit signed integer, providing the broadest support across platforms.
-//
-// n.b. JavaScript's integers are safe between -(2^53 - 1) and 2^53 - 1 because
-// they are internally represented as IEEE 754 doubles.
-var MAX_INT = 2147483647;
-var MIN_INT = -2147483648;
-
-function coerceInt(value) {
-  if (value === '') {
-    throw new TypeError('Int cannot represent non 32-bit signed integer value: (empty string)');
-  }
-  var num = Number(value);
-  if (num !== num || num > MAX_INT || num < MIN_INT) {
-    throw new TypeError('Int cannot represent non 32-bit signed integer value: ' + String(value));
-  }
-  var int = Math.floor(num);
-  if (int !== num) {
-    throw new TypeError('Int cannot represent non-integer value: ' + String(value));
-  }
-  return int;
-}
-
-new GraphQLScalarType({
-  name: 'Int',
-  description: 'The `Int` scalar type represents non-fractional signed whole numeric ' + 'values. Int can represent values between -(2^31) and 2^31 - 1. ',
-  serialize: coerceInt,
-  parseValue: coerceInt,
-  parseLiteral: function parseLiteral(ast) {
-    if (ast.kind === Kind.INT) {
-      var num = parseInt(ast.value, 10);
-      if (num <= MAX_INT && num >= MIN_INT) {
-        return num;
-      }
-    }
-    return undefined;
-  }
-});
-
-function coerceFloat(value) {
-  if (value === '') {
-    throw new TypeError('Float cannot represent non numeric value: (empty string)');
-  }
-  var num = Number(value);
-  if (num === num) {
-    return num;
-  }
-  throw new TypeError('Float cannot represent non numeric value: ' + String(value));
-}
-
-new GraphQLScalarType({
-  name: 'Float',
-  description: 'The `Float` scalar type represents signed double-precision fractional ' + 'values as specified by ' + '[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ',
-  serialize: coerceFloat,
-  parseValue: coerceFloat,
-  parseLiteral: function parseLiteral(ast) {
-    return ast.kind === Kind.FLOAT || ast.kind === Kind.INT ? parseFloat(ast.value) : undefined;
-  }
-});
-
-function coerceString(value) {
-  if (Array.isArray(value)) {
-    throw new TypeError('String cannot represent an array value: [' + String(value) + ']');
-  }
-  return String(value);
-}
-
-var GraphQLString = new GraphQLScalarType({
-  name: 'String',
-  description: 'The `String` scalar type represents textual data, represented as UTF-8 ' + 'character sequences. The String type is most often used by GraphQL to ' + 'represent free-form human-readable text.',
-  serialize: coerceString,
-  parseValue: coerceString,
-  parseLiteral: function parseLiteral(ast) {
-    return ast.kind === Kind.STRING ? ast.value : undefined;
-  }
-});
-
-var GraphQLBoolean = new GraphQLScalarType({
-  name: 'Boolean',
-  description: 'The `Boolean` scalar type represents `true` or `false`.',
-  serialize: Boolean,
-  parseValue: Boolean,
-  parseLiteral: function parseLiteral(ast) {
-    return ast.kind === Kind.BOOLEAN ? ast.value : undefined;
-  }
-});
-
-var GraphQLID = new GraphQLScalarType({
-  name: 'ID',
-  description: 'The `ID` scalar type represents a unique identifier, often used to ' + 'refetch an object or as key for a cache. The ID type appears in a JSON ' + 'response as a String; however, it is not intended to be human-readable. ' + 'When expected as an input type, any string (such as `"4"`) or integer ' + '(such as `4`) input value will be accepted as an ID.',
-  serialize: String,
-  parseValue: String,
-  parseLiteral: function parseLiteral(ast) {
-    return ast.kind === Kind.STRING || ast.kind === Kind.INT ? ast.value : undefined;
-  }
-});
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-/**
- * The set of allowed directive location values.
- */
-var DirectiveLocation = Object.freeze({
-  // Request Definitions
-  QUERY: 'QUERY',
-  MUTATION: 'MUTATION',
-  SUBSCRIPTION: 'SUBSCRIPTION',
-  FIELD: 'FIELD',
-  FRAGMENT_DEFINITION: 'FRAGMENT_DEFINITION',
-  FRAGMENT_SPREAD: 'FRAGMENT_SPREAD',
-  INLINE_FRAGMENT: 'INLINE_FRAGMENT',
-  // Type System Definitions
-  SCHEMA: 'SCHEMA',
-  SCALAR: 'SCALAR',
-  OBJECT: 'OBJECT',
-  FIELD_DEFINITION: 'FIELD_DEFINITION',
-  ARGUMENT_DEFINITION: 'ARGUMENT_DEFINITION',
-  INTERFACE: 'INTERFACE',
-  UNION: 'UNION',
-  ENUM: 'ENUM',
-  ENUM_VALUE: 'ENUM_VALUE',
-  INPUT_OBJECT: 'INPUT_OBJECT',
-  INPUT_FIELD_DEFINITION: 'INPUT_FIELD_DEFINITION'
-});
-
-/**
- * The enum type representing the directive location values.
- */
-
-function _classCallCheck$4(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Directives are used by the GraphQL runtime as a way of modifying execution
- * behavior. Type system creators will usually not create these directly.
- */
-var GraphQLDirective = function GraphQLDirective(config) {
-  _classCallCheck$4(this, GraphQLDirective);
-
-  this.name = config.name;
-  this.description = config.description;
-  this.locations = config.locations;
-  this.astNode = config.astNode;
-  !config.name ? invariant$1(0, 'Directive must be named.') : void 0;
-  !Array.isArray(config.locations) ? invariant$1(0, 'Must provide locations for directive.') : void 0;
-
-  var args = config.args;
-  if (!args) {
-    this.args = [];
-  } else {
-    !!Array.isArray(args) ? invariant$1(0, '@' + config.name + ' args must be an object with argument names as keys.') : void 0;
-    this.args = Object.keys(args).map(function (argName) {
-      var arg = args[argName];
-      return {
-        name: argName,
-        description: arg.description === undefined ? null : arg.description,
-        type: arg.type,
-        defaultValue: arg.defaultValue,
-        astNode: arg.astNode
-      };
-    });
-  }
-};
-
-/**
- * Used to conditionally include fields or fragments.
- */
-new GraphQLDirective({
-  name: 'include',
-  description: 'Directs the executor to include this field or fragment only when ' + 'the `if` argument is true.',
-  locations: [DirectiveLocation.FIELD, DirectiveLocation.FRAGMENT_SPREAD, DirectiveLocation.INLINE_FRAGMENT],
-  args: {
-    if: {
-      type: GraphQLNonNull(GraphQLBoolean),
-      description: 'Included when true.'
-    }
-  }
-});
-
-/**
- * Used to conditionally skip (exclude) fields or fragments.
- */
-new GraphQLDirective({
-  name: 'skip',
-  description: 'Directs the executor to skip this field or fragment when the `if` ' + 'argument is true.',
-  locations: [DirectiveLocation.FIELD, DirectiveLocation.FRAGMENT_SPREAD, DirectiveLocation.INLINE_FRAGMENT],
-  args: {
-    if: {
-      type: GraphQLNonNull(GraphQLBoolean),
-      description: 'Skipped when true.'
-    }
-  }
-});
-
-/**
- * Constant string used for default reason for a deprecation.
- */
-var DEFAULT_DEPRECATION_REASON = 'No longer supported';
-
-/**
- * Used to declare element of a GraphQL schema as deprecated.
- */
-new GraphQLDirective({
-  name: 'deprecated',
-  description: 'Marks an element of a GraphQL schema as no longer supported.',
-  locations: [DirectiveLocation.FIELD_DEFINITION, DirectiveLocation.ENUM_VALUE],
-  args: {
-    reason: {
-      type: GraphQLString,
-      description: 'Explains why this element was deprecated, usually also including a ' + 'suggestion for how to access supported similar data. Formatted ' + 'in [Markdown](https://daringfireball.net/projects/markdown/).',
-      defaultValue: DEFAULT_DEPRECATION_REASON
-    }
-  }
-});
-
-/* eslint-disable no-redeclare */
-// $FlowFixMe workaround for: https://github.com/facebook/flow/issues/2221
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-var objectValues = Object.values || function (obj) {
-  return Object.keys(obj).map(function (key) {
-    return obj[key];
-  });
-};
-
-/**
- * Copyright (c) 2016, Lee Byron
- * All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- * @ignore
- */
-
-/**
- * [Iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)
- * is a *protocol* which describes a standard way to produce a sequence of
- * values, typically the values of the Iterable represented by this Iterator.
- *
- * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterator-interface)
- * it can be utilized by any version of JavaScript.
- *
- * @external Iterator
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator|MDN Iteration protocols}
- */
-
-/**
- * [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
- * is a *protocol* which when implemented allows a JavaScript object to define
- * their iteration behavior, such as what values are looped over in a
- * [`for...of`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
- * loop or `iterall`'s `forEach` function. Many [built-in types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#Builtin_iterables)
- * implement the Iterable protocol, including `Array` and `Map`.
- *
- * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface)
- * it can be utilized by any version of JavaScript.
- *
- * @external Iterable
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable|MDN Iteration protocols}
- */
-
-// In ES2015 environments, Symbol exists
-var SYMBOL /*: any */ = typeof Symbol === 'function' ? Symbol : void 0;
-
-// In ES2015 (or a polyfilled) environment, this will be Symbol.iterator
-var SYMBOL_ITERATOR = SYMBOL && SYMBOL.iterator;
-
-/**
- * Returns true if the provided object implements the Iterator protocol via
- * either implementing a `Symbol.iterator` or `"@@iterator"` method.
- *
- * @example
- *
- * var isIterable = require('iterall').isIterable
- * isIterable([ 1, 2, 3 ]) // true
- * isIterable('ABC') // true
- * isIterable({ length: 1, 0: 'Alpha' }) // false
- * isIterable({ key: 'value' }) // false
- * isIterable(new Map()) // true
- *
- * @param obj
- *   A value which might implement the Iterable protocol.
- * @return {boolean} true if Iterable.
- */
-/*:: declare export function isIterable(obj: any): boolean; */
-function isIterable(obj) {
-  return !!getIteratorMethod(obj)
-}
-
-/**
- * Returns true if the provided object implements the Array-like protocol via
- * defining a positive-integer `length` property.
- *
- * @example
- *
- * var isArrayLike = require('iterall').isArrayLike
- * isArrayLike([ 1, 2, 3 ]) // true
- * isArrayLike('ABC') // true
- * isArrayLike({ length: 1, 0: 'Alpha' }) // true
- * isArrayLike({ key: 'value' }) // false
- * isArrayLike(new Map()) // false
- *
- * @param obj
- *   A value which might implement the Array-like protocol.
- * @return {boolean} true if Array-like.
- */
-/*:: declare export function isArrayLike(obj: any): boolean; */
-function isArrayLike$1(obj) {
-  var length = obj != null && obj.length;
-  return typeof length === 'number' && length >= 0 && length % 1 === 0
-}
-
-/**
- * Returns true if the provided object is an Object (i.e. not a string literal)
- * and is either Iterable or Array-like.
- *
- * This may be used in place of [Array.isArray()][isArray] to determine if an
- * object should be iterated-over. It always excludes string literals and
- * includes Arrays (regardless of if it is Iterable). It also includes other
- * Array-like objects such as NodeList, TypedArray, and Buffer.
- *
- * @example
- *
- * var isCollection = require('iterall').isCollection
- * isCollection([ 1, 2, 3 ]) // true
- * isCollection('ABC') // false
- * isCollection({ length: 1, 0: 'Alpha' }) // true
- * isCollection({ key: 'value' }) // false
- * isCollection(new Map()) // true
- *
- * @example
- *
- * var forEach = require('iterall').forEach
- * if (isCollection(obj)) {
- *   forEach(obj, function (value) {
- *     console.log(value)
- *   })
- * }
- *
- * @param obj
- *   An Object value which might implement the Iterable or Array-like protocols.
- * @return {boolean} true if Iterable or Array-like Object.
- */
-/*:: declare export function isCollection(obj: any): boolean; */
-function isCollection(obj) {
-  return Object(obj) === obj && (isArrayLike$1(obj) || isIterable(obj))
-}
-
-/**
- * If the provided object implements the Iterator protocol, its Iterator object
- * is returned. Otherwise returns undefined.
- *
- * @example
- *
- * var getIterator = require('iterall').getIterator
- * var iterator = getIterator([ 1, 2, 3 ])
- * iterator.next() // { value: 1, done: false }
- * iterator.next() // { value: 2, done: false }
- * iterator.next() // { value: 3, done: false }
- * iterator.next() // { value: undefined, done: true }
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>} iterable
- *   An Iterable object which is the source of an Iterator.
- * @return {Iterator<T>} new Iterator instance.
- */
-/*:: declare export var getIterator:
-  & (<+TValue>(iterable: Iterable<TValue>) => Iterator<TValue>)
-  & ((iterable: mixed) => void | Iterator<mixed>); */
-function getIterator(iterable) {
-  var method = getIteratorMethod(iterable);
-  if (method) {
-    return method.call(iterable)
-  }
-}
-
-/**
- * If the provided object implements the Iterator protocol, the method
- * responsible for producing its Iterator object is returned.
- *
- * This is used in rare cases for performance tuning. This method must be called
- * with obj as the contextual this-argument.
- *
- * @example
- *
- * var getIteratorMethod = require('iterall').getIteratorMethod
- * var myArray = [ 1, 2, 3 ]
- * var method = getIteratorMethod(myArray)
- * if (method) {
- *   var iterator = method.call(myArray)
- * }
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>} iterable
- *   An Iterable object which defines an `@@iterator` method.
- * @return {function(): Iterator<T>} `@@iterator` method.
- */
-/*:: declare export var getIteratorMethod:
-  & (<+TValue>(iterable: Iterable<TValue>) => (() => Iterator<TValue>))
-  & ((iterable: mixed) => (void | (() => Iterator<mixed>))); */
-function getIteratorMethod(iterable) {
-  if (iterable != null) {
-    var method =
-      (SYMBOL_ITERATOR && iterable[SYMBOL_ITERATOR]) || iterable['@@iterator'];
-    if (typeof method === 'function') {
-      return method
-    }
-  }
-}
-
-/**
- * Given an object which either implements the Iterable protocol or is
- * Array-like, iterate over it, calling the `callback` at each iteration.
- *
- * Use `forEach` where you would expect to use a `for ... of` loop in ES6.
- * However `forEach` adheres to the behavior of [Array#forEach][] described in
- * the ECMAScript specification, skipping over "holes" in Array-likes. It will
- * also delegate to a `forEach` method on `collection` if one is defined,
- * ensuring native performance for `Arrays`.
- *
- * Similar to [Array#forEach][], the `callback` function accepts three
- * arguments, and is provided with `thisArg` as the calling context.
- *
- * Note: providing an infinite Iterator to forEach will produce an error.
- *
- * [Array#forEach]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
- *
- * @example
- *
- * var forEach = require('iterall').forEach
- *
- * forEach(myIterable, function (value, index, iterable) {
- *   console.log(value, index, iterable === myIterable)
- * })
- *
- * @example
- *
- * // ES6:
- * for (let value of myIterable) {
- *   console.log(value)
- * }
- *
- * // Any JavaScript environment:
- * forEach(myIterable, function (value) {
- *   console.log(value)
- * })
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>|{ length: number }} collection
- *   The Iterable or array to iterate over.
- * @param {function(T, number, object)} callback
- *   Function to execute for each iteration, taking up to three arguments
- * @param [thisArg]
- *   Optional. Value to use as `this` when executing `callback`.
- */
-/*:: declare export var forEach:
-  & (<+TValue, TCollection: Iterable<TValue>>(
-      collection: TCollection,
-      callbackFn: (value: TValue, index: number, collection: TCollection) => any,
-      thisArg?: any
-    ) => void)
-  & (<TCollection: {length: number}>(
-      collection: TCollection,
-      callbackFn: (value: mixed, index: number, collection: TCollection) => any,
-      thisArg?: any
-    ) => void); */
-function forEach(collection, callback, thisArg) {
-  if (collection != null) {
-    if (typeof collection.forEach === 'function') {
-      return collection.forEach(callback, thisArg)
-    }
-    var i = 0;
-    var iterator = getIterator(collection);
-    if (iterator) {
-      var step;
-      while (!(step = iterator.next()).done) {
-        callback.call(thisArg, step.value, i++, collection);
-        // Infinite Iterators could cause forEach to run forever.
-        // After a very large number of iterations, produce an error.
-        /* istanbul ignore if */
-        if (i > 9999999) {
-          throw new TypeError('Near-infinite iteration.')
-        }
-      }
-    } else if (isArrayLike$1(collection)) {
-      for (; i < collection.length; i++) {
-        if (collection.hasOwnProperty(i)) {
-          callback.call(thisArg, collection[i], i, collection);
-        }
-      }
-    }
-  }
-}
-
-/////////////////////////////////////////////////////
-//                                                 //
-//                 ASYNC ITERATORS                 //
-//                                                 //
-/////////////////////////////////////////////////////
-
-/**
- * [AsyncIterable](https://tc39.github.io/proposal-async-iteration/#sec-asynciterable-interface)
- * is a *protocol* which when implemented allows a JavaScript object to define
- * an asynchronous iteration behavior, such as what values are looped over in
- * a [`for-await-of`](https://tc39.github.io/proposal-async-iteration/#sec-for-in-and-for-of-statements)
- * loop or `iterall`'s {@link forAwaitEach} function.
- *
- * While described as a proposed addition to the [ES2017 version of JavaScript](https://tc39.github.io/proposal-async-iteration/)
- * it can be utilized by any version of JavaScript.
- *
- * @external AsyncIterable
- * @see {@link https://tc39.github.io/proposal-async-iteration/#sec-asynciterable-interface|Async Iteration Proposal}
- * @template T The type of each iterated value
- * @property {function (): AsyncIterator<T>} Symbol.asyncIterator
- *   A method which produces an AsyncIterator for this AsyncIterable.
- */
-
-/**
- * [AsyncIterator](https://tc39.github.io/proposal-async-iteration/#sec-asynciterator-interface)
- * is a *protocol* which describes a standard way to produce and consume an
- * asynchronous sequence of values, typically the values of the
- * {@link AsyncIterable} represented by this {@link AsyncIterator}.
- *
- * AsyncIterator is similar to Observable or Stream. Like an {@link Iterator} it
- * also as a `next()` method, however instead of an IteratorResult,
- * calling this method returns a {@link Promise} for a IteratorResult.
- *
- * While described as a proposed addition to the [ES2017 version of JavaScript](https://tc39.github.io/proposal-async-iteration/)
- * it can be utilized by any version of JavaScript.
- *
- * @external AsyncIterator
- * @see {@link https://tc39.github.io/proposal-async-iteration/#sec-asynciterator-interface|Async Iteration Proposal}
- */
-
-// In ES2017 (or a polyfilled) environment, this will be Symbol.asyncIterator
-SYMBOL && SYMBOL.asyncIterator;
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-/**
- * Returns true if a value is null, undefined, or NaN.
- */
-function isNullish(value) {
-  return value === null || value === undefined || value !== value;
-}
-
-var _typeof$6 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * Produces a GraphQL Value AST given a JavaScript value.
- *
- * A GraphQL type must be provided, which will be used to interpret different
- * JavaScript values.
- *
- * | JSON Value    | GraphQL Value        |
- * | ------------- | -------------------- |
- * | Object        | Input Object         |
- * | Array         | List                 |
- * | Boolean       | Boolean              |
- * | String        | String / Enum Value  |
- * | Number        | Int / Float          |
- * | Mixed         | Enum Value           |
- * | null          | NullValue            |
- *
- */
-function astFromValue(value, type) {
-  if (isNonNullType(type)) {
-    var astValue = astFromValue(value, type.ofType);
-    if (astValue && astValue.kind === Kind.NULL) {
-      return null;
-    }
-    return astValue;
-  }
-
-  // only explicit null, not undefined, NaN
-  if (value === null) {
-    return { kind: Kind.NULL };
-  }
-
-  // undefined, NaN
-  if (isInvalid(value)) {
-    return null;
-  }
-
-  // Convert JavaScript array to GraphQL list. If the GraphQLType is a list, but
-  // the value is not an array, convert the value using the list's item type.
-  if (isListType(type)) {
-    var itemType = type.ofType;
-    if (isCollection(value)) {
-      var valuesNodes = [];
-      forEach(value, function (item) {
-        var itemNode = astFromValue(item, itemType);
-        if (itemNode) {
-          valuesNodes.push(itemNode);
-        }
-      });
-      return { kind: Kind.LIST, values: valuesNodes };
-    }
-    return astFromValue(value, itemType);
-  }
-
-  // Populate the fields of the input object by creating ASTs from each value
-  // in the JavaScript object according to the fields in the input type.
-  if (isInputObjectType(type)) {
-    if (value === null || (typeof value === 'undefined' ? 'undefined' : _typeof$6(value)) !== 'object') {
-      return null;
-    }
-    var fields = objectValues(type.getFields());
-    var fieldNodes = [];
-    fields.forEach(function (field) {
-      var fieldValue = astFromValue(value[field.name], field.type);
-      if (fieldValue) {
-        fieldNodes.push({
-          kind: Kind.OBJECT_FIELD,
-          name: { kind: Kind.NAME, value: field.name },
-          value: fieldValue
-        });
-      }
-    });
-    return { kind: Kind.OBJECT, fields: fieldNodes };
-  }
-
-  if (isScalarType(type) || isEnumType(type)) {
-    // Since value is an internally represented value, it must be serialized
-    // to an externally represented value before converting into an AST.
-    var serialized = type.serialize(value);
-    if (isNullish(serialized)) {
-      return null;
-    }
-
-    // Others serialize based on their corresponding JavaScript scalar types.
-    if (typeof serialized === 'boolean') {
-      return { kind: Kind.BOOLEAN, value: serialized };
-    }
-
-    // JavaScript numbers can be Int or Float values.
-    if (typeof serialized === 'number') {
-      var stringNum = String(serialized);
-      return integerStringRegExp.test(stringNum) ? { kind: Kind.INT, value: stringNum } : { kind: Kind.FLOAT, value: stringNum };
-    }
-
-    if (typeof serialized === 'string') {
-      // Enum types use Enum literals.
-      if (isEnumType(type)) {
-        return { kind: Kind.ENUM, value: serialized };
-      }
-
-      // ID types can use Int literals.
-      if (type === GraphQLID && integerStringRegExp.test(serialized)) {
-        return { kind: Kind.INT, value: serialized };
-      }
-
-      return {
-        kind: Kind.STRING,
-        value: serialized
-      };
-    }
-
-    throw new TypeError('Cannot convert value to AST: ' + String(serialized));
-  }
-
-  /* istanbul ignore next */
-  throw new Error('Unknown type: ' + type + '.');
-}
-
-/**
- * IntValue:
- *   - NegativeSign? 0
- *   - NegativeSign? NonZeroDigit ( Digit+ )?
- */
-var integerStringRegExp = /^-?(0|[1-9][0-9]*)$/;
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/**
- * Converts an AST into a string, using one set of reasonable
- * formatting rules.
- */
-function print(ast) {
-  return visit(ast, { leave: printDocASTReducer });
-}
-
-var printDocASTReducer = {
-  Name: function Name(node) {
-    return node.value;
-  },
-  Variable: function Variable(node) {
-    return '$' + node.name;
-  },
-
-  // Document
-
-  Document: function Document(node) {
-    return join(node.definitions, '\n\n') + '\n';
-  },
-
-  OperationDefinition: function OperationDefinition(node) {
-    var op = node.operation;
-    var name = node.name;
-    var varDefs = wrap$1('(', join(node.variableDefinitions, ', '), ')');
-    var directives = join(node.directives, ' ');
-    var selectionSet = node.selectionSet;
-    // Anonymous queries with no directives or variable definitions can use
-    // the query short form.
-    return !name && !directives && !varDefs && op === 'query' ? selectionSet : join([op, join([name, varDefs]), directives, selectionSet], ' ');
-  },
-
-
-  VariableDefinition: function VariableDefinition(_ref) {
-    var variable = _ref.variable,
-        type = _ref.type,
-        defaultValue = _ref.defaultValue;
-    return variable + ': ' + type + wrap$1(' = ', defaultValue);
-  },
-
-  SelectionSet: function SelectionSet(_ref2) {
-    var selections = _ref2.selections;
-    return block(selections);
-  },
-
-  Field: function Field(_ref3) {
-    var alias = _ref3.alias,
-        name = _ref3.name,
-        args = _ref3.arguments,
-        directives = _ref3.directives,
-        selectionSet = _ref3.selectionSet;
-    return join([wrap$1('', alias, ': ') + name + wrap$1('(', join(args, ', '), ')'), join(directives, ' '), selectionSet], ' ');
-  },
-
-  Argument: function Argument(_ref4) {
-    var name = _ref4.name,
-        value = _ref4.value;
-    return name + ': ' + value;
-  },
-
-  // Fragments
-
-  FragmentSpread: function FragmentSpread(_ref5) {
-    var name = _ref5.name,
-        directives = _ref5.directives;
-    return '...' + name + wrap$1(' ', join(directives, ' '));
-  },
-
-  InlineFragment: function InlineFragment(_ref6) {
-    var typeCondition = _ref6.typeCondition,
-        directives = _ref6.directives,
-        selectionSet = _ref6.selectionSet;
-    return join(['...', wrap$1('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
-  },
-
-  FragmentDefinition: function FragmentDefinition(_ref7) {
-    var name = _ref7.name,
-        typeCondition = _ref7.typeCondition,
-        variableDefinitions = _ref7.variableDefinitions,
-        directives = _ref7.directives,
-        selectionSet = _ref7.selectionSet;
-    return (
-      // Note: fragment variable definitions are experimental and may be changed
-      // or removed in the future.
-      'fragment ' + name + wrap$1('(', join(variableDefinitions, ', '), ')') + ' ' + ('on ' + typeCondition + ' ' + wrap$1('', join(directives, ' '), ' ')) + selectionSet
-    );
-  },
-
-  // Value
-
-  IntValue: function IntValue(_ref8) {
-    var value = _ref8.value;
-    return value;
-  },
-  FloatValue: function FloatValue(_ref9) {
-    var value = _ref9.value;
-    return value;
-  },
-  StringValue: function StringValue(_ref10, key) {
-    var value = _ref10.value,
-        isBlockString = _ref10.block;
-    return isBlockString ? printBlockString(value, key === 'description') : JSON.stringify(value);
-  },
-  BooleanValue: function BooleanValue(_ref11) {
-    var value = _ref11.value;
-    return value ? 'true' : 'false';
-  },
-  NullValue: function NullValue() {
-    return 'null';
-  },
-  EnumValue: function EnumValue(_ref12) {
-    var value = _ref12.value;
-    return value;
-  },
-  ListValue: function ListValue(_ref13) {
-    var values = _ref13.values;
-    return '[' + join(values, ', ') + ']';
-  },
-  ObjectValue: function ObjectValue(_ref14) {
-    var fields = _ref14.fields;
-    return '{' + join(fields, ', ') + '}';
-  },
-  ObjectField: function ObjectField(_ref15) {
-    var name = _ref15.name,
-        value = _ref15.value;
-    return name + ': ' + value;
-  },
-
-  // Directive
-
-  Directive: function Directive(_ref16) {
-    var name = _ref16.name,
-        args = _ref16.arguments;
-    return '@' + name + wrap$1('(', join(args, ', '), ')');
-  },
-
-  // Type
-
-  NamedType: function NamedType(_ref17) {
-    var name = _ref17.name;
-    return name;
-  },
-  ListType: function ListType(_ref18) {
-    var type = _ref18.type;
-    return '[' + type + ']';
-  },
-  NonNullType: function NonNullType(_ref19) {
-    var type = _ref19.type;
-    return type + '!';
-  },
-
-  // Type System Definitions
-
-  SchemaDefinition: function SchemaDefinition(_ref20) {
-    var directives = _ref20.directives,
-        operationTypes = _ref20.operationTypes;
-    return join(['schema', join(directives, ' '), block(operationTypes)], ' ');
-  },
-
-  OperationTypeDefinition: function OperationTypeDefinition(_ref21) {
-    var operation = _ref21.operation,
-        type = _ref21.type;
-    return operation + ': ' + type;
-  },
-
-  ScalarTypeDefinition: addDescription(function (_ref22) {
-    var name = _ref22.name,
-        directives = _ref22.directives;
-    return join(['scalar', name, join(directives, ' ')], ' ');
-  }),
-
-  ObjectTypeDefinition: addDescription(function (_ref23) {
-    var name = _ref23.name,
-        interfaces = _ref23.interfaces,
-        directives = _ref23.directives,
-        fields = _ref23.fields;
-    return join(['type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-  }),
-
-  FieldDefinition: addDescription(function (_ref24) {
-    var name = _ref24.name,
-        args = _ref24.arguments,
-        type = _ref24.type,
-        directives = _ref24.directives;
-    return name + wrap$1('(', join(args, ', '), ')') + ': ' + type + wrap$1(' ', join(directives, ' '));
-  }),
-
-  InputValueDefinition: addDescription(function (_ref25) {
-    var name = _ref25.name,
-        type = _ref25.type,
-        defaultValue = _ref25.defaultValue,
-        directives = _ref25.directives;
-    return join([name + ': ' + type, wrap$1('= ', defaultValue), join(directives, ' ')], ' ');
-  }),
-
-  InterfaceTypeDefinition: addDescription(function (_ref26) {
-    var name = _ref26.name,
-        directives = _ref26.directives,
-        fields = _ref26.fields;
-    return join(['interface', name, join(directives, ' '), block(fields)], ' ');
-  }),
-
-  UnionTypeDefinition: addDescription(function (_ref27) {
-    var name = _ref27.name,
-        directives = _ref27.directives,
-        types = _ref27.types;
-    return join(['union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
-  }),
-
-  EnumTypeDefinition: addDescription(function (_ref28) {
-    var name = _ref28.name,
-        directives = _ref28.directives,
-        values = _ref28.values;
-    return join(['enum', name, join(directives, ' '), block(values)], ' ');
-  }),
-
-  EnumValueDefinition: addDescription(function (_ref29) {
-    var name = _ref29.name,
-        directives = _ref29.directives;
-    return join([name, join(directives, ' ')], ' ');
-  }),
-
-  InputObjectTypeDefinition: addDescription(function (_ref30) {
-    var name = _ref30.name,
-        directives = _ref30.directives,
-        fields = _ref30.fields;
-    return join(['input', name, join(directives, ' '), block(fields)], ' ');
-  }),
-
-  ScalarTypeExtension: function ScalarTypeExtension(_ref31) {
-    var name = _ref31.name,
-        directives = _ref31.directives;
-    return join(['extend scalar', name, join(directives, ' ')], ' ');
-  },
-
-  ObjectTypeExtension: function ObjectTypeExtension(_ref32) {
-    var name = _ref32.name,
-        interfaces = _ref32.interfaces,
-        directives = _ref32.directives,
-        fields = _ref32.fields;
-    return join(['extend type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-  },
-
-  InterfaceTypeExtension: function InterfaceTypeExtension(_ref33) {
-    var name = _ref33.name,
-        directives = _ref33.directives,
-        fields = _ref33.fields;
-    return join(['extend interface', name, join(directives, ' '), block(fields)], ' ');
-  },
-
-  UnionTypeExtension: function UnionTypeExtension(_ref34) {
-    var name = _ref34.name,
-        directives = _ref34.directives,
-        types = _ref34.types;
-    return join(['extend union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
-  },
-
-  EnumTypeExtension: function EnumTypeExtension(_ref35) {
-    var name = _ref35.name,
-        directives = _ref35.directives,
-        values = _ref35.values;
-    return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
-  },
-
-  InputObjectTypeExtension: function InputObjectTypeExtension(_ref36) {
-    var name = _ref36.name,
-        directives = _ref36.directives,
-        fields = _ref36.fields;
-    return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
-  },
-
-  DirectiveDefinition: addDescription(function (_ref37) {
-    var name = _ref37.name,
-        args = _ref37.arguments,
-        locations = _ref37.locations;
-    return 'directive @' + name + wrap$1('(', join(args, ', '), ')') + ' on ' + join(locations, ' | ');
-  })
-};
-
-function addDescription(cb) {
-  return function (node) {
-    return join([node.description, cb(node)], '\n');
-  };
-}
-
-/**
- * Given maybeArray, print an empty string if it is null or empty, otherwise
- * print all items together separated by separator if provided
- */
-function join(maybeArray, separator) {
-  return maybeArray ? maybeArray.filter(function (x) {
-    return x;
-  }).join(separator || '') : '';
-}
-
-/**
- * Given array, print each item on its own line, wrapped in an
- * indented "{ }" block.
- */
-function block(array) {
-  return array && array.length !== 0 ? '{\n' + indent(join(array, '\n')) + '\n}' : '';
-}
-
-/**
- * If maybeString is not null or empty, then wrap with start and end, otherwise
- * print an empty string.
- */
-function wrap$1(start, maybeString, end) {
-  return maybeString ? start + maybeString + (end || '') : '';
-}
-
-function indent(maybeString) {
-  return maybeString && '  ' + maybeString.replace(/\n/g, '\n  ');
-}
-
-/**
- * Print a block string in the indented block form by adding a leading and
- * trailing blank line. However, if a block string starts with whitespace and is
- * a single-line, adding a leading blank line would strip that whitespace.
- */
-function printBlockString(value, isDescription) {
-  var escaped = value.replace(/"""/g, '\\"""');
-  return (value[0] === ' ' || value[0] === '\t') && value.indexOf('\n') === -1 ? '"""' + escaped.replace(/"$/, '"\n') + '"""' : '"""\n' + (isDescription ? escaped : indent(escaped)) + '\n"""';
-}
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-
-var __Schema = new GraphQLObjectType({
-  name: '__Schema',
-  isIntrospection: true,
-  description: 'A GraphQL Schema defines the capabilities of a GraphQL server. It ' + 'exposes all available types and directives on the server, as well as ' + 'the entry points for query, mutation, and subscription operations.',
-  fields: function fields() {
-    return {
-      types: {
-        description: 'A list of all types supported by this server.',
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(__Type))),
-        resolve: function resolve(schema) {
-          return objectValues(schema.getTypeMap());
-        }
-      },
-      queryType: {
-        description: 'The type that query operations will be rooted at.',
-        type: GraphQLNonNull(__Type),
-        resolve: function resolve(schema) {
-          return schema.getQueryType();
-        }
-      },
-      mutationType: {
-        description: 'If this server supports mutation, the type that ' + 'mutation operations will be rooted at.',
-        type: __Type,
-        resolve: function resolve(schema) {
-          return schema.getMutationType();
-        }
-      },
-      subscriptionType: {
-        description: 'If this server support subscription, the type that ' + 'subscription operations will be rooted at.',
-        type: __Type,
-        resolve: function resolve(schema) {
-          return schema.getSubscriptionType();
-        }
-      },
-      directives: {
-        description: 'A list of all directives supported by this server.',
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(__Directive))),
-        resolve: function resolve(schema) {
-          return schema.getDirectives();
-        }
-      }
-    };
-  }
-});
-
-var __Directive = new GraphQLObjectType({
-  name: '__Directive',
-  isIntrospection: true,
-  description: 'A Directive provides a way to describe alternate runtime execution and ' + 'type validation behavior in a GraphQL document.' + "\n\nIn some cases, you need to provide options to alter GraphQL's " + 'execution behavior in ways field arguments will not suffice, such as ' + 'conditionally including or skipping a field. Directives provide this by ' + 'describing additional information to the executor.',
-  fields: function fields() {
-    return {
-      name: { type: GraphQLNonNull(GraphQLString) },
-      description: { type: GraphQLString },
-      locations: {
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(__DirectiveLocation)))
-      },
-      args: {
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(__InputValue))),
-        resolve: function resolve(directive) {
-          return directive.args || [];
-        }
-      },
-      // NOTE: the following three fields are deprecated and are no longer part
-      // of the GraphQL specification.
-      onOperation: {
-        deprecationReason: 'Use `locations`.',
-        type: GraphQLNonNull(GraphQLBoolean),
-        resolve: function resolve(d) {
-          return d.locations.indexOf(DirectiveLocation.QUERY) !== -1 || d.locations.indexOf(DirectiveLocation.MUTATION) !== -1 || d.locations.indexOf(DirectiveLocation.SUBSCRIPTION) !== -1;
-        }
-      },
-      onFragment: {
-        deprecationReason: 'Use `locations`.',
-        type: GraphQLNonNull(GraphQLBoolean),
-        resolve: function resolve(d) {
-          return d.locations.indexOf(DirectiveLocation.FRAGMENT_SPREAD) !== -1 || d.locations.indexOf(DirectiveLocation.INLINE_FRAGMENT) !== -1 || d.locations.indexOf(DirectiveLocation.FRAGMENT_DEFINITION) !== -1;
-        }
-      },
-      onField: {
-        deprecationReason: 'Use `locations`.',
-        type: GraphQLNonNull(GraphQLBoolean),
-        resolve: function resolve(d) {
-          return d.locations.indexOf(DirectiveLocation.FIELD) !== -1;
-        }
-      }
-    };
-  }
-});
-
-var __DirectiveLocation = new GraphQLEnumType({
-  name: '__DirectiveLocation',
-  isIntrospection: true,
-  description: 'A Directive can be adjacent to many parts of the GraphQL language, a ' + '__DirectiveLocation describes one such possible adjacencies.',
-  values: {
-    QUERY: {
-      value: DirectiveLocation.QUERY,
-      description: 'Location adjacent to a query operation.'
-    },
-    MUTATION: {
-      value: DirectiveLocation.MUTATION,
-      description: 'Location adjacent to a mutation operation.'
-    },
-    SUBSCRIPTION: {
-      value: DirectiveLocation.SUBSCRIPTION,
-      description: 'Location adjacent to a subscription operation.'
-    },
-    FIELD: {
-      value: DirectiveLocation.FIELD,
-      description: 'Location adjacent to a field.'
-    },
-    FRAGMENT_DEFINITION: {
-      value: DirectiveLocation.FRAGMENT_DEFINITION,
-      description: 'Location adjacent to a fragment definition.'
-    },
-    FRAGMENT_SPREAD: {
-      value: DirectiveLocation.FRAGMENT_SPREAD,
-      description: 'Location adjacent to a fragment spread.'
-    },
-    INLINE_FRAGMENT: {
-      value: DirectiveLocation.INLINE_FRAGMENT,
-      description: 'Location adjacent to an inline fragment.'
-    },
-    SCHEMA: {
-      value: DirectiveLocation.SCHEMA,
-      description: 'Location adjacent to a schema definition.'
-    },
-    SCALAR: {
-      value: DirectiveLocation.SCALAR,
-      description: 'Location adjacent to a scalar definition.'
-    },
-    OBJECT: {
-      value: DirectiveLocation.OBJECT,
-      description: 'Location adjacent to an object type definition.'
-    },
-    FIELD_DEFINITION: {
-      value: DirectiveLocation.FIELD_DEFINITION,
-      description: 'Location adjacent to a field definition.'
-    },
-    ARGUMENT_DEFINITION: {
-      value: DirectiveLocation.ARGUMENT_DEFINITION,
-      description: 'Location adjacent to an argument definition.'
-    },
-    INTERFACE: {
-      value: DirectiveLocation.INTERFACE,
-      description: 'Location adjacent to an interface definition.'
-    },
-    UNION: {
-      value: DirectiveLocation.UNION,
-      description: 'Location adjacent to a union definition.'
-    },
-    ENUM: {
-      value: DirectiveLocation.ENUM,
-      description: 'Location adjacent to an enum definition.'
-    },
-    ENUM_VALUE: {
-      value: DirectiveLocation.ENUM_VALUE,
-      description: 'Location adjacent to an enum value definition.'
-    },
-    INPUT_OBJECT: {
-      value: DirectiveLocation.INPUT_OBJECT,
-      description: 'Location adjacent to an input object type definition.'
-    },
-    INPUT_FIELD_DEFINITION: {
-      value: DirectiveLocation.INPUT_FIELD_DEFINITION,
-      description: 'Location adjacent to an input object field definition.'
-    }
-  }
-});
-
-var __Type = new GraphQLObjectType({
-  name: '__Type',
-  isIntrospection: true,
-  description: 'The fundamental unit of any GraphQL Schema is the type. There are ' + 'many kinds of types in GraphQL as represented by the `__TypeKind` enum.' + '\n\nDepending on the kind of a type, certain fields describe ' + 'information about that type. Scalar types provide no information ' + 'beyond a name and description, while Enum types provide their values. ' + 'Object and Interface types provide the fields they describe. Abstract ' + 'types, Union and Interface, provide the Object types possible ' + 'at runtime. List and NonNull types compose other types.',
-  fields: function fields() {
-    return {
-      kind: {
-        type: GraphQLNonNull(__TypeKind),
-        resolve: function resolve(type) {
-          if (isScalarType(type)) {
-            return TypeKind.SCALAR;
-          } else if (isObjectType(type)) {
-            return TypeKind.OBJECT;
-          } else if (isInterfaceType(type)) {
-            return TypeKind.INTERFACE;
-          } else if (isUnionType(type)) {
-            return TypeKind.UNION;
-          } else if (isEnumType(type)) {
-            return TypeKind.ENUM;
-          } else if (isInputObjectType(type)) {
-            return TypeKind.INPUT_OBJECT;
-          } else if (isListType(type)) {
-            return TypeKind.LIST;
-          } else if (isNonNullType(type)) {
-            return TypeKind.NON_NULL;
-          }
-          throw new Error('Unknown kind of type: ' + type);
-        }
-      },
-      name: { type: GraphQLString },
-      description: { type: GraphQLString },
-      fields: {
-        type: GraphQLList(GraphQLNonNull(__Field)),
-        args: {
-          includeDeprecated: { type: GraphQLBoolean, defaultValue: false }
-        },
-        resolve: function resolve(type, _ref) {
-          var includeDeprecated = _ref.includeDeprecated;
-
-          if (isObjectType(type) || isInterfaceType(type)) {
-            var fields = objectValues(type.getFields());
-            if (!includeDeprecated) {
-              fields = fields.filter(function (field) {
-                return !field.deprecationReason;
-              });
-            }
-            return fields;
-          }
-          return null;
-        }
-      },
-      interfaces: {
-        type: GraphQLList(GraphQLNonNull(__Type)),
-        resolve: function resolve(type) {
-          if (isObjectType(type)) {
-            return type.getInterfaces();
-          }
-        }
-      },
-      possibleTypes: {
-        type: GraphQLList(GraphQLNonNull(__Type)),
-        resolve: function resolve(type, args, context, _ref2) {
-          var schema = _ref2.schema;
-
-          if (isAbstractType(type)) {
-            return schema.getPossibleTypes(type);
-          }
-        }
-      },
-      enumValues: {
-        type: GraphQLList(GraphQLNonNull(__EnumValue)),
-        args: {
-          includeDeprecated: { type: GraphQLBoolean, defaultValue: false }
-        },
-        resolve: function resolve(type, _ref3) {
-          var includeDeprecated = _ref3.includeDeprecated;
-
-          if (isEnumType(type)) {
-            var values = type.getValues();
-            if (!includeDeprecated) {
-              values = values.filter(function (value) {
-                return !value.deprecationReason;
-              });
-            }
-            return values;
-          }
-        }
-      },
-      inputFields: {
-        type: GraphQLList(GraphQLNonNull(__InputValue)),
-        resolve: function resolve(type) {
-          if (isInputObjectType(type)) {
-            return objectValues(type.getFields());
-          }
-        }
-      },
-      ofType: { type: __Type }
-    };
-  }
-});
-
-var __Field = new GraphQLObjectType({
-  name: '__Field',
-  isIntrospection: true,
-  description: 'Object and Interface types are described by a list of Fields, each of ' + 'which has a name, potentially a list of arguments, and a return type.',
-  fields: function fields() {
-    return {
-      name: { type: GraphQLNonNull(GraphQLString) },
-      description: { type: GraphQLString },
-      args: {
-        type: GraphQLNonNull(GraphQLList(GraphQLNonNull(__InputValue))),
-        resolve: function resolve(field) {
-          return field.args || [];
-        }
-      },
-      type: { type: GraphQLNonNull(__Type) },
-      isDeprecated: { type: GraphQLNonNull(GraphQLBoolean) },
-      deprecationReason: {
-        type: GraphQLString
-      }
-    };
-  }
-});
-
-var __InputValue = new GraphQLObjectType({
-  name: '__InputValue',
-  isIntrospection: true,
-  description: 'Arguments provided to Fields or Directives and the input fields of an ' + 'InputObject are represented as Input Values which describe their type ' + 'and optionally a default value.',
-  fields: function fields() {
-    return {
-      name: { type: GraphQLNonNull(GraphQLString) },
-      description: { type: GraphQLString },
-      type: { type: GraphQLNonNull(__Type) },
-      defaultValue: {
-        type: GraphQLString,
-        description: 'A GraphQL-formatted string representing the default value for this ' + 'input value.',
-        resolve: function resolve(inputVal) {
-          return isInvalid(inputVal.defaultValue) ? null : print(astFromValue(inputVal.defaultValue, inputVal.type));
-        }
-      }
-    };
-  }
-});
-
-var __EnumValue = new GraphQLObjectType({
-  name: '__EnumValue',
-  isIntrospection: true,
-  description: 'One possible value for a given Enum. Enum values are unique values, not ' + 'a placeholder for a string or numeric value. However an Enum value is ' + 'returned in a JSON response as a string.',
-  fields: function fields() {
-    return {
-      name: { type: GraphQLNonNull(GraphQLString) },
-      description: { type: GraphQLString },
-      isDeprecated: { type: GraphQLNonNull(GraphQLBoolean) },
-      deprecationReason: {
-        type: GraphQLString
-      }
-    };
-  }
-});
-
-var TypeKind = {
-  SCALAR: 'SCALAR',
-  OBJECT: 'OBJECT',
-  INTERFACE: 'INTERFACE',
-  UNION: 'UNION',
-  ENUM: 'ENUM',
-  INPUT_OBJECT: 'INPUT_OBJECT',
-  LIST: 'LIST',
-  NON_NULL: 'NON_NULL'
-};
-
-var __TypeKind = new GraphQLEnumType({
-  name: '__TypeKind',
-  isIntrospection: true,
-  description: 'An enum describing what kind of type a given `__Type` is.',
-  values: {
-    SCALAR: {
-      value: TypeKind.SCALAR,
-      description: 'Indicates this type is a scalar.'
-    },
-    OBJECT: {
-      value: TypeKind.OBJECT,
-      description: 'Indicates this type is an object. ' + '`fields` and `interfaces` are valid fields.'
-    },
-    INTERFACE: {
-      value: TypeKind.INTERFACE,
-      description: 'Indicates this type is an interface. ' + '`fields` and `possibleTypes` are valid fields.'
-    },
-    UNION: {
-      value: TypeKind.UNION,
-      description: 'Indicates this type is a union. ' + '`possibleTypes` is a valid field.'
-    },
-    ENUM: {
-      value: TypeKind.ENUM,
-      description: 'Indicates this type is an enum. ' + '`enumValues` is a valid field.'
-    },
-    INPUT_OBJECT: {
-      value: TypeKind.INPUT_OBJECT,
-      description: 'Indicates this type is an input object. ' + '`inputFields` is a valid field.'
-    },
-    LIST: {
-      value: TypeKind.LIST,
-      description: 'Indicates this type is a list. ' + '`ofType` is a valid field.'
-    },
-    NON_NULL: {
-      value: TypeKind.NON_NULL,
-      description: 'Indicates this type is a non-null. ' + '`ofType` is a valid field.'
-    }
-  }
-});
-
-/**
- * Note that these are GraphQLField and not GraphQLFieldConfig,
- * so the format for args is different.
- */
-
-({
-  name: '__schema',
-  type: GraphQLNonNull(__Schema),
-  description: 'Access the current type schema of this server.',
-  args: [],
-  resolve: function resolve(source, args, context, _ref4) {
-    var schema = _ref4.schema;
-    return schema;
-  }
-});
-
-({
-  name: '__type',
-  type: __Type,
-  description: 'Request the type information of a single type.',
-  args: [{ name: 'name', type: GraphQLNonNull(GraphQLString) }],
-  resolve: function resolve(source, _ref5, context, _ref6) {
-    var name = _ref5.name;
-    var schema = _ref6.schema;
-    return schema.getType(name);
-  }
-});
-
-({
-  name: '__typename',
-  type: GraphQLNonNull(GraphQLString),
-  description: 'The name of the current Object type at runtime.',
-  args: [],
-  resolve: function resolve(source, args, context, _ref7) {
-    var parentType = _ref7.parentType;
-    return parentType.name;
-  }
-});
-
-/**
- * Takes a Source and a UTF-8 character offset, and returns the corresponding
- * line and column as a SourceLocation.
- */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-function getLocation(source, position) {
-  var lineRegexp = /\r\n|[\n\r]/g;
-  var line = 1;
-  var column = position + 1;
-  var match = void 0;
-  while ((match = lineRegexp.exec(source.body)) && match.index < position) {
-    line += 1;
-    column = position + 1 - (match.index + match[0].length);
-  }
-  return { line: line, column: column };
+function isObjectLike$2(value) {
+  return _typeof$6(value) == 'object' && value !== null;
 }
 
 /**
@@ -10924,58 +8708,82 @@ function getLocation(source, position) {
  */
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
+ * Takes a Source and a UTF-8 character offset, and returns the corresponding
+ * line and column as a SourceLocation.
  */
+function getLocation(source, position) {
+  var lineRegexp = /\r\n|[\n\r]/g;
+  var line = 1;
+  var column = position + 1;
+  var match;
 
-
-/**
- * Prints a GraphQLError to a string, representing useful location information
- * about the error's position in the source.
- */
-function printError(error) {
-  var printedLocations = [];
-  if (error.nodes) {
-    error.nodes.forEach(function (node) {
-      if (node.loc) {
-        printedLocations.push(highlightSourceAtLocation(node.loc.source, getLocation(node.loc.source, node.loc.start)));
-      }
-    });
-  } else if (error.source && error.locations) {
-    var source = error.source;
-    error.locations.forEach(function (location) {
-      printedLocations.push(highlightSourceAtLocation(source, location));
-    });
+  while ((match = lineRegexp.exec(source.body)) && match.index < position) {
+    line += 1;
+    column = position + 1 - (match.index + match[0].length);
   }
-  return printedLocations.length === 0 ? error.message : [error.message].concat(printedLocations).join('\n\n') + '\n';
+
+  return {
+    line: line,
+    column: column
+  };
 }
 
 /**
- * Render a helpful description of the location of the error in the GraphQL
- * Source document.
+ * Render a helpful description of the location in the GraphQL Source document.
  */
-function highlightSourceAtLocation(source, location) {
-  var line = location.line;
+
+function printLocation(location) {
+  return printSourceLocation(location.source, getLocation(location.source, location.start));
+}
+/**
+ * Render a helpful description of the location in the GraphQL Source document.
+ */
+
+function printSourceLocation(source, sourceLocation) {
+  var firstLineColumnOffset = source.locationOffset.column - 1;
+  var body = whitespace(firstLineColumnOffset) + source.body;
+  var lineIndex = sourceLocation.line - 1;
   var lineOffset = source.locationOffset.line - 1;
-  var columnOffset = getColumnOffset(source, location);
-  var contextLine = line + lineOffset;
-  var contextColumn = location.column + columnOffset;
-  var prevLineNum = (contextLine - 1).toString();
-  var lineNum = contextLine.toString();
-  var nextLineNum = (contextLine + 1).toString();
-  var padLen = nextLineNum.length;
-  var lines = source.body.split(/\r\n|[\n\r]/g);
-  lines[0] = whitespace(source.locationOffset.column - 1) + lines[0];
-  var outputLines = [source.name + ' (' + contextLine + ':' + contextColumn + ')', line >= 2 && lpad(padLen, prevLineNum) + ': ' + lines[line - 2], lpad(padLen, lineNum) + ': ' + lines[line - 1], whitespace(2 + padLen + contextColumn - 1) + '^', line < lines.length && lpad(padLen, nextLineNum) + ': ' + lines[line]];
-  return outputLines.filter(Boolean).join('\n');
+  var lineNum = sourceLocation.line + lineOffset;
+  var columnOffset = sourceLocation.line === 1 ? firstLineColumnOffset : 0;
+  var columnNum = sourceLocation.column + columnOffset;
+  var locationStr = "".concat(source.name, ":").concat(lineNum, ":").concat(columnNum, "\n");
+  var lines = body.split(/\r\n|[\n\r]/g);
+  var locationLine = lines[lineIndex]; // Special case for minified documents
+
+  if (locationLine.length > 120) {
+    var sublineIndex = Math.floor(columnNum / 80);
+    var sublineColumnNum = columnNum % 80;
+    var sublines = [];
+
+    for (var i = 0; i < locationLine.length; i += 80) {
+      sublines.push(locationLine.slice(i, i + 80));
+    }
+
+    return locationStr + printPrefixedLines([["".concat(lineNum), sublines[0]]].concat(sublines.slice(1, sublineIndex + 1).map(function (subline) {
+      return ['', subline];
+    }), [[' ', whitespace(sublineColumnNum - 1) + '^'], ['', sublines[sublineIndex + 1]]]));
+  }
+
+  return locationStr + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
+  ["".concat(lineNum - 1), lines[lineIndex - 1]], ["".concat(lineNum), locationLine], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1), lines[lineIndex + 1]]]);
 }
 
-function getColumnOffset(source, location) {
-  return location.line === 1 ? source.locationOffset.column - 1 : 0;
+function printPrefixedLines(lines) {
+  var existingLines = lines.filter(function (_ref) {
+    _ref[0];
+        var line = _ref[1];
+    return line !== undefined;
+  });
+  var padLen = Math.max.apply(Math, existingLines.map(function (_ref2) {
+    var prefix = _ref2[0];
+    return prefix.length;
+  }));
+  return existingLines.map(function (_ref3) {
+    var prefix = _ref3[0],
+        line = _ref3[1];
+    return lpad(padLen, prefix) + (line ? ' | ' + line : ' |');
+  }).join('\n');
 }
 
 function whitespace(len) {
@@ -10987,48 +8795,43 @@ function lpad(len, str) {
 }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-/**
  * A GraphQLError describes an Error found during the parse, validate, or
  * execute phases of performing a GraphQL operation. In addition to a message
  * and stack trace, it also includes information about the locations in a
  * GraphQL document and/or execution result that correspond to the Error.
  */
 
-
 function GraphQLError( // eslint-disable-line no-redeclare
 message, nodes, source, positions, path, originalError, extensions) {
   // Compute list of blame nodes.
-  var _nodes = Array.isArray(nodes) ? nodes.length !== 0 ? nodes : undefined : nodes ? [nodes] : undefined;
+  var _nodes = Array.isArray(nodes) ? nodes.length !== 0 ? nodes : undefined : nodes ? [nodes] : undefined; // Compute locations in the source for the given nodes/positions.
 
-  // Compute locations in the source for the given nodes/positions.
+
   var _source = source;
+
   if (!_source && _nodes) {
     var node = _nodes[0];
     _source = node && node.loc && node.loc.source;
   }
 
   var _positions = positions;
+
   if (!_positions && _nodes) {
     _positions = _nodes.reduce(function (list, node) {
       if (node.loc) {
         list.push(node.loc.start);
       }
+
       return list;
     }, []);
   }
+
   if (_positions && _positions.length === 0) {
     _positions = undefined;
   }
 
-  var _locations = void 0;
+  var _locations;
+
   if (positions && source) {
     _locations = positions.map(function (pos) {
       return getLocation(source, pos);
@@ -11038,8 +8841,19 @@ message, nodes, source, positions, path, originalError, extensions) {
       if (node.loc) {
         list.push(getLocation(node.loc.source, node.loc.start));
       }
+
       return list;
     }, []);
+  }
+
+  var _extensions = extensions;
+
+  if (_extensions == null && originalError != null) {
+    var originalExtensions = originalError.extensions;
+
+    if (isObjectLike$2(originalExtensions)) {
+      _extensions = originalExtensions;
+    }
   }
 
   Object.defineProperties(this, {
@@ -11058,7 +8872,7 @@ message, nodes, source, positions, path, originalError, extensions) {
       // By being enumerable, JSON.stringify will include `locations` in the
       // resulting output. This ensures that the simplest possible GraphQL
       // service adheres to the spec.
-      enumerable: true
+      enumerable: Boolean(_locations)
     },
     path: {
       // Coercing falsey values to undefined ensures they will not be included
@@ -11067,7 +8881,7 @@ message, nodes, source, positions, path, originalError, extensions) {
       // By being enumerable, JSON.stringify will include `path` in the
       // resulting output. This ensures that the simplest possible GraphQL
       // service adheres to the spec.
-      enumerable: true
+      enumerable: Boolean(path)
     },
     nodes: {
       value: _nodes || undefined
@@ -11082,11 +8896,16 @@ message, nodes, source, positions, path, originalError, extensions) {
       value: originalError
     },
     extensions: {
-      value: extensions || originalError && originalError.extensions
+      // Coercing falsey values to undefined ensures they will not be included
+      // in JSON.stringify() when not provided.
+      value: _extensions || undefined,
+      // By being enumerable, JSON.stringify will include `path` in the
+      // resulting output. This ensures that the simplest possible GraphQL
+      // service adheres to the spec.
+      enumerable: Boolean(_extensions)
     }
-  });
+  }); // Include (non-enumerable) stack trace.
 
-  // Include (non-enumerable) stack trace.
   if (originalError && originalError.stack) {
     Object.defineProperty(this, 'stack', {
       value: originalError.stack,
@@ -11103,18 +8922,139 @@ message, nodes, source, positions, path, originalError, extensions) {
     });
   }
 }
-
 GraphQLError.prototype = Object.create(Error.prototype, {
-  constructor: { value: GraphQLError },
-  name: { value: 'GraphQLError' },
+  constructor: {
+    value: GraphQLError
+  },
+  name: {
+    value: 'GraphQLError'
+  },
   toString: {
     value: function toString() {
       return printError(this);
     }
   }
 });
+/**
+ * Prints a GraphQLError to a string, representing useful location information
+ * about the error's position in the source.
+ */
 
-function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function printError(error) {
+  var output = error.message;
+
+  if (error.nodes) {
+    for (var _i2 = 0, _error$nodes2 = error.nodes; _i2 < _error$nodes2.length; _i2++) {
+      var node = _error$nodes2[_i2];
+
+      if (node.loc) {
+        output += '\n\n' + printLocation(node.loc);
+      }
+    }
+  } else if (error.source && error.locations) {
+    for (var _i4 = 0, _error$locations2 = error.locations; _i4 < _error$locations2.length; _i4++) {
+      var location = _error$locations2[_i4];
+      output += '\n\n' + printSourceLocation(error.source, location);
+    }
+  }
+
+  return output;
+}
+
+/**
+ * Produces a GraphQLError representing a syntax error, containing useful
+ * descriptive information about the syntax error's position in the source.
+ */
+
+function syntaxError(source, position, description) {
+  return new GraphQLError("Syntax Error: ".concat(description), undefined, source, [position]);
+}
+
+/**
+ * The set of allowed kind values for AST nodes.
+ */
+var Kind = Object.freeze({
+  // Name
+  NAME: 'Name',
+  // Document
+  DOCUMENT: 'Document',
+  OPERATION_DEFINITION: 'OperationDefinition',
+  VARIABLE_DEFINITION: 'VariableDefinition',
+  SELECTION_SET: 'SelectionSet',
+  FIELD: 'Field',
+  ARGUMENT: 'Argument',
+  // Fragments
+  FRAGMENT_SPREAD: 'FragmentSpread',
+  INLINE_FRAGMENT: 'InlineFragment',
+  FRAGMENT_DEFINITION: 'FragmentDefinition',
+  // Values
+  VARIABLE: 'Variable',
+  INT: 'IntValue',
+  FLOAT: 'FloatValue',
+  STRING: 'StringValue',
+  BOOLEAN: 'BooleanValue',
+  NULL: 'NullValue',
+  ENUM: 'EnumValue',
+  LIST: 'ListValue',
+  OBJECT: 'ObjectValue',
+  OBJECT_FIELD: 'ObjectField',
+  // Directives
+  DIRECTIVE: 'Directive',
+  // Types
+  NAMED_TYPE: 'NamedType',
+  LIST_TYPE: 'ListType',
+  NON_NULL_TYPE: 'NonNullType',
+  // Type System Definitions
+  SCHEMA_DEFINITION: 'SchemaDefinition',
+  OPERATION_TYPE_DEFINITION: 'OperationTypeDefinition',
+  // Type Definitions
+  SCALAR_TYPE_DEFINITION: 'ScalarTypeDefinition',
+  OBJECT_TYPE_DEFINITION: 'ObjectTypeDefinition',
+  FIELD_DEFINITION: 'FieldDefinition',
+  INPUT_VALUE_DEFINITION: 'InputValueDefinition',
+  INTERFACE_TYPE_DEFINITION: 'InterfaceTypeDefinition',
+  UNION_TYPE_DEFINITION: 'UnionTypeDefinition',
+  ENUM_TYPE_DEFINITION: 'EnumTypeDefinition',
+  ENUM_VALUE_DEFINITION: 'EnumValueDefinition',
+  INPUT_OBJECT_TYPE_DEFINITION: 'InputObjectTypeDefinition',
+  // Directive Definitions
+  DIRECTIVE_DEFINITION: 'DirectiveDefinition',
+  // Type System Extensions
+  SCHEMA_EXTENSION: 'SchemaExtension',
+  // Type Extensions
+  SCALAR_TYPE_EXTENSION: 'ScalarTypeExtension',
+  OBJECT_TYPE_EXTENSION: 'ObjectTypeExtension',
+  INTERFACE_TYPE_EXTENSION: 'InterfaceTypeExtension',
+  UNION_TYPE_EXTENSION: 'UnionTypeExtension',
+  ENUM_TYPE_EXTENSION: 'EnumTypeExtension',
+  INPUT_OBJECT_TYPE_EXTENSION: 'InputObjectTypeExtension'
+});
+/**
+ * The enum type representing the possible kind values of AST nodes.
+ */
+
+/**
+ * The `defineToStringTag()` function checks first to see if the runtime
+ * supports the `Symbol` class and then if the `Symbol.toStringTag` constant
+ * is defined as a `Symbol` instance. If both conditions are met, the
+ * Symbol.toStringTag property is defined as a getter that returns the
+ * supplied class constructor's name.
+ *
+ * @method defineToStringTag
+ *
+ * @param {Class<any>} classObject a class such as Object, String, Number but
+ * typically one of your own creation through the class keyword; `class A {}`,
+ * for example.
+ */
+function defineToStringTag(classObject) {
+  if (typeof Symbol === 'function' && Symbol.toStringTag) {
+    Object.defineProperty(classObject.prototype, Symbol.toStringTag, {
+      get: function get() {
+        return this.constructor.name;
+      }
+    });
+  }
+}
 
 /**
  * A representation of source input to GraphQL.
@@ -11125,147 +9065,113 @@ function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Co
  * line and column in locationOffset are 1-indexed
  */
 var Source = function Source(body, name, locationOffset) {
-  _classCallCheck$3(this, Source);
-
   this.body = body;
   this.name = name || 'GraphQL request';
-  this.locationOffset = locationOffset || { line: 1, column: 1 };
-  !(this.locationOffset.line > 0) ? invariant$1(0, 'line in locationOffset is 1-indexed and must be positive') : void 0;
-  !(this.locationOffset.column > 0) ? invariant$1(0, 'column in locationOffset is 1-indexed and must be positive') : void 0;
-};
+  this.locationOffset = locationOffset || {
+    line: 1,
+    column: 1
+  };
+  this.locationOffset.line > 0 || devAssert(0, 'line in locationOffset is 1-indexed and must be positive');
+  this.locationOffset.column > 0 || devAssert(0, 'column in locationOffset is 1-indexed and must be positive');
+}; // Conditionally apply `[Symbol.toStringTag]` if `Symbol`s are supported
 
-/**
- * Produces a GraphQLError representing a syntax error, containing useful
- * descriptive information about the syntax error's position in the source.
- */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
-
-function syntaxError(source, position, description) {
-  return new GraphQLError('Syntax Error: ' + description, undefined, source, [position]);
-}
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
- */
+defineToStringTag(Source);
 
 /**
  * Produces the value of a block string from its parsed raw value, similar to
- * Coffeescript's block string, Python's docstring trim or Ruby's strip_heredoc.
+ * CoffeeScript's block string, Python's docstring trim or Ruby's strip_heredoc.
  *
  * This implements the GraphQL spec's BlockStringValue() static algorithm.
  */
-function blockStringValue(rawString) {
+function dedentBlockStringValue(rawString) {
   // Expand a block string's raw value into independent lines.
-  var lines = rawString.split(/\r\n|[\n\r]/g);
+  var lines = rawString.split(/\r\n|[\n\r]/g); // Remove common indentation from all lines but first.
 
-  // Remove common indentation from all lines but first.
+  var commonIndent = getBlockStringIndentation(lines);
+
+  if (commonIndent !== 0) {
+    for (var i = 1; i < lines.length; i++) {
+      lines[i] = lines[i].slice(commonIndent);
+    }
+  } // Remove leading and trailing blank lines.
+
+
+  while (lines.length > 0 && isBlank(lines[0])) {
+    lines.shift();
+  }
+
+  while (lines.length > 0 && isBlank(lines[lines.length - 1])) {
+    lines.pop();
+  } // Return a string of the lines joined with U+000A.
+
+
+  return lines.join('\n');
+} // @internal
+
+function getBlockStringIndentation(lines) {
   var commonIndent = null;
+
   for (var i = 1; i < lines.length; i++) {
     var line = lines[i];
     var indent = leadingWhitespace(line);
-    if (indent < line.length && (commonIndent === null || indent < commonIndent)) {
+
+    if (indent === line.length) {
+      continue; // skip empty lines
+    }
+
+    if (commonIndent === null || indent < commonIndent) {
       commonIndent = indent;
+
       if (commonIndent === 0) {
         break;
       }
     }
   }
 
-  if (commonIndent) {
-    for (var _i = 1; _i < lines.length; _i++) {
-      lines[_i] = lines[_i].slice(commonIndent);
-    }
-  }
-
-  // Remove leading and trailing blank lines.
-  while (lines.length > 0 && isBlank(lines[0])) {
-    lines.shift();
-  }
-  while (lines.length > 0 && isBlank(lines[lines.length - 1])) {
-    lines.pop();
-  }
-
-  // Return a string of the lines joined with U+000A.
-  return lines.join('\n');
+  return commonIndent === null ? 0 : commonIndent;
 }
 
 function leadingWhitespace(str) {
   var i = 0;
+
   while (i < str.length && (str[i] === ' ' || str[i] === '\t')) {
     i++;
   }
+
   return i;
 }
 
 function isBlank(str) {
   return leadingWhitespace(str) === str.length;
 }
-
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
+ * Print a block string in the indented block form by adding a leading and
+ * trailing blank line. However, if a block string starts with whitespace and is
+ * a single-line, adding a leading blank line would strip that whitespace.
  */
 
-/**
- * Given a Source object, this returns a Lexer for that source.
- * A Lexer is a stateful stream generator in that every time
- * it is advanced, it returns the next token in the Source. Assuming the
- * source lexes, the final Token emitted by the lexer will be of kind
- * EOF, after which the lexer will repeatedly return the same EOF token
- * whenever called.
- */
-function createLexer(source, options) {
-  var startOfFileToken = new Tok(TokenKind.SOF, 0, 0, 0, 0, null);
-  var lexer = {
-    source: source,
-    options: options,
-    lastToken: startOfFileToken,
-    token: startOfFileToken,
-    line: 1,
-    lineStart: 0,
-    advance: advanceLexer,
-    lookahead: lookahead
-  };
-  return lexer;
-}
 
-function advanceLexer() {
-  this.lastToken = this.token;
-  var token = this.token = this.lookahead();
-  return token;
-}
+function printBlockString(value) {
+  var indentation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var preferMultipleLines = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var isSingleLine = value.indexOf('\n') === -1;
+  var hasLeadingSpace = value[0] === ' ' || value[0] === '\t';
+  var hasTrailingQuote = value[value.length - 1] === '"';
+  var printAsMultipleLines = !isSingleLine || hasTrailingQuote || preferMultipleLines;
+  var result = ''; // Format a multi-line block quote to account for leading space.
 
-function lookahead() {
-  var token = this.token;
-  if (token.kind !== TokenKind.EOF) {
-    do {
-      // Note: next is only mutable during parsing, so we cast to allow this.
-      token = token.next || (token.next = readToken(this, token));
-    } while (token.kind === TokenKind.COMMENT);
+  if (printAsMultipleLines && !(isSingleLine && hasLeadingSpace)) {
+    result += '\n' + indentation;
   }
-  return token;
+
+  result += indentation ? value.replace(/\n/g, '\n' + indentation) : value;
+
+  if (printAsMultipleLines) {
+    result += '\n';
+  }
+
+  return '"""' + result.replace(/"""/g, '\\"""') + '"""';
 }
-
-/**
- * The return type of createLexer.
- */
-
 
 /**
  * An exported enum describing the different kinds of tokens that the
@@ -11295,26 +9201,56 @@ var TokenKind = Object.freeze({
   BLOCK_STRING: 'BlockString',
   COMMENT: 'Comment'
 });
-
 /**
  * The enum type representing the token kinds values.
  */
 
-
 /**
- * A helper function to describe a token as a string for debugging
+ * Given a Source object, this returns a Lexer for that source.
+ * A Lexer is a stateful stream generator in that every time
+ * it is advanced, it returns the next token in the Source. Assuming the
+ * source lexes, the final Token emitted by the lexer will be of kind
+ * EOF, after which the lexer will repeatedly return the same EOF token
+ * whenever called.
  */
-function getTokenDesc(token) {
-  var value = token.value;
-  return value ? token.kind + ' "' + value + '"' : token.kind;
+
+function createLexer(source, options) {
+  var startOfFileToken = new Tok(TokenKind.SOF, 0, 0, 0, 0, null);
+  var lexer = {
+    source: source,
+    options: options,
+    lastToken: startOfFileToken,
+    token: startOfFileToken,
+    line: 1,
+    lineStart: 0,
+    advance: advanceLexer,
+    lookahead: lookahead
+  };
+  return lexer;
 }
 
-var charCodeAt = String.prototype.charCodeAt;
-var slice$2 = String.prototype.slice;
+function advanceLexer() {
+  this.lastToken = this.token;
+  var token = this.token = this.lookahead();
+  return token;
+}
 
+function lookahead() {
+  var token = this.token;
+
+  if (token.kind !== TokenKind.EOF) {
+    do {
+      // Note: next is only mutable during parsing, so we cast to allow this.
+      token = token.next || (token.next = readToken(this, token));
+    } while (token.kind === TokenKind.COMMENT);
+  }
+
+  return token;
+}
 /**
  * Helper function for constructing the Token object.
  */
+
 function Tok(kind, start, end, line, column, prev, value) {
   this.kind = kind;
   this.start = start;
@@ -11324,39 +9260,38 @@ function Tok(kind, start, end, line, column, prev, value) {
   this.value = value;
   this.prev = prev;
   this.next = null;
-}
+} // Print a simplified form when appearing in JSON/util.inspect.
 
-// Print a simplified form when appearing in JSON/util.inspect.
-Tok.prototype.toJSON = Tok.prototype.inspect = function toJSON() {
+
+defineToJSON(Tok, function () {
   return {
     kind: this.kind,
     value: this.value,
     line: this.line,
     column: this.column
   };
-};
+});
 
 function printCharCode(code) {
-  return (
-    // NaN/undefined represents access beyond the end of the file.
+  return (// NaN/undefined represents access beyond the end of the file.
     isNaN(code) ? TokenKind.EOF : // Trust JSON for ASCII.
     code < 0x007f ? JSON.stringify(String.fromCharCode(code)) : // Otherwise print the escaped form.
-    '"\\u' + ('00' + code.toString(16).toUpperCase()).slice(-4) + '"'
+    "\"\\u".concat(('00' + code.toString(16).toUpperCase()).slice(-4), "\"")
   );
 }
-
 /**
  * Gets the next token from the source starting at the given position.
  *
- * This skips over whitespace and comments until it finds the next lexable
- * token, then lexes punctuators immediately or calls the appropriate helper
- * function for more complicated tokens.
+ * This skips over whitespace until it finds the next lexable token, then lexes
+ * punctuators immediately or calls the appropriate helper function for more
+ * complicated tokens.
  */
+
+
 function readToken(lexer, prev) {
   var source = lexer.source;
   var body = source.body;
   var bodyLength = body.length;
-
   var pos = positionAfterWhitespace(body, prev.end, lexer);
   var line = lexer.line;
   var col = 1 + pos - lexer.lineStart;
@@ -11365,63 +9300,74 @@ function readToken(lexer, prev) {
     return new Tok(TokenKind.EOF, bodyLength, bodyLength, line, col, prev);
   }
 
-  var code = charCodeAt.call(body, pos);
-
-  // SourceCharacter
-  if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
-    throw syntaxError(source, pos, 'Cannot contain the invalid character ' + printCharCode(code) + '.');
-  }
+  var code = body.charCodeAt(pos); // SourceCharacter
 
   switch (code) {
     // !
     case 33:
       return new Tok(TokenKind.BANG, pos, pos + 1, line, col, prev);
     // #
+
     case 35:
       return readComment(source, pos, line, col, prev);
     // $
+
     case 36:
       return new Tok(TokenKind.DOLLAR, pos, pos + 1, line, col, prev);
     // &
+
     case 38:
       return new Tok(TokenKind.AMP, pos, pos + 1, line, col, prev);
     // (
+
     case 40:
       return new Tok(TokenKind.PAREN_L, pos, pos + 1, line, col, prev);
     // )
+
     case 41:
       return new Tok(TokenKind.PAREN_R, pos, pos + 1, line, col, prev);
     // .
+
     case 46:
-      if (charCodeAt.call(body, pos + 1) === 46 && charCodeAt.call(body, pos + 2) === 46) {
+      if (body.charCodeAt(pos + 1) === 46 && body.charCodeAt(pos + 2) === 46) {
         return new Tok(TokenKind.SPREAD, pos, pos + 3, line, col, prev);
       }
+
       break;
     // :
+
     case 58:
       return new Tok(TokenKind.COLON, pos, pos + 1, line, col, prev);
     // =
+
     case 61:
       return new Tok(TokenKind.EQUALS, pos, pos + 1, line, col, prev);
     // @
+
     case 64:
       return new Tok(TokenKind.AT, pos, pos + 1, line, col, prev);
     // [
+
     case 91:
       return new Tok(TokenKind.BRACKET_L, pos, pos + 1, line, col, prev);
     // ]
+
     case 93:
       return new Tok(TokenKind.BRACKET_R, pos, pos + 1, line, col, prev);
     // {
+
     case 123:
       return new Tok(TokenKind.BRACE_L, pos, pos + 1, line, col, prev);
     // |
+
     case 124:
       return new Tok(TokenKind.PIPE, pos, pos + 1, line, col, prev);
     // }
+
     case 125:
       return new Tok(TokenKind.BRACE_R, pos, pos + 1, line, col, prev);
     // A-Z _ a-z
+
     case 65:
     case 66:
     case 67:
@@ -11477,6 +9423,7 @@ function readToken(lexer, prev) {
     case 122:
       return readName(source, pos, line, col, prev);
     // - 0-9
+
     case 45:
     case 48:
     case 49:
@@ -11490,39 +9437,47 @@ function readToken(lexer, prev) {
     case 57:
       return readNumber(source, pos, code, line, col, prev);
     // "
+
     case 34:
-      if (charCodeAt.call(body, pos + 1) === 34 && charCodeAt.call(body, pos + 2) === 34) {
-        return readBlockString(source, pos, line, col, prev);
+      if (body.charCodeAt(pos + 1) === 34 && body.charCodeAt(pos + 2) === 34) {
+        return readBlockString(source, pos, line, col, prev, lexer);
       }
+
       return readString(source, pos, line, col, prev);
   }
 
   throw syntaxError(source, pos, unexpectedCharacterMessage(code));
 }
-
 /**
  * Report a message that an unexpected character was encountered.
  */
+
+
 function unexpectedCharacterMessage(code) {
-  if (code === 39) {
-    // '
-    return "Unexpected single quote character ('), did you mean to use " + 'a double quote (")?';
+  if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
+    return "Cannot contain the invalid character ".concat(printCharCode(code), ".");
   }
 
-  return 'Cannot parse the unexpected character ' + printCharCode(code) + '.';
-}
+  if (code === 39) {
+    // '
+    return 'Unexpected single quote character (\'), did you mean to use a double quote (")?';
+  }
 
+  return "Cannot parse the unexpected character ".concat(printCharCode(code), ".");
+}
 /**
  * Reads from body starting at startPosition until it finds a non-whitespace
- * or commented character, then returns the position of that character for
- * lexing.
+ * character, then returns the position of that character for lexing.
  */
+
+
 function positionAfterWhitespace(body, startPosition, lexer) {
   var bodyLength = body.length;
   var position = startPosition;
+
   while (position < bodyLength) {
-    var code = charCodeAt.call(body, position);
-    // tab | space | comma | BOM
+    var code = body.charCodeAt(position); // tab | space | comma | BOM
+
     if (code === 9 || code === 32 || code === 44 || code === 0xfeff) {
       ++position;
     } else if (code === 10) {
@@ -11532,39 +9487,40 @@ function positionAfterWhitespace(body, startPosition, lexer) {
       lexer.lineStart = position;
     } else if (code === 13) {
       // carriage return
-      if (charCodeAt.call(body, position + 1) === 10) {
+      if (body.charCodeAt(position + 1) === 10) {
         position += 2;
       } else {
         ++position;
       }
+
       ++lexer.line;
       lexer.lineStart = position;
     } else {
       break;
     }
   }
+
   return position;
 }
-
 /**
  * Reads a comment token from the source file.
  *
  * #[\u0009\u0020-\uFFFF]*
  */
+
+
 function readComment(source, start, line, col, prev) {
   var body = source.body;
-  var code = void 0;
+  var code;
   var position = start;
 
   do {
-    code = charCodeAt.call(body, ++position);
-  } while (code !== null && (
-  // SourceCharacter but not LineTerminator
+    code = body.charCodeAt(++position);
+  } while (!isNaN(code) && ( // SourceCharacter but not LineTerminator
   code > 0x001f || code === 0x0009));
 
-  return new Tok(TokenKind.COMMENT, start, position, line, col, prev, slice$2.call(body, start + 1, position));
+  return new Tok(TokenKind.COMMENT, start, position, line, col, prev, body.slice(start + 1, position));
 }
-
 /**
  * Reads a number token from the source file, either a float
  * or an int depending on whether a decimal point appears.
@@ -11572,6 +9528,8 @@ function readComment(source, start, line, col, prev) {
  * Int:   -?(0|[1-9][0-9]*)
  * Float: -?(0|[1-9][0-9]*)(\.[0-9]+)?((E|e)(+|-)?[0-9]+)?
  */
+
+
 function readNumber(source, start, firstCode, line, col, prev) {
   var body = source.body;
   var code = firstCode;
@@ -11580,66 +9538,79 @@ function readNumber(source, start, firstCode, line, col, prev) {
 
   if (code === 45) {
     // -
-    code = charCodeAt.call(body, ++position);
+    code = body.charCodeAt(++position);
   }
 
   if (code === 48) {
     // 0
-    code = charCodeAt.call(body, ++position);
+    code = body.charCodeAt(++position);
+
     if (code >= 48 && code <= 57) {
-      throw syntaxError(source, position, 'Invalid number, unexpected digit after 0: ' + printCharCode(code) + '.');
+      throw syntaxError(source, position, "Invalid number, unexpected digit after 0: ".concat(printCharCode(code), "."));
     }
   } else {
     position = readDigits(source, position, code);
-    code = charCodeAt.call(body, position);
+    code = body.charCodeAt(position);
   }
 
   if (code === 46) {
     // .
     isFloat = true;
-
-    code = charCodeAt.call(body, ++position);
+    code = body.charCodeAt(++position);
     position = readDigits(source, position, code);
-    code = charCodeAt.call(body, position);
+    code = body.charCodeAt(position);
   }
 
   if (code === 69 || code === 101) {
     // E e
     isFloat = true;
+    code = body.charCodeAt(++position);
 
-    code = charCodeAt.call(body, ++position);
     if (code === 43 || code === 45) {
       // + -
-      code = charCodeAt.call(body, ++position);
+      code = body.charCodeAt(++position);
     }
+
     position = readDigits(source, position, code);
+    code = body.charCodeAt(position);
+  } // Numbers cannot be followed by . or e
+
+
+  if (code === 46 || code === 69 || code === 101) {
+    throw syntaxError(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
   }
 
-  return new Tok(isFloat ? TokenKind.FLOAT : TokenKind.INT, start, position, line, col, prev, slice$2.call(body, start, position));
+  return new Tok(isFloat ? TokenKind.FLOAT : TokenKind.INT, start, position, line, col, prev, body.slice(start, position));
 }
-
 /**
  * Returns the new position in the source after reading digits.
  */
+
+
 function readDigits(source, start, firstCode) {
   var body = source.body;
   var position = start;
   var code = firstCode;
+
   if (code >= 48 && code <= 57) {
     // 0 - 9
     do {
-      code = charCodeAt.call(body, ++position);
+      code = body.charCodeAt(++position);
     } while (code >= 48 && code <= 57); // 0 - 9
+
+
     return position;
   }
-  throw syntaxError(source, position, 'Invalid number, expected digit but got: ' + printCharCode(code) + '.');
-}
 
+  throw syntaxError(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
+}
 /**
  * Reads a string token from the source file.
  *
  * "([^"\\\u000A\u000D]|(\\(u[0-9a-fA-F]{4}|["\\/bfnrt])))*"
  */
+
+
 function readString(source, start, line, col, prev) {
   var body = source.body;
   var position = start + 1;
@@ -11647,62 +9618,78 @@ function readString(source, start, line, col, prev) {
   var code = 0;
   var value = '';
 
-  while (position < body.length && (code = charCodeAt.call(body, position)) !== null &&
-  // not LineTerminator
+  while (position < body.length && !isNaN(code = body.charCodeAt(position)) && // not LineTerminator
   code !== 0x000a && code !== 0x000d) {
     // Closing Quote (")
     if (code === 34) {
-      value += slice$2.call(body, chunkStart, position);
+      value += body.slice(chunkStart, position);
       return new Tok(TokenKind.STRING, start, position + 1, line, col, prev, value);
-    }
+    } // SourceCharacter
 
-    // SourceCharacter
+
     if (code < 0x0020 && code !== 0x0009) {
-      throw syntaxError(source, position, 'Invalid character within String: ' + printCharCode(code) + '.');
+      throw syntaxError(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
     }
 
     ++position;
+
     if (code === 92) {
       // \
-      value += slice$2.call(body, chunkStart, position - 1);
-      code = charCodeAt.call(body, position);
+      value += body.slice(chunkStart, position - 1);
+      code = body.charCodeAt(position);
+
       switch (code) {
         case 34:
           value += '"';
           break;
+
         case 47:
           value += '/';
           break;
+
         case 92:
           value += '\\';
           break;
+
         case 98:
           value += '\b';
           break;
+
         case 102:
           value += '\f';
           break;
+
         case 110:
           value += '\n';
           break;
+
         case 114:
           value += '\r';
           break;
+
         case 116:
           value += '\t';
           break;
+
         case 117:
-          // u
-          var charCode = uniCharCode(charCodeAt.call(body, position + 1), charCodeAt.call(body, position + 2), charCodeAt.call(body, position + 3), charCodeAt.call(body, position + 4));
-          if (charCode < 0) {
-            throw syntaxError(source, position, 'Invalid character escape sequence: ' + ('\\u' + body.slice(position + 1, position + 5) + '.'));
+          {
+            // uXXXX
+            var charCode = uniCharCode(body.charCodeAt(position + 1), body.charCodeAt(position + 2), body.charCodeAt(position + 3), body.charCodeAt(position + 4));
+
+            if (charCode < 0) {
+              var invalidSequence = body.slice(position + 1, position + 5);
+              throw syntaxError(source, position, "Invalid character escape sequence: \\u".concat(invalidSequence, "."));
+            }
+
+            value += String.fromCharCode(charCode);
+            position += 4;
+            break;
           }
-          value += String.fromCharCode(charCode);
-          position += 4;
-          break;
+
         default:
-          throw syntaxError(source, position, 'Invalid character escape sequence: \\' + String.fromCharCode(code) + '.');
+          throw syntaxError(source, position, "Invalid character escape sequence: \\".concat(String.fromCharCode(code), "."));
       }
+
       ++position;
       chunkStart = position;
     }
@@ -11710,34 +9697,50 @@ function readString(source, start, line, col, prev) {
 
   throw syntaxError(source, position, 'Unterminated string.');
 }
-
 /**
  * Reads a block string token from the source file.
  *
  * """("?"?(\\"""|\\(?!=""")|[^"\\]))*"""
  */
-function readBlockString(source, start, line, col, prev) {
+
+
+function readBlockString(source, start, line, col, prev, lexer) {
   var body = source.body;
   var position = start + 3;
   var chunkStart = position;
   var code = 0;
   var rawValue = '';
 
-  while (position < body.length && (code = charCodeAt.call(body, position)) !== null) {
+  while (position < body.length && !isNaN(code = body.charCodeAt(position))) {
     // Closing Triple-Quote (""")
-    if (code === 34 && charCodeAt.call(body, position + 1) === 34 && charCodeAt.call(body, position + 2) === 34) {
-      rawValue += slice$2.call(body, chunkStart, position);
-      return new Tok(TokenKind.BLOCK_STRING, start, position + 3, line, col, prev, blockStringValue(rawValue));
-    }
+    if (code === 34 && body.charCodeAt(position + 1) === 34 && body.charCodeAt(position + 2) === 34) {
+      rawValue += body.slice(chunkStart, position);
+      return new Tok(TokenKind.BLOCK_STRING, start, position + 3, line, col, prev, dedentBlockStringValue(rawValue));
+    } // SourceCharacter
 
-    // SourceCharacter
+
     if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
-      throw syntaxError(source, position, 'Invalid character within String: ' + printCharCode(code) + '.');
+      throw syntaxError(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
     }
 
-    // Escape Triple-Quote (\""")
-    if (code === 92 && charCodeAt.call(body, position + 1) === 34 && charCodeAt.call(body, position + 2) === 34 && charCodeAt.call(body, position + 3) === 34) {
-      rawValue += slice$2.call(body, chunkStart, position) + '"""';
+    if (code === 10) {
+      // new line
+      ++position;
+      ++lexer.line;
+      lexer.lineStart = position;
+    } else if (code === 13) {
+      // carriage return
+      if (body.charCodeAt(position + 1) === 10) {
+        position += 2;
+      } else {
+        ++position;
+      }
+
+      ++lexer.line;
+      lexer.lineStart = position;
+    } else if ( // Escape Triple-Quote (\""")
+    code === 92 && body.charCodeAt(position + 1) === 34 && body.charCodeAt(position + 2) === 34 && body.charCodeAt(position + 3) === 34) {
+      rawValue += body.slice(chunkStart, position) + '"""';
       position += 4;
       chunkStart = position;
     } else {
@@ -11747,9 +9750,8 @@ function readBlockString(source, start, line, col, prev) {
 
   throw syntaxError(source, position, 'Unterminated string.');
 }
-
 /**
- * Converts four hexidecimal chars to the integer that the
+ * Converts four hexadecimal chars to the integer that the
  * string represents. For example, uniCharCode('0','0','0','f')
  * will return 15, and uniCharCode('0','0','f','f') returns 255.
  *
@@ -11758,10 +9760,11 @@ function readBlockString(source, start, line, col, prev) {
  * This is implemented by noting that char2hex() returns -1 on error,
  * which means the result of ORing the char2hex() will also be negative.
  */
+
+
 function uniCharCode(a, b, c, d) {
   return char2hex(a) << 12 | char2hex(b) << 8 | char2hex(c) << 4 | char2hex(d);
 }
-
 /**
  * Converts a hex character to its integer value.
  * '0' becomes 0, '9' becomes 9
@@ -11770,1228 +9773,1526 @@ function uniCharCode(a, b, c, d) {
  *
  * Returns -1 on error.
  */
+
+
 function char2hex(a) {
   return a >= 48 && a <= 57 ? a - 48 // 0-9
   : a >= 65 && a <= 70 ? a - 55 // A-F
   : a >= 97 && a <= 102 ? a - 87 // a-f
   : -1;
 }
-
 /**
  * Reads an alphanumeric + underscore name from the source.
  *
  * [_A-Za-z][_0-9A-Za-z]*
  */
+
+
 function readName(source, start, line, col, prev) {
   var body = source.body;
   var bodyLength = body.length;
   var position = start + 1;
   var code = 0;
-  while (position !== bodyLength && (code = charCodeAt.call(body, position)) !== null && (code === 95 || // _
+
+  while (position !== bodyLength && !isNaN(code = body.charCodeAt(position)) && (code === 95 || // _
   code >= 48 && code <= 57 || // 0-9
   code >= 65 && code <= 90 || // A-Z
   code >= 97 && code <= 122) // a-z
   ) {
     ++position;
   }
-  return new Tok(TokenKind.NAME, start, position, line, col, prev, slice$2.call(body, start, position));
+
+  return new Tok(TokenKind.NAME, start, position, line, col, prev, body.slice(start, position));
 }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
+ * The set of allowed directive location values.
  */
-
+var DirectiveLocation = Object.freeze({
+  // Request Definitions
+  QUERY: 'QUERY',
+  MUTATION: 'MUTATION',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  FIELD: 'FIELD',
+  FRAGMENT_DEFINITION: 'FRAGMENT_DEFINITION',
+  FRAGMENT_SPREAD: 'FRAGMENT_SPREAD',
+  INLINE_FRAGMENT: 'INLINE_FRAGMENT',
+  VARIABLE_DEFINITION: 'VARIABLE_DEFINITION',
+  // Type System Definitions
+  SCHEMA: 'SCHEMA',
+  SCALAR: 'SCALAR',
+  OBJECT: 'OBJECT',
+  FIELD_DEFINITION: 'FIELD_DEFINITION',
+  ARGUMENT_DEFINITION: 'ARGUMENT_DEFINITION',
+  INTERFACE: 'INTERFACE',
+  UNION: 'UNION',
+  ENUM: 'ENUM',
+  ENUM_VALUE: 'ENUM_VALUE',
+  INPUT_OBJECT: 'INPUT_OBJECT',
+  INPUT_FIELD_DEFINITION: 'INPUT_FIELD_DEFINITION'
+});
 /**
- * Configuration options to control parser behavior
+ * The enum type representing the directive location values.
  */
-
 
 /**
  * Given a GraphQL source, parses it into a Document.
  * Throws GraphQLError if a syntax error is encountered.
  */
 function parse$1r(source, options) {
-  var sourceObj = typeof source === 'string' ? new Source(source) : source;
-  if (!(sourceObj instanceof Source)) {
-    throw new TypeError('Must provide Source. Received: ' + String(sourceObj));
+  var parser = new Parser(source, options);
+  return parser.parseDocument();
+}
+
+var Parser =
+/*#__PURE__*/
+function () {
+  function Parser(source, options) {
+    var sourceObj = typeof source === 'string' ? new Source(source) : source;
+    sourceObj instanceof Source || devAssert(0, "Must provide Source. Received: ".concat(inspect(sourceObj)));
+    this._lexer = createLexer(sourceObj);
+    this._options = options || {};
   }
-  var lexer = createLexer(sourceObj, options || {});
-  return parseDocument$1(lexer);
-}
+  /**
+   * Converts a name lex token into a name parse node.
+   */
 
-/**
- * Converts a name lex token into a name parse node.
- */
-function parseName(lexer) {
-  var token = expect(lexer, TokenKind.NAME);
-  return {
-    kind: Kind.NAME,
-    value: token.value,
-    loc: loc(lexer, token)
-  };
-}
 
-// Implements the parsing rules in the Document section.
+  var _proto = Parser.prototype;
 
-/**
- * Document : Definition+
- */
-function parseDocument$1(lexer) {
-  var start = lexer.token;
-  expect(lexer, TokenKind.SOF);
-  var definitions = [];
-  do {
-    definitions.push(parseDefinition(lexer));
-  } while (!skip(lexer, TokenKind.EOF));
+  _proto.parseName = function parseName() {
+    var token = this.expectToken(TokenKind.NAME);
+    return {
+      kind: Kind.NAME,
+      value: token.value,
+      loc: this.loc(token)
+    };
+  } // Implements the parsing rules in the Document section.
 
-  return {
-    kind: Kind.DOCUMENT,
-    definitions: definitions,
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * Document : Definition+
+   */
+  ;
 
-/**
- * Definition :
- *   - ExecutableDefinition
- *   - TypeSystemDefinition
- */
-function parseDefinition(lexer) {
-  if (peek(lexer, TokenKind.NAME)) {
-    switch (lexer.token.value) {
-      case 'query':
-      case 'mutation':
-      case 'subscription':
-      case 'fragment':
-        return parseExecutableDefinition(lexer);
-      case 'schema':
-      case 'scalar':
-      case 'type':
-      case 'interface':
-      case 'union':
-      case 'enum':
-      case 'input':
-      case 'extend':
-      case 'directive':
-        // Note: The schema definition language is an experimental addition.
-        return parseTypeSystemDefinition(lexer);
+  _proto.parseDocument = function parseDocument() {
+    var start = this._lexer.token;
+    return {
+      kind: Kind.DOCUMENT,
+      definitions: this.many(TokenKind.SOF, this.parseDefinition, TokenKind.EOF),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * Definition :
+   *   - ExecutableDefinition
+   *   - TypeSystemDefinition
+   *   - TypeSystemExtension
+   *
+   * ExecutableDefinition :
+   *   - OperationDefinition
+   *   - FragmentDefinition
+   */
+  ;
+
+  _proto.parseDefinition = function parseDefinition() {
+    if (this.peek(TokenKind.NAME)) {
+      switch (this._lexer.token.value) {
+        case 'query':
+        case 'mutation':
+        case 'subscription':
+          return this.parseOperationDefinition();
+
+        case 'fragment':
+          return this.parseFragmentDefinition();
+
+        case 'schema':
+        case 'scalar':
+        case 'type':
+        case 'interface':
+        case 'union':
+        case 'enum':
+        case 'input':
+        case 'directive':
+          return this.parseTypeSystemDefinition();
+
+        case 'extend':
+          return this.parseTypeSystemExtension();
+      }
+    } else if (this.peek(TokenKind.BRACE_L)) {
+      return this.parseOperationDefinition();
+    } else if (this.peekDescription()) {
+      return this.parseTypeSystemDefinition();
     }
-  } else if (peek(lexer, TokenKind.BRACE_L)) {
-    return parseExecutableDefinition(lexer);
-  } else if (peekDescription(lexer)) {
-    // Note: The schema definition language is an experimental addition.
-    return parseTypeSystemDefinition(lexer);
-  }
 
-  throw unexpected(lexer);
-}
+    throw this.unexpected();
+  } // Implements the parsing rules in the Operations section.
 
-/**
- * ExecutableDefinition :
- *   - OperationDefinition
- *   - FragmentDefinition
- */
-function parseExecutableDefinition(lexer) {
-  if (peek(lexer, TokenKind.NAME)) {
-    switch (lexer.token.value) {
-      case 'query':
-      case 'mutation':
-      case 'subscription':
-        return parseOperationDefinition(lexer);
+  /**
+   * OperationDefinition :
+   *  - SelectionSet
+   *  - OperationType Name? VariableDefinitions? Directives? SelectionSet
+   */
+  ;
 
-      case 'fragment':
-        return parseFragmentDefinition(lexer);
+  _proto.parseOperationDefinition = function parseOperationDefinition() {
+    var start = this._lexer.token;
+
+    if (this.peek(TokenKind.BRACE_L)) {
+      return {
+        kind: Kind.OPERATION_DEFINITION,
+        operation: 'query',
+        name: undefined,
+        variableDefinitions: [],
+        directives: [],
+        selectionSet: this.parseSelectionSet(),
+        loc: this.loc(start)
+      };
     }
-  } else if (peek(lexer, TokenKind.BRACE_L)) {
-    return parseOperationDefinition(lexer);
-  }
 
-  throw unexpected(lexer);
-}
+    var operation = this.parseOperationType();
+    var name;
 
-// Implements the parsing rules in the Operations section.
+    if (this.peek(TokenKind.NAME)) {
+      name = this.parseName();
+    }
 
-/**
- * OperationDefinition :
- *  - SelectionSet
- *  - OperationType Name? VariableDefinitions? Directives? SelectionSet
- */
-function parseOperationDefinition(lexer) {
-  var start = lexer.token;
-  if (peek(lexer, TokenKind.BRACE_L)) {
     return {
       kind: Kind.OPERATION_DEFINITION,
-      operation: 'query',
-      name: undefined,
-      variableDefinitions: [],
-      directives: [],
-      selectionSet: parseSelectionSet(lexer),
-      loc: loc(lexer, start)
+      operation: operation,
+      name: name,
+      variableDefinitions: this.parseVariableDefinitions(),
+      directives: this.parseDirectives(false),
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
     };
   }
-  var operation = parseOperationType(lexer);
-  var name = void 0;
-  if (peek(lexer, TokenKind.NAME)) {
-    name = parseName(lexer);
+  /**
+   * OperationType : one of query mutation subscription
+   */
+  ;
+
+  _proto.parseOperationType = function parseOperationType() {
+    var operationToken = this.expectToken(TokenKind.NAME);
+
+    switch (operationToken.value) {
+      case 'query':
+        return 'query';
+
+      case 'mutation':
+        return 'mutation';
+
+      case 'subscription':
+        return 'subscription';
+    }
+
+    throw this.unexpected(operationToken);
   }
-  return {
-    kind: Kind.OPERATION_DEFINITION,
-    operation: operation,
-    name: name,
-    variableDefinitions: parseVariableDefinitions(lexer),
-    directives: parseDirectives(lexer, false),
-    selectionSet: parseSelectionSet(lexer),
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * VariableDefinitions : ( VariableDefinition+ )
+   */
+  ;
 
-/**
- * OperationType : one of query mutation subscription
- */
-function parseOperationType(lexer) {
-  var operationToken = expect(lexer, TokenKind.NAME);
-  switch (operationToken.value) {
-    case 'query':
-      return 'query';
-    case 'mutation':
-      return 'mutation';
-    case 'subscription':
-      return 'subscription';
+  _proto.parseVariableDefinitions = function parseVariableDefinitions() {
+    return this.optionalMany(TokenKind.PAREN_L, this.parseVariableDefinition, TokenKind.PAREN_R);
   }
+  /**
+   * VariableDefinition : Variable : Type DefaultValue? Directives[Const]?
+   */
+  ;
 
-  throw unexpected(lexer, operationToken);
-}
-
-/**
- * VariableDefinitions : ( VariableDefinition+ )
- */
-function parseVariableDefinitions(lexer) {
-  return peek(lexer, TokenKind.PAREN_L) ? many(lexer, TokenKind.PAREN_L, parseVariableDefinition, TokenKind.PAREN_R) : [];
-}
-
-/**
- * VariableDefinition : Variable : Type DefaultValue?
- */
-function parseVariableDefinition(lexer) {
-  var start = lexer.token;
-  return {
-    kind: Kind.VARIABLE_DEFINITION,
-    variable: parseVariable(lexer),
-    type: (expect(lexer, TokenKind.COLON), parseTypeReference(lexer)),
-    defaultValue: skip(lexer, TokenKind.EQUALS) ? parseValueLiteral(lexer, true) : undefined,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * Variable : $ Name
- */
-function parseVariable(lexer) {
-  var start = lexer.token;
-  expect(lexer, TokenKind.DOLLAR);
-  return {
-    kind: Kind.VARIABLE,
-    name: parseName(lexer),
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * SelectionSet : { Selection+ }
- */
-function parseSelectionSet(lexer) {
-  var start = lexer.token;
-  return {
-    kind: Kind.SELECTION_SET,
-    selections: many(lexer, TokenKind.BRACE_L, parseSelection, TokenKind.BRACE_R),
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * Selection :
- *   - Field
- *   - FragmentSpread
- *   - InlineFragment
- */
-function parseSelection(lexer) {
-  return peek(lexer, TokenKind.SPREAD) ? parseFragment(lexer) : parseField(lexer);
-}
-
-/**
- * Field : Alias? Name Arguments? Directives? SelectionSet?
- *
- * Alias : Name :
- */
-function parseField(lexer) {
-  var start = lexer.token;
-
-  var nameOrAlias = parseName(lexer);
-  var alias = void 0;
-  var name = void 0;
-  if (skip(lexer, TokenKind.COLON)) {
-    alias = nameOrAlias;
-    name = parseName(lexer);
-  } else {
-    name = nameOrAlias;
-  }
-
-  return {
-    kind: Kind.FIELD,
-    alias: alias,
-    name: name,
-    arguments: parseArguments(lexer, false),
-    directives: parseDirectives(lexer, false),
-    selectionSet: peek(lexer, TokenKind.BRACE_L) ? parseSelectionSet(lexer) : undefined,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * Arguments[Const] : ( Argument[?Const]+ )
- */
-function parseArguments(lexer, isConst) {
-  var item = isConst ? parseConstArgument : parseArgument;
-  return peek(lexer, TokenKind.PAREN_L) ? many(lexer, TokenKind.PAREN_L, item, TokenKind.PAREN_R) : [];
-}
-
-/**
- * Argument[Const] : Name : Value[?Const]
- */
-function parseArgument(lexer) {
-  var start = lexer.token;
-  return {
-    kind: Kind.ARGUMENT,
-    name: parseName(lexer),
-    value: (expect(lexer, TokenKind.COLON), parseValueLiteral(lexer, false)),
-    loc: loc(lexer, start)
-  };
-}
-
-function parseConstArgument(lexer) {
-  var start = lexer.token;
-  return {
-    kind: Kind.ARGUMENT,
-    name: parseName(lexer),
-    value: (expect(lexer, TokenKind.COLON), parseConstValue(lexer)),
-    loc: loc(lexer, start)
-  };
-}
-
-// Implements the parsing rules in the Fragments section.
-
-/**
- * Corresponds to both FragmentSpread and InlineFragment in the spec.
- *
- * FragmentSpread : ... FragmentName Directives?
- *
- * InlineFragment : ... TypeCondition? Directives? SelectionSet
- */
-function parseFragment(lexer) {
-  var start = lexer.token;
-  expect(lexer, TokenKind.SPREAD);
-  if (peek(lexer, TokenKind.NAME) && lexer.token.value !== 'on') {
+  _proto.parseVariableDefinition = function parseVariableDefinition() {
+    var start = this._lexer.token;
     return {
-      kind: Kind.FRAGMENT_SPREAD,
-      name: parseFragmentName(lexer),
-      directives: parseDirectives(lexer, false),
-      loc: loc(lexer, start)
+      kind: Kind.VARIABLE_DEFINITION,
+      variable: this.parseVariable(),
+      type: (this.expectToken(TokenKind.COLON), this.parseTypeReference()),
+      defaultValue: this.expectOptionalToken(TokenKind.EQUALS) ? this.parseValueLiteral(true) : undefined,
+      directives: this.parseDirectives(true),
+      loc: this.loc(start)
     };
   }
-  var typeCondition = void 0;
-  if (lexer.token.value === 'on') {
-    lexer.advance();
-    typeCondition = parseNamedType(lexer);
-  }
-  return {
-    kind: Kind.INLINE_FRAGMENT,
-    typeCondition: typeCondition,
-    directives: parseDirectives(lexer, false),
-    selectionSet: parseSelectionSet(lexer),
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * Variable : $ Name
+   */
+  ;
 
-/**
- * FragmentDefinition :
- *   - fragment FragmentName on TypeCondition Directives? SelectionSet
- *
- * TypeCondition : NamedType
- */
-function parseFragmentDefinition(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'fragment');
-  // Experimental support for defining variables within fragments changes
-  // the grammar of FragmentDefinition:
-  //   - fragment FragmentName VariableDefinitions? on TypeCondition Directives? SelectionSet
-  if (lexer.options.experimentalFragmentVariables) {
+  _proto.parseVariable = function parseVariable() {
+    var start = this._lexer.token;
+    this.expectToken(TokenKind.DOLLAR);
+    return {
+      kind: Kind.VARIABLE,
+      name: this.parseName(),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * SelectionSet : { Selection+ }
+   */
+  ;
+
+  _proto.parseSelectionSet = function parseSelectionSet() {
+    var start = this._lexer.token;
+    return {
+      kind: Kind.SELECTION_SET,
+      selections: this.many(TokenKind.BRACE_L, this.parseSelection, TokenKind.BRACE_R),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * Selection :
+   *   - Field
+   *   - FragmentSpread
+   *   - InlineFragment
+   */
+  ;
+
+  _proto.parseSelection = function parseSelection() {
+    return this.peek(TokenKind.SPREAD) ? this.parseFragment() : this.parseField();
+  }
+  /**
+   * Field : Alias? Name Arguments? Directives? SelectionSet?
+   *
+   * Alias : Name :
+   */
+  ;
+
+  _proto.parseField = function parseField() {
+    var start = this._lexer.token;
+    var nameOrAlias = this.parseName();
+    var alias;
+    var name;
+
+    if (this.expectOptionalToken(TokenKind.COLON)) {
+      alias = nameOrAlias;
+      name = this.parseName();
+    } else {
+      name = nameOrAlias;
+    }
+
+    return {
+      kind: Kind.FIELD,
+      alias: alias,
+      name: name,
+      arguments: this.parseArguments(false),
+      directives: this.parseDirectives(false),
+      selectionSet: this.peek(TokenKind.BRACE_L) ? this.parseSelectionSet() : undefined,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * Arguments[Const] : ( Argument[?Const]+ )
+   */
+  ;
+
+  _proto.parseArguments = function parseArguments(isConst) {
+    var item = isConst ? this.parseConstArgument : this.parseArgument;
+    return this.optionalMany(TokenKind.PAREN_L, item, TokenKind.PAREN_R);
+  }
+  /**
+   * Argument[Const] : Name : Value[?Const]
+   */
+  ;
+
+  _proto.parseArgument = function parseArgument() {
+    var start = this._lexer.token;
+    var name = this.parseName();
+    this.expectToken(TokenKind.COLON);
+    return {
+      kind: Kind.ARGUMENT,
+      name: name,
+      value: this.parseValueLiteral(false),
+      loc: this.loc(start)
+    };
+  };
+
+  _proto.parseConstArgument = function parseConstArgument() {
+    var start = this._lexer.token;
+    return {
+      kind: Kind.ARGUMENT,
+      name: this.parseName(),
+      value: (this.expectToken(TokenKind.COLON), this.parseValueLiteral(true)),
+      loc: this.loc(start)
+    };
+  } // Implements the parsing rules in the Fragments section.
+
+  /**
+   * Corresponds to both FragmentSpread and InlineFragment in the spec.
+   *
+   * FragmentSpread : ... FragmentName Directives?
+   *
+   * InlineFragment : ... TypeCondition? Directives? SelectionSet
+   */
+  ;
+
+  _proto.parseFragment = function parseFragment() {
+    var start = this._lexer.token;
+    this.expectToken(TokenKind.SPREAD);
+    var hasTypeCondition = this.expectOptionalKeyword('on');
+
+    if (!hasTypeCondition && this.peek(TokenKind.NAME)) {
+      return {
+        kind: Kind.FRAGMENT_SPREAD,
+        name: this.parseFragmentName(),
+        directives: this.parseDirectives(false),
+        loc: this.loc(start)
+      };
+    }
+
+    return {
+      kind: Kind.INLINE_FRAGMENT,
+      typeCondition: hasTypeCondition ? this.parseNamedType() : undefined,
+      directives: this.parseDirectives(false),
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * FragmentDefinition :
+   *   - fragment FragmentName on TypeCondition Directives? SelectionSet
+   *
+   * TypeCondition : NamedType
+   */
+  ;
+
+  _proto.parseFragmentDefinition = function parseFragmentDefinition() {
+    var start = this._lexer.token;
+    this.expectKeyword('fragment'); // Experimental support for defining variables within fragments changes
+    // the grammar of FragmentDefinition:
+    //   - fragment FragmentName VariableDefinitions? on TypeCondition Directives? SelectionSet
+
+    if (this._options.experimentalFragmentVariables) {
+      return {
+        kind: Kind.FRAGMENT_DEFINITION,
+        name: this.parseFragmentName(),
+        variableDefinitions: this.parseVariableDefinitions(),
+        typeCondition: (this.expectKeyword('on'), this.parseNamedType()),
+        directives: this.parseDirectives(false),
+        selectionSet: this.parseSelectionSet(),
+        loc: this.loc(start)
+      };
+    }
+
     return {
       kind: Kind.FRAGMENT_DEFINITION,
-      name: parseFragmentName(lexer),
-      variableDefinitions: parseVariableDefinitions(lexer),
-      typeCondition: (expectKeyword(lexer, 'on'), parseNamedType(lexer)),
-      directives: parseDirectives(lexer, false),
-      selectionSet: parseSelectionSet(lexer),
-      loc: loc(lexer, start)
+      name: this.parseFragmentName(),
+      typeCondition: (this.expectKeyword('on'), this.parseNamedType()),
+      directives: this.parseDirectives(false),
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
     };
   }
-  return {
-    kind: Kind.FRAGMENT_DEFINITION,
-    name: parseFragmentName(lexer),
-    typeCondition: (expectKeyword(lexer, 'on'), parseNamedType(lexer)),
-    directives: parseDirectives(lexer, false),
-    selectionSet: parseSelectionSet(lexer),
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * FragmentName : Name but not `on`
+   */
+  ;
 
-/**
- * FragmentName : Name but not `on`
- */
-function parseFragmentName(lexer) {
-  if (lexer.token.value === 'on') {
-    throw unexpected(lexer);
-  }
-  return parseName(lexer);
-}
+  _proto.parseFragmentName = function parseFragmentName() {
+    if (this._lexer.token.value === 'on') {
+      throw this.unexpected();
+    }
 
-// Implements the parsing rules in the Values section.
+    return this.parseName();
+  } // Implements the parsing rules in the Values section.
 
-/**
- * Value[Const] :
- *   - [~Const] Variable
- *   - IntValue
- *   - FloatValue
- *   - StringValue
- *   - BooleanValue
- *   - NullValue
- *   - EnumValue
- *   - ListValue[?Const]
- *   - ObjectValue[?Const]
- *
- * BooleanValue : one of `true` `false`
- *
- * NullValue : `null`
- *
- * EnumValue : Name but not `true`, `false` or `null`
- */
-function parseValueLiteral(lexer, isConst) {
-  var token = lexer.token;
-  switch (token.kind) {
-    case TokenKind.BRACKET_L:
-      return parseList(lexer, isConst);
-    case TokenKind.BRACE_L:
-      return parseObject(lexer, isConst);
-    case TokenKind.INT:
-      lexer.advance();
-      return {
-        kind: Kind.INT,
-        value: token.value,
-        loc: loc(lexer, token)
-      };
-    case TokenKind.FLOAT:
-      lexer.advance();
-      return {
-        kind: Kind.FLOAT,
-        value: token.value,
-        loc: loc(lexer, token)
-      };
-    case TokenKind.STRING:
-    case TokenKind.BLOCK_STRING:
-      return parseStringLiteral(lexer);
-    case TokenKind.NAME:
-      if (token.value === 'true' || token.value === 'false') {
-        lexer.advance();
+  /**
+   * Value[Const] :
+   *   - [~Const] Variable
+   *   - IntValue
+   *   - FloatValue
+   *   - StringValue
+   *   - BooleanValue
+   *   - NullValue
+   *   - EnumValue
+   *   - ListValue[?Const]
+   *   - ObjectValue[?Const]
+   *
+   * BooleanValue : one of `true` `false`
+   *
+   * NullValue : `null`
+   *
+   * EnumValue : Name but not `true`, `false` or `null`
+   */
+  ;
+
+  _proto.parseValueLiteral = function parseValueLiteral(isConst) {
+    var token = this._lexer.token;
+
+    switch (token.kind) {
+      case TokenKind.BRACKET_L:
+        return this.parseList(isConst);
+
+      case TokenKind.BRACE_L:
+        return this.parseObject(isConst);
+
+      case TokenKind.INT:
+        this._lexer.advance();
+
         return {
-          kind: Kind.BOOLEAN,
-          value: token.value === 'true',
-          loc: loc(lexer, token)
+          kind: Kind.INT,
+          value: token.value,
+          loc: this.loc(token)
         };
-      } else if (token.value === 'null') {
-        lexer.advance();
+
+      case TokenKind.FLOAT:
+        this._lexer.advance();
+
         return {
-          kind: Kind.NULL,
-          loc: loc(lexer, token)
+          kind: Kind.FLOAT,
+          value: token.value,
+          loc: this.loc(token)
         };
-      }
-      lexer.advance();
-      return {
-        kind: Kind.ENUM,
-        value: token.value,
-        loc: loc(lexer, token)
-      };
-    case TokenKind.DOLLAR:
-      if (!isConst) {
-        return parseVariable(lexer);
-      }
-      break;
-  }
-  throw unexpected(lexer);
-}
 
-function parseStringLiteral(lexer) {
-  var token = lexer.token;
-  lexer.advance();
-  return {
-    kind: Kind.STRING,
-    value: token.value,
-    block: token.kind === TokenKind.BLOCK_STRING,
-    loc: loc(lexer, token)
+      case TokenKind.STRING:
+      case TokenKind.BLOCK_STRING:
+        return this.parseStringLiteral();
+
+      case TokenKind.NAME:
+        if (token.value === 'true' || token.value === 'false') {
+          this._lexer.advance();
+
+          return {
+            kind: Kind.BOOLEAN,
+            value: token.value === 'true',
+            loc: this.loc(token)
+          };
+        } else if (token.value === 'null') {
+          this._lexer.advance();
+
+          return {
+            kind: Kind.NULL,
+            loc: this.loc(token)
+          };
+        }
+
+        this._lexer.advance();
+
+        return {
+          kind: Kind.ENUM,
+          value: token.value,
+          loc: this.loc(token)
+        };
+
+      case TokenKind.DOLLAR:
+        if (!isConst) {
+          return this.parseVariable();
+        }
+
+        break;
+    }
+
+    throw this.unexpected();
   };
-}
 
-function parseConstValue(lexer) {
-  return parseValueLiteral(lexer, true);
-}
+  _proto.parseStringLiteral = function parseStringLiteral() {
+    var token = this._lexer.token;
 
-function parseValueValue(lexer) {
-  return parseValueLiteral(lexer, false);
-}
+    this._lexer.advance();
 
-/**
- * ListValue[Const] :
- *   - [ ]
- *   - [ Value[?Const]+ ]
- */
-function parseList(lexer, isConst) {
-  var start = lexer.token;
-  var item = isConst ? parseConstValue : parseValueValue;
-  return {
-    kind: Kind.LIST,
-    values: any$1(lexer, TokenKind.BRACKET_L, item, TokenKind.BRACKET_R),
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * ObjectValue[Const] :
- *   - { }
- *   - { ObjectField[?Const]+ }
- */
-function parseObject(lexer, isConst) {
-  var start = lexer.token;
-  expect(lexer, TokenKind.BRACE_L);
-  var fields = [];
-  while (!skip(lexer, TokenKind.BRACE_R)) {
-    fields.push(parseObjectField(lexer, isConst));
-  }
-  return {
-    kind: Kind.OBJECT,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * ObjectField[Const] : Name : Value[?Const]
- */
-function parseObjectField(lexer, isConst) {
-  var start = lexer.token;
-  return {
-    kind: Kind.OBJECT_FIELD,
-    name: parseName(lexer),
-    value: (expect(lexer, TokenKind.COLON), parseValueLiteral(lexer, isConst)),
-    loc: loc(lexer, start)
-  };
-}
-
-// Implements the parsing rules in the Directives section.
-
-/**
- * Directives[Const] : Directive[?Const]+
- */
-function parseDirectives(lexer, isConst) {
-  var directives = [];
-  while (peek(lexer, TokenKind.AT)) {
-    directives.push(parseDirective(lexer, isConst));
-  }
-  return directives;
-}
-
-/**
- * Directive[Const] : @ Name Arguments[?Const]?
- */
-function parseDirective(lexer, isConst) {
-  var start = lexer.token;
-  expect(lexer, TokenKind.AT);
-  return {
-    kind: Kind.DIRECTIVE,
-    name: parseName(lexer),
-    arguments: parseArguments(lexer, isConst),
-    loc: loc(lexer, start)
-  };
-}
-
-// Implements the parsing rules in the Types section.
-
-/**
- * Type :
- *   - NamedType
- *   - ListType
- *   - NonNullType
- */
-function parseTypeReference(lexer) {
-  var start = lexer.token;
-  var type = void 0;
-  if (skip(lexer, TokenKind.BRACKET_L)) {
-    type = parseTypeReference(lexer);
-    expect(lexer, TokenKind.BRACKET_R);
-    type = {
-      kind: Kind.LIST_TYPE,
-      type: type,
-      loc: loc(lexer, start)
-    };
-  } else {
-    type = parseNamedType(lexer);
-  }
-  if (skip(lexer, TokenKind.BANG)) {
     return {
-      kind: Kind.NON_NULL_TYPE,
-      type: type,
-      loc: loc(lexer, start)
+      kind: Kind.STRING,
+      value: token.value,
+      block: token.kind === TokenKind.BLOCK_STRING,
+      loc: this.loc(token)
     };
   }
-  return type;
-}
+  /**
+   * ListValue[Const] :
+   *   - [ ]
+   *   - [ Value[?Const]+ ]
+   */
+  ;
 
-/**
- * NamedType : Name
- */
-function parseNamedType(lexer) {
-  var start = lexer.token;
-  return {
-    kind: Kind.NAMED_TYPE,
-    name: parseName(lexer),
-    loc: loc(lexer, start)
+  _proto.parseList = function parseList(isConst) {
+    var _this = this;
+
+    var start = this._lexer.token;
+
+    var item = function item() {
+      return _this.parseValueLiteral(isConst);
+    };
+
+    return {
+      kind: Kind.LIST,
+      values: this.any(TokenKind.BRACKET_L, item, TokenKind.BRACKET_R),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ObjectValue[Const] :
+   *   - { }
+   *   - { ObjectField[?Const]+ }
+   */
+  ;
+
+  _proto.parseObject = function parseObject(isConst) {
+    var _this2 = this;
+
+    var start = this._lexer.token;
+
+    var item = function item() {
+      return _this2.parseObjectField(isConst);
+    };
+
+    return {
+      kind: Kind.OBJECT,
+      fields: this.any(TokenKind.BRACE_L, item, TokenKind.BRACE_R),
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ObjectField[Const] : Name : Value[?Const]
+   */
+  ;
+
+  _proto.parseObjectField = function parseObjectField(isConst) {
+    var start = this._lexer.token;
+    var name = this.parseName();
+    this.expectToken(TokenKind.COLON);
+    return {
+      kind: Kind.OBJECT_FIELD,
+      name: name,
+      value: this.parseValueLiteral(isConst),
+      loc: this.loc(start)
+    };
+  } // Implements the parsing rules in the Directives section.
+
+  /**
+   * Directives[Const] : Directive[?Const]+
+   */
+  ;
+
+  _proto.parseDirectives = function parseDirectives(isConst) {
+    var directives = [];
+
+    while (this.peek(TokenKind.AT)) {
+      directives.push(this.parseDirective(isConst));
+    }
+
+    return directives;
+  }
+  /**
+   * Directive[Const] : @ Name Arguments[?Const]?
+   */
+  ;
+
+  _proto.parseDirective = function parseDirective(isConst) {
+    var start = this._lexer.token;
+    this.expectToken(TokenKind.AT);
+    return {
+      kind: Kind.DIRECTIVE,
+      name: this.parseName(),
+      arguments: this.parseArguments(isConst),
+      loc: this.loc(start)
+    };
+  } // Implements the parsing rules in the Types section.
+
+  /**
+   * Type :
+   *   - NamedType
+   *   - ListType
+   *   - NonNullType
+   */
+  ;
+
+  _proto.parseTypeReference = function parseTypeReference() {
+    var start = this._lexer.token;
+    var type;
+
+    if (this.expectOptionalToken(TokenKind.BRACKET_L)) {
+      type = this.parseTypeReference();
+      this.expectToken(TokenKind.BRACKET_R);
+      type = {
+        kind: Kind.LIST_TYPE,
+        type: type,
+        loc: this.loc(start)
+      };
+    } else {
+      type = this.parseNamedType();
+    }
+
+    if (this.expectOptionalToken(TokenKind.BANG)) {
+      return {
+        kind: Kind.NON_NULL_TYPE,
+        type: type,
+        loc: this.loc(start)
+      };
+    }
+
+    return type;
+  }
+  /**
+   * NamedType : Name
+   */
+  ;
+
+  _proto.parseNamedType = function parseNamedType() {
+    var start = this._lexer.token;
+    return {
+      kind: Kind.NAMED_TYPE,
+      name: this.parseName(),
+      loc: this.loc(start)
+    };
+  } // Implements the parsing rules in the Type Definition section.
+
+  /**
+   * TypeSystemDefinition :
+   *   - SchemaDefinition
+   *   - TypeDefinition
+   *   - DirectiveDefinition
+   *
+   * TypeDefinition :
+   *   - ScalarTypeDefinition
+   *   - ObjectTypeDefinition
+   *   - InterfaceTypeDefinition
+   *   - UnionTypeDefinition
+   *   - EnumTypeDefinition
+   *   - InputObjectTypeDefinition
+   */
+  ;
+
+  _proto.parseTypeSystemDefinition = function parseTypeSystemDefinition() {
+    // Many definitions begin with a description and require a lookahead.
+    var keywordToken = this.peekDescription() ? this._lexer.lookahead() : this._lexer.token;
+
+    if (keywordToken.kind === TokenKind.NAME) {
+      switch (keywordToken.value) {
+        case 'schema':
+          return this.parseSchemaDefinition();
+
+        case 'scalar':
+          return this.parseScalarTypeDefinition();
+
+        case 'type':
+          return this.parseObjectTypeDefinition();
+
+        case 'interface':
+          return this.parseInterfaceTypeDefinition();
+
+        case 'union':
+          return this.parseUnionTypeDefinition();
+
+        case 'enum':
+          return this.parseEnumTypeDefinition();
+
+        case 'input':
+          return this.parseInputObjectTypeDefinition();
+
+        case 'directive':
+          return this.parseDirectiveDefinition();
+      }
+    }
+
+    throw this.unexpected(keywordToken);
   };
-}
 
-// Implements the parsing rules in the Type Definition section.
+  _proto.peekDescription = function peekDescription() {
+    return this.peek(TokenKind.STRING) || this.peek(TokenKind.BLOCK_STRING);
+  }
+  /**
+   * Description : StringValue
+   */
+  ;
 
-/**
- * TypeSystemDefinition :
- *   - SchemaDefinition
- *   - TypeDefinition
- *   - TypeExtension
- *   - DirectiveDefinition
- *
- * TypeDefinition :
- *   - ScalarTypeDefinition
- *   - ObjectTypeDefinition
- *   - InterfaceTypeDefinition
- *   - UnionTypeDefinition
- *   - EnumTypeDefinition
- *   - InputObjectTypeDefinition
- */
-function parseTypeSystemDefinition(lexer) {
-  // Many definitions begin with a description and require a lookahead.
-  var keywordToken = peekDescription(lexer) ? lexer.lookahead() : lexer.token;
-
-  if (keywordToken.kind === TokenKind.NAME) {
-    switch (keywordToken.value) {
-      case 'schema':
-        return parseSchemaDefinition(lexer);
-      case 'scalar':
-        return parseScalarTypeDefinition(lexer);
-      case 'type':
-        return parseObjectTypeDefinition(lexer);
-      case 'interface':
-        return parseInterfaceTypeDefinition(lexer);
-      case 'union':
-        return parseUnionTypeDefinition(lexer);
-      case 'enum':
-        return parseEnumTypeDefinition(lexer);
-      case 'input':
-        return parseInputObjectTypeDefinition(lexer);
-      case 'extend':
-        return parseTypeExtension(lexer);
-      case 'directive':
-        return parseDirectiveDefinition(lexer);
+  _proto.parseDescription = function parseDescription() {
+    if (this.peekDescription()) {
+      return this.parseStringLiteral();
     }
   }
+  /**
+   * SchemaDefinition : schema Directives[Const]? { OperationTypeDefinition+ }
+   */
+  ;
 
-  throw unexpected(lexer, keywordToken);
-}
-
-function peekDescription(lexer) {
-  return peek(lexer, TokenKind.STRING) || peek(lexer, TokenKind.BLOCK_STRING);
-}
-
-/**
- * Description : StringValue
- */
-function parseDescription(lexer) {
-  if (peekDescription(lexer)) {
-    return parseStringLiteral(lexer);
+  _proto.parseSchemaDefinition = function parseSchemaDefinition() {
+    var start = this._lexer.token;
+    this.expectKeyword('schema');
+    var directives = this.parseDirectives(true);
+    var operationTypes = this.many(TokenKind.BRACE_L, this.parseOperationTypeDefinition, TokenKind.BRACE_R);
+    return {
+      kind: Kind.SCHEMA_DEFINITION,
+      directives: directives,
+      operationTypes: operationTypes,
+      loc: this.loc(start)
+    };
   }
-}
+  /**
+   * OperationTypeDefinition : OperationType : NamedType
+   */
+  ;
 
-/**
- * SchemaDefinition : schema Directives[Const]? { OperationTypeDefinition+ }
- */
-function parseSchemaDefinition(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'schema');
-  var directives = parseDirectives(lexer, true);
-  var operationTypes = many(lexer, TokenKind.BRACE_L, parseOperationTypeDefinition, TokenKind.BRACE_R);
-  return {
-    kind: Kind.SCHEMA_DEFINITION,
-    directives: directives,
-    operationTypes: operationTypes,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseOperationTypeDefinition = function parseOperationTypeDefinition() {
+    var start = this._lexer.token;
+    var operation = this.parseOperationType();
+    this.expectToken(TokenKind.COLON);
+    var type = this.parseNamedType();
+    return {
+      kind: Kind.OPERATION_TYPE_DEFINITION,
+      operation: operation,
+      type: type,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ScalarTypeDefinition : Description? scalar Name Directives[Const]?
+   */
+  ;
 
-/**
- * OperationTypeDefinition : OperationType : NamedType
- */
-function parseOperationTypeDefinition(lexer) {
-  var start = lexer.token;
-  var operation = parseOperationType(lexer);
-  expect(lexer, TokenKind.COLON);
-  var type = parseNamedType(lexer);
-  return {
-    kind: Kind.OPERATION_TYPE_DEFINITION,
-    operation: operation,
-    type: type,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseScalarTypeDefinition = function parseScalarTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('scalar');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    return {
+      kind: Kind.SCALAR_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ObjectTypeDefinition :
+   *   Description?
+   *   type Name ImplementsInterfaces? Directives[Const]? FieldsDefinition?
+   */
+  ;
 
-/**
- * ScalarTypeDefinition : Description? scalar Name Directives[Const]?
- */
-function parseScalarTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'scalar');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  return {
-    kind: Kind.SCALAR_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseObjectTypeDefinition = function parseObjectTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('type');
+    var name = this.parseName();
+    var interfaces = this.parseImplementsInterfaces();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseFieldsDefinition();
+    return {
+      kind: Kind.OBJECT_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      interfaces: interfaces,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ImplementsInterfaces :
+   *   - implements `&`? NamedType
+   *   - ImplementsInterfaces & NamedType
+   */
+  ;
 
-/**
- * ObjectTypeDefinition :
- *   Description?
- *   type Name ImplementsInterfaces? Directives[Const]? FieldsDefinition?
- */
-function parseObjectTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'type');
-  var name = parseName(lexer);
-  var interfaces = parseImplementsInterfaces(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseFieldsDefinition(lexer);
-  return {
-    kind: Kind.OBJECT_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    interfaces: interfaces,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseImplementsInterfaces = function parseImplementsInterfaces() {
+    var types = [];
 
-/**
- * ImplementsInterfaces :
- *   - implements `&`? NamedType
- *   - ImplementsInterfaces & NamedType
- */
-function parseImplementsInterfaces(lexer) {
-  var types = [];
-  if (lexer.token.value === 'implements') {
-    lexer.advance();
-    // Optional leading ampersand
-    skip(lexer, TokenKind.AMP);
-    do {
-      types.push(parseNamedType(lexer));
-    } while (skip(lexer, TokenKind.AMP) ||
+    if (this.expectOptionalKeyword('implements')) {
+      // Optional leading ampersand
+      this.expectOptionalToken(TokenKind.AMP);
+
+      do {
+        types.push(this.parseNamedType());
+      } while (this.expectOptionalToken(TokenKind.AMP) || // Legacy support for the SDL?
+      this._options.allowLegacySDLImplementsInterfaces && this.peek(TokenKind.NAME));
+    }
+
+    return types;
+  }
+  /**
+   * FieldsDefinition : { FieldDefinition+ }
+   */
+  ;
+
+  _proto.parseFieldsDefinition = function parseFieldsDefinition() {
     // Legacy support for the SDL?
-    lexer.options.allowLegacySDLImplementsInterfaces && peek(lexer, TokenKind.NAME));
+    if (this._options.allowLegacySDLEmptyFields && this.peek(TokenKind.BRACE_L) && this._lexer.lookahead().kind === TokenKind.BRACE_R) {
+      this._lexer.advance();
+
+      this._lexer.advance();
+
+      return [];
+    }
+
+    return this.optionalMany(TokenKind.BRACE_L, this.parseFieldDefinition, TokenKind.BRACE_R);
   }
-  return types;
-}
+  /**
+   * FieldDefinition :
+   *   - Description? Name ArgumentsDefinition? : Type Directives[Const]?
+   */
+  ;
 
-/**
- * FieldsDefinition : { FieldDefinition+ }
- */
-function parseFieldsDefinition(lexer) {
-  // Legacy support for the SDL?
-  if (lexer.options.allowLegacySDLEmptyFields && peek(lexer, TokenKind.BRACE_L) && lexer.lookahead().kind === TokenKind.BRACE_R) {
-    lexer.advance();
-    lexer.advance();
-    return [];
+  _proto.parseFieldDefinition = function parseFieldDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    var name = this.parseName();
+    var args = this.parseArgumentDefs();
+    this.expectToken(TokenKind.COLON);
+    var type = this.parseTypeReference();
+    var directives = this.parseDirectives(true);
+    return {
+      kind: Kind.FIELD_DEFINITION,
+      description: description,
+      name: name,
+      arguments: args,
+      type: type,
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
-  return peek(lexer, TokenKind.BRACE_L) ? many(lexer, TokenKind.BRACE_L, parseFieldDefinition, TokenKind.BRACE_R) : [];
-}
+  /**
+   * ArgumentsDefinition : ( InputValueDefinition+ )
+   */
+  ;
 
-/**
- * FieldDefinition :
- *   - Description? Name ArgumentsDefinition? : Type Directives[Const]?
- */
-function parseFieldDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  var name = parseName(lexer);
-  var args = parseArgumentDefs(lexer);
-  expect(lexer, TokenKind.COLON);
-  var type = parseTypeReference(lexer);
-  var directives = parseDirectives(lexer, true);
-  return {
-    kind: Kind.FIELD_DEFINITION,
-    description: description,
-    name: name,
-    arguments: args,
-    type: type,
-    directives: directives,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * ArgumentsDefinition : ( InputValueDefinition+ )
- */
-function parseArgumentDefs(lexer) {
-  if (!peek(lexer, TokenKind.PAREN_L)) {
-    return [];
+  _proto.parseArgumentDefs = function parseArgumentDefs() {
+    return this.optionalMany(TokenKind.PAREN_L, this.parseInputValueDef, TokenKind.PAREN_R);
   }
-  return many(lexer, TokenKind.PAREN_L, parseInputValueDef, TokenKind.PAREN_R);
-}
+  /**
+   * InputValueDefinition :
+   *   - Description? Name : Type DefaultValue? Directives[Const]?
+   */
+  ;
 
-/**
- * InputValueDefinition :
- *   - Description? Name : Type DefaultValue? Directives[Const]?
- */
-function parseInputValueDef(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  var name = parseName(lexer);
-  expect(lexer, TokenKind.COLON);
-  var type = parseTypeReference(lexer);
-  var defaultValue = void 0;
-  if (skip(lexer, TokenKind.EQUALS)) {
-    defaultValue = parseConstValue(lexer);
+  _proto.parseInputValueDef = function parseInputValueDef() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    var name = this.parseName();
+    this.expectToken(TokenKind.COLON);
+    var type = this.parseTypeReference();
+    var defaultValue;
+
+    if (this.expectOptionalToken(TokenKind.EQUALS)) {
+      defaultValue = this.parseValueLiteral(true);
+    }
+
+    var directives = this.parseDirectives(true);
+    return {
+      kind: Kind.INPUT_VALUE_DEFINITION,
+      description: description,
+      name: name,
+      type: type,
+      defaultValue: defaultValue,
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
-  var directives = parseDirectives(lexer, true);
-  return {
-    kind: Kind.INPUT_VALUE_DEFINITION,
-    description: description,
-    name: name,
-    type: type,
-    defaultValue: defaultValue,
-    directives: directives,
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * InterfaceTypeDefinition :
+   *   - Description? interface Name Directives[Const]? FieldsDefinition?
+   */
+  ;
 
-/**
- * InterfaceTypeDefinition :
- *   - Description? interface Name Directives[Const]? FieldsDefinition?
- */
-function parseInterfaceTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'interface');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseFieldsDefinition(lexer);
-  return {
-    kind: Kind.INTERFACE_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseInterfaceTypeDefinition = function parseInterfaceTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('interface');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseFieldsDefinition();
+    return {
+      kind: Kind.INTERFACE_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * UnionTypeDefinition :
+   *   - Description? union Name Directives[Const]? UnionMemberTypes?
+   */
+  ;
 
-/**
- * UnionTypeDefinition :
- *   - Description? union Name Directives[Const]? UnionMemberTypes?
- */
-function parseUnionTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'union');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var types = parseUnionMemberTypes(lexer);
-  return {
-    kind: Kind.UNION_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    types: types,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseUnionTypeDefinition = function parseUnionTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('union');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var types = this.parseUnionMemberTypes();
+    return {
+      kind: Kind.UNION_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      types: types,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * UnionMemberTypes :
+   *   - = `|`? NamedType
+   *   - UnionMemberTypes | NamedType
+   */
+  ;
 
-/**
- * UnionMemberTypes :
- *   - = `|`? NamedType
- *   - UnionMemberTypes | NamedType
- */
-function parseUnionMemberTypes(lexer) {
-  var types = [];
-  if (skip(lexer, TokenKind.EQUALS)) {
+  _proto.parseUnionMemberTypes = function parseUnionMemberTypes() {
+    var types = [];
+
+    if (this.expectOptionalToken(TokenKind.EQUALS)) {
+      // Optional leading pipe
+      this.expectOptionalToken(TokenKind.PIPE);
+
+      do {
+        types.push(this.parseNamedType());
+      } while (this.expectOptionalToken(TokenKind.PIPE));
+    }
+
+    return types;
+  }
+  /**
+   * EnumTypeDefinition :
+   *   - Description? enum Name Directives[Const]? EnumValuesDefinition?
+   */
+  ;
+
+  _proto.parseEnumTypeDefinition = function parseEnumTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('enum');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var values = this.parseEnumValuesDefinition();
+    return {
+      kind: Kind.ENUM_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      values: values,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * EnumValuesDefinition : { EnumValueDefinition+ }
+   */
+  ;
+
+  _proto.parseEnumValuesDefinition = function parseEnumValuesDefinition() {
+    return this.optionalMany(TokenKind.BRACE_L, this.parseEnumValueDefinition, TokenKind.BRACE_R);
+  }
+  /**
+   * EnumValueDefinition : Description? EnumValue Directives[Const]?
+   *
+   * EnumValue : Name
+   */
+  ;
+
+  _proto.parseEnumValueDefinition = function parseEnumValueDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    return {
+      kind: Kind.ENUM_VALUE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * InputObjectTypeDefinition :
+   *   - Description? input Name Directives[Const]? InputFieldsDefinition?
+   */
+  ;
+
+  _proto.parseInputObjectTypeDefinition = function parseInputObjectTypeDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('input');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseInputFieldsDefinition();
+    return {
+      kind: Kind.INPUT_OBJECT_TYPE_DEFINITION,
+      description: description,
+      name: name,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * InputFieldsDefinition : { InputValueDefinition+ }
+   */
+  ;
+
+  _proto.parseInputFieldsDefinition = function parseInputFieldsDefinition() {
+    return this.optionalMany(TokenKind.BRACE_L, this.parseInputValueDef, TokenKind.BRACE_R);
+  }
+  /**
+   * TypeSystemExtension :
+   *   - SchemaExtension
+   *   - TypeExtension
+   *
+   * TypeExtension :
+   *   - ScalarTypeExtension
+   *   - ObjectTypeExtension
+   *   - InterfaceTypeExtension
+   *   - UnionTypeExtension
+   *   - EnumTypeExtension
+   *   - InputObjectTypeDefinition
+   */
+  ;
+
+  _proto.parseTypeSystemExtension = function parseTypeSystemExtension() {
+    var keywordToken = this._lexer.lookahead();
+
+    if (keywordToken.kind === TokenKind.NAME) {
+      switch (keywordToken.value) {
+        case 'schema':
+          return this.parseSchemaExtension();
+
+        case 'scalar':
+          return this.parseScalarTypeExtension();
+
+        case 'type':
+          return this.parseObjectTypeExtension();
+
+        case 'interface':
+          return this.parseInterfaceTypeExtension();
+
+        case 'union':
+          return this.parseUnionTypeExtension();
+
+        case 'enum':
+          return this.parseEnumTypeExtension();
+
+        case 'input':
+          return this.parseInputObjectTypeExtension();
+      }
+    }
+
+    throw this.unexpected(keywordToken);
+  }
+  /**
+   * SchemaExtension :
+   *  - extend schema Directives[Const]? { OperationTypeDefinition+ }
+   *  - extend schema Directives[Const]
+   */
+  ;
+
+  _proto.parseSchemaExtension = function parseSchemaExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('schema');
+    var directives = this.parseDirectives(true);
+    var operationTypes = this.optionalMany(TokenKind.BRACE_L, this.parseOperationTypeDefinition, TokenKind.BRACE_R);
+
+    if (directives.length === 0 && operationTypes.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.SCHEMA_EXTENSION,
+      directives: directives,
+      operationTypes: operationTypes,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ScalarTypeExtension :
+   *   - extend scalar Name Directives[Const]
+   */
+  ;
+
+  _proto.parseScalarTypeExtension = function parseScalarTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('scalar');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+
+    if (directives.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.SCALAR_TYPE_EXTENSION,
+      name: name,
+      directives: directives,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * ObjectTypeExtension :
+   *  - extend type Name ImplementsInterfaces? Directives[Const]? FieldsDefinition
+   *  - extend type Name ImplementsInterfaces? Directives[Const]
+   *  - extend type Name ImplementsInterfaces
+   */
+  ;
+
+  _proto.parseObjectTypeExtension = function parseObjectTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('type');
+    var name = this.parseName();
+    var interfaces = this.parseImplementsInterfaces();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseFieldsDefinition();
+
+    if (interfaces.length === 0 && directives.length === 0 && fields.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.OBJECT_TYPE_EXTENSION,
+      name: name,
+      interfaces: interfaces,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * InterfaceTypeExtension :
+   *   - extend interface Name Directives[Const]? FieldsDefinition
+   *   - extend interface Name Directives[Const]
+   */
+  ;
+
+  _proto.parseInterfaceTypeExtension = function parseInterfaceTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('interface');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseFieldsDefinition();
+
+    if (directives.length === 0 && fields.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.INTERFACE_TYPE_EXTENSION,
+      name: name,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * UnionTypeExtension :
+   *   - extend union Name Directives[Const]? UnionMemberTypes
+   *   - extend union Name Directives[Const]
+   */
+  ;
+
+  _proto.parseUnionTypeExtension = function parseUnionTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('union');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var types = this.parseUnionMemberTypes();
+
+    if (directives.length === 0 && types.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.UNION_TYPE_EXTENSION,
+      name: name,
+      directives: directives,
+      types: types,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * EnumTypeExtension :
+   *   - extend enum Name Directives[Const]? EnumValuesDefinition
+   *   - extend enum Name Directives[Const]
+   */
+  ;
+
+  _proto.parseEnumTypeExtension = function parseEnumTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('enum');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var values = this.parseEnumValuesDefinition();
+
+    if (directives.length === 0 && values.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.ENUM_TYPE_EXTENSION,
+      name: name,
+      directives: directives,
+      values: values,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * InputObjectTypeExtension :
+   *   - extend input Name Directives[Const]? InputFieldsDefinition
+   *   - extend input Name Directives[Const]
+   */
+  ;
+
+  _proto.parseInputObjectTypeExtension = function parseInputObjectTypeExtension() {
+    var start = this._lexer.token;
+    this.expectKeyword('extend');
+    this.expectKeyword('input');
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    var fields = this.parseInputFieldsDefinition();
+
+    if (directives.length === 0 && fields.length === 0) {
+      throw this.unexpected();
+    }
+
+    return {
+      kind: Kind.INPUT_OBJECT_TYPE_EXTENSION,
+      name: name,
+      directives: directives,
+      fields: fields,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * DirectiveDefinition :
+   *   - Description? directive @ Name ArgumentsDefinition? `repeatable`? on DirectiveLocations
+   */
+  ;
+
+  _proto.parseDirectiveDefinition = function parseDirectiveDefinition() {
+    var start = this._lexer.token;
+    var description = this.parseDescription();
+    this.expectKeyword('directive');
+    this.expectToken(TokenKind.AT);
+    var name = this.parseName();
+    var args = this.parseArgumentDefs();
+    var repeatable = this.expectOptionalKeyword('repeatable');
+    this.expectKeyword('on');
+    var locations = this.parseDirectiveLocations();
+    return {
+      kind: Kind.DIRECTIVE_DEFINITION,
+      description: description,
+      name: name,
+      arguments: args,
+      repeatable: repeatable,
+      locations: locations,
+      loc: this.loc(start)
+    };
+  }
+  /**
+   * DirectiveLocations :
+   *   - `|`? DirectiveLocation
+   *   - DirectiveLocations | DirectiveLocation
+   */
+  ;
+
+  _proto.parseDirectiveLocations = function parseDirectiveLocations() {
     // Optional leading pipe
-    skip(lexer, TokenKind.PIPE);
+    this.expectOptionalToken(TokenKind.PIPE);
+    var locations = [];
+
     do {
-      types.push(parseNamedType(lexer));
-    } while (skip(lexer, TokenKind.PIPE));
+      locations.push(this.parseDirectiveLocation());
+    } while (this.expectOptionalToken(TokenKind.PIPE));
+
+    return locations;
   }
-  return types;
-}
+  /*
+   * DirectiveLocation :
+   *   - ExecutableDirectiveLocation
+   *   - TypeSystemDirectiveLocation
+   *
+   * ExecutableDirectiveLocation : one of
+   *   `QUERY`
+   *   `MUTATION`
+   *   `SUBSCRIPTION`
+   *   `FIELD`
+   *   `FRAGMENT_DEFINITION`
+   *   `FRAGMENT_SPREAD`
+   *   `INLINE_FRAGMENT`
+   *
+   * TypeSystemDirectiveLocation : one of
+   *   `SCHEMA`
+   *   `SCALAR`
+   *   `OBJECT`
+   *   `FIELD_DEFINITION`
+   *   `ARGUMENT_DEFINITION`
+   *   `INTERFACE`
+   *   `UNION`
+   *   `ENUM`
+   *   `ENUM_VALUE`
+   *   `INPUT_OBJECT`
+   *   `INPUT_FIELD_DEFINITION`
+   */
+  ;
 
-/**
- * EnumTypeDefinition :
- *   - Description? enum Name Directives[Const]? EnumValuesDefinition?
- */
-function parseEnumTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'enum');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var values = parseEnumValuesDefinition(lexer);
-  return {
-    kind: Kind.ENUM_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    values: values,
-    loc: loc(lexer, start)
-  };
-}
+  _proto.parseDirectiveLocation = function parseDirectiveLocation() {
+    var start = this._lexer.token;
+    var name = this.parseName();
 
-/**
- * EnumValuesDefinition : { EnumValueDefinition+ }
- */
-function parseEnumValuesDefinition(lexer) {
-  return peek(lexer, TokenKind.BRACE_L) ? many(lexer, TokenKind.BRACE_L, parseEnumValueDefinition, TokenKind.BRACE_R) : [];
-}
+    if (DirectiveLocation[name.value] !== undefined) {
+      return name;
+    }
 
-/**
- * EnumValueDefinition : Description? EnumValue Directives[Const]?
- *
- * EnumValue : Name
- */
-function parseEnumValueDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  return {
-    kind: Kind.ENUM_VALUE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    loc: loc(lexer, start)
-  };
-}
+    throw this.unexpected(start);
+  } // Core parsing utility functions
 
-/**
- * InputObjectTypeDefinition :
- *   - Description? input Name Directives[Const]? InputFieldsDefinition?
- */
-function parseInputObjectTypeDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'input');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseInputFieldsDefinition(lexer);
-  return {
-    kind: Kind.INPUT_OBJECT_TYPE_DEFINITION,
-    description: description,
-    name: name,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
+  /**
+   * Returns a location object, used to identify the place in
+   * the source that created a given parsed object.
+   */
+  ;
 
-/**
- * InputFieldsDefinition : { InputValueDefinition+ }
- */
-function parseInputFieldsDefinition(lexer) {
-  return peek(lexer, TokenKind.BRACE_L) ? many(lexer, TokenKind.BRACE_L, parseInputValueDef, TokenKind.BRACE_R) : [];
-}
-
-/**
- * TypeExtension :
- *   - ScalarTypeExtension
- *   - ObjectTypeExtension
- *   - InterfaceTypeExtension
- *   - UnionTypeExtension
- *   - EnumTypeExtension
- *   - InputObjectTypeDefinition
- */
-function parseTypeExtension(lexer) {
-  var keywordToken = lexer.lookahead();
-
-  if (keywordToken.kind === TokenKind.NAME) {
-    switch (keywordToken.value) {
-      case 'scalar':
-        return parseScalarTypeExtension(lexer);
-      case 'type':
-        return parseObjectTypeExtension(lexer);
-      case 'interface':
-        return parseInterfaceTypeExtension(lexer);
-      case 'union':
-        return parseUnionTypeExtension(lexer);
-      case 'enum':
-        return parseEnumTypeExtension(lexer);
-      case 'input':
-        return parseInputObjectTypeExtension(lexer);
+  _proto.loc = function loc(startToken) {
+    if (!this._options.noLocation) {
+      return new Loc(startToken, this._lexer.lastToken, this._lexer.source);
     }
   }
+  /**
+   * Determines if the next token is of a given kind
+   */
+  ;
 
-  throw unexpected(lexer, keywordToken);
-}
-
-/**
- * ScalarTypeExtension :
- *   - extend scalar Name Directives[Const]
- */
-function parseScalarTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'scalar');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  if (directives.length === 0) {
-    throw unexpected(lexer);
+  _proto.peek = function peek(kind) {
+    return this._lexer.token.kind === kind;
   }
-  return {
-    kind: Kind.SCALAR_TYPE_EXTENSION,
-    name: name,
-    directives: directives,
-    loc: loc(lexer, start)
+  /**
+   * If the next token is of the given kind, return that token after advancing
+   * the lexer. Otherwise, do not change the parser state and throw an error.
+   */
+  ;
+
+  _proto.expectToken = function expectToken(kind) {
+    var token = this._lexer.token;
+
+    if (token.kind === kind) {
+      this._lexer.advance();
+
+      return token;
+    }
+
+    throw syntaxError(this._lexer.source, token.start, "Expected ".concat(kind, ", found ").concat(getTokenDesc(token)));
+  }
+  /**
+   * If the next token is of the given kind, return that token after advancing
+   * the lexer. Otherwise, do not change the parser state and return undefined.
+   */
+  ;
+
+  _proto.expectOptionalToken = function expectOptionalToken(kind) {
+    var token = this._lexer.token;
+
+    if (token.kind === kind) {
+      this._lexer.advance();
+
+      return token;
+    }
+
+    return undefined;
+  }
+  /**
+   * If the next token is a given keyword, advance the lexer.
+   * Otherwise, do not change the parser state and throw an error.
+   */
+  ;
+
+  _proto.expectKeyword = function expectKeyword(value) {
+    var token = this._lexer.token;
+
+    if (token.kind === TokenKind.NAME && token.value === value) {
+      this._lexer.advance();
+    } else {
+      throw syntaxError(this._lexer.source, token.start, "Expected \"".concat(value, "\", found ").concat(getTokenDesc(token)));
+    }
+  }
+  /**
+   * If the next token is a given keyword, return "true" after advancing
+   * the lexer. Otherwise, do not change the parser state and return "false".
+   */
+  ;
+
+  _proto.expectOptionalKeyword = function expectOptionalKeyword(value) {
+    var token = this._lexer.token;
+
+    if (token.kind === TokenKind.NAME && token.value === value) {
+      this._lexer.advance();
+
+      return true;
+    }
+
+    return false;
+  }
+  /**
+   * Helper function for creating an error when an unexpected lexed token
+   * is encountered.
+   */
+  ;
+
+  _proto.unexpected = function unexpected(atToken) {
+    var token = atToken || this._lexer.token;
+    return syntaxError(this._lexer.source, token.start, "Unexpected ".concat(getTokenDesc(token)));
+  }
+  /**
+   * Returns a possibly empty list of parse nodes, determined by
+   * the parseFn. This list begins with a lex token of openKind
+   * and ends with a lex token of closeKind. Advances the parser
+   * to the next lex token after the closing token.
+   */
+  ;
+
+  _proto.any = function any(openKind, parseFn, closeKind) {
+    this.expectToken(openKind);
+    var nodes = [];
+
+    while (!this.expectOptionalToken(closeKind)) {
+      nodes.push(parseFn.call(this));
+    }
+
+    return nodes;
+  }
+  /**
+   * Returns a list of parse nodes, determined by the parseFn.
+   * It can be empty only if open token is missing otherwise it will always
+   * return non-empty list that begins with a lex token of openKind and ends
+   * with a lex token of closeKind. Advances the parser to the next lex token
+   * after the closing token.
+   */
+  ;
+
+  _proto.optionalMany = function optionalMany(openKind, parseFn, closeKind) {
+    if (this.expectOptionalToken(openKind)) {
+      var nodes = [];
+
+      do {
+        nodes.push(parseFn.call(this));
+      } while (!this.expectOptionalToken(closeKind));
+
+      return nodes;
+    }
+
+    return [];
+  }
+  /**
+   * Returns a non-empty list of parse nodes, determined by
+   * the parseFn. This list begins with a lex token of openKind
+   * and ends with a lex token of closeKind. Advances the parser
+   * to the next lex token after the closing token.
+   */
+  ;
+
+  _proto.many = function many(openKind, parseFn, closeKind) {
+    this.expectToken(openKind);
+    var nodes = [];
+
+    do {
+      nodes.push(parseFn.call(this));
+    } while (!this.expectOptionalToken(closeKind));
+
+    return nodes;
   };
-}
 
-/**
- * ObjectTypeExtension :
- *  - extend type Name ImplementsInterfaces? Directives[Const]? FieldsDefinition
- *  - extend type Name ImplementsInterfaces? Directives[Const]
- *  - extend type Name ImplementsInterfaces
- */
-function parseObjectTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'type');
-  var name = parseName(lexer);
-  var interfaces = parseImplementsInterfaces(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseFieldsDefinition(lexer);
-  if (interfaces.length === 0 && directives.length === 0 && fields.length === 0) {
-    throw unexpected(lexer);
-  }
-  return {
-    kind: Kind.OBJECT_TYPE_EXTENSION,
-    name: name,
-    interfaces: interfaces,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * InterfaceTypeExtension :
- *   - extend interface Name Directives[Const]? FieldsDefinition
- *   - extend interface Name Directives[Const]
- */
-function parseInterfaceTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'interface');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseFieldsDefinition(lexer);
-  if (directives.length === 0 && fields.length === 0) {
-    throw unexpected(lexer);
-  }
-  return {
-    kind: Kind.INTERFACE_TYPE_EXTENSION,
-    name: name,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * UnionTypeExtension :
- *   - extend union Name Directives[Const]? UnionMemberTypes
- *   - extend union Name Directives[Const]
- */
-function parseUnionTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'union');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var types = parseUnionMemberTypes(lexer);
-  if (directives.length === 0 && types.length === 0) {
-    throw unexpected(lexer);
-  }
-  return {
-    kind: Kind.UNION_TYPE_EXTENSION,
-    name: name,
-    directives: directives,
-    types: types,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * EnumTypeExtension :
- *   - extend enum Name Directives[Const]? EnumValuesDefinition
- *   - extend enum Name Directives[Const]
- */
-function parseEnumTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'enum');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var values = parseEnumValuesDefinition(lexer);
-  if (directives.length === 0 && values.length === 0) {
-    throw unexpected(lexer);
-  }
-  return {
-    kind: Kind.ENUM_TYPE_EXTENSION,
-    name: name,
-    directives: directives,
-    values: values,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * InputObjectTypeExtension :
- *   - extend input Name Directives[Const]? InputFieldsDefinition
- *   - extend input Name Directives[Const]
- */
-function parseInputObjectTypeExtension(lexer) {
-  var start = lexer.token;
-  expectKeyword(lexer, 'extend');
-  expectKeyword(lexer, 'input');
-  var name = parseName(lexer);
-  var directives = parseDirectives(lexer, true);
-  var fields = parseInputFieldsDefinition(lexer);
-  if (directives.length === 0 && fields.length === 0) {
-    throw unexpected(lexer);
-  }
-  return {
-    kind: Kind.INPUT_OBJECT_TYPE_EXTENSION,
-    name: name,
-    directives: directives,
-    fields: fields,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * DirectiveDefinition :
- *   - Description? directive @ Name ArgumentsDefinition? on DirectiveLocations
- */
-function parseDirectiveDefinition(lexer) {
-  var start = lexer.token;
-  var description = parseDescription(lexer);
-  expectKeyword(lexer, 'directive');
-  expect(lexer, TokenKind.AT);
-  var name = parseName(lexer);
-  var args = parseArgumentDefs(lexer);
-  expectKeyword(lexer, 'on');
-  var locations = parseDirectiveLocations(lexer);
-  return {
-    kind: Kind.DIRECTIVE_DEFINITION,
-    description: description,
-    name: name,
-    arguments: args,
-    locations: locations,
-    loc: loc(lexer, start)
-  };
-}
-
-/**
- * DirectiveLocations :
- *   - `|`? DirectiveLocation
- *   - DirectiveLocations | DirectiveLocation
- */
-function parseDirectiveLocations(lexer) {
-  // Optional leading pipe
-  skip(lexer, TokenKind.PIPE);
-  var locations = [];
-  do {
-    locations.push(parseDirectiveLocation(lexer));
-  } while (skip(lexer, TokenKind.PIPE));
-  return locations;
-}
-
-/*
- * DirectiveLocation :
- *   - ExecutableDirectiveLocation
- *   - TypeSystemDirectiveLocation
- *
- * ExecutableDirectiveLocation : one of
- *   `QUERY`
- *   `MUTATION`
- *   `SUBSCRIPTION`
- *   `FIELD`
- *   `FRAGMENT_DEFINITION`
- *   `FRAGMENT_SPREAD`
- *   `INLINE_FRAGMENT`
- *
- * TypeSystemDirectiveLocation : one of
- *   `SCHEMA`
- *   `SCALAR`
- *   `OBJECT`
- *   `FIELD_DEFINITION`
- *   `ARGUMENT_DEFINITION`
- *   `INTERFACE`
- *   `UNION`
- *   `ENUM`
- *   `ENUM_VALUE`
- *   `INPUT_OBJECT`
- *   `INPUT_FIELD_DEFINITION`
- */
-function parseDirectiveLocation(lexer) {
-  var start = lexer.token;
-  var name = parseName(lexer);
-  if (DirectiveLocation.hasOwnProperty(name.value)) {
-    return name;
-  }
-  throw unexpected(lexer, start);
-}
-
-// Core parsing utility functions
-
-/**
- * Returns a location object, used to identify the place in
- * the source that created a given parsed object.
- */
-function loc(lexer, startToken) {
-  if (!lexer.options.noLocation) {
-    return new Loc(startToken, lexer.lastToken, lexer.source);
-  }
-}
+  return Parser;
+}();
 
 function Loc(startToken, endToken, source) {
   this.start = startToken.start;
@@ -12999,113 +11300,322 @@ function Loc(startToken, endToken, source) {
   this.startToken = startToken;
   this.endToken = endToken;
   this.source = source;
+} // Print a simplified form when appearing in JSON/util.inspect.
+
+
+defineToJSON(Loc, function () {
+  return {
+    start: this.start,
+    end: this.end
+  };
+});
+/**
+ * A helper function to describe a token as a string for debugging
+ */
+
+function getTokenDesc(token) {
+  var value = token.value;
+  return value ? "".concat(token.kind, " \"").concat(value, "\"") : token.kind;
 }
 
-// Print a simplified form when appearing in JSON/util.inspect.
-Loc.prototype.toJSON = Loc.prototype.inspect = function toJSON() {
-  return { start: this.start, end: this.end };
+/**
+ * Converts an AST into a string, using one set of reasonable
+ * formatting rules.
+ */
+
+function print(ast) {
+  return visit(ast, {
+    leave: printDocASTReducer
+  });
+} // TODO: provide better type coverage in future
+
+var printDocASTReducer = {
+  Name: function Name(node) {
+    return node.value;
+  },
+  Variable: function Variable(node) {
+    return '$' + node.name;
+  },
+  // Document
+  Document: function Document(node) {
+    return join(node.definitions, '\n\n') + '\n';
+  },
+  OperationDefinition: function OperationDefinition(node) {
+    var op = node.operation;
+    var name = node.name;
+    var varDefs = wrap$1('(', join(node.variableDefinitions, ', '), ')');
+    var directives = join(node.directives, ' ');
+    var selectionSet = node.selectionSet; // Anonymous queries with no directives or variable definitions can use
+    // the query short form.
+
+    return !name && !directives && !varDefs && op === 'query' ? selectionSet : join([op, join([name, varDefs]), directives, selectionSet], ' ');
+  },
+  VariableDefinition: function VariableDefinition(_ref) {
+    var variable = _ref.variable,
+        type = _ref.type,
+        defaultValue = _ref.defaultValue,
+        directives = _ref.directives;
+    return variable + ': ' + type + wrap$1(' = ', defaultValue) + wrap$1(' ', join(directives, ' '));
+  },
+  SelectionSet: function SelectionSet(_ref2) {
+    var selections = _ref2.selections;
+    return block(selections);
+  },
+  Field: function Field(_ref3) {
+    var alias = _ref3.alias,
+        name = _ref3.name,
+        args = _ref3.arguments,
+        directives = _ref3.directives,
+        selectionSet = _ref3.selectionSet;
+    return join([wrap$1('', alias, ': ') + name + wrap$1('(', join(args, ', '), ')'), join(directives, ' '), selectionSet], ' ');
+  },
+  Argument: function Argument(_ref4) {
+    var name = _ref4.name,
+        value = _ref4.value;
+    return name + ': ' + value;
+  },
+  // Fragments
+  FragmentSpread: function FragmentSpread(_ref5) {
+    var name = _ref5.name,
+        directives = _ref5.directives;
+    return '...' + name + wrap$1(' ', join(directives, ' '));
+  },
+  InlineFragment: function InlineFragment(_ref6) {
+    var typeCondition = _ref6.typeCondition,
+        directives = _ref6.directives,
+        selectionSet = _ref6.selectionSet;
+    return join(['...', wrap$1('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
+  },
+  FragmentDefinition: function FragmentDefinition(_ref7) {
+    var name = _ref7.name,
+        typeCondition = _ref7.typeCondition,
+        variableDefinitions = _ref7.variableDefinitions,
+        directives = _ref7.directives,
+        selectionSet = _ref7.selectionSet;
+    return (// Note: fragment variable definitions are experimental and may be changed
+      // or removed in the future.
+      "fragment ".concat(name).concat(wrap$1('(', join(variableDefinitions, ', '), ')'), " ") + "on ".concat(typeCondition, " ").concat(wrap$1('', join(directives, ' '), ' ')) + selectionSet
+    );
+  },
+  // Value
+  IntValue: function IntValue(_ref8) {
+    var value = _ref8.value;
+    return value;
+  },
+  FloatValue: function FloatValue(_ref9) {
+    var value = _ref9.value;
+    return value;
+  },
+  StringValue: function StringValue(_ref10, key) {
+    var value = _ref10.value,
+        isBlockString = _ref10.block;
+    return isBlockString ? printBlockString(value, key === 'description' ? '' : '  ') : JSON.stringify(value);
+  },
+  BooleanValue: function BooleanValue(_ref11) {
+    var value = _ref11.value;
+    return value ? 'true' : 'false';
+  },
+  NullValue: function NullValue() {
+    return 'null';
+  },
+  EnumValue: function EnumValue(_ref12) {
+    var value = _ref12.value;
+    return value;
+  },
+  ListValue: function ListValue(_ref13) {
+    var values = _ref13.values;
+    return '[' + join(values, ', ') + ']';
+  },
+  ObjectValue: function ObjectValue(_ref14) {
+    var fields = _ref14.fields;
+    return '{' + join(fields, ', ') + '}';
+  },
+  ObjectField: function ObjectField(_ref15) {
+    var name = _ref15.name,
+        value = _ref15.value;
+    return name + ': ' + value;
+  },
+  // Directive
+  Directive: function Directive(_ref16) {
+    var name = _ref16.name,
+        args = _ref16.arguments;
+    return '@' + name + wrap$1('(', join(args, ', '), ')');
+  },
+  // Type
+  NamedType: function NamedType(_ref17) {
+    var name = _ref17.name;
+    return name;
+  },
+  ListType: function ListType(_ref18) {
+    var type = _ref18.type;
+    return '[' + type + ']';
+  },
+  NonNullType: function NonNullType(_ref19) {
+    var type = _ref19.type;
+    return type + '!';
+  },
+  // Type System Definitions
+  SchemaDefinition: function SchemaDefinition(_ref20) {
+    var directives = _ref20.directives,
+        operationTypes = _ref20.operationTypes;
+    return join(['schema', join(directives, ' '), block(operationTypes)], ' ');
+  },
+  OperationTypeDefinition: function OperationTypeDefinition(_ref21) {
+    var operation = _ref21.operation,
+        type = _ref21.type;
+    return operation + ': ' + type;
+  },
+  ScalarTypeDefinition: addDescription(function (_ref22) {
+    var name = _ref22.name,
+        directives = _ref22.directives;
+    return join(['scalar', name, join(directives, ' ')], ' ');
+  }),
+  ObjectTypeDefinition: addDescription(function (_ref23) {
+    var name = _ref23.name,
+        interfaces = _ref23.interfaces,
+        directives = _ref23.directives,
+        fields = _ref23.fields;
+    return join(['type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+  }),
+  FieldDefinition: addDescription(function (_ref24) {
+    var name = _ref24.name,
+        args = _ref24.arguments,
+        type = _ref24.type,
+        directives = _ref24.directives;
+    return name + (hasMultilineItems(args) ? wrap$1('(\n', indent(join(args, '\n')), '\n)') : wrap$1('(', join(args, ', '), ')')) + ': ' + type + wrap$1(' ', join(directives, ' '));
+  }),
+  InputValueDefinition: addDescription(function (_ref25) {
+    var name = _ref25.name,
+        type = _ref25.type,
+        defaultValue = _ref25.defaultValue,
+        directives = _ref25.directives;
+    return join([name + ': ' + type, wrap$1('= ', defaultValue), join(directives, ' ')], ' ');
+  }),
+  InterfaceTypeDefinition: addDescription(function (_ref26) {
+    var name = _ref26.name,
+        directives = _ref26.directives,
+        fields = _ref26.fields;
+    return join(['interface', name, join(directives, ' '), block(fields)], ' ');
+  }),
+  UnionTypeDefinition: addDescription(function (_ref27) {
+    var name = _ref27.name,
+        directives = _ref27.directives,
+        types = _ref27.types;
+    return join(['union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
+  }),
+  EnumTypeDefinition: addDescription(function (_ref28) {
+    var name = _ref28.name,
+        directives = _ref28.directives,
+        values = _ref28.values;
+    return join(['enum', name, join(directives, ' '), block(values)], ' ');
+  }),
+  EnumValueDefinition: addDescription(function (_ref29) {
+    var name = _ref29.name,
+        directives = _ref29.directives;
+    return join([name, join(directives, ' ')], ' ');
+  }),
+  InputObjectTypeDefinition: addDescription(function (_ref30) {
+    var name = _ref30.name,
+        directives = _ref30.directives,
+        fields = _ref30.fields;
+    return join(['input', name, join(directives, ' '), block(fields)], ' ');
+  }),
+  DirectiveDefinition: addDescription(function (_ref31) {
+    var name = _ref31.name,
+        args = _ref31.arguments,
+        repeatable = _ref31.repeatable,
+        locations = _ref31.locations;
+    return 'directive @' + name + (hasMultilineItems(args) ? wrap$1('(\n', indent(join(args, '\n')), '\n)') : wrap$1('(', join(args, ', '), ')')) + (repeatable ? ' repeatable' : '') + ' on ' + join(locations, ' | ');
+  }),
+  SchemaExtension: function SchemaExtension(_ref32) {
+    var directives = _ref32.directives,
+        operationTypes = _ref32.operationTypes;
+    return join(['extend schema', join(directives, ' '), block(operationTypes)], ' ');
+  },
+  ScalarTypeExtension: function ScalarTypeExtension(_ref33) {
+    var name = _ref33.name,
+        directives = _ref33.directives;
+    return join(['extend scalar', name, join(directives, ' ')], ' ');
+  },
+  ObjectTypeExtension: function ObjectTypeExtension(_ref34) {
+    var name = _ref34.name,
+        interfaces = _ref34.interfaces,
+        directives = _ref34.directives,
+        fields = _ref34.fields;
+    return join(['extend type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+  },
+  InterfaceTypeExtension: function InterfaceTypeExtension(_ref35) {
+    var name = _ref35.name,
+        directives = _ref35.directives,
+        fields = _ref35.fields;
+    return join(['extend interface', name, join(directives, ' '), block(fields)], ' ');
+  },
+  UnionTypeExtension: function UnionTypeExtension(_ref36) {
+    var name = _ref36.name,
+        directives = _ref36.directives,
+        types = _ref36.types;
+    return join(['extend union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
+  },
+  EnumTypeExtension: function EnumTypeExtension(_ref37) {
+    var name = _ref37.name,
+        directives = _ref37.directives,
+        values = _ref37.values;
+    return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
+  },
+  InputObjectTypeExtension: function InputObjectTypeExtension(_ref38) {
+    var name = _ref38.name,
+        directives = _ref38.directives,
+        fields = _ref38.fields;
+    return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
+  }
 };
 
-/**
- * Determines if the next token is of a given kind
- */
-function peek(lexer, kind) {
-  return lexer.token.kind === kind;
+function addDescription(cb) {
+  return function (node) {
+    return join([node.description, cb(node)], '\n');
+  };
 }
-
 /**
- * If the next token is of the given kind, return true after advancing
- * the lexer. Otherwise, do not change the parser state and return false.
- */
-function skip(lexer, kind) {
-  var match = lexer.token.kind === kind;
-  if (match) {
-    lexer.advance();
-  }
-  return match;
-}
-
-/**
- * If the next token is of the given kind, return that token after advancing
- * the lexer. Otherwise, do not change the parser state and throw an error.
- */
-function expect(lexer, kind) {
-  var token = lexer.token;
-  if (token.kind === kind) {
-    lexer.advance();
-    return token;
-  }
-  throw syntaxError(lexer.source, token.start, 'Expected ' + kind + ', found ' + getTokenDesc(token));
-}
-
-/**
- * If the next token is a keyword with the given value, return that token after
- * advancing the lexer. Otherwise, do not change the parser state and return
- * false.
- */
-function expectKeyword(lexer, value) {
-  var token = lexer.token;
-  if (token.kind === TokenKind.NAME && token.value === value) {
-    lexer.advance();
-    return token;
-  }
-  throw syntaxError(lexer.source, token.start, 'Expected "' + value + '", found ' + getTokenDesc(token));
-}
-
-/**
- * Helper function for creating an error when an unexpected lexed token
- * is encountered.
- */
-function unexpected(lexer, atToken) {
-  var token = atToken || lexer.token;
-  return syntaxError(lexer.source, token.start, 'Unexpected ' + getTokenDesc(token));
-}
-
-/**
- * Returns a possibly empty list of parse nodes, determined by
- * the parseFn. This list begins with a lex token of openKind
- * and ends with a lex token of closeKind. Advances the parser
- * to the next lex token after the closing token.
- */
-function any$1(lexer, openKind, parseFn, closeKind) {
-  expect(lexer, openKind);
-  var nodes = [];
-  while (!skip(lexer, closeKind)) {
-    nodes.push(parseFn(lexer));
-  }
-  return nodes;
-}
-
-/**
- * Returns a non-empty list of parse nodes, determined by
- * the parseFn. This list begins with a lex token of openKind
- * and ends with a lex token of closeKind. Advances the parser
- * to the next lex token after the closing token.
- */
-function many(lexer, openKind, parseFn, closeKind) {
-  expect(lexer, openKind);
-  var nodes = [parseFn(lexer)];
-  while (!skip(lexer, closeKind)) {
-    nodes.push(parseFn(lexer));
-  }
-  return nodes;
-}
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *  strict
+ * Given maybeArray, print an empty string if it is null or empty, otherwise
+ * print all items together separated by separator if provided
  */
 
-function getIntrospectionQuery(options) {
-  var descriptions = !(options && options.descriptions === false);
-  return '\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ' + (descriptions ? 'description' : '') + '\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ' + (descriptions ? 'description' : '') + '\n      fields(includeDeprecated: true) {\n        name\n        ' + (descriptions ? 'description' : '') + '\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ' + (descriptions ? 'description' : '') + '\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ' + (descriptions ? 'description' : '') + '\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ';
+
+function join(maybeArray, separator) {
+  return maybeArray ? maybeArray.filter(function (x) {
+    return x;
+  }).join(separator || '') : '';
+}
+/**
+ * Given array, print each item on its own line, wrapped in an
+ * indented "{ }" block.
+ */
+
+
+function block(array) {
+  return array && array.length !== 0 ? '{\n' + indent(join(array, '\n')) + '\n}' : '';
+}
+/**
+ * If maybeString is not null or empty, then wrap with start and end, otherwise
+ * print an empty string.
+ */
+
+
+function wrap$1(start, maybeString, end) {
+  return maybeString ? start + maybeString + (end || '') : '';
 }
 
-getIntrospectionQuery();
+function indent(maybeString) {
+  return maybeString && '  ' + maybeString.replace(/\n/g, '\n  ');
+}
+
+function isMultiline(string) {
+  return string.indexOf('\n') !== -1;
+}
+
+function hasMultilineItems(maybeArray) {
+  return maybeArray && maybeArray.some(isMultiline);
+}
 
 var docCache = new Map();
 var fragmentSourceMap = new Map();
@@ -22462,7 +20972,7 @@ var buildFormatLocale$a = build_format_locale$5;
  * @category Locales
  * @summary English locale.
  */
-var en$4 = {
+var en$5 = {
   distanceInWords: buildDistanceInWordsLocale$a(),
   format: buildFormatLocale$a()
 };
@@ -22471,7 +20981,7 @@ var compareDesc$1 = compare_desc;
 var parse$13 = parse_1;
 var differenceInSeconds$1 = difference_in_seconds;
 var differenceInMonths = difference_in_months;
-var enLocale$2 = en$4;
+var enLocale$2 = en$5;
 
 var MINUTES_IN_DAY$1 = 1440;
 var MINUTES_IN_ALMOST_TWO_DAYS = 2520;
@@ -22674,7 +21184,7 @@ var distance_in_words = distanceInWords$1;
 var compareDesc = compare_desc;
 var parse$12 = parse_1;
 var differenceInSeconds = difference_in_seconds;
-var enLocale$1 = en$4;
+var enLocale$1 = en$5;
 
 var MINUTES_IN_DAY = 1440;
 var MINUTES_IN_MONTH = 43200;
@@ -23489,7 +21999,7 @@ var getISOWeek$1 = get_iso_week;
 var getISOYear$1 = get_iso_year;
 var parse$R = parse_1;
 var isValid = is_valid;
-var enLocale = en$4;
+var enLocale = en$5;
 
 /**
  * @category Common Helpers
@@ -26445,7 +24955,7 @@ var Field$1 = /*#__PURE__*/function (_Component) {
   function Field(props) {
     var _this;
 
-    _classCallCheck$7(this, Field);
+    _classCallCheck$4(this, Field);
 
     _this = _super.call(this, props);
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized$3(_this));
@@ -28663,18 +27173,18 @@ MessageFormat.prototype._resolveLocale = function (locales) {
 
 }(core$1));
 
-var en$3 = {};
+var en$4 = {};
 
 (function (exports) {
 exports["default"] = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}};
 
 
-}(en$3));
+}(en$4));
 
 /* jslint esnext: true */
 
 (function (exports) {
-var src$core$$ = core$1, src$en$$ = en$3;
+var src$core$$ = core$1, src$en$$ = en$4;
 
 src$core$$["default"].__addLocaleData(src$en$$["default"]);
 src$core$$["default"].defaultLocale = 'en';
@@ -29639,11 +28149,11 @@ RelativeFormat.prototype._selectUnits = function (diffReport) {
     return units;
 };
 
-var en$2 = {};
+var en$3 = {};
 
-Object.defineProperty(en$2, "__esModule", { value: true });
+Object.defineProperty(en$3, "__esModule", { value: true });
 /* @generated */
-en$2.default = { "locale": "en", "pluralRuleFunction": function (n, ord) {
+en$3.default = { "locale": "en", "pluralRuleFunction": function (n, ord) {
         var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n, n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
         if (ord)
             return (n10 == 1 && n100 != 11) ? 'one'
@@ -29656,7 +28166,7 @@ en$2.default = { "locale": "en", "pluralRuleFunction": function (n, ord) {
 /* jslint esnext: true */
 Object.defineProperty(main, "__esModule", { value: true });
 var core_1$1 = core;
-var en_1 = en$2;
+var en_1 = en$3;
 core_1$1.default.__addLocaleData(en_1.default);
 core_1$1.default.defaultLocale = 'en';
 main.default = core_1$1.default;
@@ -32384,7 +30894,7 @@ var Filters = /*#__PURE__*/function (_Component) {
   function Filters(props) {
     var _this;
 
-    _classCallCheck$7(this, Filters);
+    _classCallCheck$4(this, Filters);
 
     _this = _super.call(this, props);
     _this.saveFilters = _this.saveFilters.bind(_assertThisInitialized$3(_this));
@@ -33138,7 +31648,7 @@ var Modal = /*#__PURE__*/function (_Component) {
   function Modal() {
     var _this;
 
-    _classCallCheck$7(this, Modal);
+    _classCallCheck$4(this, Modal);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -33391,7 +31901,7 @@ var SearchPage = /*#__PURE__*/function (_Component) {
   function SearchPage(props) {
     var _this;
 
-    _classCallCheck$7(this, SearchPage);
+    _classCallCheck$4(this, SearchPage);
 
     _this = _super.call(this, props);
     var limit = _this.props.options.filtersForm ? Number(_this.props.options.filtersForm.no_results) : 20;
@@ -33649,7 +32159,7 @@ var buildFormatLocale$8 = build_format_locale$4;
  * @author Jorik Tangelder [@jtangelder]{@link https://github.com/jtangelder}
  * @author Ruben Stolk [@rubenstolk]{@link https://github.com/rubenstolk}
  */
-var nl$2 = {
+var nl$3 = {
   distanceInWords: buildDistanceInWordsLocale$8(),
   format: buildFormatLocale$8()
 };
@@ -33927,7 +32437,7 @@ var buildFormatLocale$6 = build_format_locale$3;
  * @author Thomas Eilmsteiner [@DeMuu]{@link https://github.com/DeMuu}
  * @author Asia [@asia-t]{@link https://github.com/asia-t}
  */
-var de$2 = {
+var de$3 = {
   distanceInWords: buildDistanceInWordsLocale$6(),
   format: buildFormatLocale$6()
 };
@@ -34164,7 +32674,7 @@ var buildFormatLocale$4 = build_format_locale$2;
  * @author Jean Dupouy [@izeau]{@link https://github.com/izeau}
  * @author François B [@fbonzon]{@link https://github.com/fbonzon}
  */
-var fr$2 = {
+var fr$3 = {
   distanceInWords: buildDistanceInWordsLocale$4(),
   format: buildFormatLocale$4()
 };
@@ -34351,7 +32861,7 @@ var buildFormatLocale$2 = build_format_locale$1;
  * @summary Italian locale.
  * @author Alberto Restifo [@albertorestifo]{@link https://github.com/albertorestifo}
  */
-var it$2 = {
+var it$3 = {
   distanceInWords: buildDistanceInWordsLocale$2(),
   format: buildFormatLocale$2()
 };
@@ -34540,7 +33050,7 @@ var buildFormatLocale = build_format_locale;
  * @author Guillermo Grau [@guigrpa]{@link https://github.com/guigrpa}
  * @author Fernando Agüero [@fjaguero]{@link https://github.com/fjaguero}
  */
-var es$2 = {
+var es$3 = {
   distanceInWords: buildDistanceInWordsLocale(),
   format: buildFormatLocale()
 };
@@ -34548,12 +33058,12 @@ var es$2 = {
 var format = format_1$1;
 
 var locales = {
-  en: en$4,
-  nl: nl$2,
-  de: de$2,
-  fr: fr$2,
-  it: it$2,
-  es: es$2
+  en: en$5,
+  nl: nl$3,
+  de: de$3,
+  fr: fr$3,
+  it: it$3,
+  es: es$3
 };
 
 var format_1 = function (date, formatStr) {
@@ -34689,7 +33199,7 @@ var PriceField = /*#__PURE__*/function (_Component) {
   function PriceField() {
     var _this;
 
-    _classCallCheck$7(this, PriceField);
+    _classCallCheck$4(this, PriceField);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -34896,7 +33406,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
   function Calendar(props) {
     var _this;
 
-    _classCallCheck$7(this, Calendar);
+    _classCallCheck$4(this, Calendar);
 
     _this = _super.call(this, props);
 
@@ -39328,7 +37838,7 @@ function NumberSelect(_ref) {
       htmlFor: props.name
     }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
       id: label
-    })), /*#__PURE__*/React__default['default'].createElement("select", _extends$f({}, field, props), numbers.map(function (opt) {
+    })), /*#__PURE__*/React__default['default'].createElement("select", _extends$e({}, field, props), numbers.map(function (opt) {
       return /*#__PURE__*/React__default['default'].createElement("option", {
         key: opt,
         value: opt
@@ -40242,9 +38752,9 @@ var HeuristicFragmentMatcher = (function () {
         var _a = obj.__typename, __typename = _a === void 0 ? isRootQuery && 'Query' : _a;
         if (!__typename) {
             if (shouldWarn()) {
-                process.env.NODE_ENV === "production" || invariant$2.warn("You're using fragments in your queries, but either don't have the addTypename:\n  true option set in Apollo Client, or you are trying to write a fragment to the store without the __typename.\n   Please turn on the addTypename option and include __typename when writing fragments so that Apollo Client\n   can accurately match fragments.");
-                process.env.NODE_ENV === "production" || invariant$2.warn('Could not find __typename on Fragment ', typeCondition, obj);
-                process.env.NODE_ENV === "production" || invariant$2.warn("DEPRECATION WARNING: using fragments without __typename is unsupported behavior " +
+                process.env.NODE_ENV === "production" || invariant$1.warn("You're using fragments in your queries, but either don't have the addTypename:\n  true option set in Apollo Client, or you are trying to write a fragment to the store without the __typename.\n   Please turn on the addTypename option and include __typename when writing fragments so that Apollo Client\n   can accurately match fragments.");
+                process.env.NODE_ENV === "production" || invariant$1.warn('Could not find __typename on Fragment ', typeCondition, obj);
+                process.env.NODE_ENV === "production" || invariant$1.warn("DEPRECATION WARNING: using fragments without __typename is unsupported behavior " +
                     "and will be removed in future versions of Apollo client. You should fix this and set addTypename to true now.");
             }
             return 'heuristic';
@@ -40253,7 +38763,7 @@ var HeuristicFragmentMatcher = (function () {
             return true;
         }
         if (shouldWarn()) {
-            process.env.NODE_ENV === "production" || invariant$2.error('You are using the simple (heuristic) fragment matcher, but your ' +
+            process.env.NODE_ENV === "production" || invariant$1.error('You are using the simple (heuristic) fragment matcher, but your ' +
                 'queries contain union or interface types. Apollo Client will not be ' +
                 'able to accurately map fragments. To make this error go away, use ' +
                 'the `IntrospectionFragmentMatcher` as described in the docs: ' +
@@ -40736,7 +39246,7 @@ var StoreWriter = (function () {
                         isClient = selection.directives.some(function (directive) { return directive.name && directive.name.value === 'client'; });
                     }
                     if (!isDefered && !isClient && context.fragmentMatcherFunction) {
-                        process.env.NODE_ENV === "production" || invariant$2.warn("Missing field " + resultFieldKey + " in " + JSON.stringify(result, null, 2).substring(0, 100));
+                        process.env.NODE_ENV === "production" || invariant$1.warn("Missing field " + resultFieldKey + " in " + JSON.stringify(result, null, 2).substring(0, 100));
                     }
                 }
             }
@@ -40747,7 +39257,7 @@ var StoreWriter = (function () {
                 }
                 else {
                     fragment = (fragmentMap || {})[selection.name.value];
-                    process.env.NODE_ENV === "production" ? invariant$2(fragment, 3) : invariant$2(fragment, "No fragment named " + selection.name.value + ".");
+                    process.env.NODE_ENV === "production" ? invariant$1(fragment, 3) : invariant$1(fragment, "No fragment named " + selection.name.value + ".");
                 }
                 var matches = true;
                 if (context.fragmentMatcherFunction && fragment.typeCondition) {
@@ -40759,7 +39269,7 @@ var StoreWriter = (function () {
                     };
                     var match = context.fragmentMatcherFunction(idValue, fragment.typeCondition.name.value, fakeContext);
                     if (!isProduction$2() && match === 'heuristic') {
-                        process.env.NODE_ENV === "production" || invariant$2.error('WARNING: heuristic fragment matching going on!');
+                        process.env.NODE_ENV === "production" || invariant$1.error('WARNING: heuristic fragment matching going on!');
                     }
                     matches = !!match;
                 }
@@ -40802,7 +39312,7 @@ var StoreWriter = (function () {
             }
             if (dataIdFromObject) {
                 var semanticId = dataIdFromObject(value);
-                process.env.NODE_ENV === "production" ? invariant$2(!semanticId || !isGeneratedId(semanticId), 4) : invariant$2(!semanticId || !isGeneratedId(semanticId), 'IDs returned by dataIdFromObject cannot begin with the "$" character.');
+                process.env.NODE_ENV === "production" ? invariant$1(!semanticId || !isGeneratedId(semanticId), 4) : invariant$1(!semanticId || !isGeneratedId(semanticId), 'IDs returned by dataIdFromObject cannot begin with the "$" character.');
                 if (semanticId ||
                     (typeof semanticId === 'number' && semanticId === 0)) {
                     valueDataId = semanticId;
@@ -40825,8 +39335,8 @@ var StoreWriter = (function () {
                 var hadTypename = escapedId.typename !== undefined;
                 var hasTypename = typename !== undefined;
                 var typenameChanged = hadTypename && hasTypename && escapedId.typename !== typename;
-                process.env.NODE_ENV === "production" ? invariant$2(!generated || escapedId.generated || typenameChanged, 5) : invariant$2(!generated || escapedId.generated || typenameChanged, "Store error: the application attempted to write an object with no provided id but the store already contains an id of " + escapedId.id + " for this object. The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
-                process.env.NODE_ENV === "production" ? invariant$2(!hadTypename || hasTypename, 6) : invariant$2(!hadTypename || hasTypename, "Store error: the application attempted to write an object with no provided typename but the store already contains an object with typename of " + escapedId.typename + " for the object of id " + escapedId.id + ". The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
+                process.env.NODE_ENV === "production" ? invariant$1(!generated || escapedId.generated || typenameChanged, 5) : invariant$1(!generated || escapedId.generated || typenameChanged, "Store error: the application attempted to write an object with no provided id but the store already contains an id of " + escapedId.id + " for this object. The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
+                process.env.NODE_ENV === "production" ? invariant$1(!hadTypename || hasTypename, 6) : invariant$1(!hadTypename || hasTypename, "Store error: the application attempted to write an object with no provided typename but the store already contains an object with typename of " + escapedId.typename + " for the object of id " + escapedId.id + ". The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
                 if (escapedId.generated) {
                     if (typenameChanged) {
                         if (!generated) {
@@ -40971,11 +39481,11 @@ var InMemoryCache = (function (_super) {
         _this.silenceBroadcast = false;
         _this.config = __assign$1(__assign$1({}, defaultConfig), config);
         if (_this.config.customResolvers) {
-            process.env.NODE_ENV === "production" || invariant$2.warn('customResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating customResolvers in the next major version.');
+            process.env.NODE_ENV === "production" || invariant$1.warn('customResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating customResolvers in the next major version.');
             _this.config.cacheRedirects = _this.config.customResolvers;
         }
         if (_this.config.cacheResolvers) {
-            process.env.NODE_ENV === "production" || invariant$2.warn('cacheResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating cacheResolvers in the next major version.');
+            process.env.NODE_ENV === "production" || invariant$1.warn('cacheResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating cacheResolvers in the next major version.');
             _this.config.cacheRedirects = _this.config.cacheResolvers;
         }
         _this.addTypename = !!_this.config.addTypename;
@@ -41428,7 +39938,7 @@ function DiscountCode(_ref) {
     }, function (_ref3) {
       var field = _ref3.field,
           form = _ref3.form;
-      return /*#__PURE__*/React__default['default'].createElement("input", _extends$f({}, field, {
+      return /*#__PURE__*/React__default['default'].createElement("input", _extends$e({}, field, {
         onChange: function onChange(e) {
           // console.log({ code: house.code, e: e.target.value });
           checkCode({
@@ -41532,7 +40042,7 @@ var RadioButton = function RadioButton(_ref2) {
       label = _ref2.label,
       props = _objectWithoutProperties$a(_ref2, _excluded$1);
 
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", _extends$f({
+  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", _extends$e({
     name: name,
     id: id,
     type: "radio",
@@ -41660,7 +40170,7 @@ function InsurancesAndRequired(_ref) {
   })), prices.required_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else {
@@ -41714,14 +40224,14 @@ function OptionalNotOnSite(_ref) {
   }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.optional_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if (not_on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -41734,7 +40244,7 @@ function OptionalNotOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: amount
@@ -41752,14 +40262,14 @@ function OptionalOnSite(_ref) {
   return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, prices.optional_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if ((on_site === null || on_site === void 0 ? void 0 : on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items) > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -41772,7 +40282,7 @@ function OptionalOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: amount
@@ -41794,14 +40304,14 @@ function OnSite(_ref) {
   })), /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.required_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else {
         var amount = on_site.find(function (x) {
           return x.id == cost.id;
         }).amount;
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
           key: cost.id,
           amount: amount
         }, cost));
@@ -41874,7 +40384,7 @@ function Deposit(_ref2) {
     });
 
     if (cost.gl === '0120' && (price === null || price === void 0 ? void 0 : price.amount) > 0) {
-      return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
+      return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
         key: cost.id
       }, cost, {
         amount: price.amount
@@ -42081,13 +40591,6007 @@ var SuccessMessage = function SuccessMessage() {
   })));
 };
 
+var nl$2 = [
+	{
+		name: "Afghanistan",
+		alpha2: "af"
+	},
+	{
+		name: "Åland",
+		alpha2: "ax"
+	},
+	{
+		name: "Albanië",
+		alpha2: "al"
+	},
+	{
+		name: "Algerije",
+		alpha2: "dz"
+	},
+	{
+		name: "Amerikaanse Maagdeneilanden",
+		alpha2: "vi"
+	},
+	{
+		name: "Amerikaans-Samoa",
+		alpha2: "as"
+	},
+	{
+		name: "Andorra",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguilla",
+		alpha2: "ai"
+	},
+	{
+		name: "Antarctica",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua en Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Argentinië",
+		alpha2: "ar"
+	},
+	{
+		name: "Armenië",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Australië",
+		alpha2: "au"
+	},
+	{
+		name: "Azerbeidzjan",
+		alpha2: "az"
+	},
+	{
+		name: "Bahama's",
+		alpha2: "bs"
+	},
+	{
+		name: "Bahrein",
+		alpha2: "bh"
+	},
+	{
+		name: "Bangladesh",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbados",
+		alpha2: "bb"
+	},
+	{
+		name: "België",
+		alpha2: "be"
+	},
+	{
+		name: "Belize",
+		alpha2: "bz"
+	},
+	{
+		name: "Benin",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermuda",
+		alpha2: "bm"
+	},
+	{
+		name: "Bhutan",
+		alpha2: "bt"
+	},
+	{
+		name: "Bolivia",
+		alpha2: "bo"
+	},
+	{
+		name: "Caribisch Nederland",
+		alpha2: "bq"
+	},
+	{
+		name: "Bosnië en Herzegovina",
+		alpha2: "ba"
+	},
+	{
+		name: "Botswana",
+		alpha2: "bw"
+	},
+	{
+		name: "Bouveteiland",
+		alpha2: "bv"
+	},
+	{
+		name: "Brazilië",
+		alpha2: "br"
+	},
+	{
+		name: "Britse Maagdeneilanden",
+		alpha2: "vg"
+	},
+	{
+		name: "Brits Indische Oceaanterritorium",
+		alpha2: "io"
+	},
+	{
+		name: "Brunei",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgarije",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Cambodja",
+		alpha2: "kh"
+	},
+	{
+		name: "Canada",
+		alpha2: "ca"
+	},
+	{
+		name: "Centraal-Afrikaanse Republiek",
+		alpha2: "cf"
+	},
+	{
+		name: "Chili",
+		alpha2: "cl"
+	},
+	{
+		name: "China",
+		alpha2: "cn"
+	},
+	{
+		name: "Christmaseiland",
+		alpha2: "cx"
+	},
+	{
+		name: "Cocoseilanden",
+		alpha2: "cc"
+	},
+	{
+		name: "Colombia",
+		alpha2: "co"
+	},
+	{
+		name: "Comoren",
+		alpha2: "km"
+	},
+	{
+		name: "Congo-Brazzaville",
+		alpha2: "cg"
+	},
+	{
+		name: "Congo-Kinshasa",
+		alpha2: "cd"
+	},
+	{
+		name: "Cookeilanden",
+		alpha2: "ck"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Cuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Curaçao",
+		alpha2: "cw"
+	},
+	{
+		name: "Cyprus",
+		alpha2: "cy"
+	},
+	{
+		name: "Denemarken",
+		alpha2: "dk"
+	},
+	{
+		name: "Djibouti",
+		alpha2: "dj"
+	},
+	{
+		name: "Dominica",
+		alpha2: "dm"
+	},
+	{
+		name: "Dominicaanse Republiek",
+		alpha2: "do"
+	},
+	{
+		name: "Duitsland",
+		alpha2: "de"
+	},
+	{
+		name: "Ecuador",
+		alpha2: "ec"
+	},
+	{
+		name: "Egypte",
+		alpha2: "eg"
+	},
+	{
+		name: "El Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Equatoriaal-Guinea",
+		alpha2: "gq"
+	},
+	{
+		name: "Eritrea",
+		alpha2: "er"
+	},
+	{
+		name: "Estland",
+		alpha2: "ee"
+	},
+	{
+		name: "Ethiopië",
+		alpha2: "et"
+	},
+	{
+		name: "Faeröer",
+		alpha2: "fo"
+	},
+	{
+		name: "Falklandeilanden",
+		alpha2: "fk"
+	},
+	{
+		name: "Fiji",
+		alpha2: "fj"
+	},
+	{
+		name: "Filipijnen",
+		alpha2: "ph"
+	},
+	{
+		name: "Finland",
+		alpha2: "fi"
+	},
+	{
+		name: "Frankrijk",
+		alpha2: "fr"
+	},
+	{
+		name: "Franse Zuidelijke en Antarctische Gebieden",
+		alpha2: "tf"
+	},
+	{
+		name: "Frans-Guyana",
+		alpha2: "gf"
+	},
+	{
+		name: "Frans-Polynesië",
+		alpha2: "pf"
+	},
+	{
+		name: "Gabon",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambia",
+		alpha2: "gm"
+	},
+	{
+		name: "Georgië",
+		alpha2: "ge"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Gibraltar",
+		alpha2: "gi"
+	},
+	{
+		name: "Grenada",
+		alpha2: "gd"
+	},
+	{
+		name: "Griekenland",
+		alpha2: "gr"
+	},
+	{
+		name: "Groenland",
+		alpha2: "gl"
+	},
+	{
+		name: "Guadeloupe",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guernsey",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinee",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinee-Bissau",
+		alpha2: "gw"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Haïti",
+		alpha2: "ht"
+	},
+	{
+		name: "Heard en McDonaldeilanden",
+		alpha2: "hm"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hongarije",
+		alpha2: "hu"
+	},
+	{
+		name: "Hongkong",
+		alpha2: "hk"
+	},
+	{
+		name: "Ierland",
+		alpha2: "ie"
+	},
+	{
+		name: "IJsland",
+		alpha2: "is"
+	},
+	{
+		name: "India",
+		alpha2: "in"
+	},
+	{
+		name: "Indonesië",
+		alpha2: "id"
+	},
+	{
+		name: "Irak",
+		alpha2: "iq"
+	},
+	{
+		name: "Iran",
+		alpha2: "ir"
+	},
+	{
+		name: "Israël",
+		alpha2: "il"
+	},
+	{
+		name: "Italië",
+		alpha2: "it"
+	},
+	{
+		name: "Ivoorkust",
+		alpha2: "ci"
+	},
+	{
+		name: "Jamaica",
+		alpha2: "jm"
+	},
+	{
+		name: "Japan",
+		alpha2: "jp"
+	},
+	{
+		name: "Jemen",
+		alpha2: "ye"
+	},
+	{
+		name: "Jersey",
+		alpha2: "je"
+	},
+	{
+		name: "Jordanië",
+		alpha2: "jo"
+	},
+	{
+		name: "Kaaimaneilanden",
+		alpha2: "ky"
+	},
+	{
+		name: "Kaapverdië",
+		alpha2: "cv"
+	},
+	{
+		name: "Kameroen",
+		alpha2: "cm"
+	},
+	{
+		name: "Kazachstan",
+		alpha2: "kz"
+	},
+	{
+		name: "Kenia",
+		alpha2: "ke"
+	},
+	{
+		name: "Kirgizië",
+		alpha2: "kg"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Kleine afgelegen eilanden van de Verenigde Staten",
+		alpha2: "um"
+	},
+	{
+		name: "Koeweit",
+		alpha2: "kw"
+	},
+	{
+		name: "Kroatië",
+		alpha2: "hr"
+	},
+	{
+		name: "Laos",
+		alpha2: "la"
+	},
+	{
+		name: "Lesotho",
+		alpha2: "ls"
+	},
+	{
+		name: "Letland",
+		alpha2: "lv"
+	},
+	{
+		name: "Libanon",
+		alpha2: "lb"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libië",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Litouwen",
+		alpha2: "lt"
+	},
+	{
+		name: "Luxemburg",
+		alpha2: "lu"
+	},
+	{
+		name: "Macau",
+		alpha2: "mo"
+	},
+	{
+		name: "Macedonië",
+		alpha2: "mk"
+	},
+	{
+		name: "Madagaskar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malawi",
+		alpha2: "mw"
+	},
+	{
+		name: "Maldiven",
+		alpha2: "mv"
+	},
+	{
+		name: "Maleisië",
+		alpha2: "my"
+	},
+	{
+		name: "Mali",
+		alpha2: "ml"
+	},
+	{
+		name: "Malta",
+		alpha2: "mt"
+	},
+	{
+		name: "Man",
+		alpha2: "im"
+	},
+	{
+		name: "Marokko",
+		alpha2: "ma"
+	},
+	{
+		name: "Marshalleilanden",
+		alpha2: "mh"
+	},
+	{
+		name: "Martinique",
+		alpha2: "mq"
+	},
+	{
+		name: "Mauritanië",
+		alpha2: "mr"
+	},
+	{
+		name: "Mauritius",
+		alpha2: "mu"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "Mexico",
+		alpha2: "mx"
+	},
+	{
+		name: "Micronesia",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldavië",
+		alpha2: "md"
+	},
+	{
+		name: "Monaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Mongolië",
+		alpha2: "mn"
+	},
+	{
+		name: "Montenegro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Mozambique",
+		alpha2: "mz"
+	},
+	{
+		name: "Myanmar",
+		alpha2: "mm"
+	},
+	{
+		name: "Namibië",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Nederland",
+		alpha2: "nl"
+	},
+	{
+		name: "Nepal",
+		alpha2: "np"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Nieuw-Caledonië",
+		alpha2: "nc"
+	},
+	{
+		name: "Nieuw-Zeeland",
+		alpha2: "nz"
+	},
+	{
+		name: "Niger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Noordelijke Marianen",
+		alpha2: "mp"
+	},
+	{
+		name: "Noord-Korea",
+		alpha2: "kp"
+	},
+	{
+		name: "Noorwegen",
+		alpha2: "no"
+	},
+	{
+		name: "Norfolk",
+		alpha2: "nf"
+	},
+	{
+		name: "Oeganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Oekraïne",
+		alpha2: "ua"
+	},
+	{
+		name: "Oezbekistan",
+		alpha2: "uz"
+	},
+	{
+		name: "Oman",
+		alpha2: "om"
+	},
+	{
+		name: "Oostenrijk",
+		alpha2: "at"
+	},
+	{
+		name: "Oost-Timor",
+		alpha2: "tl"
+	},
+	{
+		name: "Pakistan",
+		alpha2: "pk"
+	},
+	{
+		name: "Palau",
+		alpha2: "pw"
+	},
+	{
+		name: "Palestina",
+		alpha2: "ps"
+	},
+	{
+		name: "Panama",
+		alpha2: "pa"
+	},
+	{
+		name: "Papoea-Nieuw-Guinea",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Peru",
+		alpha2: "pe"
+	},
+	{
+		name: "Pitcairneilanden",
+		alpha2: "pn"
+	},
+	{
+		name: "Polen",
+		alpha2: "pl"
+	},
+	{
+		name: "Portugal",
+		alpha2: "pt"
+	},
+	{
+		name: "Puerto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Qatar",
+		alpha2: "qa"
+	},
+	{
+		name: "Réunion",
+		alpha2: "re"
+	},
+	{
+		name: "Roemenië",
+		alpha2: "ro"
+	},
+	{
+		name: "Rusland",
+		alpha2: "ru"
+	},
+	{
+		name: "Rwanda",
+		alpha2: "rw"
+	},
+	{
+		name: "Saint-Barthélemy",
+		alpha2: "bl"
+	},
+	{
+		name: "Saint Kitts en Nevis",
+		alpha2: "kn"
+	},
+	{
+		name: "Saint Lucia",
+		alpha2: "lc"
+	},
+	{
+		name: "Saint-Pierre en Miquelon",
+		alpha2: "pm"
+	},
+	{
+		name: "Saint Vincent en de Grenadines",
+		alpha2: "vc"
+	},
+	{
+		name: "Salomonseilanden",
+		alpha2: "sb"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "San Marino",
+		alpha2: "sm"
+	},
+	{
+		name: "Saoedi-Arabië",
+		alpha2: "sa"
+	},
+	{
+		name: "Sao Tomé en Principe",
+		alpha2: "st"
+	},
+	{
+		name: "Senegal",
+		alpha2: "sn"
+	},
+	{
+		name: "Servië",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychellen",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leone",
+		alpha2: "sl"
+	},
+	{
+		name: "Singapore",
+		alpha2: "sg"
+	},
+	{
+		name: "Sint-Helena, Ascension en Tristan da Cunha",
+		alpha2: "sh"
+	},
+	{
+		name: "Sint-Maarten",
+		alpha2: "mf"
+	},
+	{
+		name: "Sint Maarten",
+		alpha2: "sx"
+	},
+	{
+		name: "Slovenië",
+		alpha2: "si"
+	},
+	{
+		name: "Slowakije",
+		alpha2: "sk"
+	},
+	{
+		name: "Soedan",
+		alpha2: "sd"
+	},
+	{
+		name: "Somalië",
+		alpha2: "so"
+	},
+	{
+		name: "Spanje",
+		alpha2: "es"
+	},
+	{
+		name: "Spitsbergen en Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "Suriname",
+		alpha2: "sr"
+	},
+	{
+		name: "Swaziland",
+		alpha2: "sz"
+	},
+	{
+		name: "Syrië",
+		alpha2: "sy"
+	},
+	{
+		name: "Tadzjikistan",
+		alpha2: "tj"
+	},
+	{
+		name: "Taiwan",
+		alpha2: "tw"
+	},
+	{
+		name: "Tanzania",
+		alpha2: "tz"
+	},
+	{
+		name: "Thailand",
+		alpha2: "th"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinidad en Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Tsjaad",
+		alpha2: "td"
+	},
+	{
+		name: "Tsjechië",
+		alpha2: "cz"
+	},
+	{
+		name: "Tunesië",
+		alpha2: "tn"
+	},
+	{
+		name: "Turkije",
+		alpha2: "tr"
+	},
+	{
+		name: "Turkmenistan",
+		alpha2: "tm"
+	},
+	{
+		name: "Turks- en Caicoseilanden",
+		alpha2: "tc"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Vaticaanstad",
+		alpha2: "va"
+	},
+	{
+		name: "Venezuela",
+		alpha2: "ve"
+	},
+	{
+		name: "Verenigde Arabische Emiraten",
+		alpha2: "ae"
+	},
+	{
+		name: "Verenigde Staten",
+		alpha2: "us"
+	},
+	{
+		name: "Verenigd Koninkrijk",
+		alpha2: "gb"
+	},
+	{
+		name: "Vietnam",
+		alpha2: "vn"
+	},
+	{
+		name: "Wallis en Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Westelijke Sahara",
+		alpha2: "eh"
+	},
+	{
+		name: "Wit-Rusland",
+		alpha2: "by"
+	},
+	{
+		name: "Zambia",
+		alpha2: "zm"
+	},
+	{
+		name: "Zimbabwe",
+		alpha2: "zw"
+	},
+	{
+		name: "Zuid-Afrika",
+		alpha2: "za"
+	},
+	{
+		name: "Zuid-Georgia en de Zuidelijke Sandwicheilanden",
+		alpha2: "gs"
+	},
+	{
+		name: "Zuid-Korea",
+		alpha2: "kr"
+	},
+	{
+		name: "Zuid-Soedan",
+		alpha2: "ss"
+	},
+	{
+		name: "Zweden",
+		alpha2: "se"
+	},
+	{
+		name: "Zwitserland",
+		alpha2: "ch"
+	}
+];
+
+var en$2 = [
+	{
+		name: "Afghanistan",
+		alpha2: "af"
+	},
+	{
+		name: "Åland Islands",
+		alpha2: "ax"
+	},
+	{
+		name: "Albania",
+		alpha2: "al"
+	},
+	{
+		name: "Algeria",
+		alpha2: "dz"
+	},
+	{
+		name: "American Samoa",
+		alpha2: "as"
+	},
+	{
+		name: "Andorra",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguilla",
+		alpha2: "ai"
+	},
+	{
+		name: "Antarctica",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua and Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Argentina",
+		alpha2: "ar"
+	},
+	{
+		name: "Armenia",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Australia",
+		alpha2: "au"
+	},
+	{
+		name: "Austria",
+		alpha2: "at"
+	},
+	{
+		name: "Azerbaijan",
+		alpha2: "az"
+	},
+	{
+		name: "Bahamas",
+		alpha2: "bs"
+	},
+	{
+		name: "Bahrain",
+		alpha2: "bh"
+	},
+	{
+		name: "Bangladesh",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbados",
+		alpha2: "bb"
+	},
+	{
+		name: "Belarus",
+		alpha2: "by"
+	},
+	{
+		name: "Belgium",
+		alpha2: "be"
+	},
+	{
+		name: "Belize",
+		alpha2: "bz"
+	},
+	{
+		name: "Benin",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermuda",
+		alpha2: "bm"
+	},
+	{
+		name: "Bhutan",
+		alpha2: "bt"
+	},
+	{
+		name: "Bolivia (Plurinational State of)",
+		alpha2: "bo"
+	},
+	{
+		name: "Bonaire, Sint Eustatius and Saba",
+		alpha2: "bq"
+	},
+	{
+		name: "Bosnia and Herzegovina",
+		alpha2: "ba"
+	},
+	{
+		name: "Botswana",
+		alpha2: "bw"
+	},
+	{
+		name: "Bouvet Island",
+		alpha2: "bv"
+	},
+	{
+		name: "Brazil",
+		alpha2: "br"
+	},
+	{
+		name: "British Indian Ocean Territory",
+		alpha2: "io"
+	},
+	{
+		name: "Brunei Darussalam",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgaria",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Cabo Verde",
+		alpha2: "cv"
+	},
+	{
+		name: "Cambodia",
+		alpha2: "kh"
+	},
+	{
+		name: "Cameroon",
+		alpha2: "cm"
+	},
+	{
+		name: "Canada",
+		alpha2: "ca"
+	},
+	{
+		name: "Cayman Islands",
+		alpha2: "ky"
+	},
+	{
+		name: "Central African Republic",
+		alpha2: "cf"
+	},
+	{
+		name: "Chad",
+		alpha2: "td"
+	},
+	{
+		name: "Chile",
+		alpha2: "cl"
+	},
+	{
+		name: "China",
+		alpha2: "cn"
+	},
+	{
+		name: "Christmas Island",
+		alpha2: "cx"
+	},
+	{
+		name: "Cocos (Keeling) Islands",
+		alpha2: "cc"
+	},
+	{
+		name: "Colombia",
+		alpha2: "co"
+	},
+	{
+		name: "Comoros",
+		alpha2: "km"
+	},
+	{
+		name: "Congo",
+		alpha2: "cg"
+	},
+	{
+		name: "Congo (Democratic Republic of the)",
+		alpha2: "cd"
+	},
+	{
+		name: "Cook Islands",
+		alpha2: "ck"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Côte d'Ivoire",
+		alpha2: "ci"
+	},
+	{
+		name: "Croatia",
+		alpha2: "hr"
+	},
+	{
+		name: "Cuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Curaçao",
+		alpha2: "cw"
+	},
+	{
+		name: "Cyprus",
+		alpha2: "cy"
+	},
+	{
+		name: "Czechia",
+		alpha2: "cz"
+	},
+	{
+		name: "Denmark",
+		alpha2: "dk"
+	},
+	{
+		name: "Djibouti",
+		alpha2: "dj"
+	},
+	{
+		name: "Dominica",
+		alpha2: "dm"
+	},
+	{
+		name: "Dominican Republic",
+		alpha2: "do"
+	},
+	{
+		name: "Ecuador",
+		alpha2: "ec"
+	},
+	{
+		name: "Egypt",
+		alpha2: "eg"
+	},
+	{
+		name: "El Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Equatorial Guinea",
+		alpha2: "gq"
+	},
+	{
+		name: "Eritrea",
+		alpha2: "er"
+	},
+	{
+		name: "Estonia",
+		alpha2: "ee"
+	},
+	{
+		name: "Eswatini",
+		alpha2: "sz"
+	},
+	{
+		name: "Ethiopia",
+		alpha2: "et"
+	},
+	{
+		name: "Falkland Islands (Malvinas)",
+		alpha2: "fk"
+	},
+	{
+		name: "Faroe Islands",
+		alpha2: "fo"
+	},
+	{
+		name: "Fiji",
+		alpha2: "fj"
+	},
+	{
+		name: "Finland",
+		alpha2: "fi"
+	},
+	{
+		name: "France",
+		alpha2: "fr"
+	},
+	{
+		name: "French Guiana",
+		alpha2: "gf"
+	},
+	{
+		name: "French Polynesia",
+		alpha2: "pf"
+	},
+	{
+		name: "French Southern Territories",
+		alpha2: "tf"
+	},
+	{
+		name: "Gabon",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambia",
+		alpha2: "gm"
+	},
+	{
+		name: "Georgia",
+		alpha2: "ge"
+	},
+	{
+		name: "Germany",
+		alpha2: "de"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Gibraltar",
+		alpha2: "gi"
+	},
+	{
+		name: "Greece",
+		alpha2: "gr"
+	},
+	{
+		name: "Greenland",
+		alpha2: "gl"
+	},
+	{
+		name: "Grenada",
+		alpha2: "gd"
+	},
+	{
+		name: "Guadeloupe",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guernsey",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinea",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinea-Bissau",
+		alpha2: "gw"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Haiti",
+		alpha2: "ht"
+	},
+	{
+		name: "Heard Island and McDonald Islands",
+		alpha2: "hm"
+	},
+	{
+		name: "Holy See",
+		alpha2: "va"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hong Kong",
+		alpha2: "hk"
+	},
+	{
+		name: "Hungary",
+		alpha2: "hu"
+	},
+	{
+		name: "Iceland",
+		alpha2: "is"
+	},
+	{
+		name: "India",
+		alpha2: "in"
+	},
+	{
+		name: "Indonesia",
+		alpha2: "id"
+	},
+	{
+		name: "Iran (Islamic Republic of)",
+		alpha2: "ir"
+	},
+	{
+		name: "Iraq",
+		alpha2: "iq"
+	},
+	{
+		name: "Ireland",
+		alpha2: "ie"
+	},
+	{
+		name: "Isle of Man",
+		alpha2: "im"
+	},
+	{
+		name: "Israel",
+		alpha2: "il"
+	},
+	{
+		name: "Italy",
+		alpha2: "it"
+	},
+	{
+		name: "Jamaica",
+		alpha2: "jm"
+	},
+	{
+		name: "Japan",
+		alpha2: "jp"
+	},
+	{
+		name: "Jersey",
+		alpha2: "je"
+	},
+	{
+		name: "Jordan",
+		alpha2: "jo"
+	},
+	{
+		name: "Kazakhstan",
+		alpha2: "kz"
+	},
+	{
+		name: "Kenya",
+		alpha2: "ke"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Korea (Democratic People's Republic of)",
+		alpha2: "kp"
+	},
+	{
+		name: "Korea (Republic of)",
+		alpha2: "kr"
+	},
+	{
+		name: "Kuwait",
+		alpha2: "kw"
+	},
+	{
+		name: "Kyrgyzstan",
+		alpha2: "kg"
+	},
+	{
+		name: "Lao People's Democratic Republic",
+		alpha2: "la"
+	},
+	{
+		name: "Latvia",
+		alpha2: "lv"
+	},
+	{
+		name: "Lebanon",
+		alpha2: "lb"
+	},
+	{
+		name: "Lesotho",
+		alpha2: "ls"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libya",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Lithuania",
+		alpha2: "lt"
+	},
+	{
+		name: "Luxembourg",
+		alpha2: "lu"
+	},
+	{
+		name: "Macao",
+		alpha2: "mo"
+	},
+	{
+		name: "Macedonia (the former Yugoslav Republic of)",
+		alpha2: "mk"
+	},
+	{
+		name: "Madagascar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malawi",
+		alpha2: "mw"
+	},
+	{
+		name: "Malaysia",
+		alpha2: "my"
+	},
+	{
+		name: "Maldives",
+		alpha2: "mv"
+	},
+	{
+		name: "Mali",
+		alpha2: "ml"
+	},
+	{
+		name: "Malta",
+		alpha2: "mt"
+	},
+	{
+		name: "Marshall Islands",
+		alpha2: "mh"
+	},
+	{
+		name: "Martinique",
+		alpha2: "mq"
+	},
+	{
+		name: "Mauritania",
+		alpha2: "mr"
+	},
+	{
+		name: "Mauritius",
+		alpha2: "mu"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "Mexico",
+		alpha2: "mx"
+	},
+	{
+		name: "Micronesia (Federated States of)",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldova (Republic of)",
+		alpha2: "md"
+	},
+	{
+		name: "Monaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Mongolia",
+		alpha2: "mn"
+	},
+	{
+		name: "Montenegro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Morocco",
+		alpha2: "ma"
+	},
+	{
+		name: "Mozambique",
+		alpha2: "mz"
+	},
+	{
+		name: "Myanmar",
+		alpha2: "mm"
+	},
+	{
+		name: "Namibia",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Nepal",
+		alpha2: "np"
+	},
+	{
+		name: "Netherlands",
+		alpha2: "nl"
+	},
+	{
+		name: "New Caledonia",
+		alpha2: "nc"
+	},
+	{
+		name: "New Zealand",
+		alpha2: "nz"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Niger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Norfolk Island",
+		alpha2: "nf"
+	},
+	{
+		name: "Northern Mariana Islands",
+		alpha2: "mp"
+	},
+	{
+		name: "Norway",
+		alpha2: "no"
+	},
+	{
+		name: "Oman",
+		alpha2: "om"
+	},
+	{
+		name: "Pakistan",
+		alpha2: "pk"
+	},
+	{
+		name: "Palau",
+		alpha2: "pw"
+	},
+	{
+		name: "Palestine, State of",
+		alpha2: "ps"
+	},
+	{
+		name: "Panama",
+		alpha2: "pa"
+	},
+	{
+		name: "Papua New Guinea",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Peru",
+		alpha2: "pe"
+	},
+	{
+		name: "Philippines",
+		alpha2: "ph"
+	},
+	{
+		name: "Pitcairn",
+		alpha2: "pn"
+	},
+	{
+		name: "Poland",
+		alpha2: "pl"
+	},
+	{
+		name: "Portugal",
+		alpha2: "pt"
+	},
+	{
+		name: "Puerto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Qatar",
+		alpha2: "qa"
+	},
+	{
+		name: "Réunion",
+		alpha2: "re"
+	},
+	{
+		name: "Romania",
+		alpha2: "ro"
+	},
+	{
+		name: "Russian Federation",
+		alpha2: "ru"
+	},
+	{
+		name: "Rwanda",
+		alpha2: "rw"
+	},
+	{
+		name: "Saint Barthélemy",
+		alpha2: "bl"
+	},
+	{
+		name: "Saint Helena, Ascension and Tristan da Cunha",
+		alpha2: "sh"
+	},
+	{
+		name: "Saint Kitts and Nevis",
+		alpha2: "kn"
+	},
+	{
+		name: "Saint Lucia",
+		alpha2: "lc"
+	},
+	{
+		name: "Saint Martin (French part)",
+		alpha2: "mf"
+	},
+	{
+		name: "Saint Pierre and Miquelon",
+		alpha2: "pm"
+	},
+	{
+		name: "Saint Vincent and the Grenadines",
+		alpha2: "vc"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "San Marino",
+		alpha2: "sm"
+	},
+	{
+		name: "Sao Tome and Principe",
+		alpha2: "st"
+	},
+	{
+		name: "Saudi Arabia",
+		alpha2: "sa"
+	},
+	{
+		name: "Senegal",
+		alpha2: "sn"
+	},
+	{
+		name: "Serbia",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychelles",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leone",
+		alpha2: "sl"
+	},
+	{
+		name: "Singapore",
+		alpha2: "sg"
+	},
+	{
+		name: "Sint Maarten (Dutch part)",
+		alpha2: "sx"
+	},
+	{
+		name: "Slovakia",
+		alpha2: "sk"
+	},
+	{
+		name: "Slovenia",
+		alpha2: "si"
+	},
+	{
+		name: "Solomon Islands",
+		alpha2: "sb"
+	},
+	{
+		name: "Somalia",
+		alpha2: "so"
+	},
+	{
+		name: "South Africa",
+		alpha2: "za"
+	},
+	{
+		name: "South Georgia and the South Sandwich Islands",
+		alpha2: "gs"
+	},
+	{
+		name: "South Sudan",
+		alpha2: "ss"
+	},
+	{
+		name: "Spain",
+		alpha2: "es"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "Sudan",
+		alpha2: "sd"
+	},
+	{
+		name: "Suriname",
+		alpha2: "sr"
+	},
+	{
+		name: "Svalbard and Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Sweden",
+		alpha2: "se"
+	},
+	{
+		name: "Switzerland",
+		alpha2: "ch"
+	},
+	{
+		name: "Syrian Arab Republic",
+		alpha2: "sy"
+	},
+	{
+		name: "Taiwan, Province of China",
+		alpha2: "tw"
+	},
+	{
+		name: "Tajikistan",
+		alpha2: "tj"
+	},
+	{
+		name: "Tanzania, United Republic of",
+		alpha2: "tz"
+	},
+	{
+		name: "Thailand",
+		alpha2: "th"
+	},
+	{
+		name: "Timor-Leste",
+		alpha2: "tl"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinidad and Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Tunisia",
+		alpha2: "tn"
+	},
+	{
+		name: "Turkey",
+		alpha2: "tr"
+	},
+	{
+		name: "Turkmenistan",
+		alpha2: "tm"
+	},
+	{
+		name: "Turks and Caicos Islands",
+		alpha2: "tc"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Uganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Ukraine",
+		alpha2: "ua"
+	},
+	{
+		name: "United Arab Emirates",
+		alpha2: "ae"
+	},
+	{
+		name: "United Kingdom of Great Britain and Northern Ireland",
+		alpha2: "gb"
+	},
+	{
+		name: "United States of America",
+		alpha2: "us"
+	},
+	{
+		name: "United States Minor Outlying Islands",
+		alpha2: "um"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Uzbekistan",
+		alpha2: "uz"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Venezuela (Bolivarian Republic of)",
+		alpha2: "ve"
+	},
+	{
+		name: "Viet Nam",
+		alpha2: "vn"
+	},
+	{
+		name: "Virgin Islands (British)",
+		alpha2: "vg"
+	},
+	{
+		name: "Virgin Islands (U.S.)",
+		alpha2: "vi"
+	},
+	{
+		name: "Wallis and Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Western Sahara",
+		alpha2: "eh"
+	},
+	{
+		name: "Yemen",
+		alpha2: "ye"
+	},
+	{
+		name: "Zambia",
+		alpha2: "zm"
+	},
+	{
+		name: "Zimbabwe",
+		alpha2: "zw"
+	}
+];
+
+var de$2 = [
+	{
+		name: "Afghanistan",
+		alpha2: "af"
+	},
+	{
+		name: "Ägypten",
+		alpha2: "eg"
+	},
+	{
+		name: "Åland",
+		alpha2: "ax"
+	},
+	{
+		name: "Albanien",
+		alpha2: "al"
+	},
+	{
+		name: "Algerien",
+		alpha2: "dz"
+	},
+	{
+		name: "Amerikanisch-Samoa",
+		alpha2: "as"
+	},
+	{
+		name: "Amerikanische Jungferninseln",
+		alpha2: "vi"
+	},
+	{
+		name: "Andorra",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguilla",
+		alpha2: "ai"
+	},
+	{
+		name: "Antarktika (Sonderstatus durch Antarktis-Vertrag)",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua und Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Äquatorialguinea",
+		alpha2: "gq"
+	},
+	{
+		name: "Argentinien",
+		alpha2: "ar"
+	},
+	{
+		name: "Armenien",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Aserbaidschan",
+		alpha2: "az"
+	},
+	{
+		name: "Äthiopien",
+		alpha2: "et"
+	},
+	{
+		name: "Australien",
+		alpha2: "au"
+	},
+	{
+		name: "Bahamas",
+		alpha2: "bs"
+	},
+	{
+		name: "Bahrain",
+		alpha2: "bh"
+	},
+	{
+		name: "Bangladesch",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbados",
+		alpha2: "bb"
+	},
+	{
+		name: "Belarus (Weißrussland)",
+		alpha2: "by"
+	},
+	{
+		name: "Belgien",
+		alpha2: "be"
+	},
+	{
+		name: "Belize",
+		alpha2: "bz"
+	},
+	{
+		name: "Benin",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermuda",
+		alpha2: "bm"
+	},
+	{
+		name: "Bhutan",
+		alpha2: "bt"
+	},
+	{
+		name: "Bolivien",
+		alpha2: "bo"
+	},
+	{
+		name: "Bonaire, Sint Eustatius und Saba (Niederlande)",
+		alpha2: "bq"
+	},
+	{
+		name: "Bosnien und Herzegowina",
+		alpha2: "ba"
+	},
+	{
+		name: "Botswana",
+		alpha2: "bw"
+	},
+	{
+		name: "Bouvetinsel",
+		alpha2: "bv"
+	},
+	{
+		name: "Brasilien",
+		alpha2: "br"
+	},
+	{
+		name: "Britische Jungferninseln",
+		alpha2: "vg"
+	},
+	{
+		name: "Britisches Territorium im Indischen Ozean",
+		alpha2: "io"
+	},
+	{
+		name: "Brunei Darussalam",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgarien",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Chile",
+		alpha2: "cl"
+	},
+	{
+		name: "China, Volksrepublik",
+		alpha2: "cn"
+	},
+	{
+		name: "Cookinseln",
+		alpha2: "ck"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Côte d’Ivoire (Elfenbeinküste)",
+		alpha2: "ci"
+	},
+	{
+		name: "Curaçao",
+		alpha2: "cw"
+	},
+	{
+		name: "Dänemark",
+		alpha2: "dk"
+	},
+	{
+		name: "Deutschland",
+		alpha2: "de"
+	},
+	{
+		name: "Dominica",
+		alpha2: "dm"
+	},
+	{
+		name: "Dominikanische Republik",
+		alpha2: "do"
+	},
+	{
+		name: "Dschibuti",
+		alpha2: "dj"
+	},
+	{
+		name: "Ecuador",
+		alpha2: "ec"
+	},
+	{
+		name: "El Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Eritrea",
+		alpha2: "er"
+	},
+	{
+		name: "Estland",
+		alpha2: "ee"
+	},
+	{
+		name: "Falklandinseln",
+		alpha2: "fk"
+	},
+	{
+		name: "Färöer",
+		alpha2: "fo"
+	},
+	{
+		name: "Fidschi",
+		alpha2: "fj"
+	},
+	{
+		name: "Finnland",
+		alpha2: "fi"
+	},
+	{
+		name: "Frankreich",
+		alpha2: "fr"
+	},
+	{
+		name: "Französisch-Guayana",
+		alpha2: "gf"
+	},
+	{
+		name: "Französisch-Polynesien",
+		alpha2: "pf"
+	},
+	{
+		name: "Französische Süd- und Antarktisgebiete",
+		alpha2: "tf"
+	},
+	{
+		name: "Gabun",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambia",
+		alpha2: "gm"
+	},
+	{
+		name: "Georgien",
+		alpha2: "ge"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Gibraltar",
+		alpha2: "gi"
+	},
+	{
+		name: "Grenada",
+		alpha2: "gd"
+	},
+	{
+		name: "Griechenland",
+		alpha2: "gr"
+	},
+	{
+		name: "Grönland",
+		alpha2: "gl"
+	},
+	{
+		name: "Guadeloupe",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guernsey (Kanalinsel)",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinea",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinea-Bissau",
+		alpha2: "gw"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Haiti",
+		alpha2: "ht"
+	},
+	{
+		name: "Heard und McDonaldinseln",
+		alpha2: "hm"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hongkong",
+		alpha2: "hk"
+	},
+	{
+		name: "Indien",
+		alpha2: "in"
+	},
+	{
+		name: "Indonesien",
+		alpha2: "id"
+	},
+	{
+		name: "Insel Man",
+		alpha2: "im"
+	},
+	{
+		name: "Irak",
+		alpha2: "iq"
+	},
+	{
+		name: "Iran, Islamische Republik",
+		alpha2: "ir"
+	},
+	{
+		name: "Irland",
+		alpha2: "ie"
+	},
+	{
+		name: "Island",
+		alpha2: "is"
+	},
+	{
+		name: "Israel",
+		alpha2: "il"
+	},
+	{
+		name: "Italien",
+		alpha2: "it"
+	},
+	{
+		name: "Jamaika",
+		alpha2: "jm"
+	},
+	{
+		name: "Japan",
+		alpha2: "jp"
+	},
+	{
+		name: "Jemen",
+		alpha2: "ye"
+	},
+	{
+		name: "Jersey (Kanalinsel)",
+		alpha2: "je"
+	},
+	{
+		name: "Jordanien",
+		alpha2: "jo"
+	},
+	{
+		name: "Kaimaninseln",
+		alpha2: "ky"
+	},
+	{
+		name: "Kambodscha",
+		alpha2: "kh"
+	},
+	{
+		name: "Kamerun",
+		alpha2: "cm"
+	},
+	{
+		name: "Kanada",
+		alpha2: "ca"
+	},
+	{
+		name: "Kap Verde",
+		alpha2: "cv"
+	},
+	{
+		name: "Kasachstan",
+		alpha2: "kz"
+	},
+	{
+		name: "Katar",
+		alpha2: "qa"
+	},
+	{
+		name: "Kenia",
+		alpha2: "ke"
+	},
+	{
+		name: "Kirgisistan",
+		alpha2: "kg"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Kokosinseln",
+		alpha2: "cc"
+	},
+	{
+		name: "Kolumbien",
+		alpha2: "co"
+	},
+	{
+		name: "Komoren",
+		alpha2: "km"
+	},
+	{
+		name: "Kongo, Demokratische Republik (ehem. Zaire)",
+		alpha2: "cd"
+	},
+	{
+		name: "Kongo, Republik (ehem. K.-Brazzaville)",
+		alpha2: "cg"
+	},
+	{
+		name: "Korea, Demokratische Volksrepublik (Nordkorea)",
+		alpha2: "kp"
+	},
+	{
+		name: "Korea, Republik (Südkorea)",
+		alpha2: "kr"
+	},
+	{
+		name: "Kroatien",
+		alpha2: "hr"
+	},
+	{
+		name: "Kuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Kuwait",
+		alpha2: "kw"
+	},
+	{
+		name: "Laos, Demokratische Volksrepublik",
+		alpha2: "la"
+	},
+	{
+		name: "Lesotho",
+		alpha2: "ls"
+	},
+	{
+		name: "Lettland",
+		alpha2: "lv"
+	},
+	{
+		name: "Libanon",
+		alpha2: "lb"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libyen",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Litauen",
+		alpha2: "lt"
+	},
+	{
+		name: "Luxemburg",
+		alpha2: "lu"
+	},
+	{
+		name: "Macau",
+		alpha2: "mo"
+	},
+	{
+		name: "Madagaskar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malawi",
+		alpha2: "mw"
+	},
+	{
+		name: "Malaysia",
+		alpha2: "my"
+	},
+	{
+		name: "Malediven",
+		alpha2: "mv"
+	},
+	{
+		name: "Mali",
+		alpha2: "ml"
+	},
+	{
+		name: "Malta",
+		alpha2: "mt"
+	},
+	{
+		name: "Marokko",
+		alpha2: "ma"
+	},
+	{
+		name: "Marshallinseln",
+		alpha2: "mh"
+	},
+	{
+		name: "Martinique",
+		alpha2: "mq"
+	},
+	{
+		name: "Mauretanien",
+		alpha2: "mr"
+	},
+	{
+		name: "Mauritius",
+		alpha2: "mu"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "Mazedonien",
+		alpha2: "mk"
+	},
+	{
+		name: "Mexiko",
+		alpha2: "mx"
+	},
+	{
+		name: "Mikronesien",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldawien (Republik Moldau)",
+		alpha2: "md"
+	},
+	{
+		name: "Monaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Mongolei",
+		alpha2: "mn"
+	},
+	{
+		name: "Montenegro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Mosambik",
+		alpha2: "mz"
+	},
+	{
+		name: "Myanmar (Burma)",
+		alpha2: "mm"
+	},
+	{
+		name: "Namibia",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Nepal",
+		alpha2: "np"
+	},
+	{
+		name: "Neukaledonien",
+		alpha2: "nc"
+	},
+	{
+		name: "Neuseeland",
+		alpha2: "nz"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Niederlande",
+		alpha2: "nl"
+	},
+	{
+		name: "Niger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Nördliche Marianen",
+		alpha2: "mp"
+	},
+	{
+		name: "Norfolkinsel",
+		alpha2: "nf"
+	},
+	{
+		name: "Norwegen",
+		alpha2: "no"
+	},
+	{
+		name: "Oman",
+		alpha2: "om"
+	},
+	{
+		name: "Österreich",
+		alpha2: "at"
+	},
+	{
+		name: "Osttimor (Timor-Leste)",
+		alpha2: "tl"
+	},
+	{
+		name: "Pakistan",
+		alpha2: "pk"
+	},
+	{
+		name: "Staat Palästina",
+		alpha2: "ps"
+	},
+	{
+		name: "Palau",
+		alpha2: "pw"
+	},
+	{
+		name: "Panama",
+		alpha2: "pa"
+	},
+	{
+		name: "Papua-Neuguinea",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Peru",
+		alpha2: "pe"
+	},
+	{
+		name: "Philippinen",
+		alpha2: "ph"
+	},
+	{
+		name: "Pitcairninseln",
+		alpha2: "pn"
+	},
+	{
+		name: "Polen",
+		alpha2: "pl"
+	},
+	{
+		name: "Portugal",
+		alpha2: "pt"
+	},
+	{
+		name: "Puerto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Réunion",
+		alpha2: "re"
+	},
+	{
+		name: "Ruanda",
+		alpha2: "rw"
+	},
+	{
+		name: "Rumänien",
+		alpha2: "ro"
+	},
+	{
+		name: "Russische Föderation",
+		alpha2: "ru"
+	},
+	{
+		name: "Salomonen",
+		alpha2: "sb"
+	},
+	{
+		name: "Saint-Barthélemy",
+		alpha2: "bl"
+	},
+	{
+		name: "Saint-Martin (franz. Teil)",
+		alpha2: "mf"
+	},
+	{
+		name: "Sambia",
+		alpha2: "zm"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "San Marino",
+		alpha2: "sm"
+	},
+	{
+		name: "São Tomé und Príncipe",
+		alpha2: "st"
+	},
+	{
+		name: "Saudi-Arabien",
+		alpha2: "sa"
+	},
+	{
+		name: "Schweden",
+		alpha2: "se"
+	},
+	{
+		name: "Schweiz (Confoederatio Helvetica)",
+		alpha2: "ch"
+	},
+	{
+		name: "Senegal",
+		alpha2: "sn"
+	},
+	{
+		name: "Serbien",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychellen",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leone",
+		alpha2: "sl"
+	},
+	{
+		name: "Simbabwe",
+		alpha2: "zw"
+	},
+	{
+		name: "Singapur",
+		alpha2: "sg"
+	},
+	{
+		name: "Sint Maarten (niederl. Teil)",
+		alpha2: "sx"
+	},
+	{
+		name: "Slowakei",
+		alpha2: "sk"
+	},
+	{
+		name: "Slowenien",
+		alpha2: "si"
+	},
+	{
+		name: "Somalia",
+		alpha2: "so"
+	},
+	{
+		name: "Spanien",
+		alpha2: "es"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "St. Helena",
+		alpha2: "sh"
+	},
+	{
+		name: "St. Kitts und Nevis",
+		alpha2: "kn"
+	},
+	{
+		name: "St. Lucia",
+		alpha2: "lc"
+	},
+	{
+		name: "Saint-Pierre und Miquelon",
+		alpha2: "pm"
+	},
+	{
+		name: "St. Vincent und die Grenadinen",
+		alpha2: "vc"
+	},
+	{
+		name: "Südafrika",
+		alpha2: "za"
+	},
+	{
+		name: "Sudan",
+		alpha2: "sd"
+	},
+	{
+		name: "Südgeorgien und die Südlichen Sandwichinseln",
+		alpha2: "gs"
+	},
+	{
+		name: "Südsudan",
+		alpha2: "ss"
+	},
+	{
+		name: "Suriname",
+		alpha2: "sr"
+	},
+	{
+		name: "Svalbard und Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Swasiland",
+		alpha2: "sz"
+	},
+	{
+		name: "Syrien, Arabische Republik",
+		alpha2: "sy"
+	},
+	{
+		name: "Tadschikistan",
+		alpha2: "tj"
+	},
+	{
+		name: "Republik China (Taiwan)",
+		alpha2: "tw"
+	},
+	{
+		name: "Tansania, Vereinigte Republik",
+		alpha2: "tz"
+	},
+	{
+		name: "Thailand",
+		alpha2: "th"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinidad und Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Tschad",
+		alpha2: "td"
+	},
+	{
+		name: "Tschechien",
+		alpha2: "cz"
+	},
+	{
+		name: "Tunesien",
+		alpha2: "tn"
+	},
+	{
+		name: "Türkei",
+		alpha2: "tr"
+	},
+	{
+		name: "Turkmenistan",
+		alpha2: "tm"
+	},
+	{
+		name: "Turks- und Caicosinseln",
+		alpha2: "tc"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Uganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Ukraine",
+		alpha2: "ua"
+	},
+	{
+		name: "Ungarn",
+		alpha2: "hu"
+	},
+	{
+		name: "United States Minor Outlying Islands",
+		alpha2: "um"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Usbekistan",
+		alpha2: "uz"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Vatikanstadt",
+		alpha2: "va"
+	},
+	{
+		name: "Venezuela",
+		alpha2: "ve"
+	},
+	{
+		name: "Vereinigte Arabische Emirate",
+		alpha2: "ae"
+	},
+	{
+		name: "Vereinigte Staaten von Amerika",
+		alpha2: "us"
+	},
+	{
+		name: "Vereinigtes Königreich Großbritannien und Nordirland",
+		alpha2: "gb"
+	},
+	{
+		name: "Vietnam",
+		alpha2: "vn"
+	},
+	{
+		name: "Wallis und Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Weihnachtsinsel",
+		alpha2: "cx"
+	},
+	{
+		name: "Westsahara",
+		alpha2: "eh"
+	},
+	{
+		name: "Zentralafrikanische Republik",
+		alpha2: "cf"
+	},
+	{
+		name: "Zypern",
+		alpha2: "cy"
+	}
+];
+
+var fr$2 = [
+	{
+		name: "Afghanistan",
+		alpha2: "af"
+	},
+	{
+		name: "Afrique du Sud",
+		alpha2: "za"
+	},
+	{
+		name: "Îles Åland",
+		alpha2: "ax"
+	},
+	{
+		name: "Albanie",
+		alpha2: "al"
+	},
+	{
+		name: "Algérie",
+		alpha2: "dz"
+	},
+	{
+		name: "Allemagne",
+		alpha2: "de"
+	},
+	{
+		name: "Andorre",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguilla",
+		alpha2: "ai"
+	},
+	{
+		name: "Antarctique",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua-et-Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Arabie saoudite",
+		alpha2: "sa"
+	},
+	{
+		name: "Argentine",
+		alpha2: "ar"
+	},
+	{
+		name: "Arménie",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Australie",
+		alpha2: "au"
+	},
+	{
+		name: "Autriche",
+		alpha2: "at"
+	},
+	{
+		name: "Azerbaïdjan",
+		alpha2: "az"
+	},
+	{
+		name: "Bahamas",
+		alpha2: "bs"
+	},
+	{
+		name: "Bahreïn",
+		alpha2: "bh"
+	},
+	{
+		name: "Bangladesh",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbade",
+		alpha2: "bb"
+	},
+	{
+		name: "Biélorussie",
+		alpha2: "by"
+	},
+	{
+		name: "Belgique",
+		alpha2: "be"
+	},
+	{
+		name: "Belize",
+		alpha2: "bz"
+	},
+	{
+		name: "Bénin",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermudes",
+		alpha2: "bm"
+	},
+	{
+		name: "Bhoutan",
+		alpha2: "bt"
+	},
+	{
+		name: "Bolivie",
+		alpha2: "bo"
+	},
+	{
+		name: "Pays-Bas caribéens",
+		alpha2: "bq"
+	},
+	{
+		name: "Bosnie-Herzégovine",
+		alpha2: "ba"
+	},
+	{
+		name: "Botswana",
+		alpha2: "bw"
+	},
+	{
+		name: "Île Bouvet",
+		alpha2: "bv"
+	},
+	{
+		name: "Brésil",
+		alpha2: "br"
+	},
+	{
+		name: "Brunei",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgarie",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Îles Caïmans",
+		alpha2: "ky"
+	},
+	{
+		name: "Cambodge",
+		alpha2: "kh"
+	},
+	{
+		name: "Cameroun",
+		alpha2: "cm"
+	},
+	{
+		name: "Canada",
+		alpha2: "ca"
+	},
+	{
+		name: "Cap-Vert",
+		alpha2: "cv"
+	},
+	{
+		name: "République centrafricaine",
+		alpha2: "cf"
+	},
+	{
+		name: "Chili",
+		alpha2: "cl"
+	},
+	{
+		name: "Chine",
+		alpha2: "cn"
+	},
+	{
+		name: "Île Christmas",
+		alpha2: "cx"
+	},
+	{
+		name: "Chypre (pays)",
+		alpha2: "cy"
+	},
+	{
+		name: "Îles Cocos",
+		alpha2: "cc"
+	},
+	{
+		name: "Colombie",
+		alpha2: "co"
+	},
+	{
+		name: "Comores (pays)",
+		alpha2: "km"
+	},
+	{
+		name: "République du Congo",
+		alpha2: "cg"
+	},
+	{
+		name: "République démocratique du Congo",
+		alpha2: "cd"
+	},
+	{
+		name: "Îles Cook",
+		alpha2: "ck"
+	},
+	{
+		name: "Corée du Sud",
+		alpha2: "kr"
+	},
+	{
+		name: "Corée du Nord",
+		alpha2: "kp"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Côte d'Ivoire",
+		alpha2: "ci"
+	},
+	{
+		name: "Croatie",
+		alpha2: "hr"
+	},
+	{
+		name: "Cuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Curaçao",
+		alpha2: "cw"
+	},
+	{
+		name: "Danemark",
+		alpha2: "dk"
+	},
+	{
+		name: "Djibouti",
+		alpha2: "dj"
+	},
+	{
+		name: "République dominicaine",
+		alpha2: "do"
+	},
+	{
+		name: "Dominique",
+		alpha2: "dm"
+	},
+	{
+		name: "Égypte",
+		alpha2: "eg"
+	},
+	{
+		name: "Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Émirats arabes unis",
+		alpha2: "ae"
+	},
+	{
+		name: "Équateur (pays)",
+		alpha2: "ec"
+	},
+	{
+		name: "Érythrée",
+		alpha2: "er"
+	},
+	{
+		name: "Espagne",
+		alpha2: "es"
+	},
+	{
+		name: "Estonie",
+		alpha2: "ee"
+	},
+	{
+		name: "États-Unis",
+		alpha2: "us"
+	},
+	{
+		name: "Éthiopie",
+		alpha2: "et"
+	},
+	{
+		name: "Malouines",
+		alpha2: "fk"
+	},
+	{
+		name: "Îles Féroé",
+		alpha2: "fo"
+	},
+	{
+		name: "Fidji",
+		alpha2: "fj"
+	},
+	{
+		name: "Finlande",
+		alpha2: "fi"
+	},
+	{
+		name: "France",
+		alpha2: "fr"
+	},
+	{
+		name: "Gabon",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambie",
+		alpha2: "gm"
+	},
+	{
+		name: "Géorgie (pays)",
+		alpha2: "ge"
+	},
+	{
+		name: "Géorgie du Sud-et-les îles Sandwich du Sud",
+		alpha2: "gs"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Gibraltar",
+		alpha2: "gi"
+	},
+	{
+		name: "Grèce",
+		alpha2: "gr"
+	},
+	{
+		name: "Grenade (pays)",
+		alpha2: "gd"
+	},
+	{
+		name: "Groenland",
+		alpha2: "gl"
+	},
+	{
+		name: "Guadeloupe",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guernesey",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinée",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinée-Bissau",
+		alpha2: "gw"
+	},
+	{
+		name: "Guinée équatoriale",
+		alpha2: "gq"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Guyane",
+		alpha2: "gf"
+	},
+	{
+		name: "Haïti",
+		alpha2: "ht"
+	},
+	{
+		name: "Îles Heard-et-MacDonald",
+		alpha2: "hm"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hong Kong",
+		alpha2: "hk"
+	},
+	{
+		name: "Hongrie",
+		alpha2: "hu"
+	},
+	{
+		name: "Île de Man",
+		alpha2: "im"
+	},
+	{
+		name: "Îles mineures éloignées des États-Unis",
+		alpha2: "um"
+	},
+	{
+		name: "Îles Vierges britanniques",
+		alpha2: "vg"
+	},
+	{
+		name: "Îles Vierges des États-Unis",
+		alpha2: "vi"
+	},
+	{
+		name: "Inde",
+		alpha2: "in"
+	},
+	{
+		name: "Indonésie",
+		alpha2: "id"
+	},
+	{
+		name: "Iran",
+		alpha2: "ir"
+	},
+	{
+		name: "Irak",
+		alpha2: "iq"
+	},
+	{
+		name: "Irlande (pays)",
+		alpha2: "ie"
+	},
+	{
+		name: "Islande",
+		alpha2: "is"
+	},
+	{
+		name: "Israël",
+		alpha2: "il"
+	},
+	{
+		name: "Italie",
+		alpha2: "it"
+	},
+	{
+		name: "Jamaïque",
+		alpha2: "jm"
+	},
+	{
+		name: "Japon",
+		alpha2: "jp"
+	},
+	{
+		name: "Jersey",
+		alpha2: "je"
+	},
+	{
+		name: "Jordanie",
+		alpha2: "jo"
+	},
+	{
+		name: "Kazakhstan",
+		alpha2: "kz"
+	},
+	{
+		name: "Kenya",
+		alpha2: "ke"
+	},
+	{
+		name: "Kirghizistan",
+		alpha2: "kg"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Koweït",
+		alpha2: "kw"
+	},
+	{
+		name: "Laos",
+		alpha2: "la"
+	},
+	{
+		name: "Lesotho",
+		alpha2: "ls"
+	},
+	{
+		name: "Lettonie",
+		alpha2: "lv"
+	},
+	{
+		name: "Liban",
+		alpha2: "lb"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libye",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Lituanie",
+		alpha2: "lt"
+	},
+	{
+		name: "Luxembourg (pays)",
+		alpha2: "lu"
+	},
+	{
+		name: "Macao",
+		alpha2: "mo"
+	},
+	{
+		name: "République de Macédoine (pays)",
+		alpha2: "mk"
+	},
+	{
+		name: "Madagascar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malaisie",
+		alpha2: "my"
+	},
+	{
+		name: "Malawi",
+		alpha2: "mw"
+	},
+	{
+		name: "Maldives",
+		alpha2: "mv"
+	},
+	{
+		name: "Mali",
+		alpha2: "ml"
+	},
+	{
+		name: "Malte",
+		alpha2: "mt"
+	},
+	{
+		name: "Îles Mariannes du Nord",
+		alpha2: "mp"
+	},
+	{
+		name: "Maroc",
+		alpha2: "ma"
+	},
+	{
+		name: "Îles Marshall (pays)",
+		alpha2: "mh"
+	},
+	{
+		name: "Martinique",
+		alpha2: "mq"
+	},
+	{
+		name: "Maurice (pays)",
+		alpha2: "mu"
+	},
+	{
+		name: "Mauritanie",
+		alpha2: "mr"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "Mexique",
+		alpha2: "mx"
+	},
+	{
+		name: "Micronésie (pays)",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldavie",
+		alpha2: "md"
+	},
+	{
+		name: "Monaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Mongolie",
+		alpha2: "mn"
+	},
+	{
+		name: "Monténégro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Mozambique",
+		alpha2: "mz"
+	},
+	{
+		name: "Birmanie",
+		alpha2: "mm"
+	},
+	{
+		name: "Namibie",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Népal",
+		alpha2: "np"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Niger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Île Norfolk",
+		alpha2: "nf"
+	},
+	{
+		name: "Norvège",
+		alpha2: "no"
+	},
+	{
+		name: "Nouvelle-Calédonie",
+		alpha2: "nc"
+	},
+	{
+		name: "Nouvelle-Zélande",
+		alpha2: "nz"
+	},
+	{
+		name: "Territoire britannique de l'océan Indien",
+		alpha2: "io"
+	},
+	{
+		name: "Oman",
+		alpha2: "om"
+	},
+	{
+		name: "Ouganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Ouzbékistan",
+		alpha2: "uz"
+	},
+	{
+		name: "Pakistan",
+		alpha2: "pk"
+	},
+	{
+		name: "Palaos",
+		alpha2: "pw"
+	},
+	{
+		name: "Palestine",
+		alpha2: "ps"
+	},
+	{
+		name: "Panama",
+		alpha2: "pa"
+	},
+	{
+		name: "Papouasie-Nouvelle-Guinée",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Pays-Bas",
+		alpha2: "nl"
+	},
+	{
+		name: "Pérou",
+		alpha2: "pe"
+	},
+	{
+		name: "Philippines",
+		alpha2: "ph"
+	},
+	{
+		name: "Îles Pitcairn",
+		alpha2: "pn"
+	},
+	{
+		name: "Pologne",
+		alpha2: "pl"
+	},
+	{
+		name: "Polynésie française",
+		alpha2: "pf"
+	},
+	{
+		name: "Porto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Portugal",
+		alpha2: "pt"
+	},
+	{
+		name: "Qatar",
+		alpha2: "qa"
+	},
+	{
+		name: "La Réunion",
+		alpha2: "re"
+	},
+	{
+		name: "Roumanie",
+		alpha2: "ro"
+	},
+	{
+		name: "Royaume-Uni",
+		alpha2: "gb"
+	},
+	{
+		name: "Russie",
+		alpha2: "ru"
+	},
+	{
+		name: "Rwanda",
+		alpha2: "rw"
+	},
+	{
+		name: "République arabe sahraouie démocratique",
+		alpha2: "eh"
+	},
+	{
+		name: "Saint-Barthélemy",
+		alpha2: "bl"
+	},
+	{
+		name: "Saint-Christophe-et-Niévès",
+		alpha2: "kn"
+	},
+	{
+		name: "Saint-Marin",
+		alpha2: "sm"
+	},
+	{
+		name: "Saint-Martin",
+		alpha2: "mf"
+	},
+	{
+		name: "Saint-Martin",
+		alpha2: "sx"
+	},
+	{
+		name: "Saint-Pierre-et-Miquelon",
+		alpha2: "pm"
+	},
+	{
+		name: "Saint-Siège (État de la Cité du Vatican)",
+		alpha2: "va"
+	},
+	{
+		name: "Saint-Vincent-et-les-Grenadines",
+		alpha2: "vc"
+	},
+	{
+		name: "Sainte-Hélène, Ascension et Tristan da Cunha",
+		alpha2: "sh"
+	},
+	{
+		name: "Sainte-Lucie",
+		alpha2: "lc"
+	},
+	{
+		name: "Salomon",
+		alpha2: "sb"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "Samoa américaines",
+		alpha2: "as"
+	},
+	{
+		name: "Sao Tomé-et-Principe",
+		alpha2: "st"
+	},
+	{
+		name: "Sénégal",
+		alpha2: "sn"
+	},
+	{
+		name: "Serbie",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychelles",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leone",
+		alpha2: "sl"
+	},
+	{
+		name: "Singapour",
+		alpha2: "sg"
+	},
+	{
+		name: "Slovaquie",
+		alpha2: "sk"
+	},
+	{
+		name: "Slovénie",
+		alpha2: "si"
+	},
+	{
+		name: "Somalie",
+		alpha2: "so"
+	},
+	{
+		name: "Soudan",
+		alpha2: "sd"
+	},
+	{
+		name: "Soudan du Sud",
+		alpha2: "ss"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "Suède",
+		alpha2: "se"
+	},
+	{
+		name: "Suisse",
+		alpha2: "ch"
+	},
+	{
+		name: "Suriname",
+		alpha2: "sr"
+	},
+	{
+		name: "Svalbard et ile Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Swaziland",
+		alpha2: "sz"
+	},
+	{
+		name: "Syrie",
+		alpha2: "sy"
+	},
+	{
+		name: "Tadjikistan",
+		alpha2: "tj"
+	},
+	{
+		name: "Taïwan / (République de Chine (Taïwan))",
+		alpha2: "tw"
+	},
+	{
+		name: "Tanzanie",
+		alpha2: "tz"
+	},
+	{
+		name: "Tchad",
+		alpha2: "td"
+	},
+	{
+		name: "Tchéquie",
+		alpha2: "cz"
+	},
+	{
+		name: "Terres australes et antarctiques françaises",
+		alpha2: "tf"
+	},
+	{
+		name: "Thaïlande",
+		alpha2: "th"
+	},
+	{
+		name: "Timor oriental",
+		alpha2: "tl"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinité-et-Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Tunisie",
+		alpha2: "tn"
+	},
+	{
+		name: "Turkménistan",
+		alpha2: "tm"
+	},
+	{
+		name: "Îles Turques-et-Caïques",
+		alpha2: "tc"
+	},
+	{
+		name: "Turquie",
+		alpha2: "tr"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Ukraine",
+		alpha2: "ua"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Venezuela",
+		alpha2: "ve"
+	},
+	{
+		name: "Viêt Nam",
+		alpha2: "vn"
+	},
+	{
+		name: "Wallis-et-Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Yémen",
+		alpha2: "ye"
+	},
+	{
+		name: "Zambie",
+		alpha2: "zm"
+	},
+	{
+		name: "Zimbabwe",
+		alpha2: "zw"
+	}
+];
+
+var es$2 = [
+	{
+		name: "Afganistán",
+		alpha2: "af"
+	},
+	{
+		name: "Åland",
+		alpha2: "ax"
+	},
+	{
+		name: "Albania",
+		alpha2: "al"
+	},
+	{
+		name: "Alemania",
+		alpha2: "de"
+	},
+	{
+		name: "Andorra",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguila",
+		alpha2: "ai"
+	},
+	{
+		name: "Antártida",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua y Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Arabia Saudita",
+		alpha2: "sa"
+	},
+	{
+		name: "Argelia",
+		alpha2: "dz"
+	},
+	{
+		name: "Argentina",
+		alpha2: "ar"
+	},
+	{
+		name: "Armenia",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Australia",
+		alpha2: "au"
+	},
+	{
+		name: "Austria",
+		alpha2: "at"
+	},
+	{
+		name: "Azerbaiyán",
+		alpha2: "az"
+	},
+	{
+		name: "Bahamas",
+		alpha2: "bs"
+	},
+	{
+		name: "Bangladés",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbados",
+		alpha2: "bb"
+	},
+	{
+		name: "Baréin",
+		alpha2: "bh"
+	},
+	{
+		name: "Bélgica",
+		alpha2: "be"
+	},
+	{
+		name: "Belice",
+		alpha2: "bz"
+	},
+	{
+		name: "Benín",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermudas",
+		alpha2: "bm"
+	},
+	{
+		name: "Bielorrusia",
+		alpha2: "by"
+	},
+	{
+		name: "Bolivia",
+		alpha2: "bo"
+	},
+	{
+		name: "Bonaire, San Eustaquio y Saba",
+		alpha2: "bq"
+	},
+	{
+		name: "Bosnia y Herzegovina",
+		alpha2: "ba"
+	},
+	{
+		name: "Botsuana",
+		alpha2: "bw"
+	},
+	{
+		name: "Brasil",
+		alpha2: "br"
+	},
+	{
+		name: "Brunéi",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgaria",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Bután",
+		alpha2: "bt"
+	},
+	{
+		name: "Cabo Verde",
+		alpha2: "cv"
+	},
+	{
+		name: "Camboya",
+		alpha2: "kh"
+	},
+	{
+		name: "Camerún",
+		alpha2: "cm"
+	},
+	{
+		name: "Canadá",
+		alpha2: "ca"
+	},
+	{
+		name: "Catar",
+		alpha2: "qa"
+	},
+	{
+		name: "Chad",
+		alpha2: "td"
+	},
+	{
+		name: "Chile",
+		alpha2: "cl"
+	},
+	{
+		name: "China",
+		alpha2: "cn"
+	},
+	{
+		name: "Chipre",
+		alpha2: "cy"
+	},
+	{
+		name: "Colombia",
+		alpha2: "co"
+	},
+	{
+		name: "Comoras",
+		alpha2: "km"
+	},
+	{
+		name: "Corea del Norte",
+		alpha2: "kp"
+	},
+	{
+		name: "Corea del Sur",
+		alpha2: "kr"
+	},
+	{
+		name: "Costa de Marfil",
+		alpha2: "ci"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Croacia",
+		alpha2: "hr"
+	},
+	{
+		name: "Cuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Curazao",
+		alpha2: "cw"
+	},
+	{
+		name: "Dinamarca",
+		alpha2: "dk"
+	},
+	{
+		name: "Dominica",
+		alpha2: "dm"
+	},
+	{
+		name: "Ecuador",
+		alpha2: "ec"
+	},
+	{
+		name: "Egipto",
+		alpha2: "eg"
+	},
+	{
+		name: "El Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Emiratos Árabes Unidos",
+		alpha2: "ae"
+	},
+	{
+		name: "Eritrea",
+		alpha2: "er"
+	},
+	{
+		name: "Eslovaquia",
+		alpha2: "sk"
+	},
+	{
+		name: "Eslovenia",
+		alpha2: "si"
+	},
+	{
+		name: "España",
+		alpha2: "es"
+	},
+	{
+		name: "Estados Unidos",
+		alpha2: "us"
+	},
+	{
+		name: "Estonia",
+		alpha2: "ee"
+	},
+	{
+		name: "Etiopía",
+		alpha2: "et"
+	},
+	{
+		name: "Filipinas",
+		alpha2: "ph"
+	},
+	{
+		name: "Finlandia",
+		alpha2: "fi"
+	},
+	{
+		name: "Fiyi",
+		alpha2: "fj"
+	},
+	{
+		name: "Francia",
+		alpha2: "fr"
+	},
+	{
+		name: "Gabón",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambia",
+		alpha2: "gm"
+	},
+	{
+		name: "Georgia",
+		alpha2: "ge"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Gibraltar",
+		alpha2: "gi"
+	},
+	{
+		name: "Granada",
+		alpha2: "gd"
+	},
+	{
+		name: "Grecia",
+		alpha2: "gr"
+	},
+	{
+		name: "Groenlandia",
+		alpha2: "gl"
+	},
+	{
+		name: "Guadalupe",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guayana Francesa",
+		alpha2: "gf"
+	},
+	{
+		name: "Guernsey",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinea",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinea-Bisáu",
+		alpha2: "gw"
+	},
+	{
+		name: "Guinea Ecuatorial",
+		alpha2: "gq"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Haití",
+		alpha2: "ht"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hong Kong",
+		alpha2: "hk"
+	},
+	{
+		name: "Hungría",
+		alpha2: "hu"
+	},
+	{
+		name: "India",
+		alpha2: "in"
+	},
+	{
+		name: "Indonesia",
+		alpha2: "id"
+	},
+	{
+		name: "Irak",
+		alpha2: "iq"
+	},
+	{
+		name: "Irán",
+		alpha2: "ir"
+	},
+	{
+		name: "Irlanda",
+		alpha2: "ie"
+	},
+	{
+		name: "Isla Bouvet",
+		alpha2: "bv"
+	},
+	{
+		name: "Isla de Man",
+		alpha2: "im"
+	},
+	{
+		name: "Isla de Navidad",
+		alpha2: "cx"
+	},
+	{
+		name: "Islandia",
+		alpha2: "is"
+	},
+	{
+		name: "Islas Caimán",
+		alpha2: "ky"
+	},
+	{
+		name: "Islas Cocos",
+		alpha2: "cc"
+	},
+	{
+		name: "Islas Cook",
+		alpha2: "ck"
+	},
+	{
+		name: "Islas Feroe",
+		alpha2: "fo"
+	},
+	{
+		name: "Islas Georgias del Sur y Sandwich del Sur",
+		alpha2: "gs"
+	},
+	{
+		name: "Islas Heard y McDonald",
+		alpha2: "hm"
+	},
+	{
+		name: "Islas Malvinas",
+		alpha2: "fk"
+	},
+	{
+		name: "Islas Marianas del Norte",
+		alpha2: "mp"
+	},
+	{
+		name: "Islas Marshall",
+		alpha2: "mh"
+	},
+	{
+		name: "Islas Pitcairn",
+		alpha2: "pn"
+	},
+	{
+		name: "Islas Salomón",
+		alpha2: "sb"
+	},
+	{
+		name: "Islas Turcas y Caicos",
+		alpha2: "tc"
+	},
+	{
+		name: "Islas ultramarinas de Estados Unidos",
+		alpha2: "um"
+	},
+	{
+		name: "Islas Vírgenes Británicas",
+		alpha2: "vg"
+	},
+	{
+		name: "Islas Vírgenes de los Estados Unidos",
+		alpha2: "vi"
+	},
+	{
+		name: "Israel",
+		alpha2: "il"
+	},
+	{
+		name: "Italia",
+		alpha2: "it"
+	},
+	{
+		name: "Jamaica",
+		alpha2: "jm"
+	},
+	{
+		name: "Japón",
+		alpha2: "jp"
+	},
+	{
+		name: "Jersey",
+		alpha2: "je"
+	},
+	{
+		name: "Jordania",
+		alpha2: "jo"
+	},
+	{
+		name: "Kazajistán",
+		alpha2: "kz"
+	},
+	{
+		name: "Kenia",
+		alpha2: "ke"
+	},
+	{
+		name: "Kirguistán",
+		alpha2: "kg"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Kuwait",
+		alpha2: "kw"
+	},
+	{
+		name: "Laos",
+		alpha2: "la"
+	},
+	{
+		name: "Lesoto",
+		alpha2: "ls"
+	},
+	{
+		name: "Letonia",
+		alpha2: "lv"
+	},
+	{
+		name: "Líbano",
+		alpha2: "lb"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libia",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Lituania",
+		alpha2: "lt"
+	},
+	{
+		name: "Luxemburgo",
+		alpha2: "lu"
+	},
+	{
+		name: "Macao",
+		alpha2: "mo"
+	},
+	{
+		name: "Macedonia",
+		alpha2: "mk"
+	},
+	{
+		name: "Madagascar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malasia",
+		alpha2: "my"
+	},
+	{
+		name: "Malaui",
+		alpha2: "mw"
+	},
+	{
+		name: "Maldivas",
+		alpha2: "mv"
+	},
+	{
+		name: "Malí",
+		alpha2: "ml"
+	},
+	{
+		name: "Malta",
+		alpha2: "mt"
+	},
+	{
+		name: "Marruecos",
+		alpha2: "ma"
+	},
+	{
+		name: "Martinica",
+		alpha2: "mq"
+	},
+	{
+		name: "Mauricio",
+		alpha2: "mu"
+	},
+	{
+		name: "Mauritania",
+		alpha2: "mr"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "México",
+		alpha2: "mx"
+	},
+	{
+		name: "Micronesia",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldavia",
+		alpha2: "md"
+	},
+	{
+		name: "Mónaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Mongolia",
+		alpha2: "mn"
+	},
+	{
+		name: "Montenegro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Mozambique",
+		alpha2: "mz"
+	},
+	{
+		name: "Myanmar",
+		alpha2: "mm"
+	},
+	{
+		name: "Namibia",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Nepal",
+		alpha2: "np"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Níger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Norfolk",
+		alpha2: "nf"
+	},
+	{
+		name: "Noruega",
+		alpha2: "no"
+	},
+	{
+		name: "Nueva Caledonia",
+		alpha2: "nc"
+	},
+	{
+		name: "Nueva Zelanda",
+		alpha2: "nz"
+	},
+	{
+		name: "Omán",
+		alpha2: "om"
+	},
+	{
+		name: "Países Bajos",
+		alpha2: "nl"
+	},
+	{
+		name: "Pakistán",
+		alpha2: "pk"
+	},
+	{
+		name: "Palaos",
+		alpha2: "pw"
+	},
+	{
+		name: "Palestina",
+		alpha2: "ps"
+	},
+	{
+		name: "Panamá",
+		alpha2: "pa"
+	},
+	{
+		name: "Papúa Nueva Guinea",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Perú",
+		alpha2: "pe"
+	},
+	{
+		name: "Polinesia Francesa",
+		alpha2: "pf"
+	},
+	{
+		name: "Polonia",
+		alpha2: "pl"
+	},
+	{
+		name: "Portugal",
+		alpha2: "pt"
+	},
+	{
+		name: "Puerto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Reino Unido",
+		alpha2: "gb"
+	},
+	{
+		name: "República Árabe Saharaui Democrática",
+		alpha2: "eh"
+	},
+	{
+		name: "República Centroafricana",
+		alpha2: "cf"
+	},
+	{
+		name: "República Checa",
+		alpha2: "cz"
+	},
+	{
+		name: "República del Congo",
+		alpha2: "cg"
+	},
+	{
+		name: "República Democrática del Congo",
+		alpha2: "cd"
+	},
+	{
+		name: "República Dominicana",
+		alpha2: "do"
+	},
+	{
+		name: "Reunión",
+		alpha2: "re"
+	},
+	{
+		name: "Ruanda",
+		alpha2: "rw"
+	},
+	{
+		name: "Rumania",
+		alpha2: "ro"
+	},
+	{
+		name: "Rusia",
+		alpha2: "ru"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "Samoa Americana",
+		alpha2: "as"
+	},
+	{
+		name: "San Bartolomé",
+		alpha2: "bl"
+	},
+	{
+		name: "San Cristóbal y Nieves",
+		alpha2: "kn"
+	},
+	{
+		name: "San Marino",
+		alpha2: "sm"
+	},
+	{
+		name: "San Martín",
+		alpha2: "mf"
+	},
+	{
+		name: "San Pedro y Miquelón",
+		alpha2: "pm"
+	},
+	{
+		name: "San Vicente y las Granadinas",
+		alpha2: "vc"
+	},
+	{
+		name: "Santa Elena, Ascensión y Tristán de Acuña",
+		alpha2: "sh"
+	},
+	{
+		name: "Santa Lucía",
+		alpha2: "lc"
+	},
+	{
+		name: "Santo Tomé y Príncipe",
+		alpha2: "st"
+	},
+	{
+		name: "Senegal",
+		alpha2: "sn"
+	},
+	{
+		name: "Serbia",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychelles",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leona",
+		alpha2: "sl"
+	},
+	{
+		name: "Singapur",
+		alpha2: "sg"
+	},
+	{
+		name: "Sint Maarten",
+		alpha2: "sx"
+	},
+	{
+		name: "Siria",
+		alpha2: "sy"
+	},
+	{
+		name: "Somalia",
+		alpha2: "so"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "Suazilandia",
+		alpha2: "sz"
+	},
+	{
+		name: "Sudáfrica",
+		alpha2: "za"
+	},
+	{
+		name: "Sudán",
+		alpha2: "sd"
+	},
+	{
+		name: "Sudán del Sur",
+		alpha2: "ss"
+	},
+	{
+		name: "Suecia",
+		alpha2: "se"
+	},
+	{
+		name: "Suiza",
+		alpha2: "ch"
+	},
+	{
+		name: "Surinam",
+		alpha2: "sr"
+	},
+	{
+		name: "Svalbard y Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Tailandia",
+		alpha2: "th"
+	},
+	{
+		name: "Taiwán (República de China)",
+		alpha2: "tw"
+	},
+	{
+		name: "Tanzania",
+		alpha2: "tz"
+	},
+	{
+		name: "Tayikistán",
+		alpha2: "tj"
+	},
+	{
+		name: "Territorio Británico del Océano Índico",
+		alpha2: "io"
+	},
+	{
+		name: "Tierras Australes y Antárticas Francesas",
+		alpha2: "tf"
+	},
+	{
+		name: "Timor Oriental",
+		alpha2: "tl"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinidad y Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Túnez",
+		alpha2: "tn"
+	},
+	{
+		name: "Turkmenistán",
+		alpha2: "tm"
+	},
+	{
+		name: "Turquía",
+		alpha2: "tr"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Ucrania",
+		alpha2: "ua"
+	},
+	{
+		name: "Uganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Uzbekistán",
+		alpha2: "uz"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Vaticano, Ciudad del",
+		alpha2: "va"
+	},
+	{
+		name: "Venezuela",
+		alpha2: "ve"
+	},
+	{
+		name: "Vietnam",
+		alpha2: "vn"
+	},
+	{
+		name: "Wallis y Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Yemen",
+		alpha2: "ye"
+	},
+	{
+		name: "Yibuti",
+		alpha2: "dj"
+	},
+	{
+		name: "Zambia",
+		alpha2: "zm"
+	},
+	{
+		name: "Zimbabue",
+		alpha2: "zw"
+	}
+];
+
+var it$2 = [
+	{
+		name: "Afghanistan",
+		alpha2: "af"
+	},
+	{
+		name: "Albania",
+		alpha2: "al"
+	},
+	{
+		name: "Algeria",
+		alpha2: "dz"
+	},
+	{
+		name: "Andorra",
+		alpha2: "ad"
+	},
+	{
+		name: "Angola",
+		alpha2: "ao"
+	},
+	{
+		name: "Anguilla",
+		alpha2: "ai"
+	},
+	{
+		name: "Antartide",
+		alpha2: "aq"
+	},
+	{
+		name: "Antigua e Barbuda",
+		alpha2: "ag"
+	},
+	{
+		name: "Arabia Saudita",
+		alpha2: "sa"
+	},
+	{
+		name: "Argentina",
+		alpha2: "ar"
+	},
+	{
+		name: "Armenia",
+		alpha2: "am"
+	},
+	{
+		name: "Aruba",
+		alpha2: "aw"
+	},
+	{
+		name: "Australia",
+		alpha2: "au"
+	},
+	{
+		name: "Austria",
+		alpha2: "at"
+	},
+	{
+		name: "Azerbaigian",
+		alpha2: "az"
+	},
+	{
+		name: "Bahamas",
+		alpha2: "bs"
+	},
+	{
+		name: "Bahrein",
+		alpha2: "bh"
+	},
+	{
+		name: "Bangladesh",
+		alpha2: "bd"
+	},
+	{
+		name: "Barbados",
+		alpha2: "bb"
+	},
+	{
+		name: "Belgio",
+		alpha2: "be"
+	},
+	{
+		name: "Belize",
+		alpha2: "bz"
+	},
+	{
+		name: "Benin",
+		alpha2: "bj"
+	},
+	{
+		name: "Bermuda",
+		alpha2: "bm"
+	},
+	{
+		name: "Bhutan",
+		alpha2: "bt"
+	},
+	{
+		name: "Bielorussia",
+		alpha2: "by"
+	},
+	{
+		name: "Birmania",
+		alpha2: "mm"
+	},
+	{
+		name: "Bolivia",
+		alpha2: "bo"
+	},
+	{
+		name: "Bosnia ed Erzegovina",
+		alpha2: "ba"
+	},
+	{
+		name: "Botswana",
+		alpha2: "bw"
+	},
+	{
+		name: "Brasile",
+		alpha2: "br"
+	},
+	{
+		name: "Brunei",
+		alpha2: "bn"
+	},
+	{
+		name: "Bulgaria",
+		alpha2: "bg"
+	},
+	{
+		name: "Burkina Faso",
+		alpha2: "bf"
+	},
+	{
+		name: "Burundi",
+		alpha2: "bi"
+	},
+	{
+		name: "Cambogia",
+		alpha2: "kh"
+	},
+	{
+		name: "Camerun",
+		alpha2: "cm"
+	},
+	{
+		name: "Canada",
+		alpha2: "ca"
+	},
+	{
+		name: "Capo Verde",
+		alpha2: "cv"
+	},
+	{
+		name: "Ciad",
+		alpha2: "td"
+	},
+	{
+		name: "Cile",
+		alpha2: "cl"
+	},
+	{
+		name: "Cina",
+		alpha2: "cn"
+	},
+	{
+		name: "Cipro",
+		alpha2: "cy"
+	},
+	{
+		name: "Città del Vaticano",
+		alpha2: "va"
+	},
+	{
+		name: "Colombia",
+		alpha2: "co"
+	},
+	{
+		name: "Comore",
+		alpha2: "km"
+	},
+	{
+		name: "Corea del Nord",
+		alpha2: "kp"
+	},
+	{
+		name: "Corea del Sud",
+		alpha2: "kr"
+	},
+	{
+		name: "Costa d'Avorio",
+		alpha2: "ci"
+	},
+	{
+		name: "Costa Rica",
+		alpha2: "cr"
+	},
+	{
+		name: "Croazia",
+		alpha2: "hr"
+	},
+	{
+		name: "Cuba",
+		alpha2: "cu"
+	},
+	{
+		name: "Curaçao",
+		alpha2: "cw"
+	},
+	{
+		name: "Danimarca",
+		alpha2: "dk"
+	},
+	{
+		name: "Dominica",
+		alpha2: "dm"
+	},
+	{
+		name: "Ecuador",
+		alpha2: "ec"
+	},
+	{
+		name: "Egitto",
+		alpha2: "eg"
+	},
+	{
+		name: "El Salvador",
+		alpha2: "sv"
+	},
+	{
+		name: "Emirati Arabi Uniti",
+		alpha2: "ae"
+	},
+	{
+		name: "Eritrea",
+		alpha2: "er"
+	},
+	{
+		name: "Estonia",
+		alpha2: "ee"
+	},
+	{
+		name: "Etiopia",
+		alpha2: "et"
+	},
+	{
+		name: "Figi",
+		alpha2: "fj"
+	},
+	{
+		name: "Filippine",
+		alpha2: "ph"
+	},
+	{
+		name: "Finlandia",
+		alpha2: "fi"
+	},
+	{
+		name: "Francia",
+		alpha2: "fr"
+	},
+	{
+		name: "Gabon",
+		alpha2: "ga"
+	},
+	{
+		name: "Gambia",
+		alpha2: "gm"
+	},
+	{
+		name: "Georgia",
+		alpha2: "ge"
+	},
+	{
+		name: "Georgia del Sud e Isole Sandwich Australi",
+		alpha2: "gs"
+	},
+	{
+		name: "Germania",
+		alpha2: "de"
+	},
+	{
+		name: "Ghana",
+		alpha2: "gh"
+	},
+	{
+		name: "Giamaica",
+		alpha2: "jm"
+	},
+	{
+		name: "Giappone",
+		alpha2: "jp"
+	},
+	{
+		name: "Gibilterra",
+		alpha2: "gi"
+	},
+	{
+		name: "Gibuti",
+		alpha2: "dj"
+	},
+	{
+		name: "Giordania",
+		alpha2: "jo"
+	},
+	{
+		name: "Grecia",
+		alpha2: "gr"
+	},
+	{
+		name: "Grenada",
+		alpha2: "gd"
+	},
+	{
+		name: "Groenlandia",
+		alpha2: "gl"
+	},
+	{
+		name: "Guadalupa",
+		alpha2: "gp"
+	},
+	{
+		name: "Guam",
+		alpha2: "gu"
+	},
+	{
+		name: "Guatemala",
+		alpha2: "gt"
+	},
+	{
+		name: "Guernsey",
+		alpha2: "gg"
+	},
+	{
+		name: "Guinea",
+		alpha2: "gn"
+	},
+	{
+		name: "Guinea-Bissau",
+		alpha2: "gw"
+	},
+	{
+		name: "Guinea Equatoriale",
+		alpha2: "gq"
+	},
+	{
+		name: "Guyana",
+		alpha2: "gy"
+	},
+	{
+		name: "Guyana francese",
+		alpha2: "gf"
+	},
+	{
+		name: "Haiti",
+		alpha2: "ht"
+	},
+	{
+		name: "Honduras",
+		alpha2: "hn"
+	},
+	{
+		name: "Hong Kong",
+		alpha2: "hk"
+	},
+	{
+		name: "India",
+		alpha2: "in"
+	},
+	{
+		name: "Indonesia",
+		alpha2: "id"
+	},
+	{
+		name: "Iran",
+		alpha2: "ir"
+	},
+	{
+		name: "Iraq",
+		alpha2: "iq"
+	},
+	{
+		name: "Irlanda",
+		alpha2: "ie"
+	},
+	{
+		name: "Islanda",
+		alpha2: "is"
+	},
+	{
+		name: "Isola Bouvet",
+		alpha2: "bv"
+	},
+	{
+		name: "Isola di Man",
+		alpha2: "im"
+	},
+	{
+		name: "Isola di Natale",
+		alpha2: "cx"
+	},
+	{
+		name: "Isola Norfolk",
+		alpha2: "nf"
+	},
+	{
+		name: "Isole Åland",
+		alpha2: "ax"
+	},
+	{
+		name: "Isole BES",
+		alpha2: "bq"
+	},
+	{
+		name: "Isole Cayman",
+		alpha2: "ky"
+	},
+	{
+		name: "Isole Cocos (Keeling)",
+		alpha2: "cc"
+	},
+	{
+		name: "Isole Cook",
+		alpha2: "ck"
+	},
+	{
+		name: "Fær Øer",
+		alpha2: "fo"
+	},
+	{
+		name: "Isole Falkland",
+		alpha2: "fk"
+	},
+	{
+		name: "Isole Heard e McDonald",
+		alpha2: "hm"
+	},
+	{
+		name: "Isole Marianne Settentrionali",
+		alpha2: "mp"
+	},
+	{
+		name: "Isole Marshall",
+		alpha2: "mh"
+	},
+	{
+		name: "Isole minori esterne degli Stati Uniti",
+		alpha2: "um"
+	},
+	{
+		name: "Isole Pitcairn",
+		alpha2: "pn"
+	},
+	{
+		name: "Isole Salomone",
+		alpha2: "sb"
+	},
+	{
+		name: "Isole Vergini britanniche",
+		alpha2: "vg"
+	},
+	{
+		name: "Isole Vergini americane",
+		alpha2: "vi"
+	},
+	{
+		name: "Israele",
+		alpha2: "il"
+	},
+	{
+		name: "Italia",
+		alpha2: "it"
+	},
+	{
+		name: "Jersey",
+		alpha2: "je"
+	},
+	{
+		name: "Kazakistan",
+		alpha2: "kz"
+	},
+	{
+		name: "Kenya",
+		alpha2: "ke"
+	},
+	{
+		name: "Kirghizistan",
+		alpha2: "kg"
+	},
+	{
+		name: "Kiribati",
+		alpha2: "ki"
+	},
+	{
+		name: "Kuwait",
+		alpha2: "kw"
+	},
+	{
+		name: "Laos",
+		alpha2: "la"
+	},
+	{
+		name: "Lesotho",
+		alpha2: "ls"
+	},
+	{
+		name: "Lettonia",
+		alpha2: "lv"
+	},
+	{
+		name: "Libano",
+		alpha2: "lb"
+	},
+	{
+		name: "Liberia",
+		alpha2: "lr"
+	},
+	{
+		name: "Libia",
+		alpha2: "ly"
+	},
+	{
+		name: "Liechtenstein",
+		alpha2: "li"
+	},
+	{
+		name: "Lituania",
+		alpha2: "lt"
+	},
+	{
+		name: "Lussemburgo",
+		alpha2: "lu"
+	},
+	{
+		name: "Macao",
+		alpha2: "mo"
+	},
+	{
+		name: "Macedonia",
+		alpha2: "mk"
+	},
+	{
+		name: "Madagascar",
+		alpha2: "mg"
+	},
+	{
+		name: "Malawi",
+		alpha2: "mw"
+	},
+	{
+		name: "Malaysia",
+		alpha2: "my"
+	},
+	{
+		name: "Maldive",
+		alpha2: "mv"
+	},
+	{
+		name: "Mali",
+		alpha2: "ml"
+	},
+	{
+		name: "Malta",
+		alpha2: "mt"
+	},
+	{
+		name: "Marocco",
+		alpha2: "ma"
+	},
+	{
+		name: "Martinica",
+		alpha2: "mq"
+	},
+	{
+		name: "Mauritania",
+		alpha2: "mr"
+	},
+	{
+		name: "Mauritius",
+		alpha2: "mu"
+	},
+	{
+		name: "Mayotte",
+		alpha2: "yt"
+	},
+	{
+		name: "Messico",
+		alpha2: "mx"
+	},
+	{
+		name: "Micronesia",
+		alpha2: "fm"
+	},
+	{
+		name: "Moldavia",
+		alpha2: "md"
+	},
+	{
+		name: "Mongolia",
+		alpha2: "mn"
+	},
+	{
+		name: "Montenegro",
+		alpha2: "me"
+	},
+	{
+		name: "Montserrat",
+		alpha2: "ms"
+	},
+	{
+		name: "Mozambico",
+		alpha2: "mz"
+	},
+	{
+		name: "Namibia",
+		alpha2: "na"
+	},
+	{
+		name: "Nauru",
+		alpha2: "nr"
+	},
+	{
+		name: "Nepal",
+		alpha2: "np"
+	},
+	{
+		name: "Nicaragua",
+		alpha2: "ni"
+	},
+	{
+		name: "Niger",
+		alpha2: "ne"
+	},
+	{
+		name: "Nigeria",
+		alpha2: "ng"
+	},
+	{
+		name: "Niue",
+		alpha2: "nu"
+	},
+	{
+		name: "Norvegia",
+		alpha2: "no"
+	},
+	{
+		name: "Nuova Caledonia",
+		alpha2: "nc"
+	},
+	{
+		name: "Nuova Zelanda",
+		alpha2: "nz"
+	},
+	{
+		name: "Oman",
+		alpha2: "om"
+	},
+	{
+		name: "Paesi Bassi",
+		alpha2: "nl"
+	},
+	{
+		name: "Pakistan",
+		alpha2: "pk"
+	},
+	{
+		name: "Palau",
+		alpha2: "pw"
+	},
+	{
+		name: "Palestina",
+		alpha2: "ps"
+	},
+	{
+		name: "Panama",
+		alpha2: "pa"
+	},
+	{
+		name: "Papua Nuova Guinea",
+		alpha2: "pg"
+	},
+	{
+		name: "Paraguay",
+		alpha2: "py"
+	},
+	{
+		name: "Perù",
+		alpha2: "pe"
+	},
+	{
+		name: "Polinesia Francese",
+		alpha2: "pf"
+	},
+	{
+		name: "Polonia",
+		alpha2: "pl"
+	},
+	{
+		name: "Porto Rico",
+		alpha2: "pr"
+	},
+	{
+		name: "Portogallo",
+		alpha2: "pt"
+	},
+	{
+		name: "Monaco",
+		alpha2: "mc"
+	},
+	{
+		name: "Qatar",
+		alpha2: "qa"
+	},
+	{
+		name: "Regno Unito",
+		alpha2: "gb"
+	},
+	{
+		name: "RD del Congo",
+		alpha2: "cd"
+	},
+	{
+		name: "Rep. Ceca",
+		alpha2: "cz"
+	},
+	{
+		name: "Rep. Centrafricana",
+		alpha2: "cf"
+	},
+	{
+		name: "Rep. del Congo",
+		alpha2: "cg"
+	},
+	{
+		name: "Rep. Dominicana",
+		alpha2: "do"
+	},
+	{
+		name: "Riunione",
+		alpha2: "re"
+	},
+	{
+		name: "Romania",
+		alpha2: "ro"
+	},
+	{
+		name: "Ruanda",
+		alpha2: "rw"
+	},
+	{
+		name: "Russia",
+		alpha2: "ru"
+	},
+	{
+		name: "Sahara Occidentale",
+		alpha2: "eh"
+	},
+	{
+		name: "Saint Kitts e Nevis",
+		alpha2: "kn"
+	},
+	{
+		name: "Saint Lucia",
+		alpha2: "lc"
+	},
+	{
+		name: "Sant'Elena, Ascensione e Tristan da Cunha",
+		alpha2: "sh"
+	},
+	{
+		name: "Saint Vincent e Grenadine",
+		alpha2: "vc"
+	},
+	{
+		name: "Saint-Barthélemy",
+		alpha2: "bl"
+	},
+	{
+		name: "Saint-Martin",
+		alpha2: "mf"
+	},
+	{
+		name: "Saint-Pierre e Miquelon",
+		alpha2: "pm"
+	},
+	{
+		name: "Samoa",
+		alpha2: "ws"
+	},
+	{
+		name: "Samoa Americane",
+		alpha2: "as"
+	},
+	{
+		name: "San Marino",
+		alpha2: "sm"
+	},
+	{
+		name: "São Tomé e Príncipe",
+		alpha2: "st"
+	},
+	{
+		name: "Senegal",
+		alpha2: "sn"
+	},
+	{
+		name: "Serbia",
+		alpha2: "rs"
+	},
+	{
+		name: "Seychelles",
+		alpha2: "sc"
+	},
+	{
+		name: "Sierra Leone",
+		alpha2: "sl"
+	},
+	{
+		name: "Singapore",
+		alpha2: "sg"
+	},
+	{
+		name: "Sint Maarten",
+		alpha2: "sx"
+	},
+	{
+		name: "Siria",
+		alpha2: "sy"
+	},
+	{
+		name: "Slovacchia",
+		alpha2: "sk"
+	},
+	{
+		name: "Slovenia",
+		alpha2: "si"
+	},
+	{
+		name: "Somalia",
+		alpha2: "so"
+	},
+	{
+		name: "Spagna",
+		alpha2: "es"
+	},
+	{
+		name: "Sri Lanka",
+		alpha2: "lk"
+	},
+	{
+		name: "Stati Uniti",
+		alpha2: "us"
+	},
+	{
+		name: "Sudafrica",
+		alpha2: "za"
+	},
+	{
+		name: "Sudan",
+		alpha2: "sd"
+	},
+	{
+		name: "Sudan del Sud",
+		alpha2: "ss"
+	},
+	{
+		name: "Suriname",
+		alpha2: "sr"
+	},
+	{
+		name: "Svalbard e Jan Mayen",
+		alpha2: "sj"
+	},
+	{
+		name: "Svezia",
+		alpha2: "se"
+	},
+	{
+		name: "Svizzera",
+		alpha2: "ch"
+	},
+	{
+		name: "Swaziland",
+		alpha2: "sz"
+	},
+	{
+		name: "Taiwan",
+		alpha2: "tw"
+	},
+	{
+		name: "Tagikistan",
+		alpha2: "tj"
+	},
+	{
+		name: "Tanzania",
+		alpha2: "tz"
+	},
+	{
+		name: "Terre australi e antartiche francesi",
+		alpha2: "tf"
+	},
+	{
+		name: "Territorio britannico dell'Oceano Indiano",
+		alpha2: "io"
+	},
+	{
+		name: "Thailandia",
+		alpha2: "th"
+	},
+	{
+		name: "Timor Est",
+		alpha2: "tl"
+	},
+	{
+		name: "Togo",
+		alpha2: "tg"
+	},
+	{
+		name: "Tokelau",
+		alpha2: "tk"
+	},
+	{
+		name: "Tonga",
+		alpha2: "to"
+	},
+	{
+		name: "Trinidad e Tobago",
+		alpha2: "tt"
+	},
+	{
+		name: "Tunisia",
+		alpha2: "tn"
+	},
+	{
+		name: "Turchia",
+		alpha2: "tr"
+	},
+	{
+		name: "Turkmenistan",
+		alpha2: "tm"
+	},
+	{
+		name: "Turks e Caicos",
+		alpha2: "tc"
+	},
+	{
+		name: "Tuvalu",
+		alpha2: "tv"
+	},
+	{
+		name: "Ucraina",
+		alpha2: "ua"
+	},
+	{
+		name: "Uganda",
+		alpha2: "ug"
+	},
+	{
+		name: "Ungheria",
+		alpha2: "hu"
+	},
+	{
+		name: "Uruguay",
+		alpha2: "uy"
+	},
+	{
+		name: "Uzbekistan",
+		alpha2: "uz"
+	},
+	{
+		name: "Vanuatu",
+		alpha2: "vu"
+	},
+	{
+		name: "Venezuela",
+		alpha2: "ve"
+	},
+	{
+		name: "Vietnam",
+		alpha2: "vn"
+	},
+	{
+		name: "Wallis e Futuna",
+		alpha2: "wf"
+	},
+	{
+		name: "Yemen",
+		alpha2: "ye"
+	},
+	{
+		name: "Zambia",
+		alpha2: "zm"
+	},
+	{
+		name: "Zimbabwe",
+		alpha2: "zw"
+	}
+];
+
 var Countries = {
-  en: require('./countries/en.json'),
-  nl: require('./countries/nl.json'),
-  de: require('./countries/de.json'),
-  fr: require('./countries/fr.json'),
-  es: require('./countries/es.json'),
-  it: require('./countries/it.json')
+  en: en$2,
+  nl: nl$2,
+  de: de$2,
+  fr: fr$2,
+  es: es$2,
+  it: it$2
 };
 
 function isInt(value) {
@@ -42327,7 +46831,7 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
   function FormCreator() {
     var _this;
 
-    _classCallCheck$7(this, FormCreator);
+    _classCallCheck$4(this, FormCreator);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -42678,7 +47182,7 @@ var CalendarPage = /*#__PURE__*/function (_Component) {
   function CalendarPage(props) {
     var _this;
 
-    _classCallCheck$7(this, CalendarPage);
+    _classCallCheck$4(this, CalendarPage);
 
     _this = _super.call(this, props);
     _this.onBooking = _this.onBooking.bind(_assertThisInitialized$3(_this));
@@ -42813,7 +47317,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
   function ReviewsPage(props) {
     var _this;
 
-    _classCallCheck$7(this, ReviewsPage);
+    _classCallCheck$4(this, ReviewsPage);
 
     _this = _super.call(this, props);
     _this.state = {};
@@ -42830,7 +47334,112 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
   return ReviewsPage;
 }(React.Component);
 
-var pjson = require('../../package.json');
+var pjson = {
+	name: "bukazu-portal-react",
+	version: "2.0.3",
+	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
+	main: "build/index.js",
+	repository: "https://github.com/BUKAZU/React-portal",
+	scripts: {
+		build: "webpack",
+		staging: "webpack --config webpack.config.dev",
+		start: "webpack serve --open --config webpack.config.dev",
+		test: "cypress open",
+		"build-c": "rollup -c",
+		"start-c": "rollup -c -w"
+	},
+	author: "Bob van Oorschot",
+	license: "MIT",
+	peerDependencies: {
+		react: "^16.14.0 || ^17.0.2",
+		"react-dom": "^16.14.0 || ^17.0.2"
+	},
+	devDependencies: {
+		"@babel/core": "^7.15.0",
+		"@babel/plugin-proposal-class-properties": "^7.13.0",
+		"@babel/preset-env": "^7.15.0",
+		"@babel/preset-react": "^7.14.5",
+		"@cypress/react": "^5.3.3",
+		"@cypress/webpack-dev-server": "^1.1.3",
+		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-json": "^4.1.0",
+		autoprefixer: "^10.2.5",
+		"babel-core": "^6.26.3",
+		"babel-loader": "^8.2.2",
+		"babel-runtime": "^6.26.0",
+		chalk: "1.1.3",
+		"css-loader": "0.28.7",
+		cypress: "^7.1.0",
+		dotenv: "4.0.0",
+		"dotenv-expand": "4.2.0",
+		eslint: "^7.28.0",
+		"eslint-plugin-jsx-a11y": "^6.4.1",
+		"eslint-plugin-prettier": "^3.4.0",
+		"eslint-plugin-react": "^7.24.0",
+		"fs-extra": "3.0.1",
+		jest: "24.5.0",
+		"mini-css-extract-plugin": "^1.5.0",
+		"npm-run-all": "^4.1.5",
+		postcss: "^8.2.12",
+		"postcss-import": "^14.0.1",
+		"postcss-loader": "^5.2.0",
+		"postcss-modules": "^4.2.2",
+		"postcss-nested": "^5.0.5",
+		"postcss-preset-env": "^6.7.0",
+		prettier: "^2.3.1",
+		react: "^16.4.1",
+		"react-dev-utils": "^5.0.1",
+		"react-dom": "^16.14.0",
+		resolve: "1.6.0",
+		rollup: "^2.56.2",
+		"rollup-plugin-babel": "^4.4.0",
+		"rollup-plugin-node-resolve": "^5.2.0",
+		"rollup-plugin-postcss": "^4.0.1",
+		"rollup-plugin-replace": "^2.2.0",
+		webpack: "^5",
+		"webpack-cli": "^4.6.0",
+		"webpack-dev-server": "^3.0.0",
+		"whatwg-fetch": "2.0.3"
+	},
+	dependencies: {
+		"apollo-boost": "^0.4.9",
+		"array-includes": "^3.0.3",
+		"array-sort": "^1.0.0",
+		"date-fns": "^1.29.0",
+		formik: "^1.3.1",
+		graphql: "^14.0.0",
+		"react-apollo": "^2.1.9",
+		"react-date-picker": "^8.1.1",
+		"react-intl": "^2.7.2",
+		"react-js-pagination": "^3.0.2",
+		unfetch: "^4.1.0"
+	},
+	eslintConfig: {
+		"extends": [
+			"eslint:recommended",
+			"plugin:react/recommended",
+			"plugin:jsx-a11y/recommended"
+		],
+		parser: "babel-eslint",
+		env: {
+			browser: true,
+			node: true
+		},
+		rules: {
+			strict: 0,
+			"no-console": "warn",
+			quotes: [
+				"warn",
+				"single"
+			],
+			"prettier/prettier": "warn"
+		},
+		plugins: [
+			"prettier",
+			"jsx-a11y"
+		]
+	}
+};
 
 var style = {
   width: "100%",
@@ -42914,7 +47523,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
   function ErrorBoundary(props) {
     var _this;
 
-    _classCallCheck$7(this, ErrorBoundary);
+    _classCallCheck$4(this, ErrorBoundary);
 
     _this = _super.call(this, props);
     _this.state = {
@@ -42960,7 +47569,7 @@ var App = /*#__PURE__*/function (_Component) {
   function App(props) {
     var _this;
 
-    _classCallCheck$7(this, App);
+    _classCallCheck$4(this, App);
 
     _this = _super.call(this, props);
     _this.pageWidth = /*#__PURE__*/React__default['default'].createRef();
@@ -43122,165 +47731,86 @@ var it$1 = {exports: {}};
 
 var itData = it$1.exports;
 
-var next$5 = "pijltje";
-var previous$5 = "pijltje";
-var price$5 = "Price";
-var calculate$5 = "Next";
-var book$5 = "Book";
-var booked$5 = "Booked";
-var booking$5 = "Booking";
-var last_minute_discount$5 = "Last minute discount";
-var discount$5 = "Discount";
-var option$5 = "Option";
-var choose_for_option$5 = "Make a short reservation for this period ";
-var included_in_price$5 = "including";
-var rent_price$5 = "Rental price";
-var extra_costs_included$5 = "Extra costs included";
-var optional_costs$5 = "Extra options";
-var price_after_discount$5 = "Rental price incl. discount";
-var booking_from_til$5 = "Booking dates";
-var total$5 = "Total";
-var stay_details$5 = "Travel group";
-var babies$5 = "Babies";
-var babies_from$5 = "(up to the age of {babies})";
-var adults$5 = "Adults";
-var adults_from$5 = "(from the age of {age})";
-var children$5 = "Children";
-var children_from$5 = "(from {from} to {til} years inclusive)";
-var extra_costs_bookable$5 = "Extra options";
-var costs_on_site$5 = "Additional costs on the spot:";
-var insurances$5 = "Insurances";
-var at_least_1_adult$5 = "Choose at least 1 adult.";
-var max_persons_reached$5 = "Too many people have been selected.";
-var personal_details$5 = "Your information";
-var required$5 = "This field is required.";
-var cancel_insurance_all_risk$5 = "All Risk";
-var cancel_insurance_normal$5 = "Standard";
-var none$5 = "None";
-var cancel_insurance$5 = "Cancellation insurance";
-var insurance_costs$5 = "Insurance Costs";
-var choose$5 = "Choose";
-var yes$5 = "Yes";
-var booking_details$5 = "Booking details";
-var based_on_one_person$5 = "Based on {persons} persons";
-var return_to_calendar$5 = "Back to calendar";
-var close$5 = "Close";
-var cancel_insurance_normal_long$5 = "Standard Cancellation Insurance";
-var cancel_insurance_normal_desc$5 = "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.";
-var cancel_insurance_all_risk_long$5 = "All Risk Cancellation Insurance";
-var cancel_insurance_desc$5 = "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:";
-var cancel_insurance_all_risk_desc$5 = "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.";
-var terms_and_costs$5 = "Premiums and Conditions";
-var costs_normal_cancel_insurance$5 = "Standard Cancellation Insurance Premium:";
-var costs_allrisk_cancel_insurance$5 = "All Risk Cancellation Insurance Premium:";
-var more_information$5 = "More information:";
-var show_terms$5 = "Show conditions";
-var terms$5 = "Terms";
-var remark$5 = "Remark";
-var or$5 = "or";
-var poliscosts$5 = "Policy fee";
-var poliscosts_are$5 = "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran";
-var youwillrecieve$5 = "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.";
-var thank_you_for_your_request$5 = "Thank you very much for your request.";
-var we_sent_confirmation_check_email$5 = "A copy of your request has been sent to your e-mail address. If you have not received any mail from us, it may be that it is in your spam box.";
-var something_went_wrong_please_try_again$5 = "Oops, something went wrong, please try again later.";
-var persons$5 = "persons";
-var bedrooms$5 = "bedrooms";
-var minimum_week_price$5 = "min. weekly price";
-var no_results$5 = "No results";
-var agree_with$5 = "By clicking on 'Book', you agree to the";
-var discount_reason$5 = "Reason discount.";
-var results$5 = "results";
-var bathrooms$5 = "bathrooms";
-var you_need_to_give_reason$5 = "You must indicate a valid discount reason";
-var filters$5 = "Filters";
-var comply_insurance_card$5 = "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation.";
-var no$5 = "No";
-var no_house_found$1 = "No object found for this combination of PortalCode and ObjectCode";
-var insurance_company_needs_date_of_birth$2 = "A date of birth is required for taking out insurance";
-var no_discount_code_found$2 = "No discount found with entered code";
-var discount_code$2 = "Discount code";
-var minimum_nights$5 = "At least {minimum} nights";
 var en = {
-	next: next$5,
-	previous: previous$5,
-	price: price$5,
-	calculate: calculate$5,
-	book: book$5,
-	booked: booked$5,
-	booking: booking$5,
-	last_minute_discount: last_minute_discount$5,
-	discount: discount$5,
-	option: option$5,
-	choose_for_option: choose_for_option$5,
-	included_in_price: included_in_price$5,
-	rent_price: rent_price$5,
-	extra_costs_included: extra_costs_included$5,
-	optional_costs: optional_costs$5,
-	price_after_discount: price_after_discount$5,
-	booking_from_til: booking_from_til$5,
-	total: total$5,
-	stay_details: stay_details$5,
-	babies: babies$5,
-	babies_from: babies_from$5,
-	adults: adults$5,
-	adults_from: adults_from$5,
-	children: children$5,
-	children_from: children_from$5,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Price",
+	calculate: "Next",
+	book: "Book",
+	booked: "Booked",
+	booking: "Booking",
+	last_minute_discount: "Last minute discount",
+	discount: "Discount",
+	option: "Option",
+	choose_for_option: "Make a short reservation for this period ",
+	included_in_price: "including",
+	rent_price: "Rental price",
+	extra_costs_included: "Extra costs included",
+	optional_costs: "Extra options",
+	price_after_discount: "Rental price incl. discount",
+	booking_from_til: "Booking dates",
+	total: "Total",
+	stay_details: "Travel group",
+	babies: "Babies",
+	babies_from: "(up to the age of {babies})",
+	adults: "Adults",
+	adults_from: "(from the age of {age})",
+	children: "Children",
+	children_from: "(from {from} to {til} years inclusive)",
 	"house.arrival_date": "Arrival date",
 	"house.departure_date": "Departure date",
 	"house.arrival": "Arrival",
 	"house.departure": "Departure",
-	extra_costs_bookable: extra_costs_bookable$5,
-	costs_on_site: costs_on_site$5,
-	insurances: insurances$5,
-	at_least_1_adult: at_least_1_adult$5,
-	max_persons_reached: max_persons_reached$5,
-	personal_details: personal_details$5,
-	required: required$5,
-	cancel_insurance_all_risk: cancel_insurance_all_risk$5,
-	cancel_insurance_normal: cancel_insurance_normal$5,
-	none: none$5,
-	cancel_insurance: cancel_insurance$5,
-	insurance_costs: insurance_costs$5,
-	choose: choose$5,
-	yes: yes$5,
-	booking_details: booking_details$5,
-	based_on_one_person: based_on_one_person$5,
-	return_to_calendar: return_to_calendar$5,
-	close: close$5,
-	cancel_insurance_normal_long: cancel_insurance_normal_long$5,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc$5,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long$5,
-	cancel_insurance_desc: cancel_insurance_desc$5,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc$5,
-	terms_and_costs: terms_and_costs$5,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance$5,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance$5,
+	extra_costs_bookable: "Extra options",
+	costs_on_site: "Additional costs on the spot:",
+	insurances: "Insurances",
+	at_least_1_adult: "Choose at least 1 adult.",
+	max_persons_reached: "Too many people have been selected.",
+	personal_details: "Your information",
+	required: "This field is required.",
+	cancel_insurance_all_risk: "All Risk",
+	cancel_insurance_normal: "Standard",
+	none: "None",
+	cancel_insurance: "Cancellation insurance",
+	insurance_costs: "Insurance Costs",
+	choose: "Choose",
+	yes: "Yes",
+	booking_details: "Booking details",
+	based_on_one_person: "Based on {persons} persons",
+	return_to_calendar: "Back to calendar",
+	close: "Close",
+	cancel_insurance_normal_long: "Standard Cancellation Insurance",
+	cancel_insurance_normal_desc: "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.",
+	cancel_insurance_all_risk_long: "All Risk Cancellation Insurance",
+	cancel_insurance_desc: "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:",
+	cancel_insurance_all_risk_desc: "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.",
+	terms_and_costs: "Premiums and Conditions",
+	costs_normal_cancel_insurance: "Standard Cancellation Insurance Premium:",
+	costs_allrisk_cancel_insurance: "All Risk Cancellation Insurance Premium:",
 	"666_costs": "6.66% of the travel costs",
 	"847_costs": "8.47% of the travel costs",
-	more_information: more_information$5,
-	show_terms: show_terms$5,
-	terms: terms$5,
-	remark: remark$5,
+	more_information: "More information:",
+	show_terms: "Show conditions",
+	terms: "Terms",
+	remark: "Remark",
 	"9persons_9addresses": "The Insurance will pay for up to 9 persons, who live at 9 different addresses,",
-	or: or$5,
+	or: "or",
 	"9persons_4addresses": "The insurance pays out for an unlimited number of people who live at a maximum of 4 different addresses.",
-	poliscosts: poliscosts$5,
-	poliscosts_are: poliscosts_are$5,
-	youwillrecieve: youwillrecieve$5,
-	thank_you_for_your_request: thank_you_for_your_request$5,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email$5,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again$5,
-	persons: persons$5,
-	bedrooms: bedrooms$5,
-	minimum_week_price: minimum_week_price$5,
-	no_results: no_results$5,
-	agree_with: agree_with$5,
-	discount_reason: discount_reason$5,
-	results: results$5,
-	bathrooms: bathrooms$5,
-	you_need_to_give_reason: you_need_to_give_reason$5,
+	poliscosts: "Policy fee",
+	poliscosts_are: "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran",
+	youwillrecieve: "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.",
+	thank_you_for_your_request: "Thank you very much for your request.",
+	we_sent_confirmation_check_email: "A copy of your request has been sent to your e-mail address. If you have not received any mail from us, it may be that it is in your spam box.",
+	something_went_wrong_please_try_again: "Oops, something went wrong, please try again later.",
+	persons: "persons",
+	bedrooms: "bedrooms",
+	minimum_week_price: "min. weekly price",
+	no_results: "No results",
+	agree_with: "By clicking on 'Book', you agree to the",
+	discount_reason: "Reason discount.",
+	results: "results",
+	bathrooms: "bathrooms",
+	you_need_to_give_reason: "You must indicate a valid discount reason",
 	"camper.arrival_date": "Start date",
 	"camper.departure_date": "End date",
 	"camper.arrival": "Start date",
@@ -43293,8 +47823,8 @@ var en = {
 	"caravan.departure_date": "Departure date",
 	"caravan.arrival": "Arrival",
 	"caravan.departure": "Departure",
-	filters: filters$5,
-	comply_insurance_card: comply_insurance_card$5,
+	filters: "Filters",
+	comply_insurance_card: "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation.",
 	"house.you_picked_arrival_date": "Your arrival date is",
 	"camper.you_picked_arrival_date": "Your pickup date is",
 	"house.pick_your_departure_in_the_calendar": "Select a departure date",
@@ -43303,174 +47833,95 @@ var en = {
 	"camper.you_picked_departure_date": "Your return date is",
 	"house.pick_your_arrivaldate_in_the_calendar": "Choose an arrival date",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
-	no: no$5,
-	no_house_found: no_house_found$1,
-	insurance_company_needs_date_of_birth: insurance_company_needs_date_of_birth$2,
+	no: "No",
+	no_house_found: "No object found for this combination of PortalCode and ObjectCode",
+	insurance_company_needs_date_of_birth: "A date of birth is required for taking out insurance",
 	"extra_fields.date_of_birth": "Date of birth",
-	no_discount_code_found: no_discount_code_found$2,
-	discount_code: discount_code$2,
-	minimum_nights: minimum_nights$5
+	no_discount_code_found: "No discount found with entered code",
+	discount_code: "Discount code",
+	minimum_nights: "At least {minimum} nights"
 };
 
-var next$4 = "pijltje";
-var previous$4 = "pijltje";
-var price$4 = "Prijs";
-var calculate$4 = "Volgende";
-var book$4 = "Boeken";
-var booked$4 = "Geboekt";
-var booking$4 = "Boeking";
-var last_minute_discount$4 = "Last minute korting";
-var discount$4 = "Korting";
-var option$4 = "Optie";
-var choose_for_option$4 = "Neem een optie op deze periode";
-var included_in_price$4 = "inclusief";
-var rent_price$4 = "Huurprijs";
-var extra_costs_included$4 = "Extra kosten inbegrepen";
-var optional_costs$4 = "Extra opties";
-var price_after_discount$4 = "Huurprijs incl. korting";
-var booking_from_til$4 = "Boekingsdata:";
-var total$4 = "Totaal";
-var stay_details$4 = "Reisgezelschap";
-var babies$4 = "Baby's";
-var babies_from$4 = "(t/m {babies} jaar)";
-var adults$4 = "Volwassenen";
-var adults_from$4 = "(vanaf {age} jaar)";
-var children$4 = "Kinderen";
-var children_from$4 = "({from} t/m {til} jaar)";
-var extra_costs_bookable$4 = "Extra opties";
-var costs_on_site$4 = "Bijkomende kosten ter plaatse:";
-var insurances$4 = "Verzekeringen";
-var at_least_1_adult$4 = "Kies minstens 1 volwassene.";
-var max_persons_reached$4 = "Er zijn te veel personen geselecteerd.";
-var personal_details$4 = "Uw gegevens";
-var required$4 = "Dit veld is verplicht.";
-var cancel_insurance_all_risk$4 = "All Risk";
-var cancel_insurance_normal$4 = "Normaal";
-var none$4 = "Geen";
-var cancel_insurance$4 = "Annuleringsverzekering";
-var insurance_costs$4 = "Poliskosten";
-var choose$4 = "Kies";
-var yes$4 = "Ja";
-var booking_details$4 = "Boekingsgegevens";
-var based_on_one_person$4 = "Gebaseerd op {persons} personen";
-var return_to_calendar$4 = "Terug naar de kalender";
-var close$4 = "Sluiten";
-var cancel_insurance_normal_long$4 = "Standaard Annuleringsverzekering";
-var cancel_insurance_normal_desc$4 = "Met de Standaard Annuleringsverzekering bent u goed verzekerd, als u uw reis moet annuleren. Naast de kosten van de annulering zijn ook de kosten van de ongebruikte reisdagen verzekerd. Dus mist u een deel van uw reis, bijvoorbeeld omdat u eerder naar huis moet? Dan ontvangt u een vergoeding voor iedere dag dat u niet van uw reis heeft kunnen genieten.";
-var cancel_insurance_all_risk_long$4 = "Allrisk Annuleringsverzekering";
-var cancel_insurance_desc$4 = "Er kunnen zich helaas altijd situaties voordoen, waardoor u uw vakantie moet afzeggen. Of het kan noodzakelijk zijn dat u later vertrekt of eerder terugkeert. Met een annuleringsverzekering hoeft u zelf niet voor deze kosten op te draaien. Alleen inwoners uit Nederland, België en Duitsland kunnen de verzekeringen afsluiten. U heeft de keuze uit twee annuleringsverzekeringen:";
-var cancel_insurance_all_risk_desc$4 = "Met Allrisk Annulering krijg je 100% van de annuleringskosten vergoed als je om een standaard reden annuleert, zoals een ziekte waardoor je niet meer op reis kunt. Of het overlijden van een grootouder. Wil je annuleren om een andere reden die voor jou persoonlijk belangrijk is? Dan krijg je 75% van de annuleringskosten vergoed.\n Maar let op: deze verzekering stelt wel een paar voorwaarden aan het annuleren. Zo moet de reden van annulering ‘onvoorzien’ zijn en ‘buiten je schuld’. De verzekering biedt dus geen dekking voor annuleringsredenen waarvan je vóór het afsluiten van de verzekering al op de hoogte was (niet onvoorzien) of waaraan je zelf iets had kunnen doen (niet buiten eigen schuld). Raadpleeg de voorwaarden voor de uitzonderingen.";
-var terms_and_costs$4 = "Premie en voorwaarden";
-var costs_normal_cancel_insurance$4 = "Premie Standaard annuleringsverzekering:";
-var costs_allrisk_cancel_insurance$4 = "Premie Allrisk annuleringsverzekering:";
-var more_information$4 = "Meer informatie";
-var show_terms$4 = "Bekijk de voorwaarden";
-var terms$4 = "Voorwaarden";
-var remark$4 = "Opmerking";
-var or$4 = "of";
-var poliscosts$4 = "Poliskosten";
-var poliscosts_are$4 = "De kosten voor het opmaken van een verzekeringspolis zijn eenmalig € 6,95. Ongeacht of u 1 of meerdere verzekeringen heeft afgesloten.";
-var youwillrecieve$4 = "U ontvangt aansluitend op uw boekingsbevestiging de verzekeringspapieren per email toegestuurd. De verzekering treedt in werking zodra u de (aan)betaling gedaan heeft.";
-var thank_you_for_your_request$4 = "Hartelijk dank voor uw boekings/optie-aanvraag.";
-var we_sent_confirmation_check_email$4 = "Een kopie van uw aanvraag is naar uw e-mailadres verstuurd. Als u geen mail van ons ontvangen hebt, kan het zijn dat deze in uw spambox zit. ";
-var something_went_wrong_please_try_again$4 = "Oeps, er is iets mis gegaan, probeert u het later nogmaals.";
-var persons$4 = "personen";
-var bedrooms$4 = "slaapkamers";
-var minimum_week_price$4 = "min. weekprijs";
-var no_results$4 = "Geen resultaten";
-var agree_with$4 = "Door op 'Boeken' te klikken gaat u akkoord met de";
-var discount_reason$4 = "Reden korting.";
-var results$4 = "resultaten";
-var bathrooms$4 = "badkamers";
-var you_need_to_give_reason$4 = "U dient een geldige kortingsreden aan te geven";
-var filters$4 = "Filters";
-var comply_insurance_card$4 = "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging.";
-var no$4 = "Nee";
-var no_house_found = "Geen object gevonden voor deze combinatie van Portal-code en Object-code";
-var insurance_company_needs_date_of_birth$1 = "Voor het afsluiten van een verzekering is een geboortedatum verplicht";
-var no_discount_code_found$1 = "Geen korting gevonden met ingegeven code";
-var discount_code$1 = "Kortingscode";
-var minimum_nights$4 = "Minstens {minimum} nachten";
 var nl = {
-	next: next$4,
-	previous: previous$4,
-	price: price$4,
-	calculate: calculate$4,
-	book: book$4,
-	booked: booked$4,
-	booking: booking$4,
-	last_minute_discount: last_minute_discount$4,
-	discount: discount$4,
-	option: option$4,
-	choose_for_option: choose_for_option$4,
-	included_in_price: included_in_price$4,
-	rent_price: rent_price$4,
-	extra_costs_included: extra_costs_included$4,
-	optional_costs: optional_costs$4,
-	price_after_discount: price_after_discount$4,
-	booking_from_til: booking_from_til$4,
-	total: total$4,
-	stay_details: stay_details$4,
-	babies: babies$4,
-	babies_from: babies_from$4,
-	adults: adults$4,
-	adults_from: adults_from$4,
-	children: children$4,
-	children_from: children_from$4,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Prijs",
+	calculate: "Volgende",
+	book: "Boeken",
+	booked: "Geboekt",
+	booking: "Boeking",
+	last_minute_discount: "Last minute korting",
+	discount: "Korting",
+	option: "Optie",
+	choose_for_option: "Neem een optie op deze periode",
+	included_in_price: "inclusief",
+	rent_price: "Huurprijs",
+	extra_costs_included: "Extra kosten inbegrepen",
+	optional_costs: "Extra opties",
+	price_after_discount: "Huurprijs incl. korting",
+	booking_from_til: "Boekingsdata:",
+	total: "Totaal",
+	stay_details: "Reisgezelschap",
+	babies: "Baby's",
+	babies_from: "(t/m {babies} jaar)",
+	adults: "Volwassenen",
+	adults_from: "(vanaf {age} jaar)",
+	children: "Kinderen",
+	children_from: "({from} t/m {til} jaar)",
 	"house.arrival_date": "Aankomstdatum",
 	"house.departure_date": "Vertrekdatum",
 	"house.arrival": "Aankomst",
 	"house.departure": "Vertrek ",
-	extra_costs_bookable: extra_costs_bookable$4,
-	costs_on_site: costs_on_site$4,
-	insurances: insurances$4,
-	at_least_1_adult: at_least_1_adult$4,
-	max_persons_reached: max_persons_reached$4,
-	personal_details: personal_details$4,
-	required: required$4,
-	cancel_insurance_all_risk: cancel_insurance_all_risk$4,
-	cancel_insurance_normal: cancel_insurance_normal$4,
-	none: none$4,
-	cancel_insurance: cancel_insurance$4,
-	insurance_costs: insurance_costs$4,
-	choose: choose$4,
-	yes: yes$4,
-	booking_details: booking_details$4,
-	based_on_one_person: based_on_one_person$4,
-	return_to_calendar: return_to_calendar$4,
-	close: close$4,
-	cancel_insurance_normal_long: cancel_insurance_normal_long$4,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc$4,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long$4,
-	cancel_insurance_desc: cancel_insurance_desc$4,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc$4,
-	terms_and_costs: terms_and_costs$4,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance$4,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance$4,
+	extra_costs_bookable: "Extra opties",
+	costs_on_site: "Bijkomende kosten ter plaatse:",
+	insurances: "Verzekeringen",
+	at_least_1_adult: "Kies minstens 1 volwassene.",
+	max_persons_reached: "Er zijn te veel personen geselecteerd.",
+	personal_details: "Uw gegevens",
+	required: "Dit veld is verplicht.",
+	cancel_insurance_all_risk: "All Risk",
+	cancel_insurance_normal: "Normaal",
+	none: "Geen",
+	cancel_insurance: "Annuleringsverzekering",
+	insurance_costs: "Poliskosten",
+	choose: "Kies",
+	yes: "Ja",
+	booking_details: "Boekingsgegevens",
+	based_on_one_person: "Gebaseerd op {persons} personen",
+	return_to_calendar: "Terug naar de kalender",
+	close: "Sluiten",
+	cancel_insurance_normal_long: "Standaard Annuleringsverzekering",
+	cancel_insurance_normal_desc: "Met de Standaard Annuleringsverzekering bent u goed verzekerd, als u uw reis moet annuleren. Naast de kosten van de annulering zijn ook de kosten van de ongebruikte reisdagen verzekerd. Dus mist u een deel van uw reis, bijvoorbeeld omdat u eerder naar huis moet? Dan ontvangt u een vergoeding voor iedere dag dat u niet van uw reis heeft kunnen genieten.",
+	cancel_insurance_all_risk_long: "Allrisk Annuleringsverzekering",
+	cancel_insurance_desc: "Er kunnen zich helaas altijd situaties voordoen, waardoor u uw vakantie moet afzeggen. Of het kan noodzakelijk zijn dat u later vertrekt of eerder terugkeert. Met een annuleringsverzekering hoeft u zelf niet voor deze kosten op te draaien. Alleen inwoners uit Nederland, België en Duitsland kunnen de verzekeringen afsluiten. U heeft de keuze uit twee annuleringsverzekeringen:",
+	cancel_insurance_all_risk_desc: "Met Allrisk Annulering krijg je 100% van de annuleringskosten vergoed als je om een standaard reden annuleert, zoals een ziekte waardoor je niet meer op reis kunt. Of het overlijden van een grootouder. Wil je annuleren om een andere reden die voor jou persoonlijk belangrijk is? Dan krijg je 75% van de annuleringskosten vergoed.\n Maar let op: deze verzekering stelt wel een paar voorwaarden aan het annuleren. Zo moet de reden van annulering ‘onvoorzien’ zijn en ‘buiten je schuld’. De verzekering biedt dus geen dekking voor annuleringsredenen waarvan je vóór het afsluiten van de verzekering al op de hoogte was (niet onvoorzien) of waaraan je zelf iets had kunnen doen (niet buiten eigen schuld). Raadpleeg de voorwaarden voor de uitzonderingen.",
+	terms_and_costs: "Premie en voorwaarden",
+	costs_normal_cancel_insurance: "Premie Standaard annuleringsverzekering:",
+	costs_allrisk_cancel_insurance: "Premie Allrisk annuleringsverzekering:",
 	"666_costs": "6.66% van de reissom",
 	"847_costs": "8.47% van de reissom",
-	more_information: more_information$4,
-	show_terms: show_terms$4,
-	terms: terms$4,
-	remark: remark$4,
+	more_information: "Meer informatie",
+	show_terms: "Bekijk de voorwaarden",
+	terms: "Voorwaarden",
+	remark: "Opmerking",
 	"9persons_9addresses": "De verzekering keert uit voor maximaal 9 personen die op 9 verschillende adressen wonen,",
-	or: or$4,
+	or: "of",
 	"9persons_4addresses": "De verzekering keert uit voor een onbeperkt aantal personen die op maximaal 4 verschillende adressen wonen.",
-	poliscosts: poliscosts$4,
-	poliscosts_are: poliscosts_are$4,
-	youwillrecieve: youwillrecieve$4,
-	thank_you_for_your_request: thank_you_for_your_request$4,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email$4,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again$4,
-	persons: persons$4,
-	bedrooms: bedrooms$4,
-	minimum_week_price: minimum_week_price$4,
-	no_results: no_results$4,
-	agree_with: agree_with$4,
-	discount_reason: discount_reason$4,
-	results: results$4,
-	bathrooms: bathrooms$4,
-	you_need_to_give_reason: you_need_to_give_reason$4,
+	poliscosts: "Poliskosten",
+	poliscosts_are: "De kosten voor het opmaken van een verzekeringspolis zijn eenmalig € 6,95. Ongeacht of u 1 of meerdere verzekeringen heeft afgesloten.",
+	youwillrecieve: "U ontvangt aansluitend op uw boekingsbevestiging de verzekeringspapieren per email toegestuurd. De verzekering treedt in werking zodra u de (aan)betaling gedaan heeft.",
+	thank_you_for_your_request: "Hartelijk dank voor uw boekings/optie-aanvraag.",
+	we_sent_confirmation_check_email: "Een kopie van uw aanvraag is naar uw e-mailadres verstuurd. Als u geen mail van ons ontvangen hebt, kan het zijn dat deze in uw spambox zit. ",
+	something_went_wrong_please_try_again: "Oeps, er is iets mis gegaan, probeert u het later nogmaals.",
+	persons: "personen",
+	bedrooms: "slaapkamers",
+	minimum_week_price: "min. weekprijs",
+	no_results: "Geen resultaten",
+	agree_with: "Door op 'Boeken' te klikken gaat u akkoord met de",
+	discount_reason: "Reden korting.",
+	results: "resultaten",
+	bathrooms: "badkamers",
+	you_need_to_give_reason: "U dient een geldige kortingsreden aan te geven",
 	"camper.arrival_date": "Ophaaldatum",
 	"camper.departure_date": "Inleverdatum",
 	"camper.arrival": "Ophalen",
@@ -43483,8 +47934,8 @@ var nl = {
 	"caravan.departure_date": "Vertrekdatum",
 	"caravan.arrival": "Aankomst",
 	"caravan.departure": "Vertrek ",
-	filters: filters$4,
-	comply_insurance_card: comply_insurance_card$4,
+	filters: "Filters",
+	comply_insurance_card: "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging.",
 	"house.you_picked_arrival_date": "Uw aankomstdatum is",
 	"camper.you_picked_arrival_date": "Uw ophaaldatum is",
 	"house.pick_your_departure_in_the_calendar": "Kies een vertrekdatum",
@@ -43493,173 +47944,95 @@ var nl = {
 	"camper.you_picked_departure_date": "Uw inleverdatum is",
 	"house.pick_your_arrivaldate_in_the_calendar": "Kies een aankomstdatum",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
-	no: no$4,
-	no_house_found: no_house_found,
-	insurance_company_needs_date_of_birth: insurance_company_needs_date_of_birth$1,
+	no: "Nee",
+	no_house_found: "Geen object gevonden voor deze combinatie van Portal-code en Object-code",
+	insurance_company_needs_date_of_birth: "Voor het afsluiten van een verzekering is een geboortedatum verplicht",
 	"extra_fields.date_of_birth": "Geboortedatum",
-	no_discount_code_found: no_discount_code_found$1,
-	discount_code: discount_code$1,
-	minimum_nights: minimum_nights$4
+	no_discount_code_found: "Geen korting gevonden met ingegeven code",
+	discount_code: "Kortingscode",
+	minimum_nights: "Minstens {minimum} nachten"
 };
 
-var next$3 = "pijltje";
-var previous$3 = "pijltje";
-var price$3 = "Preis";
-var calculate$3 = "Nächst";
-var book$3 = "Buchen";
-var booked$3 = "Gebucht";
-var booking$3 = "Buchung";
-var last_minute_discount$3 = "Last Minute Rabatt";
-var option$3 = "Option";
-var choose_for_option$3 = "Machen Sie eine kostenlose Option";
-var included_in_price$3 = "inklusive";
-var rent_price$3 = "Reisepreis";
-var discount$3 = "Rabatt";
-var extra_costs_included$3 = "Nebenkosten enthalten";
-var optional_costs$3 = "Zusätzliche Optionen";
-var price_after_discount$3 = "Mietpreis inkl. Rabatt";
-var booking_from_til$3 = "Buchungsdaten";
-var total$3 = "Gesamt";
-var stay_details$3 = "Reisegruppe";
-var babies$3 = "Babys";
-var babies_from$3 = "(bis einschl. {babies} Jahre)";
-var adults$3 = "Erwachsene";
-var adults_from$3 = "(ab {age} Jahre)";
-var children$3 = "Kinder";
-var children_from$3 = "(von {from} bis einschl. {til} Jahre)";
-var extra_costs_bookable$3 = "Zusätzliche Optionen";
-var costs_on_site$3 = "Zusätzliche Kosten vor Ort:";
-var insurances$3 = "Versicherungen";
-var at_least_1_adult$3 = "Wählen Sie mindestens einen Erwachsenen aus.";
-var max_persons_reached$3 = "Es wurden zu viele Personen ausgewählt.";
-var personal_details$3 = "Ihre Daten";
-var required$3 = "Dieses Feld wird benötigt.";
-var cancel_insurance_all_risk$3 = "Allrisk";
-var cancel_insurance_normal$3 = "Standard";
-var none$3 = "Keine";
-var cancel_insurance$3 = "Reiserücktrittsversicherung";
-var insurance_costs$3 = "Policekosten";
-var choose$3 = "Wählen";
-var yes$3 = "Ja";
-var booking_details$3 = "Buchungsdetails";
-var based_on_one_person$3 = "Basierend auf {persons} Personen";
-var return_to_calendar$3 = "Zurück zum Kalender";
-var close$3 = "Schließen";
-var cancel_insurance_normal_long$3 = "Standard-Reiserücktrittsversicherung";
-var cancel_insurance_normal_desc$3 = "Mit der Standard-Reiserücktrittsversicherung sind Sie gut versichert, wenn Sie Ihre Reise stornieren müssen. Neben den Stornokosten sind auch die Kosten der ungenutzten Reisetage versichert. Sie können einen Teil Ihrer Reise nicht antreten, da Sie früher nach Hause müssen? Dann erhalten Sie eine Erstattung für jeden Urlaubstag, den Sie nicht genießen konnten.";
-var cancel_insurance_all_risk_long$3 = "Allrisk-Reiserücktrittsversicherung";
-var cancel_insurance_desc$3 = "Es können sich leider Umstände ergeben, die einen dazu zwingen, den Urlaub abzusagen. Oder Sie müssen später anreisen oder früher wieder abreisen. Mit einer Reiserücktrittsversicherung müssen Sie nicht selbst für diese Kosten aufkommen. Nur Einwohner aus den Niederlanden, Belgien und Deutschland können die Versicherung abschließen. Sie haben die Wahl zwischen zwei Typen von Reiserücktrittsversicherungen:";
-var cancel_insurance_all_risk_desc$3 = "Bei der All-Risk-Reiserücktrittsversicherung werden Ihnen 100% der Stornierungskosten erstattet, wenn Sie aus einem normalen Grund stornieren, z. B. wegen einer Krankheit, die Sie am Reisen hindert. Oder der Tod eines Großelternteils. Möchten Sie aus einem anderen Grund stornieren, der Ihnen persönlich wichtig ist? Dann werden Ihnen 75% der Stornierungskosten erstattet.\n Aber Vorsicht: Diese Versicherung legt einige Bedingungen für die Stornierung fest. Zum Beispiel muss der Grund für die Stornierung 'unvorhergesehen' und 'unverschuldet' sein. Die Versicherung bietet daher keinen Versicherungsschutz für Stornierungsgründe, die Sie bereits vor Abschluss der Versicherung kannten (nicht unvorhergesehen) oder die Sie möglicherweise gegen sich selbst hätten tun können (nicht durch Ihr eigenes Verschulden). Konsultieren Sie die Bedingungen für die Ausnahmen.";
-var terms_and_costs$3 = "Prämie und Bedingungen";
-var costs_normal_cancel_insurance$3 = "Prämie Standard-Reiserücktrittsversicherung:";
-var costs_allrisk_cancel_insurance$3 = "Prämie Allrisk-Reiserücktrittsversicherung:";
-var more_information$3 = "Weitere Informationen:";
-var show_terms$3 = "Siehe Bedingungen";
-var terms$3 = "Terms";
-var remark$3 = "Anmerkung";
-var or$3 = "oder";
-var poliscosts$3 = "Police Kosten";
-var poliscosts_are$3 = "Es gibt einmalig € 6,95 Police-Kosten für die Bearbeitung der Versicherungen. Egal ob Sie 1 oder mehrere Versicherungen abschließen.";
-var youwillrecieve$3 = "Sie erhalten nach der Buchungsbestätigung im Anschluss an Ihre Buchung die Versicherungsbedingungen per E-Mail. Die Versicherung tritt mit der Ihrer Anzahlung in Kraft.";
-var thank_you_for_your_request$3 = "Vielen Dank für Ihre Buchungs/Options-Anfrage.";
-var we_sent_confirmation_check_email$3 = "Eine Kopie Ihrer Anfrage wurde an Ihre E-Mail-Adresse gesendet. Wenn Sie keine E-Mail von uns erhalten haben, befindet sich diese möglicherweise in Ihrer Spam-Box.";
-var something_went_wrong_please_try_again$3 = "Ups, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.";
-var persons$3 = "Personen";
-var bedrooms$3 = "Schlafzimmer";
-var minimum_week_price$3 = "min. Wochenpreis";
-var no_results$3 = "Keine Ergebnisse";
-var agree_with$3 = "Indem Sie auf 'Buchen' klicken, akzeptieren Sie die";
-var discount_reason$3 = "Grund für Rabatt";
-var results$3 = "Ergebnisse";
-var bathrooms$3 = "Badezimmer";
-var you_need_to_give_reason$3 = "Sie müssen einen gültigen Rabattgrund angeben";
-var filters$3 = "Filter";
-var comply_insurance_card$3 = "Ich bin damit einverstanden, dass die Versicherungskarte der Reiserücktrittsversicherung digital ausgestellt wird. Ich erhalte diese mit meiner Buchungsbestätigung.";
-var no$3 = "Nein";
-var insurance_company_needs_date_of_birth = "Für den Abschluss einer Versicherung wird ein Geburtsdatum benötigt";
-var no_discount_code_found = "Kein Rabatt mit eingegebenem Code gefunden";
-var discount_code = "Rabatt-Code";
-var minimum_nights$3 = "Mindestens {minimum} Nächte";
 var de = {
-	next: next$3,
-	previous: previous$3,
-	price: price$3,
-	calculate: calculate$3,
-	book: book$3,
-	booked: booked$3,
-	booking: booking$3,
-	last_minute_discount: last_minute_discount$3,
-	option: option$3,
-	choose_for_option: choose_for_option$3,
-	included_in_price: included_in_price$3,
-	rent_price: rent_price$3,
-	discount: discount$3,
-	extra_costs_included: extra_costs_included$3,
-	optional_costs: optional_costs$3,
-	price_after_discount: price_after_discount$3,
-	booking_from_til: booking_from_til$3,
-	total: total$3,
-	stay_details: stay_details$3,
-	babies: babies$3,
-	babies_from: babies_from$3,
-	adults: adults$3,
-	adults_from: adults_from$3,
-	children: children$3,
-	children_from: children_from$3,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Preis",
+	calculate: "Nächst",
+	book: "Buchen",
+	booked: "Gebucht",
+	booking: "Buchung",
+	last_minute_discount: "Last Minute Rabatt",
+	option: "Option",
+	choose_for_option: "Machen Sie eine kostenlose Option",
+	included_in_price: "inklusive",
+	rent_price: "Reisepreis",
+	discount: "Rabatt",
+	extra_costs_included: "Nebenkosten enthalten",
+	optional_costs: "Zusätzliche Optionen",
+	price_after_discount: "Mietpreis inkl. Rabatt",
+	booking_from_til: "Buchungsdaten",
+	total: "Gesamt",
+	stay_details: "Reisegruppe",
+	babies: "Babys",
+	babies_from: "(bis einschl. {babies} Jahre)",
+	adults: "Erwachsene",
+	adults_from: "(ab {age} Jahre)",
+	children: "Kinder",
+	children_from: "(von {from} bis einschl. {til} Jahre)",
 	"house.arrival_date": "Anreisedatum",
 	"house.departure_date": "Abreisedatum",
 	"house.arrival": "Ankunft",
 	"house.departure": "Abreise",
-	extra_costs_bookable: extra_costs_bookable$3,
-	costs_on_site: costs_on_site$3,
-	insurances: insurances$3,
-	at_least_1_adult: at_least_1_adult$3,
-	max_persons_reached: max_persons_reached$3,
-	personal_details: personal_details$3,
-	required: required$3,
-	cancel_insurance_all_risk: cancel_insurance_all_risk$3,
-	cancel_insurance_normal: cancel_insurance_normal$3,
-	none: none$3,
-	cancel_insurance: cancel_insurance$3,
-	insurance_costs: insurance_costs$3,
-	choose: choose$3,
-	yes: yes$3,
-	booking_details: booking_details$3,
-	based_on_one_person: based_on_one_person$3,
-	return_to_calendar: return_to_calendar$3,
-	close: close$3,
-	cancel_insurance_normal_long: cancel_insurance_normal_long$3,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc$3,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long$3,
-	cancel_insurance_desc: cancel_insurance_desc$3,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc$3,
-	terms_and_costs: terms_and_costs$3,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance$3,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance$3,
+	extra_costs_bookable: "Zusätzliche Optionen",
+	costs_on_site: "Zusätzliche Kosten vor Ort:",
+	insurances: "Versicherungen",
+	at_least_1_adult: "Wählen Sie mindestens einen Erwachsenen aus.",
+	max_persons_reached: "Es wurden zu viele Personen ausgewählt.",
+	personal_details: "Ihre Daten",
+	required: "Dieses Feld wird benötigt.",
+	cancel_insurance_all_risk: "Allrisk",
+	cancel_insurance_normal: "Standard",
+	none: "Keine",
+	cancel_insurance: "Reiserücktrittsversicherung",
+	insurance_costs: "Policekosten",
+	choose: "Wählen",
+	yes: "Ja",
+	booking_details: "Buchungsdetails",
+	based_on_one_person: "Basierend auf {persons} Personen",
+	return_to_calendar: "Zurück zum Kalender",
+	close: "Schließen",
+	cancel_insurance_normal_long: "Standard-Reiserücktrittsversicherung",
+	cancel_insurance_normal_desc: "Mit der Standard-Reiserücktrittsversicherung sind Sie gut versichert, wenn Sie Ihre Reise stornieren müssen. Neben den Stornokosten sind auch die Kosten der ungenutzten Reisetage versichert. Sie können einen Teil Ihrer Reise nicht antreten, da Sie früher nach Hause müssen? Dann erhalten Sie eine Erstattung für jeden Urlaubstag, den Sie nicht genießen konnten.",
+	cancel_insurance_all_risk_long: "Allrisk-Reiserücktrittsversicherung",
+	cancel_insurance_desc: "Es können sich leider Umstände ergeben, die einen dazu zwingen, den Urlaub abzusagen. Oder Sie müssen später anreisen oder früher wieder abreisen. Mit einer Reiserücktrittsversicherung müssen Sie nicht selbst für diese Kosten aufkommen. Nur Einwohner aus den Niederlanden, Belgien und Deutschland können die Versicherung abschließen. Sie haben die Wahl zwischen zwei Typen von Reiserücktrittsversicherungen:",
+	cancel_insurance_all_risk_desc: "Bei der All-Risk-Reiserücktrittsversicherung werden Ihnen 100% der Stornierungskosten erstattet, wenn Sie aus einem normalen Grund stornieren, z. B. wegen einer Krankheit, die Sie am Reisen hindert. Oder der Tod eines Großelternteils. Möchten Sie aus einem anderen Grund stornieren, der Ihnen persönlich wichtig ist? Dann werden Ihnen 75% der Stornierungskosten erstattet.\n Aber Vorsicht: Diese Versicherung legt einige Bedingungen für die Stornierung fest. Zum Beispiel muss der Grund für die Stornierung 'unvorhergesehen' und 'unverschuldet' sein. Die Versicherung bietet daher keinen Versicherungsschutz für Stornierungsgründe, die Sie bereits vor Abschluss der Versicherung kannten (nicht unvorhergesehen) oder die Sie möglicherweise gegen sich selbst hätten tun können (nicht durch Ihr eigenes Verschulden). Konsultieren Sie die Bedingungen für die Ausnahmen.",
+	terms_and_costs: "Prämie und Bedingungen",
+	costs_normal_cancel_insurance: "Prämie Standard-Reiserücktrittsversicherung:",
+	costs_allrisk_cancel_insurance: "Prämie Allrisk-Reiserücktrittsversicherung:",
 	"666_costs": "6.66% der Reisekosten",
 	"847_costs": "8.47% der Reisekosten",
-	more_information: more_information$3,
-	show_terms: show_terms$3,
-	terms: terms$3,
-	remark: remark$3,
+	more_information: "Weitere Informationen:",
+	show_terms: "Siehe Bedingungen",
+	terms: "Terms",
+	remark: "Anmerkung",
 	"9persons_9addresses": "Die Versicherung ist gültig für maximal 9 Personen, die am 9 verschiedene Adressen wohnen,",
-	or: or$3,
+	or: "oder",
 	"9persons_4addresses": "Die Versicherung ist gültig für eine unbegrenzte Anzahl von Personen, die an maximal 4 verschiedenen Adressen wohnen.",
-	poliscosts: poliscosts$3,
-	poliscosts_are: poliscosts_are$3,
-	youwillrecieve: youwillrecieve$3,
-	thank_you_for_your_request: thank_you_for_your_request$3,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email$3,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again$3,
-	persons: persons$3,
-	bedrooms: bedrooms$3,
-	minimum_week_price: minimum_week_price$3,
-	no_results: no_results$3,
-	agree_with: agree_with$3,
-	discount_reason: discount_reason$3,
-	results: results$3,
-	bathrooms: bathrooms$3,
-	you_need_to_give_reason: you_need_to_give_reason$3,
+	poliscosts: "Police Kosten",
+	poliscosts_are: "Es gibt einmalig € 6,95 Police-Kosten für die Bearbeitung der Versicherungen. Egal ob Sie 1 oder mehrere Versicherungen abschließen.",
+	youwillrecieve: "Sie erhalten nach der Buchungsbestätigung im Anschluss an Ihre Buchung die Versicherungsbedingungen per E-Mail. Die Versicherung tritt mit der Ihrer Anzahlung in Kraft.",
+	thank_you_for_your_request: "Vielen Dank für Ihre Buchungs/Options-Anfrage.",
+	we_sent_confirmation_check_email: "Eine Kopie Ihrer Anfrage wurde an Ihre E-Mail-Adresse gesendet. Wenn Sie keine E-Mail von uns erhalten haben, befindet sich diese möglicherweise in Ihrer Spam-Box.",
+	something_went_wrong_please_try_again: "Ups, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+	persons: "Personen",
+	bedrooms: "Schlafzimmer",
+	minimum_week_price: "min. Wochenpreis",
+	no_results: "Keine Ergebnisse",
+	agree_with: "Indem Sie auf 'Buchen' klicken, akzeptieren Sie die",
+	discount_reason: "Grund für Rabatt",
+	results: "Ergebnisse",
+	bathrooms: "Badezimmer",
+	you_need_to_give_reason: "Sie müssen einen gültigen Rabattgrund angeben",
 	"camper.arrival_date": "Abholdatum",
 	"camper.departure_date": "Rückgabedatum",
 	"camper.arrival": "Abholen",
@@ -43672,8 +48045,8 @@ var de = {
 	"caravan.departure_date": "Abreisedatum",
 	"caravan.arrival": "Ankunft",
 	"caravan.departure": "Abreise",
-	filters: filters$3,
-	comply_insurance_card: comply_insurance_card$3,
+	filters: "Filter",
+	comply_insurance_card: "Ich bin damit einverstanden, dass die Versicherungskarte der Reiserücktrittsversicherung digital ausgestellt wird. Ich erhalte diese mit meiner Buchungsbestätigung.",
 	"house.you_picked_arrival_date": "Ihre Ankunft ist",
 	"camper.you_picked_arrival_date": "Ihr Abholdatum ist",
 	"house.pick_your_departure_in_the_calendar": "Wählen Sie ein Abreisedatum",
@@ -43682,169 +48055,94 @@ var de = {
 	"camper.you_picked_departure_date": "Ihr Rückgabedatum ist",
 	"house.pick_your_arrivaldate_in_the_calendar": "Wählen Sie das Ankunftsdatum",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
-	no: no$3,
-	insurance_company_needs_date_of_birth: insurance_company_needs_date_of_birth,
+	no: "Nein",
+	insurance_company_needs_date_of_birth: "Für den Abschluss einer Versicherung wird ein Geburtsdatum benötigt",
 	"extra_fields.date_of_birth": "Geburtsdatum",
-	no_discount_code_found: no_discount_code_found,
-	discount_code: discount_code,
-	minimum_nights: minimum_nights$3
+	no_discount_code_found: "Kein Rabatt mit eingegebenem Code gefunden",
+	discount_code: "Rabatt-Code",
+	minimum_nights: "Mindestens {minimum} Nächte"
 };
 
-var next$2 = "pijltje";
-var previous$2 = "pijltje";
-var price$2 = "Prix";
-var calculate$2 = "Suivante";
-var book$2 = "Réserver";
-var booked$2 = "Réservé";
-var booking$2 = "Réservation";
-var last_minute_discount$2 = "Réduction de dernière minute";
-var option$2 = "Option";
-var choose_for_option$2 = "Prendre une option pour cette période";
-var included_in_price$2 = "frais";
-var rent_price$2 = "Prix de location";
-var discount$2 = "Réduction";
-var extra_costs_included$2 = "Frais supplémentaires inclus";
-var optional_costs$2 = "Options supplémentaires";
-var price_after_discount$2 = "Prix de location incl.";
-var booking_from_til$2 = "Dates de réservation";
-var total$2 = "Total";
-var stay_details$2 = "Composition du groupe";
-var babies$2 = "Nombre de bébés";
-var babies_from$2 = "(jusqu'a {babies} ans)";
-var adults$2 = "Nombre d'adults";
-var adults_from$2 = "(à partir de {age} ans)";
-var children$2 = "Nombre d'enfants";
-var children_from$2 = "(de {from} à {til} ans)";
-var extra_costs_bookable$2 = "Options supplémentaires";
-var costs_on_site$2 = "Frais supplémentaires sur place:";
-var insurances$2 = "Insurances";
-var at_least_1_adult$2 = "Choisissez au moins 1 adulte.";
-var max_persons_reached$2 = "Trop de personnes ont été sélectionnées.";
-var personal_details$2 = "Vos données";
-var required$2 = "Ce champ est requis.";
-var cancel_insurance_all_risk$2 = "All Risk";
-var cancel_insurance_normal$2 = "Standard";
-var none$2 = "None";
-var cancel_insurance$2 = "Cancellation insurance";
-var insurance_costs$2 = "Insurance Costs";
-var choose$2 = "Choose";
-var yes$2 = "Yes";
-var booking_details$2 = "Détails de la réservation";
-var based_on_one_person$2 = "Base {persons} personnes";
-var return_to_calendar$2 = "Retour au calendrier";
-var close$2 = "Fermer";
-var cancel_insurance_normal_long$2 = "Standard Cancellation Insurance";
-var cancel_insurance_normal_desc$2 = "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.";
-var cancel_insurance_all_risk_long$2 = "All Risk Cancellation Insurance";
-var cancel_insurance_desc$2 = "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:";
-var cancel_insurance_all_risk_desc$2 = "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.";
-var terms_and_costs$2 = "Premiums and Conditions";
-var costs_normal_cancel_insurance$2 = "Standard Cancellation Insurance Premium:";
-var costs_allrisk_cancel_insurance$2 = "All Risk Cancellation Insurance Premium:";
-var more_information$2 = "More information:";
-var show_terms$2 = "Show conditions";
-var terms$2 = "Terms";
-var remark$2 = "Remarque";
-var or$2 = "or";
-var poliscosts$2 = "Policy fee";
-var poliscosts_are$2 = "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran";
-var youwillrecieve$2 = "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.";
-var thank_you_for_your_request$2 = "Merci beaucoup pour votre demande.";
-var we_sent_confirmation_check_email$2 = "Une copie de votre demande a été envoyée à votre adresse e-mail. Si vous n'avez pas reçu de courrier de notre part, il se peut qu'il soit dans votre boîte de courrier indésirable.";
-var something_went_wrong_please_try_again$2 = "Oups, quelque chose s'est mal passé, veuillez réessayer plus tard.";
-var persons$2 = "les gens";
-var bedrooms$2 = "chambres a coucher";
-var minimum_week_price$2 = "min. prix hebdomadaire";
-var no_results$2 = "Aucun résultat";
-var agree_with$2 = "En cliquant maintenant sur 'Réserver', vous adhérez aux";
-var discount_reason$2 = "Raison réduction.";
-var results$2 = "résultats";
-var bathrooms$2 = "salle de bain";
-var you_need_to_give_reason$2 = "Debe indicar un motivo de descuento válido.";
-var filters$2 = "Les filtres";
-var comply_insurance_card$2 = "Je conviens que la carte d’assurance annulation me sera délivrée numériquement. Je reçois ceci avec ma confirmation de réservation.";
-var no$2 = "Non";
-var minimum_nights$2 = "Au moins {minimum} nuits";
 var fr = {
-	next: next$2,
-	previous: previous$2,
-	price: price$2,
-	calculate: calculate$2,
-	book: book$2,
-	booked: booked$2,
-	booking: booking$2,
-	last_minute_discount: last_minute_discount$2,
-	option: option$2,
-	choose_for_option: choose_for_option$2,
-	included_in_price: included_in_price$2,
-	rent_price: rent_price$2,
-	discount: discount$2,
-	extra_costs_included: extra_costs_included$2,
-	optional_costs: optional_costs$2,
-	price_after_discount: price_after_discount$2,
-	booking_from_til: booking_from_til$2,
-	total: total$2,
-	stay_details: stay_details$2,
-	babies: babies$2,
-	babies_from: babies_from$2,
-	adults: adults$2,
-	adults_from: adults_from$2,
-	children: children$2,
-	children_from: children_from$2,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Prix",
+	calculate: "Suivante",
+	book: "Réserver",
+	booked: "Réservé",
+	booking: "Réservation",
+	last_minute_discount: "Réduction de dernière minute",
+	option: "Option",
+	choose_for_option: "Prendre une option pour cette période",
+	included_in_price: "frais",
+	rent_price: "Prix de location",
+	discount: "Réduction",
+	extra_costs_included: "Frais supplémentaires inclus",
+	optional_costs: "Options supplémentaires",
+	price_after_discount: "Prix de location incl.",
+	booking_from_til: "Dates de réservation",
+	total: "Total",
+	stay_details: "Composition du groupe",
+	babies: "Nombre de bébés",
+	babies_from: "(jusqu'a {babies} ans)",
+	adults: "Nombre d'adults",
+	adults_from: "(à partir de {age} ans)",
+	children: "Nombre d'enfants",
+	children_from: "(de {from} à {til} ans)",
 	"house.arrival_date": "Date d'arrivée",
 	"house.departure_date": "Date de départ",
 	"house.arrival": "Arrivée",
 	"house.departure": "Départ",
-	extra_costs_bookable: extra_costs_bookable$2,
-	costs_on_site: costs_on_site$2,
-	insurances: insurances$2,
-	at_least_1_adult: at_least_1_adult$2,
-	max_persons_reached: max_persons_reached$2,
-	personal_details: personal_details$2,
-	required: required$2,
-	cancel_insurance_all_risk: cancel_insurance_all_risk$2,
-	cancel_insurance_normal: cancel_insurance_normal$2,
-	none: none$2,
-	cancel_insurance: cancel_insurance$2,
-	insurance_costs: insurance_costs$2,
-	choose: choose$2,
-	yes: yes$2,
-	booking_details: booking_details$2,
-	based_on_one_person: based_on_one_person$2,
-	return_to_calendar: return_to_calendar$2,
-	close: close$2,
-	cancel_insurance_normal_long: cancel_insurance_normal_long$2,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc$2,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long$2,
-	cancel_insurance_desc: cancel_insurance_desc$2,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc$2,
-	terms_and_costs: terms_and_costs$2,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance$2,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance$2,
+	extra_costs_bookable: "Options supplémentaires",
+	costs_on_site: "Frais supplémentaires sur place:",
+	insurances: "Insurances",
+	at_least_1_adult: "Choisissez au moins 1 adulte.",
+	max_persons_reached: "Trop de personnes ont été sélectionnées.",
+	personal_details: "Vos données",
+	required: "Ce champ est requis.",
+	cancel_insurance_all_risk: "All Risk",
+	cancel_insurance_normal: "Standard",
+	none: "None",
+	cancel_insurance: "Cancellation insurance",
+	insurance_costs: "Insurance Costs",
+	choose: "Choose",
+	yes: "Yes",
+	booking_details: "Détails de la réservation",
+	based_on_one_person: "Base {persons} personnes",
+	return_to_calendar: "Retour au calendrier",
+	close: "Fermer",
+	cancel_insurance_normal_long: "Standard Cancellation Insurance",
+	cancel_insurance_normal_desc: "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.",
+	cancel_insurance_all_risk_long: "All Risk Cancellation Insurance",
+	cancel_insurance_desc: "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:",
+	cancel_insurance_all_risk_desc: "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.",
+	terms_and_costs: "Premiums and Conditions",
+	costs_normal_cancel_insurance: "Standard Cancellation Insurance Premium:",
+	costs_allrisk_cancel_insurance: "All Risk Cancellation Insurance Premium:",
 	"666_costs": "6.66% of the travel costs",
 	"847_costs": "8.47% of the travel costs",
-	more_information: more_information$2,
-	show_terms: show_terms$2,
-	terms: terms$2,
-	remark: remark$2,
+	more_information: "More information:",
+	show_terms: "Show conditions",
+	terms: "Terms",
+	remark: "Remarque",
 	"9persons_9addresses": "The Insurance will pay for up to 9 persons, who live at 9 different addresses,",
-	or: or$2,
+	or: "or",
 	"9persons_4addresses": "The insurance pays out for an unlimited number of people who live at a maximum of 4 different addresses.",
-	poliscosts: poliscosts$2,
-	poliscosts_are: poliscosts_are$2,
-	youwillrecieve: youwillrecieve$2,
-	thank_you_for_your_request: thank_you_for_your_request$2,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email$2,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again$2,
-	persons: persons$2,
-	bedrooms: bedrooms$2,
-	minimum_week_price: minimum_week_price$2,
-	no_results: no_results$2,
-	agree_with: agree_with$2,
-	discount_reason: discount_reason$2,
-	results: results$2,
-	bathrooms: bathrooms$2,
-	you_need_to_give_reason: you_need_to_give_reason$2,
+	poliscosts: "Policy fee",
+	poliscosts_are: "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran",
+	youwillrecieve: "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.",
+	thank_you_for_your_request: "Merci beaucoup pour votre demande.",
+	we_sent_confirmation_check_email: "Une copie de votre demande a été envoyée à votre adresse e-mail. Si vous n'avez pas reçu de courrier de notre part, il se peut qu'il soit dans votre boîte de courrier indésirable.",
+	something_went_wrong_please_try_again: "Oups, quelque chose s'est mal passé, veuillez réessayer plus tard.",
+	persons: "les gens",
+	bedrooms: "chambres a coucher",
+	minimum_week_price: "min. prix hebdomadaire",
+	no_results: "Aucun résultat",
+	agree_with: "En cliquant maintenant sur 'Réserver', vous adhérez aux",
+	discount_reason: "Raison réduction.",
+	results: "résultats",
+	bathrooms: "salle de bain",
+	you_need_to_give_reason: "Debe indicar un motivo de descuento válido.",
 	"camper.arrival_date": "Date de collecte",
 	"camper.departure_date": "Date de retour",
 	"camper.arrival": "Ramasser",
@@ -43857,8 +48155,8 @@ var fr = {
 	"caravan.departure_date": "Date de départ",
 	"caravan.arrival": "Arrivée",
 	"caravan.departure": "Départ",
-	filters: filters$2,
-	comply_insurance_card: comply_insurance_card$2,
+	filters: "Les filtres",
+	comply_insurance_card: "Je conviens que la carte d’assurance annulation me sera délivrée numériquement. Je reçois ceci avec ma confirmation de réservation.",
 	"house.you_picked_arrival_date": "Votre date d'arrivée est",
 	"camper.you_picked_arrival_date": "Votre date pick-up est",
 	"house.pick_your_departure_in_the_calendar": "Sélectionnez une date de départ",
@@ -43867,165 +48165,90 @@ var fr = {
 	"camper.you_picked_departure_date": "Votre date de retour est",
 	"house.pick_your_arrivaldate_in_the_calendar": "Choisissez une date d'arrivée",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choisissez une date de pick-up",
-	no: no$2,
-	minimum_nights: minimum_nights$2
+	no: "Non",
+	minimum_nights: "Au moins {minimum} nuits"
 };
 
-var next$1 = "pijltje";
-var previous$1 = "pijltje";
-var price$1 = "Precio";
-var calculate$1 = "Próximo";
-var book$1 = "Reservar";
-var booked$1 = "Reservado";
-var booking$1 = "Reserva";
-var last_minute_discount$1 = "Descuento de ultimo minuto";
-var option$1 = "Opción";
-var choose_for_option$1 = "Tome una opción para este período";
-var included_in_price$1 = "Incluido";
-var rent_price$1 = "Precio de alquiler";
-var discount$1 = "Reducción";
-var extra_costs_included$1 = "Costes extras incluidos";
-var optional_costs$1 = "Opciones extra";
-var price_after_discount$1 = "Precio de alquiler con descuento.";
-var booking_from_til$1 = "Fechas de reserva";
-var total$1 = "Total";
-var stay_details$1 = "Grupo de viaje";
-var babies$1 = "Numero de bebes";
-var babies_from$1 = "(hasta {babies} años)";
-var adults$1 = "Numero de adultos";
-var adults_from$1 = "(a partir de {age} años)";
-var children$1 = "Numero de niños";
-var children_from$1 = "(de {from} a {til} años)";
-var extra_costs_bookable$1 = "Opciones extra";
-var costs_on_site$1 = "Costos adicionales en el lugar:";
-var insurances$1 = "Insurances";
-var at_least_1_adult$1 = "Elige al menos 1 adulto.";
-var max_persons_reached$1 = "Demasiadas personas han sido seleccionadas.";
-var personal_details$1 = "Tus datos";
-var required$1 = "Este campo es requerido.";
-var cancel_insurance_all_risk$1 = "All Risk";
-var cancel_insurance_normal$1 = "Standard";
-var none$1 = "None";
-var cancel_insurance$1 = "Cancellation insurance";
-var insurance_costs$1 = "Insurance Costs";
-var choose$1 = "Choose";
-var yes$1 = "Yes";
-var booking_details$1 = "Detalles de la reserva";
-var based_on_one_person$1 = "Basado en {persons} personas";
-var return_to_calendar$1 = "Volver al calendario";
-var close$1 = "Cerrar";
-var cancel_insurance_normal_long$1 = "Standard Cancellation Insurance";
-var cancel_insurance_normal_desc$1 = "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.";
-var cancel_insurance_all_risk_long$1 = "All Risk Cancellation Insurance";
-var cancel_insurance_desc$1 = "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:";
-var cancel_insurance_all_risk_desc$1 = "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.";
-var terms_and_costs$1 = "Premiums and Conditions";
-var costs_normal_cancel_insurance$1 = "Standard Cancellation Insurance Premium:";
-var costs_allrisk_cancel_insurance$1 = "All Risk Cancellation Insurance Premium:";
-var more_information$1 = "More information:";
-var show_terms$1 = "Show conditions";
-var terms$1 = "Terms";
-var remark$1 = "Observación";
-var or$1 = "or";
-var poliscosts$1 = "Policy fee";
-var poliscosts_are$1 = "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran";
-var youwillrecieve$1 = "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.";
-var thank_you_for_your_request$1 = "Muchas gracias por su solicitud.";
-var we_sent_confirmation_check_email$1 = "Se ha enviado una copia de su solicitud a su dirección de correo electrónico. Si no ha recibido ningún correo de nuestra parte, es posible que esté en su buzón de correo no deseado.";
-var something_went_wrong_please_try_again$1 = "Vaya, algo salió mal, inténtalo de nuevo más tarde.";
-var persons$1 = "personas";
-var bedrooms$1 = "dormitorios";
-var minimum_week_price$1 = "min. precio semanal";
-var no_results$1 = "Sin resultados";
-var agree_with$1 = "Al hacer clic en ‘Reservar’, acepta los Términos y condiciones";
-var discount_reason$1 = "Razón de descuento.";
-var results$1 = "resultados";
-var bathrooms$1 = "baños";
-var you_need_to_give_reason$1 = "Vous devez indiquer un motif de réduction valide";
-var filters$1 = "Filtros";
-var comply_insurance_card$1 = "Estoy de acuerdo en que la tarjeta de seguro de cancelación será emitida digitalmente para mí. Recibo esto con mi confirmación de reserva.";
-var no$1 = "No";
-var minimum_nights$1 = "Al menos {minimum} noches";
 var es = {
-	next: next$1,
-	previous: previous$1,
-	price: price$1,
-	calculate: calculate$1,
-	book: book$1,
-	booked: booked$1,
-	booking: booking$1,
-	last_minute_discount: last_minute_discount$1,
-	option: option$1,
-	choose_for_option: choose_for_option$1,
-	included_in_price: included_in_price$1,
-	rent_price: rent_price$1,
-	discount: discount$1,
-	extra_costs_included: extra_costs_included$1,
-	optional_costs: optional_costs$1,
-	price_after_discount: price_after_discount$1,
-	booking_from_til: booking_from_til$1,
-	total: total$1,
-	stay_details: stay_details$1,
-	babies: babies$1,
-	babies_from: babies_from$1,
-	adults: adults$1,
-	adults_from: adults_from$1,
-	children: children$1,
-	children_from: children_from$1,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Precio",
+	calculate: "Próximo",
+	book: "Reservar",
+	booked: "Reservado",
+	booking: "Reserva",
+	last_minute_discount: "Descuento de ultimo minuto",
+	option: "Opción",
+	choose_for_option: "Tome una opción para este período",
+	included_in_price: "Incluido",
+	rent_price: "Precio de alquiler",
+	discount: "Reducción",
+	extra_costs_included: "Costes extras incluidos",
+	optional_costs: "Opciones extra",
+	price_after_discount: "Precio de alquiler con descuento.",
+	booking_from_til: "Fechas de reserva",
+	total: "Total",
+	stay_details: "Grupo de viaje",
+	babies: "Numero de bebes",
+	babies_from: "(hasta {babies} años)",
+	adults: "Numero de adultos",
+	adults_from: "(a partir de {age} años)",
+	children: "Numero de niños",
+	children_from: "(de {from} a {til} años)",
 	"house.arrival_date": "Fecha de llegada",
 	"house.departure_date": "Fecha de salida",
 	"house.arrival": "llegada",
 	"house.departure": "Salida",
-	extra_costs_bookable: extra_costs_bookable$1,
-	costs_on_site: costs_on_site$1,
-	insurances: insurances$1,
-	at_least_1_adult: at_least_1_adult$1,
-	max_persons_reached: max_persons_reached$1,
-	personal_details: personal_details$1,
-	required: required$1,
-	cancel_insurance_all_risk: cancel_insurance_all_risk$1,
-	cancel_insurance_normal: cancel_insurance_normal$1,
-	none: none$1,
-	cancel_insurance: cancel_insurance$1,
-	insurance_costs: insurance_costs$1,
-	choose: choose$1,
-	yes: yes$1,
-	booking_details: booking_details$1,
-	based_on_one_person: based_on_one_person$1,
-	return_to_calendar: return_to_calendar$1,
-	close: close$1,
-	cancel_insurance_normal_long: cancel_insurance_normal_long$1,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc$1,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long$1,
-	cancel_insurance_desc: cancel_insurance_desc$1,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc$1,
-	terms_and_costs: terms_and_costs$1,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance$1,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance$1,
+	extra_costs_bookable: "Opciones extra",
+	costs_on_site: "Costos adicionales en el lugar:",
+	insurances: "Insurances",
+	at_least_1_adult: "Elige al menos 1 adulto.",
+	max_persons_reached: "Demasiadas personas han sido seleccionadas.",
+	personal_details: "Tus datos",
+	required: "Este campo es requerido.",
+	cancel_insurance_all_risk: "All Risk",
+	cancel_insurance_normal: "Standard",
+	none: "None",
+	cancel_insurance: "Cancellation insurance",
+	insurance_costs: "Insurance Costs",
+	choose: "Choose",
+	yes: "Yes",
+	booking_details: "Detalles de la reserva",
+	based_on_one_person: "Basado en {persons} personas",
+	return_to_calendar: "Volver al calendario",
+	close: "Cerrar",
+	cancel_insurance_normal_long: "Standard Cancellation Insurance",
+	cancel_insurance_normal_desc: "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.",
+	cancel_insurance_all_risk_long: "All Risk Cancellation Insurance",
+	cancel_insurance_desc: "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:",
+	cancel_insurance_all_risk_desc: "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs. But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.",
+	terms_and_costs: "Premiums and Conditions",
+	costs_normal_cancel_insurance: "Standard Cancellation Insurance Premium:",
+	costs_allrisk_cancel_insurance: "All Risk Cancellation Insurance Premium:",
 	"666_costs": "6.66% of the travel costs",
 	"847_costs": "8.47% of the travel costs",
-	more_information: more_information$1,
-	show_terms: show_terms$1,
-	terms: terms$1,
-	remark: remark$1,
+	more_information: "More information:",
+	show_terms: "Show conditions",
+	terms: "Terms",
+	remark: "Observación",
 	"9persons_9addresses": "The Insurance will pay for up to 9 persons, who live at 9 different addresses,",
-	or: or$1,
+	or: "or",
 	"9persons_4addresses": "The insurance pays out for an unlimited number of people who live at a maximum of 4 different addresses.",
-	poliscosts: poliscosts$1,
-	poliscosts_are: poliscosts_are$1,
-	youwillrecieve: youwillrecieve$1,
-	thank_you_for_your_request: thank_you_for_your_request$1,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email$1,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again$1,
-	persons: persons$1,
-	bedrooms: bedrooms$1,
-	minimum_week_price: minimum_week_price$1,
-	no_results: no_results$1,
-	agree_with: agree_with$1,
-	discount_reason: discount_reason$1,
-	results: results$1,
-	bathrooms: bathrooms$1,
-	you_need_to_give_reason: you_need_to_give_reason$1,
+	poliscosts: "Policy fee",
+	poliscosts_are: "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran",
+	youwillrecieve: "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.",
+	thank_you_for_your_request: "Muchas gracias por su solicitud.",
+	we_sent_confirmation_check_email: "Se ha enviado una copia de su solicitud a su dirección de correo electrónico. Si no ha recibido ningún correo de nuestra parte, es posible que esté en su buzón de correo no deseado.",
+	something_went_wrong_please_try_again: "Vaya, algo salió mal, inténtalo de nuevo más tarde.",
+	persons: "personas",
+	bedrooms: "dormitorios",
+	minimum_week_price: "min. precio semanal",
+	no_results: "Sin resultados",
+	agree_with: "Al hacer clic en ‘Reservar’, acepta los Términos y condiciones",
+	discount_reason: "Razón de descuento.",
+	results: "resultados",
+	bathrooms: "baños",
+	you_need_to_give_reason: "Vous devez indiquer un motif de réduction valide",
 	"camper.arrival_date": "Fecha de recogida",
 	"camper.departure_date": "Fecha de regreso",
 	"camper.arrival": "Recoger",
@@ -44038,8 +48261,8 @@ var es = {
 	"caravan.departure_date": "Fecha de salida",
 	"caravan.arrival": "llegada",
 	"caravan.departure": "Salida",
-	filters: filters$1,
-	comply_insurance_card: comply_insurance_card$1,
+	filters: "Filtros",
+	comply_insurance_card: "Estoy de acuerdo en que la tarjeta de seguro de cancelación será emitida digitalmente para mí. Recibo esto con mi confirmación de reserva.",
 	"house.you_picked_arrival_date": "Su fecha de llegada es",
 	"camper.you_picked_arrival_date": "Su fecha de recogida es",
 	"house.pick_your_departure_in_the_calendar": "Seleccione una fecha de salida",
@@ -44048,165 +48271,90 @@ var es = {
 	"camper.you_picked_departure_date": "Su fecha de retorno es",
 	"house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
-	no: no$1,
-	minimum_nights: minimum_nights$1
+	no: "No",
+	minimum_nights: "Al menos {minimum} noches"
 };
 
-var next = "pijltje";
-var previous = "pijltje";
-var price = "Prezzo";
-var calculate = "Prossimo";
-var book = "Prenotare";
-var booked = "Prenotato";
-var booking = "Prenotazione";
-var last_minute_discount = "Sconto last minute";
-var option = "Opzione";
-var choose_for_option = "Prendi un'opzione per questo periodo";
-var included_in_price = "compreso";
-var rent_price = "Prezzo di affitto";
-var discount = "Riduzione";
-var extra_costs_included = "Costi aggiuntivi inclusi";
-var optional_costs = "Opzioni extra";
-var price_after_discount = "Prezzo di affitto incluso sconto";
-var booking_from_til = "Date di prenotazione";
-var total = "Total";
-var stay_details = "Gruppo di viaggio";
-var babies = "Numero di bambini";
-var babies_from = "(fino a {babies} anni)";
-var adults = "Numero di adulti";
-var adults_from = "(dai {age} anni)";
-var children = "Numero di bambini";
-var children_from = "(da {from} a {til} anni)";
-var extra_costs_bookable = "Opzioni extra";
-var costs_on_site = "Possibili costi aggiuntivi sul posto:";
-var insurances = "Insurances";
-var at_least_1_adult = "Scegli almeno 1 adulto.";
-var max_persons_reached = "Sono state selezionate troppe persone.";
-var personal_details = "I tuoi dati";
-var required = "Questo campo è obbligatorio.";
-var cancel_insurance_all_risk = "All Risk";
-var cancel_insurance_normal = "Standard";
-var none = "None";
-var cancel_insurance = "Cancellation insurance";
-var insurance_costs = "Insurance Costs";
-var choose = "Choose";
-var yes = "Yes";
-var booking_details = "Dettagli della prenotazione";
-var based_on_one_person = "Basato su {persons} persone";
-var return_to_calendar = "Ritorna al calendario";
-var close = "Vicino";
-var cancel_insurance_normal_long = "Standard Cancellation Insurance";
-var cancel_insurance_normal_desc = "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.";
-var cancel_insurance_all_risk_long = "All Risk Cancellation Insurance";
-var cancel_insurance_desc = "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:";
-var cancel_insurance_all_risk_desc = "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs.\n But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.";
-var terms_and_costs = "Premiums and Conditions";
-var costs_normal_cancel_insurance = "Standard Cancellation Insurance Premium:";
-var costs_allrisk_cancel_insurance = "All Risk Cancellation Insurance Premium:";
-var more_information = "More information:";
-var show_terms = "Show conditions";
-var terms = "Terms";
-var remark = "Osservazione";
-var or = "or";
-var poliscosts = "Policy fee";
-var poliscosts_are = "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran";
-var youwillrecieve = "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.";
-var thank_you_for_your_request = "Grazie mille per la tua richiesta.";
-var we_sent_confirmation_check_email = "Una copia della tua richiesta è stata inviata al tuo indirizzo e-mail. Se non hai ricevuto alcuna posta da noi, potrebbe essere che sia nella tua casella di spam.";
-var something_went_wrong_please_try_again = "Oops, qualcosa è andato storto, ti preghiamo di riprovare più tardi.";
-var persons = "persone";
-var bedrooms = "camere da letto";
-var minimum_week_price = "prezzo settimanale minimo";
-var no_results = "Nessun risultato";
-var agree_with = "Cliccando ora su 'prenotazione definitiva', ti iscrivi";
-var discount_reason = "Sconto di ragione.";
-var results = "risultati";
-var bathrooms = "bagni";
-var you_need_to_give_reason = "Devi indicare un motivo di sconto valido";
-var filters = "Filtri";
-var comply_insurance_card = "Sono d'accordo che la carta di assicurazione di annullamento verrà emessa in digitale. Lo ricevo con la mia conferma di prenotazione.";
-var no = "No";
-var minimum_nights = "Almeno {minimum} notti";
 var it = {
-	next: next,
-	previous: previous,
-	price: price,
-	calculate: calculate,
-	book: book,
-	booked: booked,
-	booking: booking,
-	last_minute_discount: last_minute_discount,
-	option: option,
-	choose_for_option: choose_for_option,
-	included_in_price: included_in_price,
-	rent_price: rent_price,
-	discount: discount,
-	extra_costs_included: extra_costs_included,
-	optional_costs: optional_costs,
-	price_after_discount: price_after_discount,
-	booking_from_til: booking_from_til,
-	total: total,
-	stay_details: stay_details,
-	babies: babies,
-	babies_from: babies_from,
-	adults: adults,
-	adults_from: adults_from,
-	children: children,
-	children_from: children_from,
+	next: "pijltje",
+	previous: "pijltje",
+	price: "Prezzo",
+	calculate: "Prossimo",
+	book: "Prenotare",
+	booked: "Prenotato",
+	booking: "Prenotazione",
+	last_minute_discount: "Sconto last minute",
+	option: "Opzione",
+	choose_for_option: "Prendi un'opzione per questo periodo",
+	included_in_price: "compreso",
+	rent_price: "Prezzo di affitto",
+	discount: "Riduzione",
+	extra_costs_included: "Costi aggiuntivi inclusi",
+	optional_costs: "Opzioni extra",
+	price_after_discount: "Prezzo di affitto incluso sconto",
+	booking_from_til: "Date di prenotazione",
+	total: "Total",
+	stay_details: "Gruppo di viaggio",
+	babies: "Numero di bambini",
+	babies_from: "(fino a {babies} anni)",
+	adults: "Numero di adulti",
+	adults_from: "(dai {age} anni)",
+	children: "Numero di bambini",
+	children_from: "(da {from} a {til} anni)",
 	"house.arrival_date": "Data di arrivo",
 	"house.departure_date": "Data di partenza",
 	"house.arrival": "Arrivo",
 	"house.departure": "Partenza",
-	extra_costs_bookable: extra_costs_bookable,
-	costs_on_site: costs_on_site,
-	insurances: insurances,
-	at_least_1_adult: at_least_1_adult,
-	max_persons_reached: max_persons_reached,
-	personal_details: personal_details,
-	required: required,
-	cancel_insurance_all_risk: cancel_insurance_all_risk,
-	cancel_insurance_normal: cancel_insurance_normal,
-	none: none,
-	cancel_insurance: cancel_insurance,
-	insurance_costs: insurance_costs,
-	choose: choose,
-	yes: yes,
-	booking_details: booking_details,
-	based_on_one_person: based_on_one_person,
-	return_to_calendar: return_to_calendar,
-	close: close,
-	cancel_insurance_normal_long: cancel_insurance_normal_long,
-	cancel_insurance_normal_desc: cancel_insurance_normal_desc,
-	cancel_insurance_all_risk_long: cancel_insurance_all_risk_long,
-	cancel_insurance_desc: cancel_insurance_desc,
-	cancel_insurance_all_risk_desc: cancel_insurance_all_risk_desc,
-	terms_and_costs: terms_and_costs,
-	costs_normal_cancel_insurance: costs_normal_cancel_insurance,
-	costs_allrisk_cancel_insurance: costs_allrisk_cancel_insurance,
+	extra_costs_bookable: "Opzioni extra",
+	costs_on_site: "Possibili costi aggiuntivi sul posto:",
+	insurances: "Insurances",
+	at_least_1_adult: "Scegli almeno 1 adulto.",
+	max_persons_reached: "Sono state selezionate troppe persone.",
+	personal_details: "I tuoi dati",
+	required: "Questo campo è obbligatorio.",
+	cancel_insurance_all_risk: "All Risk",
+	cancel_insurance_normal: "Standard",
+	none: "None",
+	cancel_insurance: "Cancellation insurance",
+	insurance_costs: "Insurance Costs",
+	choose: "Choose",
+	yes: "Yes",
+	booking_details: "Dettagli della prenotazione",
+	based_on_one_person: "Basato su {persons} persone",
+	return_to_calendar: "Ritorna al calendario",
+	close: "Vicino",
+	cancel_insurance_normal_long: "Standard Cancellation Insurance",
+	cancel_insurance_normal_desc: "Our standard cancellation insurance means that you are properly insured if you have to cancel your trip. In addition to the cancellation charges, the costs of any unused travel days are also covered. If you miss any part of your trip, because you have to go home earlier for example, you will receive an allowance for each day missed.",
+	cancel_insurance_all_risk_long: "All Risk Cancellation Insurance",
+	cancel_insurance_desc: "Unfortunately, circumstances may arise which can force you to cancel your holiday. It might also be necessary to leave or return earlier. Cancellation insurance means you do not have to bear the costs involved. Only residents from the Netherlands, Belgium and Germany can take out the insurance. We offer a choice of two types of cancellation insurance:",
+	cancel_insurance_all_risk_desc: "With All-Risk Cancellation, you will be reimbursed 100% of the cancellation costs if you cancel for a standard reason, such as an illness that prevents you from traveling. Or the death of a grandparent. Do you want to cancel for another reason that is important to you personally? Then you will be reimbursed 75% of the cancellation costs.\n But beware: this insurance does set a few conditions for canceling. For example, the reason for cancellation must be 'unforeseen' and 'through no fault of your own'. The insurance therefore does not provide cover for cancellation reasons of which you were already aware before taking out the insurance (not unforeseen) or which you could have done yourself (not through your own fault). Consult the conditions for the exceptions.",
+	terms_and_costs: "Premiums and Conditions",
+	costs_normal_cancel_insurance: "Standard Cancellation Insurance Premium:",
+	costs_allrisk_cancel_insurance: "All Risk Cancellation Insurance Premium:",
 	"666_costs": "6.66% of the travel costs",
 	"847_costs": "8.47% of the travel costs",
-	more_information: more_information,
-	show_terms: show_terms,
-	terms: terms,
-	remark: remark,
+	more_information: "More information:",
+	show_terms: "Show conditions",
+	terms: "Terms",
+	remark: "Osservazione",
 	"9persons_9addresses": "The Insurance will pay for up to 9 persons, who live at 9 different addresses,",
-	or: or,
+	or: "or",
 	"9persons_4addresses": "The insurance pays out for an unlimited number of people who live at a maximum of 4 different addresses.",
-	poliscosts: poliscosts,
-	poliscosts_are: poliscosts_are,
-	youwillrecieve: youwillrecieve,
-	thank_you_for_your_request: thank_you_for_your_request,
-	we_sent_confirmation_check_email: we_sent_confirmation_check_email,
-	something_went_wrong_please_try_again: something_went_wrong_please_try_again,
-	persons: persons,
-	bedrooms: bedrooms,
-	minimum_week_price: minimum_week_price,
-	no_results: no_results,
-	agree_with: agree_with,
-	discount_reason: discount_reason,
-	results: results,
-	bathrooms: bathrooms,
-	you_need_to_give_reason: you_need_to_give_reason,
+	poliscosts: "Policy fee",
+	poliscosts_are: "The cost for an insurance policy is a one-time charge of € 6,95. No matter if you have one or two insuran",
+	youwillrecieve: "You will receive the insurance terms separate from you booking confirmation per email. The insurance starts as soon as the (first) payment has been made.",
+	thank_you_for_your_request: "Grazie mille per la tua richiesta.",
+	we_sent_confirmation_check_email: "Una copia della tua richiesta è stata inviata al tuo indirizzo e-mail. Se non hai ricevuto alcuna posta da noi, potrebbe essere che sia nella tua casella di spam.",
+	something_went_wrong_please_try_again: "Oops, qualcosa è andato storto, ti preghiamo di riprovare più tardi.",
+	persons: "persone",
+	bedrooms: "camere da letto",
+	minimum_week_price: "prezzo settimanale minimo",
+	no_results: "Nessun risultato",
+	agree_with: "Cliccando ora su 'prenotazione definitiva', ti iscrivi",
+	discount_reason: "Sconto di ragione.",
+	results: "risultati",
+	bathrooms: "bagni",
+	you_need_to_give_reason: "Devi indicare un motivo di sconto valido",
 	"camper.arrival_date": "Data di ritiro",
 	"camper.departure_date": "Data di ritorno",
 	"camper.arrival": "Pick up",
@@ -44219,8 +48367,8 @@ var it = {
 	"caravan.departure_date": "Data di partenza",
 	"caravan.arrival": "Arrivo",
 	"caravan.departure": "Partenza",
-	filters: filters,
-	comply_insurance_card: comply_insurance_card,
+	filters: "Filtri",
+	comply_insurance_card: "Sono d'accordo che la carta di assicurazione di annullamento verrà emessa in digitale. Lo ricevo con la mia conferma di prenotazione.",
 	"house.you_picked_arrival_date": "La vostra data di arrivo è",
 	"camper.you_picked_arrival_date": "La vostra data di ritiro è",
 	"house.pick_your_departure_in_the_calendar": "Selezionare una data di partenza",
@@ -44229,8 +48377,8 @@ var it = {
 	"camper.you_picked_departure_date": "La data di ritorno è",
 	"house.pick_your_arrivaldate_in_the_calendar": "Scegliere una data di arrivo",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
-	no: no,
-	minimum_nights: minimum_nights
+	no: "No",
+	minimum_nights: "Almeno {minimum} notti"
 };
 
 function Portal(_ref) {
