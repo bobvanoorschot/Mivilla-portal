@@ -151,7 +151,6 @@ export const CREATE_BOOKING_MUTATION = gql`
     $address: String
     $house_number: String
     $zipcode: String
-    $house_number: String
     $city: String
     $phone: String
     $phone_mobile: String
@@ -184,7 +183,6 @@ export const CREATE_BOOKING_MUTATION = gql`
       address: $address
       house_number: $house_number
       zipcode: $zipcode
-      house_number: $house_number
       city: $city
       phone: $phone
       phone_mobile: $phone_mobile
