@@ -101,5 +101,6 @@
     "house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
     "camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
     "no": "No",
-    "minimum_nights": "Al menos {minimum} noches"
+    "minimum_nights": "Al menos {minimum} noches",
+    "can_only_take_insurance_in_de_be_nl": "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica."
   }

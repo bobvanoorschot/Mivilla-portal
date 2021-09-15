@@ -106,5 +106,6 @@
     "extra_fields.date_of_birth": "Geboortedatum",
     "no_discount_code_found": "Geen korting gevonden met ingegeven code",
     "discount_code": "Kortingscode",
-    "minimum_nights": "Minstens {minimum} nachten"
+    "minimum_nights": "Minstens {minimum} nachten",
+    "can_only_take_insurance_in_de_be_nl": "U kunt alleen een verzekering afsluiten, wanneer u woont in Nederland, Duitsland of België."
   }
