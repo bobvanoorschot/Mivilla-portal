@@ -47423,7 +47423,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.4",
+	version: "2.0.5",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -47926,7 +47926,8 @@ var en = {
 	"extra_fields.date_of_birth": "Date of birth",
 	no_discount_code_found: "No discount found with entered code",
 	discount_code: "Discount code",
-	minimum_nights: "At least {minimum} nights"
+	minimum_nights: "At least {minimum} nights",
+	can_only_take_insurance_in_de_be_nl: "You can only take out insurance if you live in the Netherlands, Germany or Belgium."
 };
 
 var nl = {
@@ -48037,7 +48038,8 @@ var nl = {
 	"extra_fields.date_of_birth": "Geboortedatum",
 	no_discount_code_found: "Geen korting gevonden met ingegeven code",
 	discount_code: "Kortingscode",
-	minimum_nights: "Minstens {minimum} nachten"
+	minimum_nights: "Minstens {minimum} nachten",
+	can_only_take_insurance_in_de_be_nl: "U kunt alleen een verzekering afsluiten, wanneer u woont in Nederland, Duitsland of België."
 };
 
 var de = {
@@ -48147,7 +48149,8 @@ var de = {
 	"extra_fields.date_of_birth": "Geburtsdatum",
 	no_discount_code_found: "Kein Rabatt mit eingegebenem Code gefunden",
 	discount_code: "Rabatt-Code",
-	minimum_nights: "Mindestens {minimum} Nächte"
+	minimum_nights: "Mindestens {minimum} Nächte",
+	can_only_take_insurance_in_de_be_nl: "Sie können sich nur versichern, wenn Sie in den Niederlanden, Deutschland oder Belgien wohnen."
 };
 
 var fr = {
@@ -48253,7 +48256,8 @@ var fr = {
 	"house.pick_your_arrivaldate_in_the_calendar": "Choisissez une date d'arrivée",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choisissez une date de pick-up",
 	no: "Non",
-	minimum_nights: "Au moins {minimum} nuits"
+	minimum_nights: "Au moins {minimum} nuits",
+	can_only_take_insurance_in_de_be_nl: "Vous ne pouvez souscrire une assurance que si vous résidez aux Pays-Bas, en Allemagne ou en Belgique."
 };
 
 var es = {
@@ -48359,7 +48363,8 @@ var es = {
 	"house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
 	no: "No",
-	minimum_nights: "Al menos {minimum} noches"
+	minimum_nights: "Al menos {minimum} noches",
+	can_only_take_insurance_in_de_be_nl: "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica."
 };
 
 var it = {
@@ -48465,7 +48470,8 @@ var it = {
 	"house.pick_your_arrivaldate_in_the_calendar": "Scegliere una data di arrivo",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
 	no: "No",
-	minimum_nights: "Almeno {minimum} notti"
+	minimum_nights: "Almeno {minimum} notti",
+	can_only_take_insurance_in_de_be_nl: "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio."
 };
 
 function Portal(_ref) {
