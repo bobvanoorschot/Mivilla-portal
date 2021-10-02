@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import InsurancesAndRequired from './InsurancesAndRequired';
 import { BOOKING_PRICE_TOTAL_QUERY } from './Queries';
 import RentAndDiscount from './RentAndDiscount';
@@ -7,11 +7,18 @@ import OptionalNotOnSite from './OptionalNotOnSite';
 import OnSite from './OnSite';
 import Totals from './Totals';
 
-function CostSummary({ values }) {
+function CostSummary({ values, house }) {
+  let babies = Number(values.babies) - Number(house.babies_extra);
+    if (babies < 0) {
+      babies = 0;
+    }
+  const persons = Number(values.children) + Number(values.adults) + babies;
+
   const { loading, error, data } = useQuery(BOOKING_PRICE_TOTAL_QUERY, {
     variables: {
       ...values,
       id: values.portalCode,
+      persons: persons,
       house_id: values.objectCode,
       starts_at: JSON.stringify(values.arrivalDate.date),
       ends_at: JSON.stringify(values.departureDate.date),

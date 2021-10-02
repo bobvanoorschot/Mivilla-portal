@@ -1,16 +1,14 @@
 {
   "name": "bukazu-portal-react",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
   "scripts": {
-    "build": "webpack",
-    "staging": "webpack --config webpack.config.dev",
     "start": "webpack serve --open --config webpack.config.dev",
     "test": "cypress open",
-    "build-c": "rollup -c",
-    "start-c": "rollup -c -w"
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
   },
   "author": "Bob van Oorschot",
   "license": "MIT",
@@ -74,8 +72,7 @@
     "graphql": "^15.6.0",
     "react-date-picker": "^8.1.1",
     "react-intl": "^2.7.2",
-    "react-js-pagination": "^3.0.2",
-    "unfetch": "^4.1.0"
+    "react-js-pagination": "^3.0.2"
   },
   "eslintConfig": {
     "extends": [

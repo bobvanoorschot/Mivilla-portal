@@ -10,7 +10,7 @@ function Summary({ values, house }) {
     <div>
       <Object house={house} values={values} />
       <BookingOrOption house={house} />
-      <CostSummary values={values} />
+      <CostSummary values={values} house={house} />
     </div>
   )
 }

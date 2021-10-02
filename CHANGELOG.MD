@@ -2,7 +2,11 @@
 
 ## Next release
 
-## 1.4.0
+## 2.0.7
+
+- Remove react-apollo as is it deprecated and use @apollo/client
+- Fix bug in update of prices per person
+## 2.0.1
 
 - Validate age for insurance
 - Validate country for insurance
