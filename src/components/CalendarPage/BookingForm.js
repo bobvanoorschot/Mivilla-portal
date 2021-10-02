@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import Loading from '../icons/loading.svg';
 import FormCreator from './FormCreator';
 import { BOOKING_PRICE_QUERY } from '../../_lib/queries';

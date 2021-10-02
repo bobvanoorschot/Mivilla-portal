@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import { FormattedMessage } from 'react-intl';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/client/react/components';
 import { CREATE_BOOKING_MUTATION } from '../../_lib/queries';
 import { Insurances } from './formParts/insurances';
 import Discount from './formParts/discount';

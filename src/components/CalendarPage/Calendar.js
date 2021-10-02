@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import dateFns from "date-fns";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client/react/components";
 import Loading from "../icons/loading.svg";
 import format from "../../_lib/format";
 import isAfter from "date-fns/is_after";

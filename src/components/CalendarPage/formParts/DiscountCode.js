@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import { FormattedMessage } from 'react-intl';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/client/react/components';
 import { gql } from 'apollo-boost';
 
 function DiscountCode({ house }) {

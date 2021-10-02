@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql }  from "@apollo/client";
 
 export const PORTAL_QUERY = gql`
   query PortalSiteQuery($id: ID!) {

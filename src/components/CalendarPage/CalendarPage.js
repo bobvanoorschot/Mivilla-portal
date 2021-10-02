@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from '@apollo/client/react/components';
+import { gql}  from "@apollo/client";
 import Calendar from './Calendar';
 import BookingForm from './BookingForm';
 import Loading from '../icons/loading.svg';

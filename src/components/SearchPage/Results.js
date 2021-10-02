@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import { FormattedMessage } from 'react-intl';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import Loading from '../icons/loading.svg';

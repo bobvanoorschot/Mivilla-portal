@@ -4,10 +4,11 @@ import { IntlProvider, addLocaleData } from "react-intl";
 import fetch from "unfetch";
 // import registerServiceWorker from './registerServiceWorker';
 
-import { ApolloProvider } from "react-apollo";
-import { ApolloClient } from "apollo-client";
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
 
 import enData from "react-intl/locale-data/en";
 import frData from "react-intl/locale-data/fr";
@@ -36,13 +37,8 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
     locale = 'en'
   }
   
-  const httpLink = createHttpLink({
-    uri: api_url,
-    fetch: fetch,
-  });
-
   const client = new ApolloClient({
-    link: httpLink,
+    uri: api_url,
     cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: {
