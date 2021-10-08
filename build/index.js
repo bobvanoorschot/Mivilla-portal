@@ -41692,9 +41692,10 @@ function OnSite(_ref) {
           return x.id == cost.id;
         }).amount;
         return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$f({
-          key: cost.id,
+          key: cost.id
+        }, cost, {
           amount: amount
-        }, cost));
+        }));
       }
     }
   }), /*#__PURE__*/React__default['default'].createElement(OptionalOnSite, {
@@ -48723,7 +48724,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.7",
+	version: "2.0.9",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
