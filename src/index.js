@@ -39,6 +39,9 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
   const client = new ApolloClient({
     uri: api_url,
     cache: new InMemoryCache(),
+    headers: {
+      locale,
+    },
     defaultOptions: {
       watchQuery: {
         fetchPolicy: "cache-and-network",
