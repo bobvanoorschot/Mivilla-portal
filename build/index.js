@@ -41853,7 +41853,8 @@ Object$1.propTypes = {
 
 function Summary(_ref) {
   var values = _ref.values,
-      house = _ref.house;
+      house = _ref.house,
+      locale = _ref.locale;
   return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Object$1, {
     house: house,
     values: values
@@ -41861,7 +41862,8 @@ function Summary(_ref) {
     house: house
   }), /*#__PURE__*/React__default['default'].createElement(CostSummary, {
     values: values,
-    house: house
+    house: house,
+    locale: locale
   }));
 }
 
@@ -48560,7 +48562,7 @@ BookingForm.propTypes = {
 };
 
 var _templateObject;
-var HOUSE_QUERY = gql(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery($id: ID!, $house_id: String!) {\n    PortalSite(id: $id) {\n      houses(house_code: $house_id) {\n        id\n        name\n        max_nights\n        last_minute_days\n        discounts\n        discounts_info\n        house_type\n        persons\n      }\n    }\n  }\n"])));
+var HOUSE_QUERY = gql(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery($id: ID!, $house_id: String!) {\n    PortalSite(id: $id) {\n      id\n      houses(house_code: $house_id) {\n        id\n        name\n        max_nights\n        last_minute_days\n        discounts\n        discounts_info\n        house_type\n        persons\n      }\n    }\n  }\n"])));
 
 var CalendarPage = /*#__PURE__*/function (_Component) {
   _inherits$4(CalendarPage, _Component);
@@ -48724,7 +48726,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.9",
+	version: "2.0.11",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -49794,6 +49796,9 @@ function Portal(_ref) {
   var client = new ApolloClient({
     uri: api_url,
     cache: new InMemoryCache(),
+    headers: {
+      locale: locale
+    },
     defaultOptions: {
       watchQuery: {
         fetchPolicy: "cache-and-network"
