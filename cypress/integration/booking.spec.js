@@ -25,6 +25,22 @@ describe('Create booking', () => {
     
   })
 
+  it('Create booking simple', () => {
+    cy.get(':nth-child(1) > :nth-child(3) > select').select('1');
+    
+    
+    cy.get('.error-message.persons').should('not.exist')
+
+    
+    cy.get('input[name=first_name]').type('Test')
+    cy.get('input[name=last_name]').type('Test')
+    cy.get('input[name=mobile]').type('0612345678')
+    cy.get('input[name=address]').type('Straat')
+    cy.get('input[name=house_number]').type('1')
+    cy.get('input[name=email]').type('test@bukazu.com')
+    
+  })
+
   it('Validate cancel insurance', () => {
     cy.get('select[name=cancel_insurance]').select('0');
     

@@ -6,7 +6,7 @@ import { Countries } from '../../../_lib/countries';
 import { DateField } from '../FormItems';
 import DefaultBookingFields from './DefaultBookingFields';
 
-function isInt(value) {
+export function isInt(value) {
   return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }
 
@@ -49,7 +49,8 @@ export default function OptionalBookingFields({
                 <label
                   htmlFor={`extra_fields.booking_field_${bookingField.id}`}
                 >
-                  {bookingField.label}
+                  {bookingField.label}{' '}
+                  {input.required && <span>*</span>}
                 </label>
                 <Field
                   onKeyPress={(e) => {
@@ -68,6 +69,11 @@ export default function OptionalBookingFields({
                   }
                   name={`extra_fields.booking_field_${bookingField.id}`}
                 />
+                {errors[input.id] && (
+                  (touched.extra_fields && touched.extra_fields[`booking_field_${bookingField.id}`]) || touched[input.id]
+                  ) && (
+                  <div className="error-message">{errors[input.id]}</div>
+                )}
               </div>
             );
           } else if (input.id === 'country') {

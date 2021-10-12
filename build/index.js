@@ -47989,7 +47989,6 @@ function isInt(value) {
     return (x | 0) === x;
   }(parseFloat(value));
 }
-
 function OptionalBookingFields(_ref) {
   var bookingFields = _ref.bookingFields,
       errors = _ref.errors,
@@ -48034,7 +48033,7 @@ function OptionalBookingFields(_ref) {
         key: bookingField.id
       }, /*#__PURE__*/React__default['default'].createElement("label", {
         htmlFor: "extra_fields.booking_field_".concat(bookingField.id)
-      }, bookingField.label), /*#__PURE__*/React__default['default'].createElement(Field, {
+      }, bookingField.label, ' ', input.required && /*#__PURE__*/React__default['default'].createElement("span", null, "*")), /*#__PURE__*/React__default['default'].createElement(Field, {
         onKeyPress: function onKeyPress(e) {
           e.which === 13 && e.preventDefault();
         },
@@ -48042,7 +48041,9 @@ function OptionalBookingFields(_ref) {
         type: bookingField.field_type === 'text' ? 'input' : bookingField.field_type,
         component: bookingField.field_type === 'text' ? 'input' : bookingField.field_type,
         name: "extra_fields.booking_field_".concat(bookingField.id)
-      }));
+      }), errors[input.id] && (touched.extra_fields && touched.extra_fields["booking_field_".concat(bookingField.id)] || touched[input.id]) && /*#__PURE__*/React__default['default'].createElement("div", {
+        className: "error-message"
+      }, errors[input.id]));
     } else if (input.id === 'country') {
       return /*#__PURE__*/React__default['default'].createElement("div", {
         className: "form-row",
@@ -48257,12 +48258,22 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
           var field = _step.value;
 
           if (field.required) {
-            var validateValue = byString(values, field.id);
+            if (isInt(field.id)) {
+              var validateValue = byString(values, "extra_fields.booking_field_".concat(field.id));
 
-            if (!validateValue || validateValue === '') {
-              errors[field.id] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
-                id: "required"
-              });
+              if (!validateValue || validateValue === '') {
+                errors[field.id] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
+                  id: "required"
+                });
+              }
+            } else {
+              var _validateValue = byString(values, field.id);
+
+              if (!_validateValue || _validateValue === '') {
+                errors[field.id] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
+                  id: "required"
+                });
+              }
             }
           }
         }
@@ -48308,6 +48319,9 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
         });
       }
 
+      console.log({
+        errors: errors
+      });
       return errors;
     });
 

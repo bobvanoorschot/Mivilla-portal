@@ -2,6 +2,13 @@
 
 ## Next release
 
+## 2.0.12
+
+- Fix bug in required extra_booking field
+## 2.0.11
+
+- Fix translations messed up by new version apollo/client
+
 ## 2.0.7
 
 - Remove react-apollo as is it deprecated and use @apollo/client

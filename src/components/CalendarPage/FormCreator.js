@@ -10,7 +10,7 @@ import Summary from './Summary';
 import Modal from '../Modal';
 import DefaultBookingFields from './formParts/DefaultBookingFields';
 import SuccessMessage from './formParts/SuccessMessage';
-import OptionalBookingFields from './formParts/OptionalBookingFields';
+import OptionalBookingFields, { isInt } from './formParts/OptionalBookingFields';
 import includes from 'array-includes';
 import { ApiError } from '../Error';
 import {
@@ -39,10 +39,18 @@ class FormCreator extends React.Component {
 
     for (let field of this.state.bookingFields) {
       if (field.required) {
-        const validateValue = byString(values, field.id);
-
-        if (!validateValue || validateValue === '') {
-          errors[field.id] = <FormattedMessage id="required" />;
+        if (isInt(field.id)) {
+          const validateValue = byString(values, `extra_fields.booking_field_${field.id}`);
+          
+          if (!validateValue || validateValue === '') {
+            errors[field.id] = <FormattedMessage id="required" />;
+          }
+        } else {
+          const validateValue = byString(values, field.id);
+  
+          if (!validateValue || validateValue === '') {
+            errors[field.id] = <FormattedMessage id="required" />;
+          }
         }
       }
     }
@@ -83,6 +91,7 @@ class FormCreator extends React.Component {
       );
     }
 
+    console.log({ errors });
     return errors;
   };
 
