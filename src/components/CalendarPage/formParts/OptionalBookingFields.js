@@ -25,7 +25,7 @@ export default function OptionalBookingFields({
     requiredFields.forEach(key => {
       let index = bookingFields.findIndex(x => x.id === key)
       if (index !== -1) {
-        bookingFields[index] = DefaultBookingFields.find(x => x.id === key)
+        fields[index] = DefaultBookingFields.find(x => x.id === key)
       } else {
         fields.push(DefaultBookingFields.find(x => x.id === key))
       }

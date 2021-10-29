@@ -48005,7 +48005,7 @@ function OptionalBookingFields(_ref) {
       });
 
       if (index !== -1) {
-        bookingFields[index] = DefaultBookingFields.find(function (x) {
+        fields[index] = DefaultBookingFields.find(function (x) {
           return x.id === key;
         });
       } else {
@@ -48741,7 +48741,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.16",
+	version: "2.0.17",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
