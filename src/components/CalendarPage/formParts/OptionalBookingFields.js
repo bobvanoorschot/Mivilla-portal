@@ -18,14 +18,16 @@ export default function OptionalBookingFields({
   values,
 }) {
 
+  let fields = [].concat(bookingFields);
+
   const requiredFields = ['address', 'house_number', 'zipcode', 'city']
   if (values.cancel_insurance === '1' || values.cancel_insurance === '2') {
     requiredFields.forEach(key => {
-      let index = bookingFields.findIndex(x => x.id === key) 
+      let index = bookingFields.findIndex(x => x.id === key)
       if (index !== -1) {
         bookingFields[index] = DefaultBookingFields.find(x => x.id === key)
       } else {
-        bookingFields.push(DefaultBookingFields.find(x => x.id === key))
+        fields.push(DefaultBookingFields.find(x => x.id === key))
       }
     })
   }
@@ -34,7 +36,7 @@ export default function OptionalBookingFields({
         <h2>
           <FormattedMessage id="personal_details" />
         </h2>
-        {bookingFields.map((input) => {
+        {fields.map((input) => {
           if (input.id === 'telephone') {
             input.id = 'phonenumber';
           }
