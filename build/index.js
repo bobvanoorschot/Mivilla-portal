@@ -47995,6 +47995,7 @@ function OptionalBookingFields(_ref) {
       touched = _ref.touched,
       PortalSite = _ref.PortalSite,
       values = _ref.values;
+  var fields = [].concat(bookingFields);
   var requiredFields = ['address', 'house_number', 'zipcode', 'city'];
 
   if (values.cancel_insurance === '1' || values.cancel_insurance === '2') {
@@ -48008,7 +48009,7 @@ function OptionalBookingFields(_ref) {
           return x.id === key;
         });
       } else {
-        bookingFields.push(DefaultBookingFields.find(function (x) {
+        fields.push(DefaultBookingFields.find(function (x) {
           return x.id === key;
         }));
       }
@@ -48019,7 +48020,7 @@ function OptionalBookingFields(_ref) {
     className: "form-section"
   }, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
     id: "personal_details"
-  })), bookingFields.map(function (input) {
+  })), fields.map(function (input) {
     if (input.id === 'telephone') {
       input.id = 'phonenumber';
     }
@@ -48740,7 +48741,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.11",
+	version: "2.0.13",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
