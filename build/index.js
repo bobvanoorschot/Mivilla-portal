@@ -41345,18 +41345,20 @@ function DiscountCode(_ref) {
 var CHECK_DISCOUNT_CODE = gql(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["\n  mutation CheckDiscountCode($code: String!, $house_code: String!) {\n    checkDiscountCode(code: $code, house_code: $house_code) {\n      name\n      use_price\n      percentage\n      price\n    }\n  }\n"])));
 
 var Discount = function Discount(_ref) {
+  var _options$bookingForm;
+
   var errors = _ref.errors,
       house = _ref.house,
       options = _ref.options,
       values = _ref.values;
 
-  if (house.discounts && house.discounts !== '0') {
-    var _options$bookingForm;
+  if (house.discounts && house.discounts !== '0' || (_options$bookingForm = options.bookingForm) !== null && _options$bookingForm !== void 0 && _options$bookingForm.showDiscountCode) {
+    var _options$bookingForm2;
 
     var discounts = house.discounts.split(',');
     return /*#__PURE__*/React__default['default'].createElement("div", {
       className: "form-section"
-    }, /*#__PURE__*/React__default['default'].createElement("div", {
+    }, house.discounts && house.discounts !== '0' && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
       className: "form-row inline"
     }, /*#__PURE__*/React__default['default'].createElement("label", {
       htmlFor: "discount"
@@ -41384,7 +41386,7 @@ var Discount = function Discount(_ref) {
       style: {
         fontSize: 14
       }
-    }, house.discounts_info)), ((_options$bookingForm = options.bookingForm) === null || _options$bookingForm === void 0 ? void 0 : _options$bookingForm.showDiscountCode) && /*#__PURE__*/React__default['default'].createElement(DiscountCode, {
+    }, house.discounts_info))), ((_options$bookingForm2 = options.bookingForm) === null || _options$bookingForm2 === void 0 ? void 0 : _options$bookingForm2.showDiscountCode) && /*#__PURE__*/React__default['default'].createElement(DiscountCode, {
       errors: errors,
       house: house,
       values: values
