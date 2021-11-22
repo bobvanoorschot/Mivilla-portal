@@ -41355,7 +41355,7 @@ var Discount = function Discount(_ref) {
   if (house.discounts && house.discounts !== '0' || (_options$bookingForm = options.bookingForm) !== null && _options$bookingForm !== void 0 && _options$bookingForm.showDiscountCode) {
     var _options$bookingForm2;
 
-    var discounts = house.discounts.split(',');
+    var discounts = house.discounts ? house.discounts.split(',') : [];
     return /*#__PURE__*/React__default['default'].createElement("div", {
       className: "form-section"
     }, house.discounts && house.discounts !== '0' && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
@@ -41788,7 +41788,7 @@ function CostSummary(_ref) {
   var persons = Number(values.children) + Number(values.adults) + babies;
 
   var _useQuery = useQuery(BOOKING_PRICE_TOTAL_QUERY, {
-    variables: _objectSpread2(_objectSpread2({}, values), {}, {
+    variables: {
       id: values.portalCode,
       persons: persons,
       house_id: values.objectCode,
@@ -41796,8 +41796,9 @@ function CostSummary(_ref) {
       ends_at: JSON.stringify(values.departureDate.date),
       costs: JSON.stringify(values.costs),
       discount: Number(values.discount),
+      discount_code: values.discount_code,
       cancel_insurance: Number(values.cancel_insurance)
-    }),
+    },
     fetchPolicy: 'network-only'
   }),
       loading = _useQuery.loading,
@@ -41857,6 +41858,9 @@ function Summary(_ref) {
   var values = _ref.values,
       house = _ref.house,
       locale = _ref.locale;
+  console.log({
+    values: values
+  });
   return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Object$1, {
     house: house,
     values: values
@@ -48322,9 +48326,6 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
         });
       }
 
-      console.log({
-        errors: errors
-      });
       return errors;
     });
 
@@ -48380,18 +48381,9 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
           }),
           onSubmit: function onSubmit(values, _ref2) {
             _ref2.setSubmitting;
-            var variables = {
-              first_name: values.first_name,
-              preposition: values.preposition,
-              last_name: values.last_name,
-              company_name: values.company_name,
+
+            var variables = _objectSpread2(_objectSpread2({}, values), {}, {
               is_option: JSON.parse(values.is_option),
-              address: values.address || '',
-              zipcode: values.zipcode || '',
-              city: values.city || '',
-              phone: values.phone || '',
-              phone_mobile: values.phone_mobile || '',
-              email: values.email,
               house_code: values.objectCode,
               portal_code: values.portalCode,
               comment: values.comment || '',
@@ -48405,12 +48397,12 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
               damage_insurance: Number(values.damage_insurance) || 0,
               cancel_insurance: Number(values.cancel_insurance) || 0,
               travel_insurance: Number(values.travel_insurance) || 0,
-              discount_reason: values.discount_reason || '',
               arrival_date: values.arrivalDate.date,
               departure_date: values.departureDate.date,
               costs: JSON.stringify(values.costs),
               extra_fields: JSON.stringify(values.extra_fields)
-            };
+            });
+
             createBooking({
               variables: variables
             }).then(function () {
@@ -48743,7 +48735,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.17",
+	version: "2.0.18",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",

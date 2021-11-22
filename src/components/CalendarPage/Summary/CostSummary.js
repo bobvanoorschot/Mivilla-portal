@@ -16,7 +16,6 @@ function CostSummary({ values, house }) {
 
   const { loading, error, data } = useQuery(BOOKING_PRICE_TOTAL_QUERY, {
     variables: {
-      ...values,
       id: values.portalCode,
       persons: persons,
       house_id: values.objectCode,
@@ -24,6 +23,7 @@ function CostSummary({ values, house }) {
       ends_at: JSON.stringify(values.departureDate.date),
       costs: JSON.stringify(values.costs),
       discount: Number(values.discount),
+      discount_code: values.discount_code,
       cancel_insurance: Number(values.cancel_insurance),
     },
     fetchPolicy: 'network-only',

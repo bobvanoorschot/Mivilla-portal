@@ -41,13 +41,13 @@ class FormCreator extends React.Component {
       if (field.required) {
         if (isInt(field.id)) {
           const validateValue = byString(values, `extra_fields.booking_field_${field.id}`);
-          
+
           if (!validateValue || validateValue === '') {
             errors[field.id] = <FormattedMessage id="required" />;
           }
         } else {
           const validateValue = byString(values, field.id);
-  
+
           if (!validateValue || validateValue === '') {
             errors[field.id] = <FormattedMessage id="required" />;
           }
@@ -91,7 +91,6 @@ class FormCreator extends React.Component {
       );
     }
 
-    console.log({ errors });
     return errors;
   };
 
@@ -127,17 +126,8 @@ class FormCreator extends React.Component {
             }}
             onSubmit={(values, { setSubmitting }) => {
               let variables = {
-                first_name: values.first_name,
-                preposition: values.preposition,
-                last_name: values.last_name,
-                company_name: values.company_name,
+                ...values,
                 is_option: JSON.parse(values.is_option),
-                address: values.address || '',
-                zipcode: values.zipcode || '',
-                city: values.city || '',
-                phone: values.phone || '',
-                phone_mobile: values.phone_mobile || '',
-                email: values.email,
                 house_code: values.objectCode,
                 portal_code: values.portalCode,
                 comment: values.comment || '',
@@ -151,7 +141,6 @@ class FormCreator extends React.Component {
                 damage_insurance: Number(values.damage_insurance) || 0,
                 cancel_insurance: Number(values.cancel_insurance) || 0,
                 travel_insurance: Number(values.travel_insurance) || 0,
-                discount_reason: values.discount_reason || '',
                 arrival_date: values.arrivalDate.date,
                 departure_date: values.departureDate.date,
                 costs: JSON.stringify(values.costs),
@@ -214,7 +203,7 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                   </div>
-                  <Discount errors={errors} house={house} options={options} values={values} />                  
+                  <Discount errors={errors} house={house} options={options} values={values} />
 
                   <Insurances house={house} values={values} />
 
@@ -229,7 +218,7 @@ class FormCreator extends React.Component {
                   />
                 </div>
 
-                <div className="form-sum">                 
+                <div className="form-sum">
                   <Summary house={house} values={values} />
                   {status && status.msg && <div>{status.msg}</div>}
                   <div className="terms">

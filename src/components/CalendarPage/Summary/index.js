@@ -6,6 +6,7 @@ import { Object } from "./Object";
 
 
 function Summary({ values, house, locale }) {
+  console.log({ values });
   return (
     <div>
       <Object house={house} values={values} />
