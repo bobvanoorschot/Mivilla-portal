@@ -14892,10 +14892,10 @@ var Loading = function Loading() {
   })));
 };
 
-var _templateObject$5, _templateObject2$1, _templateObject3, _templateObject4;
+var _templateObject$5, _templateObject2$1, _templateObject3$1, _templateObject4;
 var PORTAL_QUERY = gql(_templateObject$5 || (_templateObject$5 = _taggedTemplateLiteral(["\n  query PortalSiteQuery($id: ID!) {\n    PortalSite(id: $id) {\n      portal_code\n      options\n      countries {\n        id\n        name\n      }\n      regions {\n        id\n        name\n        country_id\n      }\n      cities {\n        id\n        name\n        region\n        country_id\n      }\n      extra_search\n      max_bathrooms\n      max_bedrooms\n      max_nights\n      max_persons\n      max_weekprice\n      country_placeholder\n      categories\n      countries_label\n      country_placeholder\n      regions_label\n      cities_label\n      arrival_date_label\n      departure_date_label\n      max_weekprice_label\n      persons_min_label\n      persons_max_label\n      bedrooms_min_label\n      bathrooms_min_label\n      weekprice_max_label\n      no_nights_label\n      extra_search_label\n      properties_label\n    }\n  }\n"])));
 var CALENDAR_QUERY$1 = gql(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n         query PortalSiteHousesQuery(\n           $id: ID!\n           $house_id: String!\n           $starts_at: Date!\n           $ends_at: Date!\n         ) {\n           PortalSite(id: $id) {\n             houses(house_code: $house_id) {\n               id\n               name\n               last_minute_days\n               availabilities(starts_at: $starts_at, ends_at: $ends_at) {\n                 arrival\n                 arrival_time_from\n                 arrival_time_to\n                 date\n                 departure\n                 departure_time\n                 max_nights\n                 min_nights\n                 special_offer\n               }\n             }\n           }\n           Discounts(\n             house_code: $house_id\n             discount_starts_at: $ends_at\n             discount_ends_at: $starts_at\n             active_today: true\n           ) {\n             name\n             discount_starts_at\n             discount_ends_at\n           }\n         }\n       "])));
-var BOOKING_PRICE_QUERY = gql(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query BookingPriceQuery(\n    $id: ID!\n    $house_id: String!\n    $starts_at: Date!\n    $ends_at: Date!\n  ) {\n    PortalSite(id: $id) {\n      options\n      first_name_label\n      preposition_label\n      last_name_label\n      email_label\n      zipcode_label\n      city_label\n      address_label\n      house_number_label\n      phone_label\n      phone_mobile_label\n      country_label\n      iban_label\n      holder_label\n      bic_label\n      comment_label\n      company_name_label\n      extra_fields_drivers_license_label\n      extra_fields_destination_label\n      booking_fields {\n        id\n        label\n        field_type\n        options\n        placeholder\n      }\n      houses(house_code: $house_id) {\n        id\n        name\n        code\n        allow_option\n        persons\n        image_url\n        discounts\n        discounts_info\n        house_type\n        rental_terms\n        cancel_insurance\n        damage_insurance\n        damage_insurance_required\n        travel_insurance\n        babies_extra\n        booking_price(starts_at: $starts_at, ends_at: $ends_at)\n      }\n    }\n  }\n"])));
+var BOOKING_PRICE_QUERY = gql(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral(["\n  query BookingPriceQuery(\n    $id: ID!\n    $house_id: String!\n    $starts_at: Date!\n    $ends_at: Date!\n  ) {\n    PortalSite(id: $id) {\n      options\n      first_name_label\n      preposition_label\n      last_name_label\n      email_label\n      zipcode_label\n      city_label\n      address_label\n      house_number_label\n      phone_label\n      phone_mobile_label\n      country_label\n      iban_label\n      holder_label\n      bic_label\n      comment_label\n      company_name_label\n      extra_fields_drivers_license_label\n      extra_fields_destination_label\n      booking_fields {\n        id\n        label\n        field_type\n        options\n        placeholder\n      }\n      houses(house_code: $house_id) {\n        id\n        name\n        code\n        allow_option\n        persons\n        image_url\n        discounts\n        discounts_info\n        house_type\n        rental_terms\n        cancel_insurance\n        damage_insurance\n        damage_insurance_required\n        travel_insurance\n        babies_extra\n        booking_price(starts_at: $starts_at, ends_at: $ends_at)\n      }\n    }\n  }\n"])));
 var CREATE_BOOKING_MUTATION = gql(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation CreateBooking(\n    $first_name: String!\n    $preposition: String\n    $last_name: String!\n    $company_name: String\n    $is_option: Boolean!\n    $address: String\n    $house_number: String\n    $zipcode: String\n    $city: String\n    $phone: String\n    $phone_mobile: String\n    $iban: String\n    $bic: String\n    $holder: String\n    $email: String!\n    $house_code: String!\n    $portal_code: String\n    $language: String\n    $country: String!\n    $adults: Int!\n    $children: Int\n    $babies: Int\n    $discount: Int\n    $damage_insurance: Int\n    $cancel_insurance: Int\n    $travel_insurance: Int\n    $discount_reason: String\n    $discount_code: String\n    $comment: String\n    $arrival_date: String!\n    $departure_date: String!\n    $costs: Json\n    $extra_fields: String\n  ) {\n    createBooking(\n      first_name: $first_name\n      preposition: $preposition\n      company_name: $company_name\n      last_name: $last_name\n      is_option: $is_option\n      address: $address\n      house_number: $house_number\n      zipcode: $zipcode\n      city: $city\n      phone: $phone\n      phone_mobile: $phone_mobile\n      iban: $iban\n      bic: $bic\n      holder: $holder\n      email: $email\n      house_code: $house_code\n      portal_code: $portal_code\n      language: $language\n      country: $country\n      adults: $adults\n      children: $children\n      babies: $babies\n      discount: $discount\n      discount_code: $discount_code\n      damage_insurance: $damage_insurance\n      cancel_insurance: $cancel_insurance\n      travel_insurance: $travel_insurance\n      discount_reason: $discount_reason\n      arrival_date: $arrival_date\n      departure_date: $departure_date\n      comment: $comment\n      costs: $costs\n      extra_fields: $extra_fields\n    ) {\n      booking_nr\n    }\n  }\n"])));
 
 var entry$1 = {};
@@ -34215,7 +34215,15 @@ function SingleResult(_ref) {
     id: "bathrooms"
   }))), thisOptions.showPrice && /*#__PURE__*/React__default['default'].createElement("div", {
     className: "result-price"
-  }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
+  }, result.booking_price ? /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
+    id: "price_from"
+  }), /*#__PURE__*/React__default['default'].createElement("span", {
+    className: "price"
+  }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+    value: result.booking_price.total_price,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }))) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$1, {
     id: "minimum_week_price"
   }), /*#__PURE__*/React__default['default'].createElement("span", {
     className: "price"
@@ -34223,10 +34231,11 @@ function SingleResult(_ref) {
     value: result.minimum_week_price,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }))), /*#__PURE__*/React__default['default'].createElement("div", {
+  })))), /*#__PURE__*/React__default['default'].createElement("div", {
     className: "result-button"
   }, /*#__PURE__*/React__default['default'].createElement(ArrowRight$1, null)))));
 }
+
 SingleResult.propTypes = {
   result: PropTypes.object.isRequired,
   options: PropTypes.object.isRequired
@@ -34765,9 +34774,10 @@ _defineProperty(Pagination, "defaultProps", {
 
 var Pagination = /*@__PURE__*/getDefaultExportFromCjs(Pagination$1);
 
-var _templateObject$4, _templateObject2;
+var _templateObject$4, _templateObject2, _templateObject3;
 var HOUSES_QUERY = gql(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery(\n    $id: ID!\n    $country_id: ID\n    $region_id: String\n    $city_id: String\n    $persons_min: Int\n    $persons_max: Int\n    $bedrooms_min: Int\n    $bathrooms_min: Int\n    $arrival_date: String\n    $no_nights: Int\n    $properties: String\n    $weekprice_max: Int\n    $limit: Int\n    $skip: Int\n  ) {\n    PortalSite(id: $id) {\n      houses(\n        country_id: $country_id\n        region_id: $region_id\n        city_id: $city_id\n        persons_min: $persons_min\n        persons_max: $persons_max\n        bedrooms_min: $bedrooms_min\n        bathrooms_min: $bathrooms_min\n        arrival_date: $arrival_date\n        weekprice_max: $weekprice_max\n        no_nights_min: $no_nights\n        properties: $properties\n        limit: $limit\n        skip: $skip\n      ) {\n        id\n        name\n        persons\n        bathrooms\n        bedrooms\n        description\n        image_url\n        house_url\n        province\n        city\n        country_name\n        minimum_week_price\n      }\n    }\n  }\n"])));
-var HOUSE_COUNT_QUERY = gql(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery(\n    $id: ID!\n    $country_id: ID\n    $region_id: String\n    $city_id: String\n    $persons_min: Int\n    $persons_max: Int\n    $bedrooms_min: Int\n    $bathrooms_min: Int\n    $arrival_date: String\n    $no_nights: Int\n    $properties: String\n    $weekprice_max: Int\n  ) {\n    PortalSite(id: $id) {\n      houses(\n        country_id: $country_id\n        region_id: $region_id\n        city_id: $city_id\n        persons_min: $persons_min\n        persons_max: $persons_max\n        bedrooms_min: $bedrooms_min\n        bathrooms_min: $bathrooms_min\n        arrival_date: $arrival_date\n        weekprice_max: $weekprice_max\n        no_nights_min: $no_nights\n        properties: $properties\n      ) {\n        id\n      }\n    }\n  }\n"])));
+var HOUSES_PRICE_QUERY = gql(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery(\n    $id: ID!\n    $country_id: ID\n    $region_id: String\n    $city_id: String\n    $persons_min: Int\n    $persons_max: Int\n    $bedrooms_min: Int\n    $bathrooms_min: Int\n    $arrival_date: String\n    $starts_at: Date!\n    $ends_at: Date!\n    $no_nights: Int\n    $properties: String\n    $weekprice_max: Int\n    $limit: Int\n    $skip: Int\n  ) {\n    PortalSite(id: $id) {\n      houses(\n        country_id: $country_id\n        region_id: $region_id\n        city_id: $city_id\n        persons_min: $persons_min\n        persons_max: $persons_max\n        bedrooms_min: $bedrooms_min\n        bathrooms_min: $bathrooms_min\n        arrival_date: $arrival_date\n        weekprice_max: $weekprice_max\n        no_nights_min: $no_nights\n        properties: $properties\n        limit: $limit\n        skip: $skip\n      ) {\n        id\n        name\n        persons\n        bathrooms\n        bedrooms\n        description\n        image_url\n        house_url\n        province\n        city\n        country_name\n        minimum_week_price\n        booking_price(starts_at: $starts_at, ends_at: $ends_at)\n      }\n    }\n  }\n"])));
+var HOUSE_COUNT_QUERY = gql(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  query PortalSiteHousesQuery(\n    $id: ID!\n    $country_id: ID\n    $region_id: String\n    $city_id: String\n    $persons_min: Int\n    $persons_max: Int\n    $bedrooms_min: Int\n    $bathrooms_min: Int\n    $arrival_date: String\n    $no_nights: Int\n    $properties: String\n    $weekprice_max: Int\n  ) {\n    PortalSite(id: $id) {\n      houses(\n        country_id: $country_id\n        region_id: $region_id\n        city_id: $city_id\n        persons_min: $persons_min\n        persons_max: $persons_max\n        bedrooms_min: $bedrooms_min\n        bathrooms_min: $bathrooms_min\n        arrival_date: $arrival_date\n        weekprice_max: $weekprice_max\n        no_nights_min: $no_nights\n        properties: $properties\n      ) {\n        id\n      }\n    }\n  }\n"])));
 
 function Paginator(_ref) {
   var onPageChange = _ref.onPageChange,
@@ -34987,9 +34997,11 @@ function Results(_ref) {
       onPageChange = _ref.onPageChange,
       activePage = _ref.activePage;
   var min_nights = null;
+  var requestPrices = false;
 
   if (filters.departure_date && filters.arrival_date) {
     min_nights = difference_in_calendar_days(filters.departure_date, filters.arrival_date);
+    requestPrices = true;
   } else if (filters.arrival_date) {
     min_nights = 1;
   }
@@ -35009,6 +35021,8 @@ function Results(_ref) {
     bedrooms_min: Number(filters.bedrooms_min),
     bathrooms_min: Number(filters.bathrooms_min),
     arrival_date: filters.arrival_date,
+    starts_at: filters.arrival_date,
+    ends_at: filters.departure_date,
     no_nights: Number(min_nights) || null,
     extra_search: filters.extra_search,
     properties: properties,
@@ -35018,7 +35032,7 @@ function Results(_ref) {
     locale: locale
   };
   return /*#__PURE__*/React__default['default'].createElement(Query, {
-    query: HOUSES_QUERY,
+    query: requestPrices ? HOUSES_PRICE_QUERY : HOUSES_QUERY,
     variables: variables
   }, function (_ref2) {
     var loading = _ref2.loading,
@@ -48735,7 +48749,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.0.21",
+	version: "2.1.0",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -49233,7 +49247,8 @@ var en = {
 	no_discount_code_found: "No discount found with entered code",
 	discount_code: "Discount code",
 	minimum_nights: "At least {minimum} nights",
-	can_only_take_insurance_in_de_be_nl: "You can only take out insurance if you live in the Netherlands, Germany or Belgium."
+	can_only_take_insurance_in_de_be_nl: "You can only take out insurance if you live in the Netherlands, Germany or Belgium.",
+	price_from: "Price from"
 };
 
 var nl = {
@@ -49345,7 +49360,8 @@ var nl = {
 	no_discount_code_found: "Geen korting gevonden met ingegeven code",
 	discount_code: "Kortingscode",
 	minimum_nights: "Minstens {minimum} nachten",
-	can_only_take_insurance_in_de_be_nl: "U kunt alleen een verzekering afsluiten, wanneer u woont in Nederland, Duitsland of België."
+	can_only_take_insurance_in_de_be_nl: "U kunt alleen een verzekering afsluiten, wanneer u woont in Nederland, Duitsland of België.",
+	price_from: "Prijs vanaf"
 };
 
 var de = {
@@ -49456,7 +49472,8 @@ var de = {
 	no_discount_code_found: "Kein Rabatt mit eingegebenem Code gefunden",
 	discount_code: "Rabatt-Code",
 	minimum_nights: "Mindestens {minimum} Nächte",
-	can_only_take_insurance_in_de_be_nl: "Sie können sich nur versichern, wenn Sie in den Niederlanden, Deutschland oder Belgien wohnen."
+	can_only_take_insurance_in_de_be_nl: "Sie können sich nur versichern, wenn Sie in den Niederlanden, Deutschland oder Belgien wohnen.",
+	price_from: "Preis von"
 };
 
 var fr = {
@@ -49563,7 +49580,8 @@ var fr = {
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choisissez une date de pick-up",
 	no: "Non",
 	minimum_nights: "Au moins {minimum} nuits",
-	can_only_take_insurance_in_de_be_nl: "Vous ne pouvez souscrire une assurance que si vous résidez aux Pays-Bas, en Allemagne ou en Belgique."
+	can_only_take_insurance_in_de_be_nl: "Vous ne pouvez souscrire une assurance que si vous résidez aux Pays-Bas, en Allemagne ou en Belgique.",
+	price_from: "Le prix de"
 };
 
 var es = {
@@ -49670,7 +49688,8 @@ var es = {
 	"camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
 	no: "No",
 	minimum_nights: "Al menos {minimum} noches",
-	can_only_take_insurance_in_de_be_nl: "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica."
+	can_only_take_insurance_in_de_be_nl: "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica.",
+	price_from: "Precio de"
 };
 
 var it = {
@@ -49777,7 +49796,8 @@ var it = {
 	"camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
 	no: "No",
 	minimum_nights: "Almeno {minimum} notti",
-	can_only_take_insurance_in_de_be_nl: "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio."
+	can_only_take_insurance_in_de_be_nl: "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio.",
+	price_from: "Prezzo da"
 };
 
 function Portal(_ref) {

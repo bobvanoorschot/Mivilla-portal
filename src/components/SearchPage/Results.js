@@ -7,7 +7,7 @@ import Loading from '../icons/loading.svg';
 import SingleResult from './SingleResult';
 import Paginator from './Paginator';
 
-import { HOUSES_QUERY } from '../../_lib/SearchQueries';
+import { HOUSES_PRICE_QUERY, HOUSES_QUERY } from '../../_lib/SearchQueries';
 import { ApiError } from '../Error';
 
 function Results({
@@ -20,11 +20,13 @@ function Results({
   activePage,
 }) {
   let min_nights = null;
+  let requestPrices = false
   if (filters.departure_date && filters.arrival_date) {
     min_nights = differenceInCalendarDays(
       filters.departure_date,
       filters.arrival_date
     );
+    requestPrices = true
   } else if (filters.arrival_date) {
     min_nights = 1;
   }
@@ -45,6 +47,8 @@ function Results({
     bedrooms_min: Number(filters.bedrooms_min),
     bathrooms_min: Number(filters.bathrooms_min),
     arrival_date: filters.arrival_date,
+    starts_at: filters.arrival_date,
+    ends_at: filters.departure_date,
     no_nights: Number(min_nights) || null,
     extra_search: filters.extra_search,
     properties,
@@ -55,7 +59,7 @@ function Results({
   };
 
   return (
-    <Query query={HOUSES_QUERY} variables={variables}>
+    <Query query={requestPrices ? HOUSES_PRICE_QUERY : HOUSES_QUERY} variables={variables}>
       {({ loading, error, data }) => {
         if (loading)
           return (

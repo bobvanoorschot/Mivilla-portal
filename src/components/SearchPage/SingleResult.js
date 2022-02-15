@@ -42,15 +42,31 @@ function SingleResult({ result, options }) {
           </div>
           {thisOptions.showPrice && (
             <div className="result-price">
-              <FormattedMessage id="minimum_week_price" />
-              <span className="price">
-                €{' '}
-                <FormattedNumber
-                  value={result.minimum_week_price}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
-              </span>
+              {result.booking_price ? (
+                <>
+                <FormattedMessage id="price_from" />
+                  <span className="price">
+                    €{' '}
+                    <FormattedNumber
+                      value={result.booking_price.total_price}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </span>
+                </>
+              ) : (
+                <>
+                  <FormattedMessage id="minimum_week_price" />
+                  <span className="price">
+                    €{' '}
+                    <FormattedNumber
+                      value={result.minimum_week_price}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </span>
+                </>
+              )}
             </div>
           )}
           <div className="result-button">
@@ -60,7 +76,7 @@ function SingleResult({ result, options }) {
       </div>
     </a>
   );
-};
+}
 
 SingleResult.propTypes = {
   result: PropTypes.object.isRequired,

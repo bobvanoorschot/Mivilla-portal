@@ -2,6 +2,8 @@
 
 ## Next release
 
+- Show actual prices for searched period instead of min_weekprice
+
 ## 2.0.12
 
 - Fix bug in required extra_booking field

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import Filters from './Filters';
 import Results from './Results';
 
-// import './SearchPage.css'
-
 class SearchPage extends Component {
   constructor(props) {
     super(props);
