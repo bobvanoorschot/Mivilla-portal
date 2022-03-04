@@ -2,6 +2,10 @@
 
 ## Next release
 
+
+## 2.1.0
+- Add reviews page
+- Show review score on house in search results
 - Show actual prices for searched period instead of min_weekprice
 
 ## 2.0.12

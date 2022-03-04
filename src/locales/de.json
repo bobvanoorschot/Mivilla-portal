@@ -107,5 +107,6 @@
     "discount_code": "Rabatt-Code",
     "minimum_nights": "Mindestens {minimum} Nächte",
     "can_only_take_insurance_in_de_be_nl": "Sie können sich nur versichern, wenn Sie in den Niederlanden, Deutschland oder Belgien wohnen.",
-    "price_from": "Preis von"
+    "price_from": "Preis von",
+    "reviews": "Bewertungen"
   }

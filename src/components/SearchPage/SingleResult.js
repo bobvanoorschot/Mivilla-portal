@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import ArrowRight from '../icons/ArrowRight.svg';
@@ -40,11 +40,18 @@ function SingleResult({ result, options }) {
               </div>
             )}
           </div>
+          {thisOptions.showRating && result.rating && (
+            <div className="result-rating">
+              <div className="result-rating-inner">
+                {result.rating.toFixed(1)}
+              </div>
+            </div>
+          )}
           {thisOptions.showPrice && (
             <div className="result-price">
               {result.booking_price ? (
                 <>
-                <FormattedMessage id="price_from" />
+                  <FormattedMessage id="price_from" />
                   <span className="price">
                     €{' '}
                     <FormattedNumber
@@ -83,4 +90,4 @@ SingleResult.propTypes = {
   options: PropTypes.object.isRequired,
 };
 
-export default SingleResult;
+export default memo(SingleResult);

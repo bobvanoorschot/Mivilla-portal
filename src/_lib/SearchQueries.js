@@ -45,6 +45,8 @@ export const HOUSES_QUERY = gql`
         city
         country_name
         minimum_week_price
+        rating
+        scoreAmount
       }
     }
   }
@@ -97,6 +99,8 @@ export const HOUSES_PRICE_QUERY = gql`
         city
         country_name
         minimum_week_price
+        rating
+        score_amount
         booking_price(starts_at: $starts_at, ends_at: $ends_at)
       }
     }

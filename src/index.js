@@ -26,16 +26,16 @@ import it from "./locales/it.json";
 import "./styles/main.css";
 import { IntegrationError } from "./components/Error";
 
-function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) { 
+function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } ) {
   const errors = IntegrationError({ portalCode, pageType, locale, filters })
   if (errors) {
     return errors
-  }  
+  }
 
   if (!locale) {
     locale = 'en'
   }
-  
+
   const client = new ApolloClient({
     uri: api_url,
     cache: new InMemoryCache(),

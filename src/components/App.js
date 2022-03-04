@@ -28,9 +28,11 @@ class App extends Component {
    * Calculate & Update state of new dimensions
    */
   updateDimensions() {
+    console.debug(this.pageWidth.current.offsetWidth);
     if (this.pageWidth.current.offsetWidth < 1200) {
       this.pageWidth.current.classList.add('bu-smaller');
     } else {
+      this.pageWidth.current.classList.remove('bu-smaller');
     }
   }
 
@@ -39,7 +41,7 @@ class App extends Component {
    */
   componentDidMount() {
     this.updateDimensions();
-    // window.addEventListener("resize", this.updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions.bind(this));
   }
 
   render() {
@@ -128,6 +130,7 @@ class App extends Component {
               return (
                 <ReviewsPage
                   PortalSite={PortalSite}
+                  objectCode={objectCode}
                   locale={locale}
                   options={options}
                   filters={filters}

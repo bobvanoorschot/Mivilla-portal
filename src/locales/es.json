@@ -103,5 +103,6 @@
     "no": "No",
     "minimum_nights": "Al menos {minimum} noches",
     "can_only_take_insurance_in_de_be_nl": "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica.",
-    "price_from": "Precio de"
+    "price_from": "Precio de",
+    "reviews": "Comentarios"
   }

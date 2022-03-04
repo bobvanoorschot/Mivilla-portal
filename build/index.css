@@ -1950,6 +1950,7 @@
         min-height: 100%;
       }
 .bukazu-result-inner .result {
+      position: relative;
       flex: 1 1 auto;
       display: flex;
       flex-direction: column;
@@ -1974,6 +1975,36 @@
         justify-content: space-evenly;
         border-bottom: 1px solid rgba(69, 74, 83, 0.2);
       }
+.bukazu-result-inner .result-rating {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+      }
+.bukazu-result-inner .result-rating-inner {
+          background: var(--bukazu-button);
+          position: relative;
+          color: #fff;
+          font-weight: bold;
+          padding: 6px 10px;
+          border-radius: 0.4em;
+          font-size: 14px;
+          line-height: 14px;
+          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25)
+        }
+.bukazu-result-inner .result-rating-inner:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: var(--bukazu-button);
+            border-bottom: 0;
+            border-left: 0;
+            margin-left: -5px;
+            margin-bottom: -10px;
+          }
 .bukazu-result-inner .result-price {
         display: flex;
         flex-direction: column;
@@ -2250,6 +2281,78 @@
   border-top-right-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
 }
+.bu_single_review {
+  border-bottom: 1px solid #cecece;
+  padding: 16px;
+  margin: 0 0 16px
+
+}
+.bu_single_review .bu_review_summary {
+    display: flex;
+    align-items: center;
+  }
+.bu_single_review .bu_review_summary__date_name {
+      display: flex;
+      align-items: center;
+      color: #212121;
+    }
+.bu_single_review .bu_review_summary__name {
+      font-weight: bold;
+    }
+.bu_single_review .bu_review {
+    padding: 16px 0;
+    font-style: italic;
+    margin: 0;
+  }
+.bu_single_review .bu_criteria {
+    -moz-columns: 2;
+         columns: 2
+  }
+.bu_single_review .bu_criteria .bu-smaller {
+      -moz-columns: 1;
+           columns: 1
+    }
+.bu_score {
+  display: flex;
+  align-items: center;
+  padding: 0 0 4px;
+}
+.bu_score__rating {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    margin: 0 8px 0 0;
+    letter-spacing: 2px;
+  }
+.bu_score__rating.low {
+    background-color: #006B3D;
+  }
+.bu_score__rating.best {
+    background-color: #006B3D;
+  }
+.bu_score__rating.medium {
+    background-color: #069c56;
+  }
+.bu_score__rating.good {
+    background-color: #069c56;
+  }
+.bu_reviews__overview {
+  background: #fefefe;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  }
+.bu_reviews__overview__number {
+      font-size: 22px;
+      padding: 0 16px;
+    }
+.bu-smaller .bu_single_review .bu_criteria {
+      -moz-columns: 1;
+           columns: 1;
+    }
 #bukazu-app #search-page.bu-reverse {
       flex-direction: row-reverse;
     }
@@ -2292,7 +2395,7 @@
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
   }
-#bukazu-app .info-button {    
+#bukazu-app .info-button {
     border: none;
     background: rgba(0, 0, 0, 0);
     cursor: pointer;

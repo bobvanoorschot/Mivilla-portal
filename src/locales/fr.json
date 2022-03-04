@@ -103,5 +103,6 @@
     "no": "Non",
     "minimum_nights": "Au moins {minimum} nuits",
     "can_only_take_insurance_in_de_be_nl": "Vous ne pouvez souscrire une assurance que si vous résidez aux Pays-Bas, en Allemagne ou en Belgique.",
-    "price_from": "Le prix de"
+    "price_from": "Le prix de",
+    "reviews": "Critiques"
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useQuery } from '@apollo/client';
 import InsurancesAndRequired from './InsurancesAndRequired';
 import { BOOKING_PRICE_TOTAL_QUERY } from './Queries';
@@ -49,4 +49,4 @@ function CostSummary({ values, house }) {
   );
 }
 
-export default CostSummary;
+export default memo(CostSummary);
