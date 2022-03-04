@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql }  from "@apollo/client";
 
 export const PORTAL_QUERY = gql`
   query PortalSiteQuery($id: ID!) {
@@ -154,6 +154,9 @@ export const CREATE_BOOKING_MUTATION = gql`
     $city: String
     $phone: String
     $phone_mobile: String
+    $iban: String
+    $bic: String
+    $holder: String
     $email: String!
     $house_code: String!
     $portal_code: String
@@ -186,6 +189,9 @@ export const CREATE_BOOKING_MUTATION = gql`
       city: $city
       phone: $phone
       phone_mobile: $phone_mobile
+      iban: $iban
+      bic: $bic
+      holder: $holder
       email: $email
       house_code: $house_code
       portal_code: $portal_code

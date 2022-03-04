@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import Pagination from 'react-js-pagination';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';

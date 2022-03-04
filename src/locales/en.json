@@ -107,5 +107,7 @@
     "no_discount_code_found": "No discount found with entered code",
     "discount_code": "Discount code",
     "minimum_nights": "At least {minimum} nights",
-    "can_only_take_insurance_in_de_be_nl": "You can only take out insurance if you live in the Netherlands, Germany or Belgium."
+    "can_only_take_insurance_in_de_be_nl": "You can only take out insurance if you live in the Netherlands, Germany or Belgium.",
+    "price_from": "Price from",
+    "reviews": "Reviews"
   }

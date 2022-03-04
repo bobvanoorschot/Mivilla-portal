@@ -22,7 +22,7 @@ export default function OnSite({ prices }) {
               } else {
                 let amount = on_site.find((x) => x.id == cost.id).amount
                 return (
-                  <CostRow key={cost.id} amount={amount} {...cost} />
+                  <CostRow key={cost.id} {...cost} amount={amount} />
                   
                 );
               }

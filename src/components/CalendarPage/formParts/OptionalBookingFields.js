@@ -6,7 +6,7 @@ import { Countries } from '../../../_lib/countries';
 import { DateField } from '../FormItems';
 import DefaultBookingFields from './DefaultBookingFields';
 
-function isInt(value) {
+export function isInt(value) {
   return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }
 
@@ -18,14 +18,16 @@ export default function OptionalBookingFields({
   values,
 }) {
 
+  let fields = [].concat(bookingFields);
+
   const requiredFields = ['address', 'house_number', 'zipcode', 'city']
   if (values.cancel_insurance === '1' || values.cancel_insurance === '2') {
     requiredFields.forEach(key => {
-      let index = bookingFields.findIndex(x => x.id === key) 
+      let index = bookingFields.findIndex(x => x.id === key)
       if (index !== -1) {
-        bookingFields[index] = DefaultBookingFields.find(x => x.id === key)
+        fields[index] = DefaultBookingFields.find(x => x.id === key)
       } else {
-        bookingFields.push(DefaultBookingFields.find(x => x.id === key))
+        fields.push(DefaultBookingFields.find(x => x.id === key))
       }
     })
   }
@@ -34,7 +36,7 @@ export default function OptionalBookingFields({
         <h2>
           <FormattedMessage id="personal_details" />
         </h2>
-        {bookingFields.map((input) => {
+        {fields.map((input) => {
           if (input.id === 'telephone') {
             input.id = 'phonenumber';
           }
@@ -49,7 +51,8 @@ export default function OptionalBookingFields({
                 <label
                   htmlFor={`extra_fields.booking_field_${bookingField.id}`}
                 >
-                  {bookingField.label}
+                  {bookingField.label}{' '}
+                  {input.required && <span>*</span>}
                 </label>
                 <Field
                   onKeyPress={(e) => {
@@ -68,6 +71,11 @@ export default function OptionalBookingFields({
                   }
                   name={`extra_fields.booking_field_${bookingField.id}`}
                 />
+                {errors[input.id] && (
+                  (touched.extra_fields && touched.extra_fields[`booking_field_${bookingField.id}`]) || touched[input.id]
+                  ) && (
+                  <div className="error-message">{errors[input.id]}</div>
+                )}
               </div>
             );
           } else if (input.id === 'country') {

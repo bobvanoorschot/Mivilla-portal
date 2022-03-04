@@ -2,7 +2,24 @@
 
 ## Next release
 
-## 1.4.0
+
+## 2.1.0
+- Add reviews page
+- Show review score on house in search results
+- Show actual prices for searched period instead of min_weekprice
+
+## 2.0.12
+
+- Fix bug in required extra_booking field
+## 2.0.11
+
+- Fix translations messed up by new version apollo/client
+
+## 2.0.7
+
+- Remove react-apollo as is it deprecated and use @apollo/client
+- Fix bug in update of prices per person
+## 2.0.1
 
 - Validate age for insurance
 - Validate country for insurance

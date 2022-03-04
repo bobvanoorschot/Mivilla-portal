@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import ArrowRight from '../icons/ArrowRight.svg';
@@ -40,17 +40,40 @@ function SingleResult({ result, options }) {
               </div>
             )}
           </div>
+          {thisOptions.showRating && result.rating && (
+            <div className="result-rating">
+              <div className="result-rating-inner">
+                {result.rating.toFixed(1)}
+              </div>
+            </div>
+          )}
           {thisOptions.showPrice && (
             <div className="result-price">
-              <FormattedMessage id="minimum_week_price" />
-              <span className="price">
-                €{' '}
-                <FormattedNumber
-                  value={result.minimum_week_price}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
-              </span>
+              {result.booking_price ? (
+                <>
+                  <FormattedMessage id="price_from" />
+                  <span className="price">
+                    €{' '}
+                    <FormattedNumber
+                      value={result.booking_price.total_price}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </span>
+                </>
+              ) : (
+                <>
+                  <FormattedMessage id="minimum_week_price" />
+                  <span className="price">
+                    €{' '}
+                    <FormattedNumber
+                      value={result.minimum_week_price}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </span>
+                </>
+              )}
             </div>
           )}
           <div className="result-button">
@@ -60,11 +83,11 @@ function SingleResult({ result, options }) {
       </div>
     </a>
   );
-};
+}
 
 SingleResult.propTypes = {
   result: PropTypes.object.isRequired,
   options: PropTypes.object.isRequired,
 };
 
-export default SingleResult;
+export default memo(SingleResult);

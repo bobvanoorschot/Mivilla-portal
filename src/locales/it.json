@@ -102,5 +102,7 @@
   "camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
   "no": "No",
   "minimum_nights": "Almeno {minimum} notti",
-  "can_only_take_insurance_in_de_be_nl": "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio."
+  "can_only_take_insurance_in_de_be_nl": "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio.",
+  "price_from": "Prezzo da",
+  "reviews": "Recensioni"
 }
