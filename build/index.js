@@ -28160,8 +28160,11 @@ var Field$1 = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var field = this.props.field;
-      var PortalSite = this.props.PortalSite;
+      var _this$props = this.props,
+          PortalSite = _this$props.PortalSite,
+          field = _this$props.field,
+          filters = _this$props.filters,
+          value = _this$props.value;
       var options = [];
 
       if (arrayIncludes(['countries', 'cities', 'regions'], field.id)) {
@@ -28179,9 +28182,8 @@ var Field$1 = /*#__PURE__*/function (_Component) {
       }
 
       var input;
-      var value = this.props.value;
-      var countries = this.props.filters.countries;
-      var regions = this.props.filters.regions;
+      var countries = filters.countries;
+      var regions = Array.isArray(filters.regions) ? filters.regions : [filters.regions];
       var properties = this.props.filters.properties || [];
 
       if (field.id === 'properties') {
@@ -28227,10 +28229,6 @@ var Field$1 = /*#__PURE__*/function (_Component) {
               if (countries && !arrayIncludes(countries, opt.country_id)) {
                 hidden = true;
               }
-
-              console.log({
-                regions: regions
-              });
 
               if (field.id === 'cities') {
                 if (regions && !arrayIncludes(regions, opt.region)) {
@@ -46351,7 +46349,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.1.2",
+	version: "2.1.3",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",

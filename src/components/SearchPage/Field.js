@@ -57,8 +57,8 @@ class Field extends Component {
   }
 
   render() {
-    const field = this.props.field;
-    const { PortalSite } = this.props;
+    const { PortalSite, field, filters, value } = this.props;
+
     let options = [];
     if (includes(['countries', 'cities', 'regions'], field.id)) {
       options = PortalSite[field.id];
@@ -74,9 +74,10 @@ class Field extends Component {
       options = this.createNumberArray(PortalSite[field.id]);
     }
     let input;
-    const value = this.props.value;
-    const countries = this.props.filters.countries;
-    const regions = this.props.filters.regions;
+    const countries = filters.countries ;
+    const regions = Array.isArray(filters.regions)
+      ? filters.regions
+      : [filters.regions];
     const properties = this.props.filters.properties || [];
 
     if (field.id === 'properties') {
@@ -124,7 +125,6 @@ class Field extends Component {
                 if (countries && !includes(countries, opt.country_id)) {
                   hidden = true;
                 }
-                console.log({ regions });
                 if (field.id === 'cities') {
                   if (regions && !includes(regions, opt.region)) {
                     hidden = true;

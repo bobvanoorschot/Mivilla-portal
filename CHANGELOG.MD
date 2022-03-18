@@ -3,6 +3,9 @@
 ## Next release
 
 
+## 2.1.3
+- Fix issue with regions and city selects
+
 ## 2.1.2
 - Update react-intl
 - Show actual prices for searched period instead of min_weekprice
