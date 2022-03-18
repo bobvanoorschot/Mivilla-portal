@@ -1,6 +1,6 @@
 import React from "react";
 import App from "./components/App";
-import { IntlProvider, addLocaleData } from "react-intl";
+import { IntlProvider } from "react-intl";
 // import registerServiceWorker from './registerServiceWorker';
 
 import {
@@ -9,12 +9,6 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 
-import enData from "react-intl/locale-data/en";
-import frData from "react-intl/locale-data/fr";
-import esData from "react-intl/locale-data/es";
-import nlData from "react-intl/locale-data/nl";
-import deData from "react-intl/locale-data/de";
-import itData from "react-intl/locale-data/it";
 
 import en from "./locales/en.json";
 import nl from "./locales/nl.json";
@@ -51,14 +45,7 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
 
   const messages = { en, nl, de, fr, es, it };
 
-  addLocaleData([
-    ...enData,
-    ...frData,
-    ...esData,
-    ...nlData,
-    ...itData,
-    ...deData,
-  ]);
+
 
   window.__localeId__ = locale;
 

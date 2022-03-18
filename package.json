@@ -1,6 +1,6 @@
 {
   "name": "bukazu-portal-react",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/BUKAZU/React-portal",
@@ -71,7 +71,7 @@
     "formik": "^2.2.9",
     "graphql": "^15.6.0",
     "react-date-picker": "^8.1.1",
-    "react-intl": "^2.7.2",
+    "react-intl": "5",
     "react-js-pagination": "^3.0.2"
   },
   "eslintConfig": {

@@ -2,6 +2,9 @@
 
 ## Next release
 
+
+## 2.1.2
+- Update react-intl
 - Show actual prices for searched period instead of min_weekprice
 
 ## 2.0.12

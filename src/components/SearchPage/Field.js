@@ -108,6 +108,7 @@ class Field extends Component {
         }
       });
     } else if (field.type === 'select') {
+      console.log({ countries });
       if (options && includes(['countries', 'cities', 'regions'], field.id)) {
         input = (
           <select
@@ -123,6 +124,7 @@ class Field extends Component {
                 if (countries && !includes(countries, opt.country_id)) {
                   hidden = true;
                 }
+                console.log({ regions });
                 if (field.id === 'cities') {
                   if (regions && !includes(regions, opt.region)) {
                     hidden = true;
