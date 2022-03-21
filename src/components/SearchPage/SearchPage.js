@@ -19,11 +19,23 @@ class SearchPage extends Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
+  componentDidMount() {
+    let filters = localStorage.getItem('bukazuFilters')
+    let activePage = localStorage.getItem('bukazuActivePage')
+
+    this.setState({
+      filters: JSON.parse(filters) || this.props.filters,
+    });
+    this.pageChange(activePage || 1)
+  }
+
   onFilterChange(data) {
     let filters = data;
     this.setState({
       filters,
     });
+
+    localStorage.setItem('bukazuFilters', JSON.stringify(filters));
     this.pageChange(1);
   }
 
@@ -31,6 +43,7 @@ class SearchPage extends Component {
     const { limit } = this.state;
     let newSkip = pageNumber * limit - limit;
 
+    localStorage.setItem('bukazuActivePage', pageNumber)
     this.setState({
       activePage: pageNumber,
       skip: newSkip,

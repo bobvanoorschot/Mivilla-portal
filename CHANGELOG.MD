@@ -3,6 +3,9 @@
 ## Next release
 
 
+## 2.1.4
+- Store filters in localStorage
+
 ## 2.1.3
 - Fix issue with regions and city selects
 

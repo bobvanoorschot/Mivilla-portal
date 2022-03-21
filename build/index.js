@@ -14,33 +14,26 @@ function _interopNamespace(e) {
         var d = Object.getOwnPropertyDescriptor(e, k);
         Object.defineProperty(n, k, d.get ? d : {
           enumerable: true,
-          get: function () {
-            return e[k];
-          }
+          get: function () { return e[k]; }
         });
       }
     });
   }
-  n['default'] = e;
+  n["default"] = e;
   return Object.freeze(n);
 }
 
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
-function ownKeys$d(object, enumerableOnly) {
+function ownKeys$f(object, enumerableOnly) {
   var keys = Object.keys(object);
 
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
-
-    if (enumerableOnly) {
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    }
-
-    keys.push.apply(keys, symbols);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
 
   return keys;
@@ -48,19 +41,12 @@ function ownKeys$d(object, enumerableOnly) {
 
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys$d(Object(source), true).forEach(function (key) {
-        _defineProperty$e(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys$d(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys$f(Object(source), !0).forEach(function (key) {
+      _defineProperty$g(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$f(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
   }
 
   return target;
@@ -72,7 +58,7 @@ function _classCallCheck$4(instance, Constructor) {
   }
 }
 
-function _defineProperties$7(target, props) {
+function _defineProperties$6(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
@@ -82,13 +68,16 @@ function _defineProperties$7(target, props) {
   }
 }
 
-function _createClass$7(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties$7(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties$7(Constructor, staticProps);
+function _createClass$6(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties$6(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties$6(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
 
-function _defineProperty$e(obj, key, value) {
+function _defineProperty$g(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -133,6 +122,9 @@ function _inherits$4(subClass, superClass) {
       configurable: true
     }
   });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
   if (superClass) _setPrototypeOf$4(subClass, superClass);
 }
 
@@ -165,7 +157,7 @@ function _isNativeReflectConstruct$4() {
   }
 }
 
-function _objectWithoutPropertiesLoose$b(source, excluded) {
+function _objectWithoutPropertiesLoose$c(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -180,10 +172,10 @@ function _objectWithoutPropertiesLoose$b(source, excluded) {
   return target;
 }
 
-function _objectWithoutProperties$a(source, excluded) {
+function _objectWithoutProperties$b(source, excluded) {
   if (source == null) return {};
 
-  var target = _objectWithoutPropertiesLoose$b(source, excluded);
+  var target = _objectWithoutPropertiesLoose$c(source, excluded);
 
   var key, i;
 
@@ -651,6 +643,8 @@ var ReactPropTypesSecret$3 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 var ReactPropTypesSecret_1 = ReactPropTypesSecret$3;
 
+var has$3 = Function.call.bind(Object.prototype.hasOwnProperty);
+
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -663,7 +657,7 @@ var printWarning$1 = function() {};
 if (process.env.NODE_ENV !== 'production') {
   var ReactPropTypesSecret$2 = ReactPropTypesSecret_1;
   var loggedTypeFailures = {};
-  var has$2 = Function.call.bind(Object.prototype.hasOwnProperty);
+  var has$2 = has$3;
 
   printWarning$1 = function(text) {
     var message = 'Warning: ' + text;
@@ -675,7 +669,7 @@ if (process.env.NODE_ENV !== 'production') {
       // This error was thrown as a convenience so that you can use this stack
       // to find the callsite that caused this warning to fire.
       throw new Error(message);
-    } catch (x) {}
+    } catch (x) { /**/ }
   };
 }
 
@@ -704,7 +698,8 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
           if (typeof typeSpecs[typeSpecName] !== 'function') {
             var err = Error(
               (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' +
+              'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.'
             );
             err.name = 'Invariant Violation';
             throw err;
@@ -763,9 +758,9 @@ var ReactIs$1 = reactIs$1.exports;
 var assign$1 = objectAssign;
 
 var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+var has$1 = has$3;
 var checkPropTypes = checkPropTypes_1;
 
-var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
@@ -866,6 +861,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
   var ReactPropTypes = {
     array: createPrimitiveTypeChecker('array'),
+    bigint: createPrimitiveTypeChecker('bigint'),
     bool: createPrimitiveTypeChecker('boolean'),
     func: createPrimitiveTypeChecker('function'),
     number: createPrimitiveTypeChecker('number'),
@@ -911,8 +907,9 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
    * is prohibitively expensive if they are created too often, such as what
    * happens in oneOfType() for any type before the one that matched.
    */
-  function PropTypeError(message) {
+  function PropTypeError(message, data) {
     this.message = message;
+    this.data = data && typeof data === 'object' ? data: {};
     this.stack = '';
   }
   // Make `instanceof Error` still work for returned errors.
@@ -947,7 +944,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
           ) {
             printWarning(
               'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
               'You may be seeing this warning due to a third-party PropTypes ' +
               'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
@@ -986,7 +983,10 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         // 'of type `object`'.
         var preciseType = getPreciseType(propValue);
 
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+        return new PropTypeError(
+          'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
+          {expectedType: expectedType}
+        );
       }
       return null;
     }
@@ -1130,14 +1130,19 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     }
 
     function validate(props, propName, componentName, location, propFullName) {
+      var expectedTypes = [];
       for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
         var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1) == null) {
+        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1);
+        if (checkerResult == null) {
           return null;
         }
+        if (checkerResult.data && has$1(checkerResult.data, 'expectedType')) {
+          expectedTypes.push(checkerResult.data.expectedType);
+        }
       }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
     }
     return createChainableTypeChecker(validate);
   }
@@ -1152,6 +1157,13 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     return createChainableTypeChecker(validate);
   }
 
+  function invalidValidatorError(componentName, location, propFullName, key, type) {
+    return new PropTypeError(
+      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
+      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
+    );
+  }
+
   function createShapeTypeChecker(shapeTypes) {
     function validate(props, propName, componentName, location, propFullName) {
       var propValue = props[propName];
@@ -1161,8 +1173,8 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       }
       for (var key in shapeTypes) {
         var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
+        if (typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
         if (error) {
@@ -1181,16 +1193,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       if (propType !== 'object') {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
       }
-      // We need to check all keys in case some are required but missing from
-      // props.
+      // We need to check all keys in case some are required but missing from props.
       var allKeys = assign$1({}, props[propName], shapeTypes);
       for (var key in allKeys) {
         var checker = shapeTypes[key];
+        if (has$1(shapeTypes, key) && typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+        }
         if (!checker) {
           return new PropTypeError(
             'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
             '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
           );
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
@@ -1375,6 +1389,7 @@ var factoryWithThrowingShims = function() {
   // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
   var ReactPropTypes = {
     array: shim,
+    bigint: shim,
     bool: shim,
     func: shim,
     number: shim,
@@ -1581,7 +1596,7 @@ var global$1 = (maybe$1(function () { return globalThis; }) ||
     maybe$1(function () { return window; }) ||
     maybe$1(function () { return self; }) ||
     maybe$1(function () { return global; }) ||
-    maybe$1(function () { return Function("return this")(); }));
+    maybe$1(function () { return maybe$1.constructor("return this")(); }));
 
 var __ = "__";
 var GLOBAL_KEY = [__, __].join("DEV");
@@ -1610,7 +1625,13 @@ var safeGlobal = (
   maybe(function() { return window }) ||
   maybe(function() { return self }) ||
   maybe(function() { return global }) ||
-  maybe(function() { return Function("return this")() })
+  // We don't expect the Function constructor ever to be invoked at runtime, as
+  // long as at least one of globalThis, window, self, or global is defined, so
+  // we are under no obligation to make it easy for static analysis tools to
+  // detect syntactic usage of the Function constructor. If you think you can
+  // improve your static analysis to detect this obfuscation, think again. This
+  // is an arms race you cannot win, at least not in JavaScript.
+  maybe(function() { return maybe.constructor("return this")() })
 );
 
 var needToRemove = false;
@@ -1755,11 +1776,17 @@ function leftPad(len, str) {
 
 function _typeof$7(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$7 = function _typeof(obj) { return typeof obj; }; } else { _typeof$7 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$7(obj); }
 
+function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$e(Object(source), true).forEach(function (key) { _defineProperty$f(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty$f(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties$6(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties$5(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass$6(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$6(Constructor.prototype, protoProps); if (staticProps) _defineProperties$6(Constructor, staticProps); return Constructor; }
+function _createClass$5(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$5(Constructor.prototype, protoProps); if (staticProps) _defineProperties$5(Constructor, staticProps); return Constructor; }
 
 function _inherits$3(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$3(subClass, superClass); }
 
@@ -1791,14 +1818,6 @@ var GraphQLError = /*#__PURE__*/function (_Error) {
   _inherits$3(GraphQLError, _Error);
 
   var _super = _createSuper$3(GraphQLError);
-
-  /**
-   * A message describing the Error for debugging purposes.
-   *
-   * Enumerable, and appears in the result of JSON.stringify().
-   *
-   * Note: should be treated as readonly, despite invariant usage.
-   */
 
   /**
    * An array of { line, column } locations within the source GraphQL document
@@ -1842,117 +1861,79 @@ var GraphQLError = /*#__PURE__*/function (_Error) {
    * Extension fields to add to the formatted error.
    */
   function GraphQLError(message, nodes, source, positions, path, originalError, extensions) {
-    var _locations2, _source2, _positions2, _extensions2;
+    var _nodeLocations, _nodeLocations2, _nodeLocations3;
 
     var _this;
 
     _classCallCheck$3(this, GraphQLError);
 
-    _this = _super.call(this, message); // Compute list of blame nodes.
+    _this = _super.call(this, message);
+    _this.name = 'GraphQLError';
+    _this.originalError = originalError !== null && originalError !== void 0 ? originalError : undefined; // Compute list of blame nodes.
 
-    var _nodes = Array.isArray(nodes) ? nodes.length !== 0 ? nodes : undefined : nodes ? [nodes] : undefined; // Compute locations in the source for the given nodes/positions.
+    _this.nodes = undefinedIfEmpty(Array.isArray(nodes) ? nodes : nodes ? [nodes] : undefined);
+    var nodeLocations = [];
 
+    for (var _i2 = 0, _ref3 = (_this$nodes = _this.nodes) !== null && _this$nodes !== void 0 ? _this$nodes : []; _i2 < _ref3.length; _i2++) {
+      var _this$nodes;
 
-    var _source = source;
+      var _ref4 = _ref3[_i2];
+      var loc = _ref4.loc;
 
-    if (!_source && _nodes) {
-      var _nodes$0$loc;
-
-      _source = (_nodes$0$loc = _nodes[0].loc) === null || _nodes$0$loc === void 0 ? void 0 : _nodes$0$loc.source;
-    }
-
-    var _positions = positions;
-
-    if (!_positions && _nodes) {
-      _positions = _nodes.reduce(function (list, node) {
-        if (node.loc) {
-          list.push(node.loc.start);
-        }
-
-        return list;
-      }, []);
-    }
-
-    if (_positions && _positions.length === 0) {
-      _positions = undefined;
-    }
-
-    var _locations;
-
-    if (positions && source) {
-      _locations = positions.map(function (pos) {
-        return getLocation(source, pos);
-      });
-    } else if (_nodes) {
-      _locations = _nodes.reduce(function (list, node) {
-        if (node.loc) {
-          list.push(getLocation(node.loc.source, node.loc.start));
-        }
-
-        return list;
-      }, []);
-    }
-
-    var _extensions = extensions;
-
-    if (_extensions == null && originalError != null) {
-      var originalExtensions = originalError.extensions;
-
-      if (isObjectLike$2(originalExtensions)) {
-        _extensions = originalExtensions;
+      if (loc != null) {
+        nodeLocations.push(loc);
       }
     }
 
+    nodeLocations = undefinedIfEmpty(nodeLocations); // Compute locations in the source for the given nodes/positions.
+
+    _this.source = source !== null && source !== void 0 ? source : (_nodeLocations = nodeLocations) === null || _nodeLocations === void 0 ? void 0 : _nodeLocations[0].source;
+    _this.positions = positions !== null && positions !== void 0 ? positions : (_nodeLocations2 = nodeLocations) === null || _nodeLocations2 === void 0 ? void 0 : _nodeLocations2.map(function (loc) {
+      return loc.start;
+    });
+    _this.locations = positions && source ? positions.map(function (pos) {
+      return getLocation(source, pos);
+    }) : (_nodeLocations3 = nodeLocations) === null || _nodeLocations3 === void 0 ? void 0 : _nodeLocations3.map(function (loc) {
+      return getLocation(loc.source, loc.start);
+    });
+    _this.path = path !== null && path !== void 0 ? path : undefined;
+    var originalExtensions = originalError === null || originalError === void 0 ? void 0 : originalError.extensions;
+
+    if (extensions == null && isObjectLike$2(originalExtensions)) {
+      _this.extensions = _objectSpread$e({}, originalExtensions);
+    } else {
+      _this.extensions = extensions !== null && extensions !== void 0 ? extensions : {};
+    } // By being enumerable, JSON.stringify will include bellow properties in the resulting output.
+    // This ensures that the simplest possible GraphQL service adheres to the spec.
+
+
     Object.defineProperties(_assertThisInitialized$3(_this), {
-      name: {
-        value: 'GraphQLError'
-      },
       message: {
-        value: message,
-        // By being enumerable, JSON.stringify will include `message` in the
-        // resulting output. This ensures that the simplest possible GraphQL
-        // service adheres to the spec.
-        enumerable: true,
-        writable: true
+        enumerable: true
       },
       locations: {
-        // Coercing falsy values to undefined ensures they will not be included
-        // in JSON.stringify() when not provided.
-        value: (_locations2 = _locations) !== null && _locations2 !== void 0 ? _locations2 : undefined,
-        // By being enumerable, JSON.stringify will include `locations` in the
-        // resulting output. This ensures that the simplest possible GraphQL
-        // service adheres to the spec.
-        enumerable: _locations != null
+        enumerable: _this.locations != null
       },
       path: {
-        // Coercing falsy values to undefined ensures they will not be included
-        // in JSON.stringify() when not provided.
-        value: path !== null && path !== void 0 ? path : undefined,
-        // By being enumerable, JSON.stringify will include `path` in the
-        // resulting output. This ensures that the simplest possible GraphQL
-        // service adheres to the spec.
-        enumerable: path != null
-      },
-      nodes: {
-        value: _nodes !== null && _nodes !== void 0 ? _nodes : undefined
-      },
-      source: {
-        value: (_source2 = _source) !== null && _source2 !== void 0 ? _source2 : undefined
-      },
-      positions: {
-        value: (_positions2 = _positions) !== null && _positions2 !== void 0 ? _positions2 : undefined
-      },
-      originalError: {
-        value: originalError
+        enumerable: _this.path != null
       },
       extensions: {
-        // Coercing falsy values to undefined ensures they will not be included
-        // in JSON.stringify() when not provided.
-        value: (_extensions2 = _extensions) !== null && _extensions2 !== void 0 ? _extensions2 : undefined,
-        // By being enumerable, JSON.stringify will include `path` in the
-        // resulting output. This ensures that the simplest possible GraphQL
-        // service adheres to the spec.
-        enumerable: _extensions != null
+        enumerable: _this.extensions != null && Object.keys(_this.extensions).length > 0
+      },
+      name: {
+        enumerable: false
+      },
+      nodes: {
+        enumerable: false
+      },
+      source: {
+        enumerable: false
+      },
+      positions: {
+        enumerable: false
+      },
+      originalError: {
+        enumerable: false
       }
     }); // Include (non-enumerable) stack trace.
 
@@ -1979,7 +1960,7 @@ var GraphQLError = /*#__PURE__*/function (_Error) {
     return _this;
   }
 
-  _createClass$6(GraphQLError, [{
+  _createClass$5(GraphQLError, [{
     key: "toString",
     value: function toString() {
       return printError(this);
@@ -1995,25 +1976,30 @@ var GraphQLError = /*#__PURE__*/function (_Error) {
 
   return GraphQLError;
 }( /*#__PURE__*/_wrapNativeSuper(Error));
+
+function undefinedIfEmpty(array) {
+  return array === undefined || array.length === 0 ? undefined : array;
+}
 /**
  * Prints a GraphQLError to a string, representing useful location information
  * about the error's position in the source.
  */
 
+
 function printError(error) {
   var output = error.message;
 
   if (error.nodes) {
-    for (var _i2 = 0, _error$nodes2 = error.nodes; _i2 < _error$nodes2.length; _i2++) {
-      var node = _error$nodes2[_i2];
+    for (var _i4 = 0, _error$nodes2 = error.nodes; _i4 < _error$nodes2.length; _i4++) {
+      var node = _error$nodes2[_i4];
 
       if (node.loc) {
         output += '\n\n' + printLocation(node.loc);
       }
     }
   } else if (error.source && error.locations) {
-    for (var _i4 = 0, _error$locations2 = error.locations; _i4 < _error$locations2.length; _i4++) {
-      var location = _error$locations2[_i4];
+    for (var _i6 = 0, _error$locations2 = error.locations; _i6 < _error$locations2.length; _i6++) {
+      var location = _error$locations2[_i6];
       output += '\n\n' + printSourceLocation(error.source, location);
     }
   }
@@ -2432,9 +2418,9 @@ function instanceOf(value, constructor) {
   return false;
 };
 
-function _defineProperties$5(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties$4(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass$5(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$5(Constructor.prototype, protoProps); if (staticProps) _defineProperties$5(Constructor, staticProps); return Constructor; }
+function _createClass$4(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$4(Constructor.prototype, protoProps); if (staticProps) _defineProperties$4(Constructor, staticProps); return Constructor; }
 
 /**
  * A representation of source input to GraphQL. The `name` and `locationOffset` parameters are
@@ -2459,7 +2445,7 @@ var Source = /*#__PURE__*/function () {
   } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
 
 
-  _createClass$5(Source, [{
+  _createClass$4(Source, [{
     key: SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'Source';
@@ -5140,342 +5126,6 @@ function getVisitFn(visitor, kind, isLeaving) {
   }
 }
 
-/* eslint-disable no-redeclare */
-// $FlowFixMe[name-already-bound] workaround for: https://github.com/facebook/flow/issues/4441
-var objectEntries = Object.entries || function (obj) {
-  return Object.keys(obj).map(function (key) {
-    return [key, obj[key]];
-  });
-};
-
-var objectEntries$1 = objectEntries;
-
-/**
- * Creates a keyed JS object from an array, given a function to produce the keys
- * for each value in the array.
- *
- * This provides a convenient lookup for the array items if the key function
- * produces unique results.
- *
- *     const phoneBook = [
- *       { name: 'Jon', num: '555-1234' },
- *       { name: 'Jenny', num: '867-5309' }
- *     ]
- *
- *     // { Jon: { name: 'Jon', num: '555-1234' },
- *     //   Jenny: { name: 'Jenny', num: '867-5309' } }
- *     const entriesByName = keyMap(
- *       phoneBook,
- *       entry => entry.name
- *     )
- *
- *     // { name: 'Jenny', num: '857-6309' }
- *     const jennyEntry = entriesByName['Jenny']
- *
- */
-function keyMap(list, keyFn) {
-  return list.reduce(function (map, item) {
-    map[keyFn(item)] = item;
-    return map;
-  }, Object.create(null));
-}
-
-/**
- * Creates an object map with the same keys as `map` and values generated by
- * running each value of `map` thru `fn`.
- */
-function mapValue(map, fn) {
-  var result = Object.create(null);
-
-  for (var _i2 = 0, _objectEntries2 = objectEntries$1(map); _i2 < _objectEntries2.length; _i2++) {
-    var _ref2 = _objectEntries2[_i2];
-    var _key = _ref2[0];
-    var _value = _ref2[1];
-    result[_key] = fn(_value, _key);
-  }
-
-  return result;
-}
-
-function toObjMap(obj) {
-  /* eslint-enable no-redeclare */
-  if (Object.getPrototypeOf(obj) === null) {
-    return obj;
-  }
-
-  var map = Object.create(null);
-
-  for (var _i2 = 0, _objectEntries2 = objectEntries$1(obj); _i2 < _objectEntries2.length; _i2++) {
-    var _ref2 = _objectEntries2[_i2];
-    var key = _ref2[0];
-    var value = _ref2[1];
-    map[key] = value;
-  }
-
-  return map;
-}
-
-/**
- * Creates a keyed JS object from an array, given a function to produce the keys
- * and a function to produce the values from each item in the array.
- *
- *     const phoneBook = [
- *       { name: 'Jon', num: '555-1234' },
- *       { name: 'Jenny', num: '867-5309' }
- *     ]
- *
- *     // { Jon: '555-1234', Jenny: '867-5309' }
- *     const phonesByName = keyValMap(
- *       phoneBook,
- *       entry => entry.name,
- *       entry => entry.num
- *     )
- *
- */
-function keyValMap(list, keyFn, valFn) {
-  return list.reduce(function (map, item) {
-    map[keyFn(item)] = valFn(item);
-    return map;
-  }, Object.create(null));
-}
-
-var MAX_SUGGESTIONS = 5;
-/**
- * Given [ A, B, C ] return ' Did you mean A, B, or C?'.
- */
-
-// eslint-disable-next-line no-redeclare
-function didYouMean(firstArg, secondArg) {
-  var _ref = typeof firstArg === 'string' ? [firstArg, secondArg] : [undefined, firstArg],
-      subMessage = _ref[0],
-      suggestionsArg = _ref[1];
-
-  var message = ' Did you mean ';
-
-  if (subMessage) {
-    message += subMessage + ' ';
-  }
-
-  var suggestions = suggestionsArg.map(function (x) {
-    return "\"".concat(x, "\"");
-  });
-
-  switch (suggestions.length) {
-    case 0:
-      return '';
-
-    case 1:
-      return message + suggestions[0] + '?';
-
-    case 2:
-      return message + suggestions[0] + ' or ' + suggestions[1] + '?';
-  }
-
-  var selected = suggestions.slice(0, MAX_SUGGESTIONS);
-  var lastItem = selected.pop();
-  return message + selected.join(', ') + ', or ' + lastItem + '?';
-}
-
-/**
- * Returns the first argument it receives.
- */
-function identityFunc(x) {
-  return x;
-}
-
-/**
- * Returns a number indicating whether a reference string comes before, or after,
- * or is the same as the given string in natural sort order.
- *
- * See: https://en.wikipedia.org/wiki/Natural_sort_order
- *
- */
-function naturalCompare(aStr, bStr) {
-  var aIdx = 0;
-  var bIdx = 0;
-
-  while (aIdx < aStr.length && bIdx < bStr.length) {
-    var aChar = aStr.charCodeAt(aIdx);
-    var bChar = bStr.charCodeAt(bIdx);
-
-    if (isDigit(aChar) && isDigit(bChar)) {
-      var aNum = 0;
-
-      do {
-        ++aIdx;
-        aNum = aNum * 10 + aChar - DIGIT_0;
-        aChar = aStr.charCodeAt(aIdx);
-      } while (isDigit(aChar) && aNum > 0);
-
-      var bNum = 0;
-
-      do {
-        ++bIdx;
-        bNum = bNum * 10 + bChar - DIGIT_0;
-        bChar = bStr.charCodeAt(bIdx);
-      } while (isDigit(bChar) && bNum > 0);
-
-      if (aNum < bNum) {
-        return -1;
-      }
-
-      if (aNum > bNum) {
-        return 1;
-      }
-    } else {
-      if (aChar < bChar) {
-        return -1;
-      }
-
-      if (aChar > bChar) {
-        return 1;
-      }
-
-      ++aIdx;
-      ++bIdx;
-    }
-  }
-
-  return aStr.length - bStr.length;
-}
-var DIGIT_0 = 48;
-var DIGIT_9 = 57;
-
-function isDigit(code) {
-  return !isNaN(code) && DIGIT_0 <= code && code <= DIGIT_9;
-}
-
-/**
- * Given an invalid input string and a list of valid options, returns a filtered
- * list of valid options sorted based on their similarity with the input.
- */
-
-function suggestionList(input, options) {
-  var optionsByDistance = Object.create(null);
-  var lexicalDistance = new LexicalDistance(input);
-  var threshold = Math.floor(input.length * 0.4) + 1;
-
-  for (var _i2 = 0; _i2 < options.length; _i2++) {
-    var option = options[_i2];
-    var distance = lexicalDistance.measure(option, threshold);
-
-    if (distance !== undefined) {
-      optionsByDistance[option] = distance;
-    }
-  }
-
-  return Object.keys(optionsByDistance).sort(function (a, b) {
-    var distanceDiff = optionsByDistance[a] - optionsByDistance[b];
-    return distanceDiff !== 0 ? distanceDiff : naturalCompare(a, b);
-  });
-}
-/**
- * Computes the lexical distance between strings A and B.
- *
- * The "distance" between two strings is given by counting the minimum number
- * of edits needed to transform string A into string B. An edit can be an
- * insertion, deletion, or substitution of a single character, or a swap of two
- * adjacent characters.
- *
- * Includes a custom alteration from Damerau-Levenshtein to treat case changes
- * as a single edit which helps identify mis-cased values with an edit distance
- * of 1.
- *
- * This distance can be useful for detecting typos in input or sorting
- */
-
-var LexicalDistance = /*#__PURE__*/function () {
-  function LexicalDistance(input) {
-    this._input = input;
-    this._inputLowerCase = input.toLowerCase();
-    this._inputArray = stringToArray(this._inputLowerCase);
-    this._rows = [new Array(input.length + 1).fill(0), new Array(input.length + 1).fill(0), new Array(input.length + 1).fill(0)];
-  }
-
-  var _proto = LexicalDistance.prototype;
-
-  _proto.measure = function measure(option, threshold) {
-    if (this._input === option) {
-      return 0;
-    }
-
-    var optionLowerCase = option.toLowerCase(); // Any case change counts as a single edit
-
-    if (this._inputLowerCase === optionLowerCase) {
-      return 1;
-    }
-
-    var a = stringToArray(optionLowerCase);
-    var b = this._inputArray;
-
-    if (a.length < b.length) {
-      var tmp = a;
-      a = b;
-      b = tmp;
-    }
-
-    var aLength = a.length;
-    var bLength = b.length;
-
-    if (aLength - bLength > threshold) {
-      return undefined;
-    }
-
-    var rows = this._rows;
-
-    for (var j = 0; j <= bLength; j++) {
-      rows[0][j] = j;
-    }
-
-    for (var i = 1; i <= aLength; i++) {
-      var upRow = rows[(i - 1) % 3];
-      var currentRow = rows[i % 3];
-      var smallestCell = currentRow[0] = i;
-
-      for (var _j = 1; _j <= bLength; _j++) {
-        var cost = a[i - 1] === b[_j - 1] ? 0 : 1;
-        var currentCell = Math.min(upRow[_j] + 1, // delete
-        currentRow[_j - 1] + 1, // insert
-        upRow[_j - 1] + cost // substitute
-        );
-
-        if (i > 1 && _j > 1 && a[i - 1] === b[_j - 2] && a[i - 2] === b[_j - 1]) {
-          // transposition
-          var doubleDiagonalCell = rows[(i - 2) % 3][_j - 2];
-          currentCell = Math.min(currentCell, doubleDiagonalCell + 1);
-        }
-
-        if (currentCell < smallestCell) {
-          smallestCell = currentCell;
-        }
-
-        currentRow[_j] = currentCell;
-      } // Early exit, since distance can't go smaller than smallest element of the previous row.
-
-
-      if (smallestCell > threshold) {
-        return undefined;
-      }
-    }
-
-    var distance = rows[aLength % 3][bLength];
-    return distance <= threshold ? distance : undefined;
-  };
-
-  return LexicalDistance;
-}();
-
-function stringToArray(str) {
-  var strLength = str.length;
-  var array = new Array(strLength);
-
-  for (var i = 0; i < strLength; ++i) {
-    array[i] = str.charCodeAt(i);
-  }
-
-  return array;
-}
-
 /**
  * Converts an AST into a string, using one set of reasonable
  * formatting rules.
@@ -5788,971 +5438,12 @@ function hasMultilineItems(maybeArray) {
   return maybeArray != null && maybeArray.some(isMultiline);
 }
 
-/**
- * Produces a JavaScript value given a GraphQL Value AST.
- *
- * Unlike `valueFromAST()`, no type is provided. The resulting JavaScript value
- * will reflect the provided GraphQL value AST.
- *
- * | GraphQL Value        | JavaScript Value |
- * | -------------------- | ---------------- |
- * | Input Object         | Object           |
- * | List                 | Array            |
- * | Boolean              | Boolean          |
- * | String / Enum        | String           |
- * | Int / Float          | Number           |
- * | Null                 | null             |
- *
- */
-function valueFromASTUntyped(valueNode, variables) {
-  switch (valueNode.kind) {
-    case Kind.NULL:
-      return null;
-
-    case Kind.INT:
-      return parseInt(valueNode.value, 10);
-
-    case Kind.FLOAT:
-      return parseFloat(valueNode.value);
-
-    case Kind.STRING:
-    case Kind.ENUM:
-    case Kind.BOOLEAN:
-      return valueNode.value;
-
-    case Kind.LIST:
-      return valueNode.values.map(function (node) {
-        return valueFromASTUntyped(node, variables);
-      });
-
-    case Kind.OBJECT:
-      return keyValMap(valueNode.fields, function (field) {
-        return field.name.value;
-      }, function (field) {
-        return valueFromASTUntyped(field.value, variables);
-      });
-
-    case Kind.VARIABLE:
-      return variables === null || variables === void 0 ? void 0 : variables[valueNode.name.value];
-  } // istanbul ignore next (Not reachable. All possible value nodes have been considered)
-
-
-  invariant$1(0, 'Unexpected value node: ' + inspect(valueNode));
-}
-
-function _defineProperties$4(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass$4(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$4(Constructor.prototype, protoProps); if (staticProps) _defineProperties$4(Constructor, staticProps); return Constructor; }
-function isType(type) {
-  return isScalarType(type) || isObjectType(type) || isInterfaceType(type) || isUnionType(type) || isEnumType(type) || isInputObjectType(type) || isListType(type) || isNonNullType(type);
-}
-function assertType(type) {
-  if (!isType(type)) {
-    throw new Error("Expected ".concat(inspect(type), " to be a GraphQL type."));
-  }
-
-  return type;
-}
-/**
- * There are predicates for each kind of GraphQL type.
- */
-
-// eslint-disable-next-line no-redeclare
-function isScalarType(type) {
-  return instanceOf(type, GraphQLScalarType);
-}
-// eslint-disable-next-line no-redeclare
-function isObjectType(type) {
-  return instanceOf(type, GraphQLObjectType);
-}
-// eslint-disable-next-line no-redeclare
-function isInterfaceType(type) {
-  return instanceOf(type, GraphQLInterfaceType);
-}
-// eslint-disable-next-line no-redeclare
-function isUnionType(type) {
-  return instanceOf(type, GraphQLUnionType);
-}
-// eslint-disable-next-line no-redeclare
-function isEnumType(type) {
-  return instanceOf(type, GraphQLEnumType);
-}
-// eslint-disable-next-line no-redeclare
-function isInputObjectType(type) {
-  return instanceOf(type, GraphQLInputObjectType);
-}
-// eslint-disable-next-line no-redeclare
-function isListType(type) {
-  return instanceOf(type, GraphQLList);
-}
-// eslint-disable-next-line no-redeclare
-function isNonNullType(type) {
-  return instanceOf(type, GraphQLNonNull);
-}
-/**
- * List Type Wrapper
- *
- * A list is a wrapping type which points to another type.
- * Lists are often created within the context of defining the fields of
- * an object type.
- *
- * Example:
- *
- *     const PersonType = new GraphQLObjectType({
- *       name: 'Person',
- *       fields: () => ({
- *         parents: { type: new GraphQLList(PersonType) },
- *         children: { type: new GraphQLList(PersonType) },
- *       })
- *     })
- *
- */
-// FIXME: workaround to fix issue with Babel parser
-
-/* ::
-declare class GraphQLList<+T: GraphQLType> {
-  +ofType: T;
-  static <T>(ofType: T): GraphQLList<T>;
-  // Note: constructors cannot be used for covariant types. Drop the "new".
-  constructor(ofType: GraphQLType): void;
-}
-*/
-
-function GraphQLList(ofType) {
-  // istanbul ignore else (to be removed in v16.0.0)
-  if (this instanceof GraphQLList) {
-    this.ofType = assertType(ofType);
-  } else {
-    return new GraphQLList(ofType);
-  }
-} // Need to cast through any to alter the prototype.
-
-GraphQLList.prototype.toString = function toString() {
-  return '[' + String(this.ofType) + ']';
-};
-
-GraphQLList.prototype.toJSON = function toJSON() {
-  return this.toString();
-};
-
-Object.defineProperty(GraphQLList.prototype, SYMBOL_TO_STRING_TAG, {
-  get: function get() {
-    return 'GraphQLList';
-  }
-}); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLList);
-/**
- * Non-Null Type Wrapper
- *
- * A non-null is a wrapping type which points to another type.
- * Non-null types enforce that their values are never null and can ensure
- * an error is raised if this ever occurs during a request. It is useful for
- * fields which you can make a strong guarantee on non-nullability, for example
- * usually the id field of a database row will never be null.
- *
- * Example:
- *
- *     const RowType = new GraphQLObjectType({
- *       name: 'Row',
- *       fields: () => ({
- *         id: { type: new GraphQLNonNull(GraphQLString) },
- *       })
- *     })
- *
- * Note: the enforcement of non-nullability occurs within the executor.
- */
-// FIXME: workaround to fix issue with Babel parser
-
-/* ::
-declare class GraphQLNonNull<+T: GraphQLNullableType> {
-  +ofType: T;
-  static <T>(ofType: T): GraphQLNonNull<T>;
-  // Note: constructors cannot be used for covariant types. Drop the "new".
-  constructor(ofType: GraphQLType): void;
-}
-*/
-
-function GraphQLNonNull(ofType) {
-  // istanbul ignore else (to be removed in v16.0.0)
-  if (this instanceof GraphQLNonNull) {
-    this.ofType = assertNullableType(ofType);
-  } else {
-    return new GraphQLNonNull(ofType);
-  }
-} // Need to cast through any to alter the prototype.
-
-GraphQLNonNull.prototype.toString = function toString() {
-  return String(this.ofType) + '!';
-};
-
-GraphQLNonNull.prototype.toJSON = function toJSON() {
-  return this.toString();
-};
-
-Object.defineProperty(GraphQLNonNull.prototype, SYMBOL_TO_STRING_TAG, {
-  get: function get() {
-    return 'GraphQLNonNull';
-  }
-}); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLNonNull);
-/**
- * These types can all accept null as a value.
- */
-
-function isNullableType(type) {
-  return isType(type) && !isNonNullType(type);
-}
-function assertNullableType(type) {
-  if (!isNullableType(type)) {
-    throw new Error("Expected ".concat(inspect(type), " to be a GraphQL nullable type."));
-  }
-
-  return type;
-}
-/**
- * Used while defining GraphQL types to allow for circular references in
- * otherwise immutable type definitions.
- */
-
-function resolveThunk(thunk) {
-  // $FlowFixMe[incompatible-use]
-  return typeof thunk === 'function' ? thunk() : thunk;
-}
-
-function undefineIfEmpty(arr) {
-  return arr && arr.length > 0 ? arr : undefined;
-}
-/**
- * Scalar Type Definition
- *
- * The leaf values of any request and input values to arguments are
- * Scalars (or Enums) and are defined with a name and a series of functions
- * used to parse input from ast or variables and to ensure validity.
- *
- * If a type's serialize function does not return a value (i.e. it returns
- * `undefined`) then an error will be raised and a `null` value will be returned
- * in the response. If the serialize function returns `null`, then no error will
- * be included in the response.
- *
- * Example:
- *
- *     const OddType = new GraphQLScalarType({
- *       name: 'Odd',
- *       serialize(value) {
- *         if (value % 2 === 1) {
- *           return value;
- *         }
- *       }
- *     });
- *
- */
-
-
-var GraphQLScalarType = /*#__PURE__*/function () {
-  function GraphQLScalarType(config) {
-    var _config$parseValue, _config$serialize, _config$parseLiteral;
-
-    var parseValue = (_config$parseValue = config.parseValue) !== null && _config$parseValue !== void 0 ? _config$parseValue : identityFunc;
-    this.name = config.name;
-    this.description = config.description;
-    this.specifiedByUrl = config.specifiedByUrl;
-    this.serialize = (_config$serialize = config.serialize) !== null && _config$serialize !== void 0 ? _config$serialize : identityFunc;
-    this.parseValue = parseValue;
-    this.parseLiteral = (_config$parseLiteral = config.parseLiteral) !== null && _config$parseLiteral !== void 0 ? _config$parseLiteral : function (node, variables) {
-      return parseValue(valueFromASTUntyped(node, variables));
-    };
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-    config.specifiedByUrl == null || typeof config.specifiedByUrl === 'string' || devAssert(0, "".concat(this.name, " must provide \"specifiedByUrl\" as a string, ") + "but got: ".concat(inspect(config.specifiedByUrl), "."));
-    config.serialize == null || typeof config.serialize === 'function' || devAssert(0, "".concat(this.name, " must provide \"serialize\" function. If this custom Scalar is also used as an input type, ensure \"parseValue\" and \"parseLiteral\" functions are also provided."));
-
-    if (config.parseLiteral) {
-      typeof config.parseValue === 'function' && typeof config.parseLiteral === 'function' || devAssert(0, "".concat(this.name, " must provide both \"parseValue\" and \"parseLiteral\" functions."));
-    }
-  }
-
-  var _proto = GraphQLScalarType.prototype;
-
-  _proto.toConfig = function toConfig() {
-    var _this$extensionASTNod;
-
-    return {
-      name: this.name,
-      description: this.description,
-      specifiedByUrl: this.specifiedByUrl,
-      serialize: this.serialize,
-      parseValue: this.parseValue,
-      parseLiteral: this.parseLiteral,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: (_this$extensionASTNod = this.extensionASTNodes) !== null && _this$extensionASTNod !== void 0 ? _this$extensionASTNod : []
-    };
-  };
-
-  _proto.toString = function toString() {
-    return this.name;
-  };
-
-  _proto.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLScalarType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLScalarType';
-    }
-  }]);
-
-  return GraphQLScalarType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLScalarType);
-
-/**
- * Object Type Definition
- *
- * Almost all of the GraphQL types you define will be object types. Object types
- * have a name, but most importantly describe their fields.
- *
- * Example:
- *
- *     const AddressType = new GraphQLObjectType({
- *       name: 'Address',
- *       fields: {
- *         street: { type: GraphQLString },
- *         number: { type: GraphQLInt },
- *         formatted: {
- *           type: GraphQLString,
- *           resolve(obj) {
- *             return obj.number + ' ' + obj.street
- *           }
- *         }
- *       }
- *     });
- *
- * When two types need to refer to each other, or a type needs to refer to
- * itself in a field, you can use a function expression (aka a closure or a
- * thunk) to supply the fields lazily.
- *
- * Example:
- *
- *     const PersonType = new GraphQLObjectType({
- *       name: 'Person',
- *       fields: () => ({
- *         name: { type: GraphQLString },
- *         bestFriend: { type: PersonType },
- *       })
- *     });
- *
- */
-var GraphQLObjectType = /*#__PURE__*/function () {
-  function GraphQLObjectType(config) {
-    this.name = config.name;
-    this.description = config.description;
-    this.isTypeOf = config.isTypeOf;
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    this._fields = defineFieldMap.bind(undefined, config);
-    this._interfaces = defineInterfaces.bind(undefined, config);
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-    config.isTypeOf == null || typeof config.isTypeOf === 'function' || devAssert(0, "".concat(this.name, " must provide \"isTypeOf\" as a function, ") + "but got: ".concat(inspect(config.isTypeOf), "."));
-  }
-
-  var _proto2 = GraphQLObjectType.prototype;
-
-  _proto2.getFields = function getFields() {
-    if (typeof this._fields === 'function') {
-      this._fields = this._fields();
-    }
-
-    return this._fields;
-  };
-
-  _proto2.getInterfaces = function getInterfaces() {
-    if (typeof this._interfaces === 'function') {
-      this._interfaces = this._interfaces();
-    }
-
-    return this._interfaces;
-  };
-
-  _proto2.toConfig = function toConfig() {
-    return {
-      name: this.name,
-      description: this.description,
-      interfaces: this.getInterfaces(),
-      fields: fieldsToFieldsConfig(this.getFields()),
-      isTypeOf: this.isTypeOf,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes || []
-    };
-  };
-
-  _proto2.toString = function toString() {
-    return this.name;
-  };
-
-  _proto2.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLObjectType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLObjectType';
-    }
-  }]);
-
-  return GraphQLObjectType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLObjectType);
-
-function defineInterfaces(config) {
-  var _resolveThunk;
-
-  var interfaces = (_resolveThunk = resolveThunk(config.interfaces)) !== null && _resolveThunk !== void 0 ? _resolveThunk : [];
-  Array.isArray(interfaces) || devAssert(0, "".concat(config.name, " interfaces must be an Array or a function which returns an Array."));
-  return interfaces;
-}
-
-function defineFieldMap(config) {
-  var fieldMap = resolveThunk(config.fields);
-  isPlainObj(fieldMap) || devAssert(0, "".concat(config.name, " fields must be an object with field names as keys or a function which returns such an object."));
-  return mapValue(fieldMap, function (fieldConfig, fieldName) {
-    var _fieldConfig$args;
-
-    isPlainObj(fieldConfig) || devAssert(0, "".concat(config.name, ".").concat(fieldName, " field config must be an object."));
-    !('isDeprecated' in fieldConfig) || devAssert(0, "".concat(config.name, ".").concat(fieldName, " should provide \"deprecationReason\" instead of \"isDeprecated\"."));
-    fieldConfig.resolve == null || typeof fieldConfig.resolve === 'function' || devAssert(0, "".concat(config.name, ".").concat(fieldName, " field resolver must be a function if ") + "provided, but got: ".concat(inspect(fieldConfig.resolve), "."));
-    var argsConfig = (_fieldConfig$args = fieldConfig.args) !== null && _fieldConfig$args !== void 0 ? _fieldConfig$args : {};
-    isPlainObj(argsConfig) || devAssert(0, "".concat(config.name, ".").concat(fieldName, " args must be an object with argument names as keys."));
-    var args = objectEntries$1(argsConfig).map(function (_ref) {
-      var argName = _ref[0],
-          argConfig = _ref[1];
-      return {
-        name: argName,
-        description: argConfig.description,
-        type: argConfig.type,
-        defaultValue: argConfig.defaultValue,
-        deprecationReason: argConfig.deprecationReason,
-        extensions: argConfig.extensions && toObjMap(argConfig.extensions),
-        astNode: argConfig.astNode
-      };
-    });
-    return {
-      name: fieldName,
-      description: fieldConfig.description,
-      type: fieldConfig.type,
-      args: args,
-      resolve: fieldConfig.resolve,
-      subscribe: fieldConfig.subscribe,
-      isDeprecated: fieldConfig.deprecationReason != null,
-      deprecationReason: fieldConfig.deprecationReason,
-      extensions: fieldConfig.extensions && toObjMap(fieldConfig.extensions),
-      astNode: fieldConfig.astNode
-    };
-  });
-}
-
-function isPlainObj(obj) {
-  return isObjectLike$2(obj) && !Array.isArray(obj);
-}
-
-function fieldsToFieldsConfig(fields) {
-  return mapValue(fields, function (field) {
-    return {
-      description: field.description,
-      type: field.type,
-      args: argsToArgsConfig(field.args),
-      resolve: field.resolve,
-      subscribe: field.subscribe,
-      deprecationReason: field.deprecationReason,
-      extensions: field.extensions,
-      astNode: field.astNode
-    };
-  });
-}
-/**
- * @internal
- */
-
-
-function argsToArgsConfig(args) {
-  return keyValMap(args, function (arg) {
-    return arg.name;
-  }, function (arg) {
-    return {
-      description: arg.description,
-      type: arg.type,
-      defaultValue: arg.defaultValue,
-      deprecationReason: arg.deprecationReason,
-      extensions: arg.extensions,
-      astNode: arg.astNode
-    };
-  });
-}
-
-/**
- * Interface Type Definition
- *
- * When a field can return one of a heterogeneous set of types, a Interface type
- * is used to describe what types are possible, what fields are in common across
- * all types, as well as a function to determine which type is actually used
- * when the field is resolved.
- *
- * Example:
- *
- *     const EntityType = new GraphQLInterfaceType({
- *       name: 'Entity',
- *       fields: {
- *         name: { type: GraphQLString }
- *       }
- *     });
- *
- */
-var GraphQLInterfaceType = /*#__PURE__*/function () {
-  function GraphQLInterfaceType(config) {
-    this.name = config.name;
-    this.description = config.description;
-    this.resolveType = config.resolveType;
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    this._fields = defineFieldMap.bind(undefined, config);
-    this._interfaces = defineInterfaces.bind(undefined, config);
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-    config.resolveType == null || typeof config.resolveType === 'function' || devAssert(0, "".concat(this.name, " must provide \"resolveType\" as a function, ") + "but got: ".concat(inspect(config.resolveType), "."));
-  }
-
-  var _proto3 = GraphQLInterfaceType.prototype;
-
-  _proto3.getFields = function getFields() {
-    if (typeof this._fields === 'function') {
-      this._fields = this._fields();
-    }
-
-    return this._fields;
-  };
-
-  _proto3.getInterfaces = function getInterfaces() {
-    if (typeof this._interfaces === 'function') {
-      this._interfaces = this._interfaces();
-    }
-
-    return this._interfaces;
-  };
-
-  _proto3.toConfig = function toConfig() {
-    var _this$extensionASTNod2;
-
-    return {
-      name: this.name,
-      description: this.description,
-      interfaces: this.getInterfaces(),
-      fields: fieldsToFieldsConfig(this.getFields()),
-      resolveType: this.resolveType,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: (_this$extensionASTNod2 = this.extensionASTNodes) !== null && _this$extensionASTNod2 !== void 0 ? _this$extensionASTNod2 : []
-    };
-  };
-
-  _proto3.toString = function toString() {
-    return this.name;
-  };
-
-  _proto3.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLInterfaceType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLInterfaceType';
-    }
-  }]);
-
-  return GraphQLInterfaceType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLInterfaceType);
-
-/**
- * Union Type Definition
- *
- * When a field can return one of a heterogeneous set of types, a Union type
- * is used to describe what types are possible as well as providing a function
- * to determine which type is actually used when the field is resolved.
- *
- * Example:
- *
- *     const PetType = new GraphQLUnionType({
- *       name: 'Pet',
- *       types: [ DogType, CatType ],
- *       resolveType(value) {
- *         if (value instanceof Dog) {
- *           return DogType;
- *         }
- *         if (value instanceof Cat) {
- *           return CatType;
- *         }
- *       }
- *     });
- *
- */
-var GraphQLUnionType = /*#__PURE__*/function () {
-  function GraphQLUnionType(config) {
-    this.name = config.name;
-    this.description = config.description;
-    this.resolveType = config.resolveType;
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    this._types = defineTypes.bind(undefined, config);
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-    config.resolveType == null || typeof config.resolveType === 'function' || devAssert(0, "".concat(this.name, " must provide \"resolveType\" as a function, ") + "but got: ".concat(inspect(config.resolveType), "."));
-  }
-
-  var _proto4 = GraphQLUnionType.prototype;
-
-  _proto4.getTypes = function getTypes() {
-    if (typeof this._types === 'function') {
-      this._types = this._types();
-    }
-
-    return this._types;
-  };
-
-  _proto4.toConfig = function toConfig() {
-    var _this$extensionASTNod3;
-
-    return {
-      name: this.name,
-      description: this.description,
-      types: this.getTypes(),
-      resolveType: this.resolveType,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: (_this$extensionASTNod3 = this.extensionASTNodes) !== null && _this$extensionASTNod3 !== void 0 ? _this$extensionASTNod3 : []
-    };
-  };
-
-  _proto4.toString = function toString() {
-    return this.name;
-  };
-
-  _proto4.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLUnionType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLUnionType';
-    }
-  }]);
-
-  return GraphQLUnionType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLUnionType);
-
-function defineTypes(config) {
-  var types = resolveThunk(config.types);
-  Array.isArray(types) || devAssert(0, "Must provide Array of types or a function which returns such an array for Union ".concat(config.name, "."));
-  return types;
-}
-
-/**
- * Enum Type Definition
- *
- * Some leaf values of requests and input values are Enums. GraphQL serializes
- * Enum values as strings, however internally Enums can be represented by any
- * kind of type, often integers.
- *
- * Example:
- *
- *     const RGBType = new GraphQLEnumType({
- *       name: 'RGB',
- *       values: {
- *         RED: { value: 0 },
- *         GREEN: { value: 1 },
- *         BLUE: { value: 2 }
- *       }
- *     });
- *
- * Note: If a value is not provided in a definition, the name of the enum value
- * will be used as its internal value.
- */
-var GraphQLEnumType
-/* <T> */
-= /*#__PURE__*/function () {
-  function GraphQLEnumType(config) {
-    this.name = config.name;
-    this.description = config.description;
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    this._values = defineEnumValues(this.name, config.values);
-    this._valueLookup = new Map(this._values.map(function (enumValue) {
-      return [enumValue.value, enumValue];
-    }));
-    this._nameLookup = keyMap(this._values, function (value) {
-      return value.name;
-    });
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-  }
-
-  var _proto5 = GraphQLEnumType.prototype;
-
-  _proto5.getValues = function getValues() {
-    return this._values;
-  };
-
-  _proto5.getValue = function getValue(name) {
-    return this._nameLookup[name];
-  };
-
-  _proto5.serialize = function serialize(outputValue) {
-    var enumValue = this._valueLookup.get(outputValue);
-
-    if (enumValue === undefined) {
-      throw new GraphQLError("Enum \"".concat(this.name, "\" cannot represent value: ").concat(inspect(outputValue)));
-    }
-
-    return enumValue.name;
-  };
-
-  _proto5.parseValue = function parseValue(inputValue)
-  /* T */
-  {
-    if (typeof inputValue !== 'string') {
-      var valueStr = inspect(inputValue);
-      throw new GraphQLError("Enum \"".concat(this.name, "\" cannot represent non-string value: ").concat(valueStr, ".") + didYouMeanEnumValue(this, valueStr));
-    }
-
-    var enumValue = this.getValue(inputValue);
-
-    if (enumValue == null) {
-      throw new GraphQLError("Value \"".concat(inputValue, "\" does not exist in \"").concat(this.name, "\" enum.") + didYouMeanEnumValue(this, inputValue));
-    }
-
-    return enumValue.value;
-  };
-
-  _proto5.parseLiteral = function parseLiteral(valueNode, _variables)
-  /* T */
-  {
-    // Note: variables will be resolved to a value before calling this function.
-    if (valueNode.kind !== Kind.ENUM) {
-      var valueStr = print(valueNode);
-      throw new GraphQLError("Enum \"".concat(this.name, "\" cannot represent non-enum value: ").concat(valueStr, ".") + didYouMeanEnumValue(this, valueStr), valueNode);
-    }
-
-    var enumValue = this.getValue(valueNode.value);
-
-    if (enumValue == null) {
-      var _valueStr = print(valueNode);
-
-      throw new GraphQLError("Value \"".concat(_valueStr, "\" does not exist in \"").concat(this.name, "\" enum.") + didYouMeanEnumValue(this, _valueStr), valueNode);
-    }
-
-    return enumValue.value;
-  };
-
-  _proto5.toConfig = function toConfig() {
-    var _this$extensionASTNod4;
-
-    var values = keyValMap(this.getValues(), function (value) {
-      return value.name;
-    }, function (value) {
-      return {
-        description: value.description,
-        value: value.value,
-        deprecationReason: value.deprecationReason,
-        extensions: value.extensions,
-        astNode: value.astNode
-      };
-    });
-    return {
-      name: this.name,
-      description: this.description,
-      values: values,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: (_this$extensionASTNod4 = this.extensionASTNodes) !== null && _this$extensionASTNod4 !== void 0 ? _this$extensionASTNod4 : []
-    };
-  };
-
-  _proto5.toString = function toString() {
-    return this.name;
-  };
-
-  _proto5.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLEnumType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLEnumType';
-    }
-  }]);
-
-  return GraphQLEnumType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLEnumType);
-
-function didYouMeanEnumValue(enumType, unknownValueStr) {
-  var allNames = enumType.getValues().map(function (value) {
-    return value.name;
-  });
-  var suggestedValues = suggestionList(unknownValueStr, allNames);
-  return didYouMean('the enum value', suggestedValues);
-}
-
-function defineEnumValues(typeName, valueMap) {
-  isPlainObj(valueMap) || devAssert(0, "".concat(typeName, " values must be an object with value names as keys."));
-  return objectEntries$1(valueMap).map(function (_ref2) {
-    var valueName = _ref2[0],
-        valueConfig = _ref2[1];
-    isPlainObj(valueConfig) || devAssert(0, "".concat(typeName, ".").concat(valueName, " must refer to an object with a \"value\" key ") + "representing an internal value but got: ".concat(inspect(valueConfig), "."));
-    !('isDeprecated' in valueConfig) || devAssert(0, "".concat(typeName, ".").concat(valueName, " should provide \"deprecationReason\" instead of \"isDeprecated\"."));
-    return {
-      name: valueName,
-      description: valueConfig.description,
-      value: valueConfig.value !== undefined ? valueConfig.value : valueName,
-      isDeprecated: valueConfig.deprecationReason != null,
-      deprecationReason: valueConfig.deprecationReason,
-      extensions: valueConfig.extensions && toObjMap(valueConfig.extensions),
-      astNode: valueConfig.astNode
-    };
-  });
-}
-
-/**
- * Input Object Type Definition
- *
- * An input object defines a structured collection of fields which may be
- * supplied to a field argument.
- *
- * Using `NonNull` will ensure that a value must be provided by the query
- *
- * Example:
- *
- *     const GeoPoint = new GraphQLInputObjectType({
- *       name: 'GeoPoint',
- *       fields: {
- *         lat: { type: new GraphQLNonNull(GraphQLFloat) },
- *         lon: { type: new GraphQLNonNull(GraphQLFloat) },
- *         alt: { type: GraphQLFloat, defaultValue: 0 },
- *       }
- *     });
- *
- */
-var GraphQLInputObjectType = /*#__PURE__*/function () {
-  function GraphQLInputObjectType(config) {
-    this.name = config.name;
-    this.description = config.description;
-    this.extensions = config.extensions && toObjMap(config.extensions);
-    this.astNode = config.astNode;
-    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
-    this._fields = defineInputFieldMap.bind(undefined, config);
-    typeof config.name === 'string' || devAssert(0, 'Must provide name.');
-  }
-
-  var _proto6 = GraphQLInputObjectType.prototype;
-
-  _proto6.getFields = function getFields() {
-    if (typeof this._fields === 'function') {
-      this._fields = this._fields();
-    }
-
-    return this._fields;
-  };
-
-  _proto6.toConfig = function toConfig() {
-    var _this$extensionASTNod5;
-
-    var fields = mapValue(this.getFields(), function (field) {
-      return {
-        description: field.description,
-        type: field.type,
-        defaultValue: field.defaultValue,
-        deprecationReason: field.deprecationReason,
-        extensions: field.extensions,
-        astNode: field.astNode
-      };
-    });
-    return {
-      name: this.name,
-      description: this.description,
-      fields: fields,
-      extensions: this.extensions,
-      astNode: this.astNode,
-      extensionASTNodes: (_this$extensionASTNod5 = this.extensionASTNodes) !== null && _this$extensionASTNod5 !== void 0 ? _this$extensionASTNod5 : []
-    };
-  };
-
-  _proto6.toString = function toString() {
-    return this.name;
-  };
-
-  _proto6.toJSON = function toJSON() {
-    return this.toString();
-  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
-  ;
-
-  _createClass$4(GraphQLInputObjectType, [{
-    key: SYMBOL_TO_STRING_TAG,
-    get: function get() {
-      return 'GraphQLInputObjectType';
-    }
-  }]);
-
-  return GraphQLInputObjectType;
-}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
-
-defineInspect(GraphQLInputObjectType);
-
-function defineInputFieldMap(config) {
-  var fieldMap = resolveThunk(config.fields);
-  isPlainObj(fieldMap) || devAssert(0, "".concat(config.name, " fields must be an object with field names as keys or a function which returns such an object."));
-  return mapValue(fieldMap, function (fieldConfig, fieldName) {
-    !('resolve' in fieldConfig) || devAssert(0, "".concat(config.name, ".").concat(fieldName, " field has a resolve property, but Input Types cannot define resolvers."));
-    return {
-      name: fieldName,
-      description: fieldConfig.description,
-      type: fieldConfig.type,
-      defaultValue: fieldConfig.defaultValue,
-      deprecationReason: fieldConfig.deprecationReason,
-      extensions: fieldConfig.extensions && toObjMap(fieldConfig.extensions),
-      astNode: fieldConfig.astNode
-    };
-  });
-}
-
 function removeTemporaryGlobals() {
-    isType(null);
-    return remove();
+    return typeof Source === "function" ? remove() : remove();
 }
 
 function checkDEV() {
-    __DEV__ ? invariant$2("boolean" === typeof DEV, DEV) : invariant$2("boolean" === typeof DEV, 38);
+    __DEV__ ? invariant$2("boolean" === typeof DEV, DEV) : invariant$2("boolean" === typeof DEV, 36);
 }
 removeTemporaryGlobals();
 checkDEV();
@@ -6767,7 +5458,7 @@ function shouldInclude(_a, variables) {
         var evaledValue = false;
         if (ifArgument.value.kind === 'Variable') {
             evaledValue = variables && variables[ifArgument.value.name.value];
-            __DEV__ ? invariant$2(evaledValue !== void 0, "Invalid variable referenced in @" + directive.name.value + " directive.") : invariant$2(evaledValue !== void 0, 39);
+            __DEV__ ? invariant$2(evaledValue !== void 0, "Invalid variable referenced in @".concat(directive.name.value, " directive.")) : invariant$2(evaledValue !== void 0, 37);
         }
         else {
             evaledValue = ifArgument.value.value;
@@ -6804,13 +5495,13 @@ function getInclusionDirectives(directives) {
                 return;
             var directiveArguments = directive.arguments;
             var directiveName = directive.name.value;
-            __DEV__ ? invariant$2(directiveArguments && directiveArguments.length === 1, "Incorrect number of arguments for the @" + directiveName + " directive.") : invariant$2(directiveArguments && directiveArguments.length === 1, 40);
+            __DEV__ ? invariant$2(directiveArguments && directiveArguments.length === 1, "Incorrect number of arguments for the @".concat(directiveName, " directive.")) : invariant$2(directiveArguments && directiveArguments.length === 1, 38);
             var ifArgument = directiveArguments[0];
-            __DEV__ ? invariant$2(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @" + directiveName + " directive.") : invariant$2(ifArgument.name && ifArgument.name.value === 'if', 41);
+            __DEV__ ? invariant$2(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @".concat(directiveName, " directive.")) : invariant$2(ifArgument.name && ifArgument.name.value === 'if', 39);
             var ifValue = ifArgument.value;
             __DEV__ ? invariant$2(ifValue &&
-                (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), "Argument for the @" + directiveName + " directive must be a variable or a boolean value.") : invariant$2(ifValue &&
-                (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), 42);
+                (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), "Argument for the @".concat(directiveName, " directive must be a variable or a boolean value.")) : invariant$2(ifValue &&
+                (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), 40);
             result.push({ directive: directive, ifArgument: ifArgument });
         });
     }
@@ -6822,15 +5513,15 @@ function getFragmentQueryDocument(document, fragmentName) {
     var fragments = [];
     document.definitions.forEach(function (definition) {
         if (definition.kind === 'OperationDefinition') {
-            throw __DEV__ ? new InvariantError("Found a " + definition.operation + " operation" + (definition.name ? " named '" + definition.name.value + "'" : '') + ". " +
-                'No operations are allowed when using a fragment as a query. Only fragments are allowed.') : new InvariantError(43);
+            throw __DEV__ ? new InvariantError("Found a ".concat(definition.operation, " operation").concat(definition.name ? " named '".concat(definition.name.value, "'") : '', ". ") +
+                'No operations are allowed when using a fragment as a query. Only fragments are allowed.') : new InvariantError(41);
         }
         if (definition.kind === 'FragmentDefinition') {
             fragments.push(definition);
         }
     });
     if (typeof actualFragmentName === 'undefined') {
-        __DEV__ ? invariant$2(fragments.length === 1, "Found " + fragments.length + " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.") : invariant$2(fragments.length === 1, 44);
+        __DEV__ ? invariant$2(fragments.length === 1, "Found ".concat(fragments.length, " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.")) : invariant$2(fragments.length === 1, 42);
         actualFragmentName = fragments[0].name.value;
     }
     var query = __assign(__assign({}, document), { definitions: __spreadArray([
@@ -6867,7 +5558,7 @@ function getFragmentFromSelection(selection, fragmentMap) {
             return selection;
         case 'FragmentSpread': {
             var fragment = fragmentMap && fragmentMap[selection.name.value];
-            __DEV__ ? invariant$2(fragment, "No fragment named " + selection.name.value + ".") : invariant$2(fragment, 45);
+            __DEV__ ? invariant$2(fragment, "No fragment named ".concat(selection.name.value, ".")) : invariant$2(fragment, 43);
             return fragment;
         }
         default:
@@ -6949,9 +5640,9 @@ function valueToObjectRepresentation(argObj, name, value, variables) {
         argObj[name.value] = null;
     }
     else {
-        throw __DEV__ ? new InvariantError("The inline argument \"" + name.value + "\" of kind \"" + value.kind + "\"" +
+        throw __DEV__ ? new InvariantError("The inline argument \"".concat(name.value, "\" of kind \"").concat(value.kind, "\"") +
             'is not supported. Use variables instead of inline arguments to ' +
-            'overcome this limitation.') : new InvariantError(54);
+            'overcome this limitation.') : new InvariantError(52);
     }
 }
 function storeKeyNameFromField(field, variables) {
@@ -7001,7 +5692,7 @@ var getStoreKeyName = Object.assign(function (fieldName, args, directives) {
             filterKeys.forEach(function (key) {
                 filteredArgs_1[key] = args[key];
             });
-            return directives['connection']['key'] + "(" + stringify(filteredArgs_1) + ")";
+            return "".concat(directives['connection']['key'], "(").concat(stringify(filteredArgs_1), ")");
         }
         else {
             return directives['connection']['key'];
@@ -7010,17 +5701,17 @@ var getStoreKeyName = Object.assign(function (fieldName, args, directives) {
     var completeFieldName = fieldName;
     if (args) {
         var stringifiedArgs = stringify(args);
-        completeFieldName += "(" + stringifiedArgs + ")";
+        completeFieldName += "(".concat(stringifiedArgs, ")");
     }
     if (directives) {
         Object.keys(directives).forEach(function (key) {
             if (KNOWN_DIRECTIVES.indexOf(key) !== -1)
                 return;
             if (directives[key] && Object.keys(directives[key]).length) {
-                completeFieldName += "@" + key + "(" + stringify(directives[key]) + ")";
+                completeFieldName += "@".concat(key, "(").concat(stringify(directives[key]), ")");
             }
             else {
-                completeFieldName += "@" + key;
+                completeFieldName += "@".concat(key);
             }
         });
     }
@@ -7085,16 +5776,16 @@ function isInlineFragment(selection) {
 }
 
 function checkDocument(doc) {
-    __DEV__ ? invariant$2(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql") : invariant$2(doc && doc.kind === 'Document', 46);
+    __DEV__ ? invariant$2(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql") : invariant$2(doc && doc.kind === 'Document', 44);
     var operations = doc.definitions
         .filter(function (d) { return d.kind !== 'FragmentDefinition'; })
         .map(function (definition) {
         if (definition.kind !== 'OperationDefinition') {
-            throw __DEV__ ? new InvariantError("Schema type definitions not allowed in queries. Found: \"" + definition.kind + "\"") : new InvariantError(47);
+            throw __DEV__ ? new InvariantError("Schema type definitions not allowed in queries. Found: \"".concat(definition.kind, "\"")) : new InvariantError(45);
         }
         return definition;
     });
-    __DEV__ ? invariant$2(operations.length <= 1, "Ambiguous GraphQL document: contains " + operations.length + " operations") : invariant$2(operations.length <= 1, 48);
+    __DEV__ ? invariant$2(operations.length <= 1, "Ambiguous GraphQL document: contains ".concat(operations.length, " operations")) : invariant$2(operations.length <= 1, 46);
     return doc;
 }
 function getOperationDefinition(doc) {
@@ -7113,14 +5804,14 @@ function getFragmentDefinitions(doc) {
 }
 function getQueryDefinition(doc) {
     var queryDef = getOperationDefinition(doc);
-    __DEV__ ? invariant$2(queryDef && queryDef.operation === 'query', 'Must contain a query definition.') : invariant$2(queryDef && queryDef.operation === 'query', 49);
+    __DEV__ ? invariant$2(queryDef && queryDef.operation === 'query', 'Must contain a query definition.') : invariant$2(queryDef && queryDef.operation === 'query', 47);
     return queryDef;
 }
 function getFragmentDefinition(doc) {
-    __DEV__ ? invariant$2(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql") : invariant$2(doc.kind === 'Document', 50);
-    __DEV__ ? invariant$2(doc.definitions.length <= 1, 'Fragment must have exactly one definition.') : invariant$2(doc.definitions.length <= 1, 51);
+    __DEV__ ? invariant$2(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql") : invariant$2(doc.kind === 'Document', 48);
+    __DEV__ ? invariant$2(doc.definitions.length <= 1, 'Fragment must have exactly one definition.') : invariant$2(doc.definitions.length <= 1, 49);
     var fragmentDef = doc.definitions[0];
-    __DEV__ ? invariant$2(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.') : invariant$2(fragmentDef.kind === 'FragmentDefinition', 52);
+    __DEV__ ? invariant$2(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.') : invariant$2(fragmentDef.kind === 'FragmentDefinition', 50);
     return fragmentDef;
 }
 function getMainDefinition(queryDoc) {
@@ -7143,7 +5834,7 @@ function getMainDefinition(queryDoc) {
     if (fragmentDefinition) {
         return fragmentDefinition;
     }
-    throw __DEV__ ? new InvariantError('Expected a parsed GraphQL query with a query, mutation, subscription, or a fragment.') : new InvariantError(53);
+    throw __DEV__ ? new InvariantError('Expected a parsed GraphQL query with a query, mutation, subscription, or a fragment.') : new InvariantError(51);
 }
 function getDefaultValues(definition) {
     var defaultValues = Object.create(null);
@@ -7482,7 +6173,12 @@ var DeepMerger = (function () {
         return source;
     };
     DeepMerger.prototype.shallowCopyForMerge = function (value) {
-        if (isNonNullObject$1(value) && !this.pastCopies.has(value)) {
+        if (isNonNullObject$1(value)) {
+            if (this.pastCopies.has(value)) {
+                if (!Object.isFrozen(value))
+                    return value;
+                this.pastCopies.delete(value);
+            }
             if (Array.isArray(value)) {
                 value = value.slice(0);
             }
@@ -8428,7 +7124,7 @@ var prefixCounts = new Map();
 function makeUniqueId(prefix) {
     var count = prefixCounts.get(prefix) || 1;
     prefixCounts.set(prefix, count + 1);
-    return prefix + ":" + count + ":" + Math.random().toString(36).slice(2);
+    return "".concat(prefix, ":").concat(count, ":").concat(Math.random().toString(36).slice(2));
 }
 
 function stringifyForDisplay(value) {
@@ -8464,10 +7160,19 @@ var ApolloProvider = function (_a) {
             context = Object.assign({}, context, { client: client });
         }
         __DEV__ ? invariant$2(context.client, 'ApolloProvider was not passed a client instance. Make ' +
-            'sure you pass in your client via the "client" prop.') : invariant$2(context.client, 28);
+            'sure you pass in your client via the "client" prop.') : invariant$2(context.client, 26);
         return (React__namespace.createElement(ApolloContext.Provider, { value: context }, children));
     });
 };
+
+function useApolloClient(override) {
+    var context = React.useContext(getApolloContext());
+    var client = override || context.client;
+    __DEV__ ? invariant$2(!!client, 'Could not find "client" in the context or passed in as an option. ' +
+        'Wrap the root component in an <ApolloProvider>, or pass an ApolloClient ' +
+        'instance in via options.') : invariant$2(!!client, 29);
+    return client;
+}
 
 var _a$3 = Object.prototype, toString$2 = _a$3.toString, hasOwnProperty$f = _a$3.hasOwnProperty;
 var fnToStr$1 = Function.prototype.toString;
@@ -8664,164 +7369,6 @@ function previouslyCompared(a, b) {
     return false;
 }
 
-var DocumentType;
-(function (DocumentType) {
-    DocumentType[DocumentType["Query"] = 0] = "Query";
-    DocumentType[DocumentType["Mutation"] = 1] = "Mutation";
-    DocumentType[DocumentType["Subscription"] = 2] = "Subscription";
-})(DocumentType || (DocumentType = {}));
-var cache = new Map();
-function operationName(type) {
-    var name;
-    switch (type) {
-        case DocumentType.Query:
-            name = 'Query';
-            break;
-        case DocumentType.Mutation:
-            name = 'Mutation';
-            break;
-        case DocumentType.Subscription:
-            name = 'Subscription';
-            break;
-    }
-    return name;
-}
-function parser(document) {
-    var cached = cache.get(document);
-    if (cached)
-        return cached;
-    var variables, type, name;
-    __DEV__ ? invariant$2(!!document && !!document.kind, "Argument of " + document + " passed to parser was not a valid GraphQL " +
-        "DocumentNode. You may need to use 'graphql-tag' or another method " +
-        "to convert your operation into a document") : invariant$2(!!document && !!document.kind, 34);
-    var fragments = document.definitions.filter(function (x) { return x.kind === 'FragmentDefinition'; });
-    var queries = document.definitions.filter(function (x) {
-        return x.kind === 'OperationDefinition' && x.operation === 'query';
-    });
-    var mutations = document.definitions.filter(function (x) {
-        return x.kind === 'OperationDefinition' && x.operation === 'mutation';
-    });
-    var subscriptions = document.definitions.filter(function (x) {
-        return x.kind === 'OperationDefinition' && x.operation === 'subscription';
-    });
-    __DEV__ ? invariant$2(!fragments.length ||
-        (queries.length || mutations.length || subscriptions.length), "Passing only a fragment to 'graphql' is not yet supported. " +
-        "You must include a query, subscription or mutation as well") : invariant$2(!fragments.length ||
-        (queries.length || mutations.length || subscriptions.length), 35);
-    __DEV__ ? invariant$2(queries.length + mutations.length + subscriptions.length <= 1, "react-apollo only supports a query, subscription, or a mutation per HOC. " +
-        (document + " had " + queries.length + " queries, " + subscriptions.length + " ") +
-        ("subscriptions and " + mutations.length + " mutations. ") +
-        "You can use 'compose' to join multiple operation types to a component") : invariant$2(queries.length + mutations.length + subscriptions.length <= 1, 36);
-    type = queries.length ? DocumentType.Query : DocumentType.Mutation;
-    if (!queries.length && !mutations.length)
-        type = DocumentType.Subscription;
-    var definitions = queries.length
-        ? queries
-        : mutations.length
-            ? mutations
-            : subscriptions;
-    __DEV__ ? invariant$2(definitions.length === 1, "react-apollo only supports one definition per HOC. " + document + " had " +
-        (definitions.length + " definitions. ") +
-        "You can use 'compose' to join multiple operation types to a component") : invariant$2(definitions.length === 1, 37);
-    var definition = definitions[0];
-    variables = definition.variableDefinitions || [];
-    if (definition.name && definition.name.kind === 'Name') {
-        name = definition.name.value;
-    }
-    else {
-        name = 'data';
-    }
-    var payload = { name: name, type: type, variables: variables };
-    cache.set(document, payload);
-    return payload;
-}
-
-var OperationData = (function () {
-    function OperationData(options, context) {
-        this.isMounted = false;
-        this.previousOptions = {};
-        this.context = {};
-        this.options = {};
-        this.options = options || {};
-        this.context = context || {};
-    }
-    OperationData.prototype.getOptions = function () {
-        return this.options;
-    };
-    OperationData.prototype.setOptions = function (newOptions, storePrevious) {
-        if (storePrevious === void 0) { storePrevious = false; }
-        if (storePrevious && !equal$1(this.options, newOptions)) {
-            this.previousOptions = this.options;
-        }
-        this.options = newOptions;
-    };
-    OperationData.prototype.unmount = function () {
-        this.isMounted = false;
-    };
-    OperationData.prototype.refreshClient = function () {
-        var client = (this.options && this.options.client) ||
-            (this.context && this.context.client);
-        __DEV__ ? invariant$2(!!client, 'Could not find "client" in the context or passed in as an option. ' +
-            'Wrap the root component in an <ApolloProvider>, or pass an ' +
-            'ApolloClient instance in via options.') : invariant$2(!!client, 29);
-        var isNew = false;
-        if (client !== this.client) {
-            isNew = true;
-            this.client = client;
-            this.cleanup();
-        }
-        return {
-            client: this.client,
-            isNew: isNew
-        };
-    };
-    OperationData.prototype.verifyDocumentType = function (document, type) {
-        var operation = parser(document);
-        var requiredOperationName = operationName(type);
-        var usedOperationName = operationName(operation.type);
-        __DEV__ ? invariant$2(operation.type === type, "Running a " + requiredOperationName + " requires a graphql " +
-            (requiredOperationName + ", but a " + usedOperationName + " was used instead.")) : invariant$2(operation.type === type, 30);
-    };
-    return OperationData;
-}());
-
-function isApolloError(err) {
-    return err.hasOwnProperty('graphQLErrors');
-}
-var generateErrorMessage = function (err) {
-    var message = '';
-    if (isNonEmptyArray(err.graphQLErrors) || isNonEmptyArray(err.clientErrors)) {
-        var errors = (err.graphQLErrors || [])
-            .concat(err.clientErrors || []);
-        errors.forEach(function (error) {
-            var errorMessage = error
-                ? error.message
-                : 'Error message not found.';
-            message += errorMessage + "\n";
-        });
-    }
-    if (err.networkError) {
-        message += err.networkError.message + "\n";
-    }
-    message = message.replace(/\n$/, '');
-    return message;
-};
-var ApolloError = (function (_super) {
-    __extends(ApolloError, _super);
-    function ApolloError(_a) {
-        var graphQLErrors = _a.graphQLErrors, clientErrors = _a.clientErrors, networkError = _a.networkError, errorMessage = _a.errorMessage, extraInfo = _a.extraInfo;
-        var _this = _super.call(this, errorMessage) || this;
-        _this.graphQLErrors = graphQLErrors || [];
-        _this.clientErrors = clientErrors || [];
-        _this.networkError = networkError || null;
-        _this.message = errorMessage || generateErrorMessage(_this);
-        _this.extraInfo = extraInfo;
-        _this.__proto__ = ApolloError.prototype;
-        return _this;
-    }
-    return ApolloError;
-}(Error));
-
 function fromError(errorValue) {
     return new Observable(function (observer) {
         observer.error(errorValue);
@@ -8848,7 +7395,7 @@ function validateOperation(operation) {
     for (var _i = 0, _a = Object.keys(operation); _i < _a.length; _i++) {
         var key = _a[_i];
         if (OPERATION_FIELDS.indexOf(key) < 0) {
-            throw __DEV__ ? new InvariantError("illegal argument: " + key) : new InvariantError(26);
+            throw __DEV__ ? new InvariantError("illegal argument: ".concat(key)) : new InvariantError(24);
         }
     }
     return operation;
@@ -8971,7 +7518,7 @@ var ApolloLink = (function () {
         return ApolloLink.concat(this, next);
     };
     ApolloLink.prototype.request = function (operation, forward) {
-        throw __DEV__ ? new InvariantError('request is not implemented') : new InvariantError(21);
+        throw __DEV__ ? new InvariantError('request is not implemented') : new InvariantError(19);
     };
     ApolloLink.prototype.onError = function (error, observer) {
         if (observer && observer.error) {
@@ -8989,7 +7536,7 @@ var ApolloLink = (function () {
 
 var execute = ApolloLink.execute;
 
-var version = '3.4.15';
+var version = '3.5.10';
 
 var hasOwnProperty$e = Object.prototype.hasOwnProperty;
 function parseAndCheckHttpResponse(operations) {
@@ -9010,14 +7557,14 @@ function parseAndCheckHttpResponse(operations) {
     })
         .then(function (result) {
         if (response.status >= 300) {
-            throwServerError(response, result, "Response not successful: Received status code " + response.status);
+            throwServerError(response, result, "Response not successful: Received status code ".concat(response.status));
         }
         if (!Array.isArray(result) &&
             !hasOwnProperty$e.call(result, 'data') &&
             !hasOwnProperty$e.call(result, 'errors')) {
-            throwServerError(response, result, "Server response was missing for query '" + (Array.isArray(operations)
+            throwServerError(response, result, "Server response was missing for query '".concat(Array.isArray(operations)
                 ? operations.map(function (op) { return op.operationName; })
-                : operations.operationName) + "'.");
+                : operations.operationName, "'."));
         }
         return result;
     }); };
@@ -9029,7 +7576,7 @@ var serializeFetchParameter = function (p, label) {
         serialized = JSON.stringify(p);
     }
     catch (e) {
-        var parseError = __DEV__ ? new InvariantError("Network request failed. " + label + " is not serializable: " + e.message) : new InvariantError(23);
+        var parseError = __DEV__ ? new InvariantError("Network request failed. ".concat(label, " is not serializable: ").concat(e.message)) : new InvariantError(21);
         parseError.parseError = e;
         throw parseError;
     }
@@ -9052,17 +7599,19 @@ var fallbackHttpConfig = {
     headers: defaultHeaders,
     options: defaultOptions,
 };
-var selectHttpOptionsAndBody = function (operation, fallbackConfig) {
+var defaultPrinter = function (ast, printer) { return printer(ast); };
+function selectHttpOptionsAndBodyInternal(operation, printer) {
     var configs = [];
     for (var _i = 2; _i < arguments.length; _i++) {
         configs[_i - 2] = arguments[_i];
     }
-    var options = __assign(__assign({}, fallbackConfig.options), { headers: fallbackConfig.headers, credentials: fallbackConfig.credentials });
-    var http = fallbackConfig.http || {};
+    var options = {};
+    var http = {};
     configs.forEach(function (config) {
         options = __assign(__assign(__assign({}, options), config.options), { headers: __assign(__assign({}, options.headers), headersToLowerCase(config.headers)) });
-        if (config.credentials)
+        if (config.credentials) {
             options.credentials = config.credentials;
+        }
         http = __assign(__assign({}, http), config.http);
     });
     var operationName = operation.operationName, extensions = operation.extensions, variables = operation.variables, query = operation.query;
@@ -9070,12 +7619,12 @@ var selectHttpOptionsAndBody = function (operation, fallbackConfig) {
     if (http.includeExtensions)
         body.extensions = extensions;
     if (http.includeQuery)
-        body.query = print(query);
+        body.query = printer(query, print);
     return {
         options: options,
         body: body,
     };
-};
+}
 function headersToLowerCase(headers) {
     if (headers) {
         var normalized_1 = Object.create(null);
@@ -9089,7 +7638,7 @@ function headersToLowerCase(headers) {
 
 var checkFetcher = function (fetcher) {
     if (!fetcher && typeof fetch === 'undefined') {
-        throw __DEV__ ? new InvariantError("\n\"fetch\" has not been found globally and no fetcher has been configured. To fix this, install a fetch package (like https://www.npmjs.com/package/cross-fetch), instantiate the fetcher, and pass it into your HttpLink constructor. For example:\n\nimport fetch from 'cross-fetch';\nimport { ApolloClient, HttpLink } from '@apollo/client';\nconst client = new ApolloClient({\n  link: new HttpLink({ uri: '/graphql', fetch })\n});\n    ") : new InvariantError(22);
+        throw __DEV__ ? new InvariantError("\n\"fetch\" has not been found globally and no fetcher has been configured. To fix this, install a fetch package (like https://www.npmjs.com/package/cross-fetch), instantiate the fetcher, and pass it into your HttpLink constructor. For example:\n\nimport fetch from 'cross-fetch';\nimport { ApolloClient, HttpLink } from '@apollo/client';\nconst client = new ApolloClient({\n  link: new HttpLink({ uri: '/graphql', fetch })\n});\n    ") : new InvariantError(20);
     }
 };
 
@@ -9118,7 +7667,7 @@ var selectURI = function (operation, fallbackURI) {
 function rewriteURIForGET(chosenURI, body) {
     var queryParams = [];
     var addQueryParam = function (key, value) {
-        queryParams.push(key + "=" + encodeURIComponent(value));
+        queryParams.push("".concat(key, "=").concat(encodeURIComponent(value)));
     };
     if ('query' in body) {
         addQueryParam('query', body.query);
@@ -9160,7 +7709,7 @@ function rewriteURIForGET(chosenURI, body) {
 var backupFetch = maybe$1(function () { return fetch; });
 var createHttpLink = function (linkOptions) {
     if (linkOptions === void 0) { linkOptions = {}; }
-    var _a = linkOptions.uri, uri = _a === void 0 ? '/graphql' : _a, preferredFetch = linkOptions.fetch, includeExtensions = linkOptions.includeExtensions, useGETForQueries = linkOptions.useGETForQueries, _b = linkOptions.includeUnusedVariables, includeUnusedVariables = _b === void 0 ? false : _b, requestOptions = __rest(linkOptions, ["uri", "fetch", "includeExtensions", "useGETForQueries", "includeUnusedVariables"]);
+    var _a = linkOptions.uri, uri = _a === void 0 ? '/graphql' : _a, preferredFetch = linkOptions.fetch, _b = linkOptions.print, print = _b === void 0 ? defaultPrinter : _b, includeExtensions = linkOptions.includeExtensions, useGETForQueries = linkOptions.useGETForQueries, _c = linkOptions.includeUnusedVariables, includeUnusedVariables = _c === void 0 ? false : _c, requestOptions = __rest(linkOptions, ["uri", "fetch", "print", "includeExtensions", "useGETForQueries", "includeUnusedVariables"]);
     if (__DEV__) {
         checkFetcher(preferredFetch || backupFetch);
     }
@@ -9190,7 +7739,7 @@ var createHttpLink = function (linkOptions) {
             credentials: context.credentials,
             headers: contextHeaders,
         };
-        var _b = selectHttpOptionsAndBody(operation, fallbackHttpConfig, linkConfig, contextConfig), options = _b.options, body = _b.body;
+        var _b = selectHttpOptionsAndBodyInternal(operation, print, fallbackHttpConfig, linkConfig, contextConfig), options = _b.options, body = _b.body;
         if (body.variables && !includeUnusedVariables) {
             var unusedNames_1 = new Set(Object.keys(body.variables));
             visit(operation.query, {
@@ -9991,9 +8540,12 @@ var ApolloCache = (function () {
         this.getFragmentDoc = wrap(getFragmentQueryDocument);
     }
     ApolloCache.prototype.batch = function (options) {
+        var _this = this;
         var optimisticId = typeof options.optimistic === "string" ? options.optimistic :
             options.optimistic === false ? null : void 0;
-        this.performTransaction(options.update, optimisticId);
+        var updateResult;
+        this.performTransaction(function () { return updateResult = options.update(_this); }, optimisticId);
+        return updateResult;
     };
     ApolloCache.prototype.recordOptimisticTransaction = function (transaction, optimisticId) {
         this.performTransaction(transaction, optimisticId);
@@ -10036,22 +8588,42 @@ var ApolloCache = (function () {
             result: data,
         }));
     };
+    ApolloCache.prototype.updateQuery = function (options, update) {
+        return this.batch({
+            update: function (cache) {
+                var value = cache.readQuery(options);
+                var data = update(value);
+                if (data === void 0 || data === null)
+                    return value;
+                cache.writeQuery(__assign(__assign({}, options), { data: data }));
+                return data;
+            },
+        });
+    };
+    ApolloCache.prototype.updateFragment = function (options, update) {
+        return this.batch({
+            update: function (cache) {
+                var value = cache.readFragment(options);
+                var data = update(value);
+                if (data === void 0 || data === null)
+                    return value;
+                cache.writeFragment(__assign(__assign({}, options), { data: data }));
+                return data;
+            },
+        });
+    };
     return ApolloCache;
 }());
 
-var MissingFieldError = (function (_super) {
-    __extends(MissingFieldError, _super);
+var MissingFieldError = (function () {
     function MissingFieldError(message, path, query, variables) {
-        var _this = _super.call(this, message) || this;
-        _this.message = message;
-        _this.path = path;
-        _this.query = query;
-        _this.variables = variables;
-        _this.__proto__ = MissingFieldError.prototype;
-        return _this;
+        this.message = message;
+        this.path = path;
+        this.query = query;
+        this.variables = variables;
     }
     return MissingFieldError;
-}(Error));
+}());
 
 var hasOwn$1 = Object.prototype.hasOwnProperty;
 function defaultDataIdFromObject(_a, context) {
@@ -10066,7 +8638,7 @@ function defaultDataIdFromObject(_a, context) {
         if (id === void 0)
             id = _id;
         if (id !== void 0) {
-            return __typename + ":" + ((typeof id === "number" ||
+            return "".concat(__typename, ":").concat((typeof id === "number" ||
                 typeof id === "string") ? id : JSON.stringify(id));
         }
     }
@@ -10096,7 +8668,7 @@ function fieldNameFromStoreName(storeFieldName) {
 }
 function selectionSetMatchesResult(selectionSet, result, variables) {
     if (isNonNullObject$1(result)) {
-        return Array.isArray(result)
+        return isArray$3(result)
             ? result.every(function (item) { return selectionSetMatchesResult(selectionSet, item, variables); })
             : selectionSet.selections.every(function (field) {
                 if (isField(field) && shouldInclude(field, variables)) {
@@ -10113,11 +8685,12 @@ function selectionSetMatchesResult(selectionSet, result, variables) {
 function storeValueIsStoreObject(value) {
     return isNonNullObject$1(value) &&
         !isReference(value) &&
-        !Array.isArray(value);
+        !isArray$3(value);
 }
 function makeProcessedFieldsMerger() {
     return new DeepMerger;
 }
+var isArray$3 = function (a) { return Array.isArray(a); };
 
 var DELETE = Object.create(null);
 var delModifier = function () { return DELETE; };
@@ -10580,7 +9153,7 @@ function supportsResultCaching(store) {
 
 function shallowCopy(value) {
     if (isNonNullObject$1(value)) {
-        return Array.isArray(value)
+        return isArray$3(value)
             ? value.slice(0)
             : __assign({ __proto__: Object.getPrototypeOf(value) }, value);
     }
@@ -10692,9 +9265,6 @@ function resetCanonicalStringify() {
     stringifyCache = new (canUseWeakMap ? WeakMap : Map)();
 }
 
-function missingFromInvariant(err, context) {
-    return new MissingFieldError(err.message, context.path.slice(), context.query, context.variables);
-}
 function execSelectionSetKeyArgs(options) {
     return [
         options.selectionSet,
@@ -10756,6 +9326,7 @@ var StoreReader = (function () {
         var policies = this.config.cache.policies;
         variables = __assign(__assign({}, getDefaultValues(getQueryDefinition(query))), variables);
         var rootRef = makeReference(rootId);
+        var merger = new DeepMerger;
         var execResult = this.executeSelectionSet({
             selectionSet: getMainDefinition(query).selectionSet,
             objectOrReference: rootRef,
@@ -10768,17 +9339,22 @@ var StoreReader = (function () {
                 varString: canonicalStringify(variables),
                 canonizeResults: canonizeResults,
                 fragmentMap: createFragmentMap(getFragmentDefinitions(query)),
-                path: [],
+                merge: function (a, b) {
+                    return merger.merge(a, b);
+                },
             },
         });
-        var hasMissingFields = execResult.missing && execResult.missing.length > 0;
-        if (hasMissingFields && !returnPartialData) {
-            throw execResult.missing[0];
+        var missing;
+        if (execResult.missing) {
+            missing = [new MissingFieldError(firstMissing(execResult.missing), execResult.missing, query, variables)];
+            if (!returnPartialData) {
+                throw missing[0];
+            }
         }
         return {
             result: execResult.result,
-            missing: execResult.missing,
-            complete: !hasMissingFields,
+            complete: !missing,
+            missing: missing,
         };
     };
     StoreReader.prototype.isFresh = function (result, parent, selectionSet, context) {
@@ -10799,30 +9375,28 @@ var StoreReader = (function () {
             !context.store.has(objectOrReference.__ref)) {
             return {
                 result: this.canon.empty,
-                missing: [missingFromInvariant(__DEV__ ? new InvariantError("Dangling reference to missing " + objectOrReference.__ref + " object") : new InvariantError(5), context)],
+                missing: "Dangling reference to missing ".concat(objectOrReference.__ref, " object"),
             };
         }
         var variables = context.variables, policies = context.policies, store = context.store;
-        var objectsToMerge = [];
-        var finalResult = { result: null };
         var typename = store.getFieldValue(objectOrReference, "__typename");
+        var result = {};
+        var missing;
         if (this.config.addTypename &&
             typeof typename === "string" &&
             !policies.rootIdsByTypename[typename]) {
-            objectsToMerge.push({ __typename: typename });
+            result = { __typename: typename };
         }
-        function getMissing() {
-            return finalResult.missing || (finalResult.missing = []);
-        }
-        function handleMissing(result) {
+        function handleMissing(result, resultName) {
             var _a;
-            if (result.missing)
-                (_a = getMissing()).push.apply(_a, result.missing);
+            if (result.missing) {
+                missing = context.merge(missing, (_a = {}, _a[resultName] = result.missing, _a));
+            }
             return result.result;
         }
         var workSet = new Set(selectionSet.selections);
         workSet.forEach(function (selection) {
-            var _a;
+            var _a, _b;
             if (!shouldInclude(selection, variables))
                 return;
             if (isField(selection)) {
@@ -10833,21 +9407,22 @@ var StoreReader = (function () {
                     from: objectOrReference,
                 }, context);
                 var resultName = resultKeyNameFromField(selection);
-                context.path.push(resultName);
                 if (fieldValue === void 0) {
                     if (!addTypenameToDocument.added(selection)) {
-                        getMissing().push(missingFromInvariant(__DEV__ ? new InvariantError("Can't find field '" + selection.name.value + "' on " + (isReference(objectOrReference)
-                            ? objectOrReference.__ref + " object"
-                            : "object " + JSON.stringify(objectOrReference, null, 2))) : new InvariantError(6), context));
+                        missing = context.merge(missing, (_a = {},
+                            _a[resultName] = "Can't find field '".concat(selection.name.value, "' on ").concat(isReference(objectOrReference)
+                                ? objectOrReference.__ref + " object"
+                                : "object " + JSON.stringify(objectOrReference, null, 2)),
+                            _a));
                     }
                 }
-                else if (Array.isArray(fieldValue)) {
+                else if (isArray$3(fieldValue)) {
                     fieldValue = handleMissing(_this.executeSubSelectedArray({
                         field: selection,
                         array: fieldValue,
                         enclosingRef: enclosingRef,
                         context: context,
-                    }));
+                    }), resultName);
                 }
                 else if (!selection.selectionSet) {
                     if (context.canonizeResults) {
@@ -10860,12 +9435,11 @@ var StoreReader = (function () {
                         objectOrReference: fieldValue,
                         enclosingRef: isReference(fieldValue) ? fieldValue : enclosingRef,
                         context: context,
-                    }));
+                    }), resultName);
                 }
                 if (fieldValue !== void 0) {
-                    objectsToMerge.push((_a = {}, _a[resultName] = fieldValue, _a));
+                    result = context.merge(result, (_b = {}, _b[resultName] = fieldValue, _b));
                 }
-                invariant$2(context.path.pop() === resultName);
             }
             else {
                 var fragment = getFragmentFromSelection(selection, context.fragmentMap);
@@ -10874,23 +9448,24 @@ var StoreReader = (function () {
                 }
             }
         });
-        var merged = mergeDeepArray(objectsToMerge);
-        finalResult.result = context.canonizeResults
-            ? this.canon.admit(merged)
-            : maybeDeepFreeze(merged);
-        this.knownResults.set(finalResult.result, selectionSet);
-        return finalResult;
+        var finalResult = { result: result, missing: missing };
+        var frozen = context.canonizeResults
+            ? this.canon.admit(finalResult)
+            : maybeDeepFreeze(finalResult);
+        if (frozen.result) {
+            this.knownResults.set(frozen.result, selectionSet);
+        }
+        return frozen;
     };
     StoreReader.prototype.execSubSelectedArrayImpl = function (_a) {
         var _this = this;
         var field = _a.field, array = _a.array, enclosingRef = _a.enclosingRef, context = _a.context;
         var missing;
         function handleMissing(childResult, i) {
+            var _a;
             if (childResult.missing) {
-                missing = missing || [];
-                missing.push.apply(missing, childResult.missing);
+                missing = context.merge(missing, (_a = {}, _a[i] = childResult.missing, _a));
             }
-            invariant$2(context.path.pop() === i);
             return childResult.result;
         }
         if (field.selectionSet) {
@@ -10900,8 +9475,7 @@ var StoreReader = (function () {
             if (item === null) {
                 return null;
             }
-            context.path.push(i);
-            if (Array.isArray(item)) {
+            if (isArray$3(item)) {
                 return handleMissing(_this.executeSubSelectedArray({
                     field: field,
                     array: item,
@@ -10920,7 +9494,6 @@ var StoreReader = (function () {
             if (__DEV__) {
                 assertSelectionSetForIdValue(context.store, field, item);
             }
-            invariant$2(context.path.pop() === i);
             return item;
         });
         return {
@@ -10930,338 +9503,28 @@ var StoreReader = (function () {
     };
     return StoreReader;
 }());
+function firstMissing(tree) {
+    try {
+        JSON.stringify(tree, function (_, value) {
+            if (typeof value === "string")
+                throw value;
+            return value;
+        });
+    }
+    catch (result) {
+        return result;
+    }
+}
 function assertSelectionSetForIdValue(store, field, fieldValue) {
     if (!field.selectionSet) {
         var workSet_1 = new Set([fieldValue]);
         workSet_1.forEach(function (value) {
             if (isNonNullObject$1(value)) {
-                __DEV__ ? invariant$2(!isReference(value), "Missing selection set for object of type " + getTypenameFromStoreObject(store, value) + " returned for query field " + field.name.value) : invariant$2(!isReference(value), 7);
+                __DEV__ ? invariant$2(!isReference(value), "Missing selection set for object of type ".concat(getTypenameFromStoreObject(store, value), " returned for query field ").concat(field.name.value)) : invariant$2(!isReference(value), 5);
                 Object.values(value).forEach(workSet_1.add, workSet_1);
             }
         });
     }
-}
-
-var StoreWriter = (function () {
-    function StoreWriter(cache, reader) {
-        this.cache = cache;
-        this.reader = reader;
-    }
-    StoreWriter.prototype.writeToStore = function (store, _a) {
-        var _this = this;
-        var query = _a.query, result = _a.result, dataId = _a.dataId, variables = _a.variables, overwrite = _a.overwrite;
-        var operationDefinition = getOperationDefinition(query);
-        var merger = makeProcessedFieldsMerger();
-        variables = __assign(__assign({}, getDefaultValues(operationDefinition)), variables);
-        var context = {
-            store: store,
-            written: Object.create(null),
-            merge: function (existing, incoming) {
-                return merger.merge(existing, incoming);
-            },
-            variables: variables,
-            varString: canonicalStringify(variables),
-            fragmentMap: createFragmentMap(getFragmentDefinitions(query)),
-            overwrite: !!overwrite,
-            incomingById: new Map,
-            clientOnly: false,
-        };
-        var ref = this.processSelectionSet({
-            result: result || Object.create(null),
-            dataId: dataId,
-            selectionSet: operationDefinition.selectionSet,
-            mergeTree: { map: new Map },
-            context: context,
-        });
-        if (!isReference(ref)) {
-            throw __DEV__ ? new InvariantError("Could not identify object " + JSON.stringify(result)) : new InvariantError(8);
-        }
-        context.incomingById.forEach(function (_a, dataId) {
-            var fields = _a.fields, mergeTree = _a.mergeTree, selections = _a.selections;
-            var entityRef = makeReference(dataId);
-            if (mergeTree && mergeTree.map.size) {
-                var applied = _this.applyMerges(mergeTree, entityRef, fields, context);
-                if (isReference(applied)) {
-                    return;
-                }
-                fields = applied;
-            }
-            if (__DEV__ && !context.overwrite) {
-                var hasSelectionSet_1 = function (storeFieldName) {
-                    return fieldsWithSelectionSets_1.has(fieldNameFromStoreName(storeFieldName));
-                };
-                var fieldsWithSelectionSets_1 = new Set();
-                selections.forEach(function (selection) {
-                    if (isField(selection) && selection.selectionSet) {
-                        fieldsWithSelectionSets_1.add(selection.name.value);
-                    }
-                });
-                var hasMergeFunction_1 = function (storeFieldName) {
-                    var childTree = mergeTree && mergeTree.map.get(storeFieldName);
-                    return Boolean(childTree && childTree.info && childTree.info.merge);
-                };
-                Object.keys(fields).forEach(function (storeFieldName) {
-                    if (hasSelectionSet_1(storeFieldName) &&
-                        !hasMergeFunction_1(storeFieldName)) {
-                        warnAboutDataLoss(entityRef, fields, storeFieldName, context.store);
-                    }
-                });
-            }
-            store.merge(dataId, fields);
-        });
-        store.retain(ref.__ref);
-        return ref;
-    };
-    StoreWriter.prototype.processSelectionSet = function (_a) {
-        var _this = this;
-        var dataId = _a.dataId, result = _a.result, selectionSet = _a.selectionSet, context = _a.context, mergeTree = _a.mergeTree;
-        var policies = this.cache.policies;
-        var _b = policies.identify(result, selectionSet, context.fragmentMap), id = _b[0], keyObject = _b[1];
-        dataId = dataId || id;
-        if ("string" === typeof dataId) {
-            var sets = context.written[dataId] || (context.written[dataId] = []);
-            var ref = makeReference(dataId);
-            if (sets.indexOf(selectionSet) >= 0)
-                return ref;
-            sets.push(selectionSet);
-            if (this.reader && this.reader.isFresh(result, ref, selectionSet, context)) {
-                return ref;
-            }
-        }
-        var incomingFields = Object.create(null);
-        if (keyObject) {
-            incomingFields = context.merge(incomingFields, keyObject);
-        }
-        var typename = (dataId && policies.rootTypenamesById[dataId]) ||
-            getTypenameFromResult(result, selectionSet, context.fragmentMap) ||
-            (dataId && context.store.get(dataId, "__typename"));
-        if ("string" === typeof typename) {
-            incomingFields.__typename = typename;
-        }
-        var selections = new Set(selectionSet.selections);
-        selections.forEach(function (selection) {
-            var _a;
-            if (!shouldInclude(selection, context.variables))
-                return;
-            if (isField(selection)) {
-                var resultFieldKey = resultKeyNameFromField(selection);
-                var value = result[resultFieldKey];
-                var wasClientOnly = context.clientOnly;
-                context.clientOnly = wasClientOnly || !!(selection.directives &&
-                    selection.directives.some(function (d) { return d.name.value === "client"; }));
-                if (value !== void 0) {
-                    var storeFieldName = policies.getStoreFieldName({
-                        typename: typename,
-                        fieldName: selection.name.value,
-                        field: selection,
-                        variables: context.variables,
-                    });
-                    var childTree = getChildMergeTree(mergeTree, storeFieldName);
-                    var incomingValue = _this.processFieldValue(value, selection, context, childTree);
-                    var childTypename = void 0;
-                    if (selection.selectionSet) {
-                        childTypename = context.store.getFieldValue(incomingValue, "__typename");
-                        if (!childTypename && isReference(incomingValue)) {
-                            var info = context.incomingById.get(incomingValue.__ref);
-                            childTypename = info && info.fields.__typename;
-                        }
-                    }
-                    var merge = policies.getMergeFunction(typename, selection.name.value, childTypename);
-                    if (merge) {
-                        childTree.info = {
-                            field: selection,
-                            typename: typename,
-                            merge: merge,
-                        };
-                    }
-                    else {
-                        maybeRecycleChildMergeTree(mergeTree, storeFieldName);
-                    }
-                    incomingFields = context.merge(incomingFields, (_a = {},
-                        _a[storeFieldName] = incomingValue,
-                        _a));
-                }
-                else if (!context.clientOnly &&
-                    !addTypenameToDocument.added(selection)) {
-                    __DEV__ && invariant$2.error(("Missing field '" + resultKeyNameFromField(selection) + "' while writing result " + JSON.stringify(result, null, 2)).substring(0, 1000));
-                }
-                context.clientOnly = wasClientOnly;
-            }
-            else {
-                var fragment = getFragmentFromSelection(selection, context.fragmentMap);
-                if (fragment &&
-                    policies.fragmentMatches(fragment, typename, result, context.variables)) {
-                    fragment.selectionSet.selections.forEach(selections.add, selections);
-                }
-            }
-        });
-        if ("string" === typeof dataId) {
-            var previous = context.incomingById.get(dataId);
-            if (previous) {
-                previous.fields = context.merge(previous.fields, incomingFields);
-                previous.mergeTree = mergeMergeTrees(previous.mergeTree, mergeTree);
-                previous.selections.forEach(selections.add, selections);
-                previous.selections = selections;
-            }
-            else {
-                context.incomingById.set(dataId, {
-                    fields: incomingFields,
-                    mergeTree: mergeTreeIsEmpty(mergeTree) ? void 0 : mergeTree,
-                    selections: selections,
-                });
-            }
-            return makeReference(dataId);
-        }
-        return incomingFields;
-    };
-    StoreWriter.prototype.processFieldValue = function (value, field, context, mergeTree) {
-        var _this = this;
-        if (!field.selectionSet || value === null) {
-            return __DEV__ ? cloneDeep(value) : value;
-        }
-        if (Array.isArray(value)) {
-            return value.map(function (item, i) {
-                var value = _this.processFieldValue(item, field, context, getChildMergeTree(mergeTree, i));
-                maybeRecycleChildMergeTree(mergeTree, i);
-                return value;
-            });
-        }
-        return this.processSelectionSet({
-            result: value,
-            selectionSet: field.selectionSet,
-            context: context,
-            mergeTree: mergeTree,
-        });
-    };
-    StoreWriter.prototype.applyMerges = function (mergeTree, existing, incoming, context, getStorageArgs) {
-        var _a;
-        var _this = this;
-        if (mergeTree.map.size && !isReference(incoming)) {
-            var e_1 = (!Array.isArray(incoming) &&
-                (isReference(existing) || storeValueIsStoreObject(existing))) ? existing : void 0;
-            var i_1 = incoming;
-            if (e_1 && !getStorageArgs) {
-                getStorageArgs = [isReference(e_1) ? e_1.__ref : e_1];
-            }
-            var changedFields_1;
-            var getValue_1 = function (from, name) {
-                return Array.isArray(from)
-                    ? (typeof name === "number" ? from[name] : void 0)
-                    : context.store.getFieldValue(from, String(name));
-            };
-            mergeTree.map.forEach(function (childTree, storeFieldName) {
-                var eVal = getValue_1(e_1, storeFieldName);
-                var iVal = getValue_1(i_1, storeFieldName);
-                if (void 0 === iVal)
-                    return;
-                if (getStorageArgs) {
-                    getStorageArgs.push(storeFieldName);
-                }
-                var aVal = _this.applyMerges(childTree, eVal, iVal, context, getStorageArgs);
-                if (aVal !== iVal) {
-                    changedFields_1 = changedFields_1 || new Map;
-                    changedFields_1.set(storeFieldName, aVal);
-                }
-                if (getStorageArgs) {
-                    invariant$2(getStorageArgs.pop() === storeFieldName);
-                }
-            });
-            if (changedFields_1) {
-                incoming = (Array.isArray(i_1) ? i_1.slice(0) : __assign({}, i_1));
-                changedFields_1.forEach(function (value, name) {
-                    incoming[name] = value;
-                });
-            }
-        }
-        if (mergeTree.info) {
-            return this.cache.policies.runMergeFunction(existing, incoming, mergeTree.info, context, getStorageArgs && (_a = context.store).getStorage.apply(_a, getStorageArgs));
-        }
-        return incoming;
-    };
-    return StoreWriter;
-}());
-var emptyMergeTreePool = [];
-function getChildMergeTree(_a, name) {
-    var map = _a.map;
-    if (!map.has(name)) {
-        map.set(name, emptyMergeTreePool.pop() || { map: new Map });
-    }
-    return map.get(name);
-}
-function mergeMergeTrees(left, right) {
-    if (left === right || !right || mergeTreeIsEmpty(right))
-        return left;
-    if (!left || mergeTreeIsEmpty(left))
-        return right;
-    var info = left.info && right.info ? __assign(__assign({}, left.info), right.info) : left.info || right.info;
-    var needToMergeMaps = left.map.size && right.map.size;
-    var map = needToMergeMaps ? new Map :
-        left.map.size ? left.map : right.map;
-    var merged = { info: info, map: map };
-    if (needToMergeMaps) {
-        var remainingRightKeys_1 = new Set(right.map.keys());
-        left.map.forEach(function (leftTree, key) {
-            merged.map.set(key, mergeMergeTrees(leftTree, right.map.get(key)));
-            remainingRightKeys_1.delete(key);
-        });
-        remainingRightKeys_1.forEach(function (key) {
-            merged.map.set(key, mergeMergeTrees(right.map.get(key), left.map.get(key)));
-        });
-    }
-    return merged;
-}
-function mergeTreeIsEmpty(tree) {
-    return !tree || !(tree.info || tree.map.size);
-}
-function maybeRecycleChildMergeTree(_a, name) {
-    var map = _a.map;
-    var childTree = map.get(name);
-    if (childTree && mergeTreeIsEmpty(childTree)) {
-        emptyMergeTreePool.push(childTree);
-        map.delete(name);
-    }
-}
-var warnings = new Set();
-function warnAboutDataLoss(existingRef, incomingObj, storeFieldName, store) {
-    var getChild = function (objOrRef) {
-        var child = store.getFieldValue(objOrRef, storeFieldName);
-        return typeof child === "object" && child;
-    };
-    var existing = getChild(existingRef);
-    if (!existing)
-        return;
-    var incoming = getChild(incomingObj);
-    if (!incoming)
-        return;
-    if (isReference(existing))
-        return;
-    if (equal$1(existing, incoming))
-        return;
-    if (Object.keys(existing).every(function (key) { return store.getFieldValue(incoming, key) !== void 0; })) {
-        return;
-    }
-    var parentType = store.getFieldValue(existingRef, "__typename") ||
-        store.getFieldValue(incomingObj, "__typename");
-    var fieldName = fieldNameFromStoreName(storeFieldName);
-    var typeDotName = parentType + "." + fieldName;
-    if (warnings.has(typeDotName))
-        return;
-    warnings.add(typeDotName);
-    var childTypenames = [];
-    if (!Array.isArray(existing) &&
-        !Array.isArray(incoming)) {
-        [existing, incoming].forEach(function (child) {
-            var typename = store.getFieldValue(child, "__typename");
-            if (typeof typename === "string" &&
-                !childTypenames.includes(typename)) {
-                childTypenames.push(typename);
-            }
-        });
-    }
-    __DEV__ && invariant$2.warn("Cache data may be lost when replacing the " + fieldName + " field of a " + parentType + " object.\n\nTo address this problem (which is not a bug in Apollo Client), " + (childTypenames.length
-        ? "either ensure all objects of type " +
-            childTypenames.join(" and ") + " have an ID or a custom merge function, or "
-        : "") + "define a custom merge function for the " + typeDotName + " field, so InMemoryCache can safely merge these objects:\n\n  existing: " + JSON.stringify(existing).slice(0, 1000) + "\n  incoming: " + JSON.stringify(incoming).slice(0, 1000) + "\n\nFor more information about these options, please refer to the documentation:\n\n  * Ensuring entity objects have IDs: https://go.apollo.dev/c/generating-unique-identifiers\n  * Defining custom merge functions: https://go.apollo.dev/c/merging-non-normalized-objects\n");
 }
 
 var cacheSlot = new Slot();
@@ -11327,6 +9590,121 @@ function broadcast(cache) {
     }
 }
 
+var specifierInfoCache = Object.create(null);
+function lookupSpecifierInfo(spec) {
+    var cacheKey = JSON.stringify(spec);
+    return specifierInfoCache[cacheKey] ||
+        (specifierInfoCache[cacheKey] = Object.create(null));
+}
+function keyFieldsFnFromSpecifier(specifier) {
+    var info = lookupSpecifierInfo(specifier);
+    return info.keyFieldsFn || (info.keyFieldsFn = function (object, context) {
+        var extract = function (from, key) { return context.readField(key, from); };
+        var keyObject = context.keyObject = collectSpecifierPaths(specifier, function (schemaKeyPath) {
+            var extracted = extractKeyPath(context.storeObject, schemaKeyPath, extract);
+            if (extracted === void 0 &&
+                object !== context.storeObject &&
+                hasOwn$1.call(object, schemaKeyPath[0])) {
+                extracted = extractKeyPath(object, schemaKeyPath, extractKey);
+            }
+            __DEV__ ? invariant$2(extracted !== void 0, "Missing field '".concat(schemaKeyPath.join('.'), "' while extracting keyFields from ").concat(JSON.stringify(object))) : invariant$2(extracted !== void 0, 2);
+            return extracted;
+        });
+        return "".concat(context.typename, ":").concat(JSON.stringify(keyObject));
+    });
+}
+function keyArgsFnFromSpecifier(specifier) {
+    var info = lookupSpecifierInfo(specifier);
+    return info.keyArgsFn || (info.keyArgsFn = function (args, _a) {
+        var field = _a.field, variables = _a.variables, fieldName = _a.fieldName;
+        var collected = collectSpecifierPaths(specifier, function (keyPath) {
+            var firstKey = keyPath[0];
+            var firstChar = firstKey.charAt(0);
+            if (firstChar === "@") {
+                if (field && isNonEmptyArray(field.directives)) {
+                    var directiveName_1 = firstKey.slice(1);
+                    var d = field.directives.find(function (d) { return d.name.value === directiveName_1; });
+                    var directiveArgs = d && argumentsObjectFromField(d, variables);
+                    return directiveArgs && extractKeyPath(directiveArgs, keyPath.slice(1));
+                }
+                return;
+            }
+            if (firstChar === "$") {
+                var variableName = firstKey.slice(1);
+                if (variables && hasOwn$1.call(variables, variableName)) {
+                    var varKeyPath = keyPath.slice(0);
+                    varKeyPath[0] = variableName;
+                    return extractKeyPath(variables, varKeyPath);
+                }
+                return;
+            }
+            if (args) {
+                return extractKeyPath(args, keyPath);
+            }
+        });
+        var suffix = JSON.stringify(collected);
+        if (args || suffix !== "{}") {
+            fieldName += ":" + suffix;
+        }
+        return fieldName;
+    });
+}
+function collectSpecifierPaths(specifier, extractor) {
+    var merger = new DeepMerger;
+    return getSpecifierPaths(specifier).reduce(function (collected, path) {
+        var _a;
+        var toMerge = extractor(path);
+        if (toMerge !== void 0) {
+            for (var i = path.length - 1; i >= 0; --i) {
+                toMerge = (_a = {}, _a[path[i]] = toMerge, _a);
+            }
+            collected = merger.merge(collected, toMerge);
+        }
+        return collected;
+    }, Object.create(null));
+}
+function getSpecifierPaths(spec) {
+    var info = lookupSpecifierInfo(spec);
+    if (!info.paths) {
+        var paths_1 = info.paths = [];
+        var currentPath_1 = [];
+        spec.forEach(function (s, i) {
+            if (isArray$3(s)) {
+                getSpecifierPaths(s).forEach(function (p) { return paths_1.push(currentPath_1.concat(p)); });
+                currentPath_1.length = 0;
+            }
+            else {
+                currentPath_1.push(s);
+                if (!isArray$3(spec[i + 1])) {
+                    paths_1.push(currentPath_1.slice(0));
+                    currentPath_1.length = 0;
+                }
+            }
+        });
+    }
+    return info.paths;
+}
+function extractKey(object, key) {
+    return object[key];
+}
+function extractKeyPath(object, path, extract) {
+    extract = extract || extractKey;
+    return normalize$1(path.reduce(function reducer(obj, key) {
+        return isArray$3(obj)
+            ? obj.map(function (child) { return reducer(child, key); })
+            : obj && extract(obj, key);
+    }, object));
+}
+function normalize$1(value) {
+    if (isNonNullObject$1(value)) {
+        if (isArray$3(value)) {
+            return value.map(normalize$1);
+        }
+        return collectSpecifierPaths(Object.keys(value).sort(), function (path) { return extractKeyPath(value, path); });
+    }
+    return value;
+}
+
 getStoreKeyName.setStringify(canonicalStringify);
 function argsFromFieldSpecifier(spec) {
     return spec.args !== void 0 ? spec.args :
@@ -11361,24 +9739,28 @@ var Policies = (function () {
             this.addTypePolicies(config.typePolicies);
         }
     }
-    Policies.prototype.identify = function (object, selectionSet, fragmentMap) {
-        var typename = selectionSet && fragmentMap
-            ? getTypenameFromResult(object, selectionSet, fragmentMap)
-            : object.__typename;
+    Policies.prototype.identify = function (object, partialContext) {
+        var _a;
+        var policies = this;
+        var typename = partialContext && (partialContext.typename ||
+            ((_a = partialContext.storeObject) === null || _a === void 0 ? void 0 : _a.__typename)) || object.__typename;
         if (typename === this.rootTypenamesById.ROOT_QUERY) {
             return ["ROOT_QUERY"];
         }
-        var context = {
-            typename: typename,
-            selectionSet: selectionSet,
-            fragmentMap: fragmentMap,
-        };
+        var storeObject = partialContext && partialContext.storeObject || object;
+        var context = __assign(__assign({}, partialContext), { typename: typename, storeObject: storeObject, readField: partialContext && partialContext.readField || function () {
+                var options = normalizeReadFieldOptions(arguments, storeObject);
+                return policies.readField(options, {
+                    store: policies.cache["data"],
+                    variables: options.variables,
+                });
+            } });
         var id;
         var policy = typename && this.getTypePolicy(typename);
         var keyFn = policy && policy.keyFn || this.config.dataIdFromObject;
         while (keyFn) {
             var specifierOrId = keyFn(object, context);
-            if (Array.isArray(specifierOrId)) {
+            if (isArray$3(specifierOrId)) {
                 keyFn = keyFieldsFnFromSpecifier(specifierOrId);
             }
             else {
@@ -11421,7 +9803,7 @@ var Policies = (function () {
         setMerge(existing, incoming.merge);
         existing.keyFn =
             keyFields === false ? nullKeyFieldsFn :
-                Array.isArray(keyFields) ? keyFieldsFnFromSpecifier(keyFields) :
+                isArray$3(keyFields) ? keyFieldsFnFromSpecifier(keyFields) :
                     typeof keyFields === "function" ? keyFields :
                         existing.keyFn;
         if (fields) {
@@ -11435,7 +9817,7 @@ var Policies = (function () {
                     var keyArgs = incoming.keyArgs, read = incoming.read, merge = incoming.merge;
                     existing.keyFn =
                         keyArgs === false ? simpleKeyArgsFn :
-                            Array.isArray(keyArgs) ? keyArgsFnFromSpecifier(keyArgs) :
+                            isArray$3(keyArgs) ? keyArgsFnFromSpecifier(keyArgs) :
                                 typeof keyArgs === "function" ? keyArgs :
                                     existing.keyFn;
                     if (typeof read === "function") {
@@ -11454,7 +9836,7 @@ var Policies = (function () {
         var rootId = "ROOT_" + which.toUpperCase();
         var old = this.rootTypenamesById[rootId];
         if (typename !== old) {
-            __DEV__ ? invariant$2(!old || old === which, "Cannot change root " + which + " __typename more than once") : invariant$2(!old || old === which, 2);
+            __DEV__ ? invariant$2(!old || old === which, "Cannot change root ".concat(which, " __typename more than once")) : invariant$2(!old || old === which, 3);
             if (old)
                 delete this.rootIdsByTypename[old];
             this.rootIdsByTypename[typename] = rootId;
@@ -11538,7 +9920,7 @@ var Policies = (function () {
                 if (supertypeSet.has(supertype)) {
                     if (!typenameSupertypeSet.has(supertype)) {
                         if (checkingFuzzySubtypes) {
-                            __DEV__ && invariant$2.warn("Inferring subtype " + typename + " of supertype " + supertype);
+                            __DEV__ && invariant$2.warn("Inferring subtype ".concat(typename, " of supertype ").concat(supertype));
                         }
                         typenameSupertypeSet.add(supertype);
                     }
@@ -11580,7 +9962,7 @@ var Policies = (function () {
             var args = argsFromFieldSpecifier(fieldSpec);
             while (keyFn) {
                 var specifierOrString = keyFn(args, context);
-                if (Array.isArray(specifierOrString)) {
+                if (isArray$3(specifierOrString)) {
                     keyFn = keyArgsFnFromSpecifier(specifierOrString);
                 }
                 else {
@@ -11626,6 +10008,10 @@ var Policies = (function () {
         }
         return existing;
     };
+    Policies.prototype.getReadFunction = function (typename, fieldName) {
+        var policy = this.getFieldPolicy(typename, fieldName, false);
+        return policy && policy.read;
+    };
     Policies.prototype.getMergeFunction = function (parentTypename, fieldName, childTypename) {
         var policy = this.getFieldPolicy(parentTypename, fieldName, false);
         var merge = policy && policy.merge;
@@ -11666,39 +10052,39 @@ function makeFieldFunctionOptions(policies, objectOrReference, fieldSpec, contex
         storage: storage,
         cache: policies.cache,
         canRead: canRead,
-        readField: function (fieldNameOrOptions, from) {
-            var options;
-            if (typeof fieldNameOrOptions === "string") {
-                options = {
-                    fieldName: fieldNameOrOptions,
-                    from: arguments.length > 1 ? from : objectOrReference,
-                };
-            }
-            else if (isNonNullObject$1(fieldNameOrOptions)) {
-                options = __assign({}, fieldNameOrOptions);
-                if (!hasOwn$1.call(fieldNameOrOptions, "from")) {
-                    options.from = objectOrReference;
-                }
-            }
-            else {
-                __DEV__ && invariant$2.warn("Unexpected readField arguments: " + stringifyForDisplay(Array.from(arguments)));
-                return;
-            }
-            if (__DEV__ && options.from === void 0) {
-                __DEV__ && invariant$2.warn("Undefined 'from' passed to readField with arguments " + stringifyForDisplay(Array.from(arguments)));
-            }
-            if (void 0 === options.variables) {
-                options.variables = variables;
-            }
-            return policies.readField(options, context);
+        readField: function () {
+            return policies.readField(normalizeReadFieldOptions(arguments, objectOrReference, context), context);
         },
         mergeObjects: makeMergeObjectsFunction(context.store),
     };
 }
+function normalizeReadFieldOptions(readFieldArgs, objectOrReference, variables) {
+    var fieldNameOrOptions = readFieldArgs[0], from = readFieldArgs[1], argc = readFieldArgs.length;
+    var options;
+    if (typeof fieldNameOrOptions === "string") {
+        options = {
+            fieldName: fieldNameOrOptions,
+            from: argc > 1 ? from : objectOrReference,
+        };
+    }
+    else {
+        options = __assign({}, fieldNameOrOptions);
+        if (!hasOwn$1.call(options, "from")) {
+            options.from = objectOrReference;
+        }
+    }
+    if (__DEV__ && options.from === void 0) {
+        __DEV__ && invariant$2.warn("Undefined 'from' passed to readField with arguments ".concat(stringifyForDisplay(Array.from(readFieldArgs))));
+    }
+    if (void 0 === options.variables) {
+        options.variables = variables;
+    }
+    return options;
+}
 function makeMergeObjectsFunction(store) {
     return function mergeObjects(existing, incoming) {
-        if (Array.isArray(existing) || Array.isArray(incoming)) {
-            throw __DEV__ ? new InvariantError("Cannot automatically merge arrays") : new InvariantError(3);
+        if (isArray$3(existing) || isArray$3(incoming)) {
+            throw __DEV__ ? new InvariantError("Cannot automatically merge arrays") : new InvariantError(4);
         }
         if (isNonNullObject$1(existing) &&
             isNonNullObject$1(incoming)) {
@@ -11726,84 +10112,396 @@ function makeMergeObjectsFunction(store) {
         return incoming;
     };
 }
-function keyArgsFnFromSpecifier(specifier) {
-    return function (args, context) {
-        return args ? context.fieldName + ":" + JSON.stringify(computeKeyObject(args, specifier, false)) : context.fieldName;
-    };
+
+function getContextFlavor(context, clientOnly, deferred) {
+    var key = "".concat(clientOnly).concat(deferred);
+    var flavored = context.flavors.get(key);
+    if (!flavored) {
+        context.flavors.set(key, flavored = (context.clientOnly === clientOnly &&
+            context.deferred === deferred) ? context : __assign(__assign({}, context), { clientOnly: clientOnly, deferred: deferred }));
+    }
+    return flavored;
 }
-function keyFieldsFnFromSpecifier(specifier) {
-    var trie = new Trie(canUseWeakMap);
-    return function (object, context) {
-        var aliasMap;
-        if (context.selectionSet && context.fragmentMap) {
-            var info = trie.lookupArray([
-                context.selectionSet,
-                context.fragmentMap,
-            ]);
-            aliasMap = info.aliasMap || (info.aliasMap = makeAliasMap(context.selectionSet, context.fragmentMap));
+var StoreWriter = (function () {
+    function StoreWriter(cache, reader) {
+        this.cache = cache;
+        this.reader = reader;
+    }
+    StoreWriter.prototype.writeToStore = function (store, _a) {
+        var _this = this;
+        var query = _a.query, result = _a.result, dataId = _a.dataId, variables = _a.variables, overwrite = _a.overwrite;
+        var operationDefinition = getOperationDefinition(query);
+        var merger = makeProcessedFieldsMerger();
+        variables = __assign(__assign({}, getDefaultValues(operationDefinition)), variables);
+        var context = {
+            store: store,
+            written: Object.create(null),
+            merge: function (existing, incoming) {
+                return merger.merge(existing, incoming);
+            },
+            variables: variables,
+            varString: canonicalStringify(variables),
+            fragmentMap: createFragmentMap(getFragmentDefinitions(query)),
+            overwrite: !!overwrite,
+            incomingById: new Map,
+            clientOnly: false,
+            deferred: false,
+            flavors: new Map,
+        };
+        var ref = this.processSelectionSet({
+            result: result || Object.create(null),
+            dataId: dataId,
+            selectionSet: operationDefinition.selectionSet,
+            mergeTree: { map: new Map },
+            context: context,
+        });
+        if (!isReference(ref)) {
+            throw __DEV__ ? new InvariantError("Could not identify object ".concat(JSON.stringify(result))) : new InvariantError(6);
         }
-        var keyObject = context.keyObject =
-            computeKeyObject(object, specifier, true, aliasMap);
-        return context.typename + ":" + JSON.stringify(keyObject);
+        context.incomingById.forEach(function (_a, dataId) {
+            var storeObject = _a.storeObject, mergeTree = _a.mergeTree, fieldNodeSet = _a.fieldNodeSet;
+            var entityRef = makeReference(dataId);
+            if (mergeTree && mergeTree.map.size) {
+                var applied = _this.applyMerges(mergeTree, entityRef, storeObject, context);
+                if (isReference(applied)) {
+                    return;
+                }
+                storeObject = applied;
+            }
+            if (__DEV__ && !context.overwrite) {
+                var fieldsWithSelectionSets_1 = Object.create(null);
+                fieldNodeSet.forEach(function (field) {
+                    if (field.selectionSet) {
+                        fieldsWithSelectionSets_1[field.name.value] = true;
+                    }
+                });
+                var hasSelectionSet_1 = function (storeFieldName) {
+                    return fieldsWithSelectionSets_1[fieldNameFromStoreName(storeFieldName)] === true;
+                };
+                var hasMergeFunction_1 = function (storeFieldName) {
+                    var childTree = mergeTree && mergeTree.map.get(storeFieldName);
+                    return Boolean(childTree && childTree.info && childTree.info.merge);
+                };
+                Object.keys(storeObject).forEach(function (storeFieldName) {
+                    if (hasSelectionSet_1(storeFieldName) &&
+                        !hasMergeFunction_1(storeFieldName)) {
+                        warnAboutDataLoss(entityRef, storeObject, storeFieldName, context.store);
+                    }
+                });
+            }
+            store.merge(dataId, storeObject);
+        });
+        store.retain(ref.__ref);
+        return ref;
     };
-}
-function makeAliasMap(selectionSet, fragmentMap) {
-    var map = Object.create(null);
-    var workQueue = new Set([selectionSet]);
-    workQueue.forEach(function (selectionSet) {
-        selectionSet.selections.forEach(function (selection) {
-            if (isField(selection)) {
-                if (selection.alias) {
-                    var responseKey = selection.alias.value;
-                    var storeKey = selection.name.value;
-                    if (storeKey !== responseKey) {
-                        var aliases = map.aliases || (map.aliases = Object.create(null));
-                        aliases[storeKey] = responseKey;
+    StoreWriter.prototype.processSelectionSet = function (_a) {
+        var _this = this;
+        var dataId = _a.dataId, result = _a.result, selectionSet = _a.selectionSet, context = _a.context, mergeTree = _a.mergeTree;
+        var policies = this.cache.policies;
+        var incoming = Object.create(null);
+        var typename = (dataId && policies.rootTypenamesById[dataId]) ||
+            getTypenameFromResult(result, selectionSet, context.fragmentMap) ||
+            (dataId && context.store.get(dataId, "__typename"));
+        if ("string" === typeof typename) {
+            incoming.__typename = typename;
+        }
+        var readField = function () {
+            var options = normalizeReadFieldOptions(arguments, incoming, context.variables);
+            if (isReference(options.from)) {
+                var info = context.incomingById.get(options.from.__ref);
+                if (info) {
+                    var result_1 = policies.readField(__assign(__assign({}, options), { from: info.storeObject }), context);
+                    if (result_1 !== void 0) {
+                        return result_1;
                     }
                 }
-                if (selection.selectionSet) {
-                    var subsets = map.subsets || (map.subsets = Object.create(null));
-                    subsets[selection.name.value] =
-                        makeAliasMap(selection.selectionSet, fragmentMap);
-                }
             }
-            else {
-                var fragment = getFragmentFromSelection(selection, fragmentMap);
-                if (fragment) {
-                    workQueue.add(fragment.selectionSet);
+            return policies.readField(options, context);
+        };
+        var fieldNodeSet = new Set();
+        this.flattenFields(selectionSet, result, context, typename).forEach(function (context, field) {
+            var _a;
+            var resultFieldKey = resultKeyNameFromField(field);
+            var value = result[resultFieldKey];
+            fieldNodeSet.add(field);
+            if (value !== void 0) {
+                var storeFieldName = policies.getStoreFieldName({
+                    typename: typename,
+                    fieldName: field.name.value,
+                    field: field,
+                    variables: context.variables,
+                });
+                var childTree = getChildMergeTree(mergeTree, storeFieldName);
+                var incomingValue = _this.processFieldValue(value, field, field.selectionSet
+                    ? getContextFlavor(context, false, false)
+                    : context, childTree);
+                var childTypename = void 0;
+                if (field.selectionSet &&
+                    (isReference(incomingValue) ||
+                        storeValueIsStoreObject(incomingValue))) {
+                    childTypename = readField("__typename", incomingValue);
                 }
+                var merge = policies.getMergeFunction(typename, field.name.value, childTypename);
+                if (merge) {
+                    childTree.info = {
+                        field: field,
+                        typename: typename,
+                        merge: merge,
+                    };
+                }
+                else {
+                    maybeRecycleChildMergeTree(mergeTree, storeFieldName);
+                }
+                incoming = context.merge(incoming, (_a = {},
+                    _a[storeFieldName] = incomingValue,
+                    _a));
+            }
+            else if (__DEV__ &&
+                !context.clientOnly &&
+                !context.deferred &&
+                !addTypenameToDocument.added(field) &&
+                !policies.getReadFunction(typename, field.name.value)) {
+                __DEV__ && invariant$2.error("Missing field '".concat(resultKeyNameFromField(field), "' while writing result ").concat(JSON.stringify(result, null, 2)).substring(0, 1000));
             }
         });
-    });
-    return map;
-}
-function computeKeyObject(response, specifier, strict, aliasMap) {
-    var keyObj = Object.create(null);
-    var lastResponseKey;
-    var lastActualKey;
-    specifier.forEach(function (s) {
-        if (Array.isArray(s)) {
-            if (typeof lastActualKey === "string" &&
-                typeof lastResponseKey === "string") {
-                var subsets = aliasMap && aliasMap.subsets;
-                var subset = subsets && subsets[lastActualKey];
-                keyObj[lastActualKey] =
-                    computeKeyObject(response[lastResponseKey], s, strict, subset);
+        try {
+            var _b = policies.identify(result, {
+                typename: typename,
+                selectionSet: selectionSet,
+                fragmentMap: context.fragmentMap,
+                storeObject: incoming,
+                readField: readField,
+            }), id = _b[0], keyObject = _b[1];
+            dataId = dataId || id;
+            if (keyObject) {
+                incoming = context.merge(incoming, keyObject);
             }
         }
-        else {
-            var aliases = aliasMap && aliasMap.aliases;
-            var responseName = aliases && aliases[s] || s;
-            if (hasOwn$1.call(response, responseName)) {
-                keyObj[lastActualKey = s] = response[lastResponseKey = responseName];
+        catch (e) {
+            if (!dataId)
+                throw e;
+        }
+        if ("string" === typeof dataId) {
+            var dataRef = makeReference(dataId);
+            var sets = context.written[dataId] || (context.written[dataId] = []);
+            if (sets.indexOf(selectionSet) >= 0)
+                return dataRef;
+            sets.push(selectionSet);
+            if (this.reader && this.reader.isFresh(result, dataRef, selectionSet, context)) {
+                return dataRef;
+            }
+            var previous_1 = context.incomingById.get(dataId);
+            if (previous_1) {
+                previous_1.storeObject = context.merge(previous_1.storeObject, incoming);
+                previous_1.mergeTree = mergeMergeTrees(previous_1.mergeTree, mergeTree);
+                fieldNodeSet.forEach(function (field) { return previous_1.fieldNodeSet.add(field); });
             }
             else {
-                __DEV__ ? invariant$2(!strict, "Missing field '" + responseName + "' while computing key fields") : invariant$2(!strict, 4);
-                lastResponseKey = lastActualKey = void 0;
+                context.incomingById.set(dataId, {
+                    storeObject: incoming,
+                    mergeTree: mergeTreeIsEmpty(mergeTree) ? void 0 : mergeTree,
+                    fieldNodeSet: fieldNodeSet,
+                });
+            }
+            return dataRef;
+        }
+        return incoming;
+    };
+    StoreWriter.prototype.processFieldValue = function (value, field, context, mergeTree) {
+        var _this = this;
+        if (!field.selectionSet || value === null) {
+            return __DEV__ ? cloneDeep(value) : value;
+        }
+        if (isArray$3(value)) {
+            return value.map(function (item, i) {
+                var value = _this.processFieldValue(item, field, context, getChildMergeTree(mergeTree, i));
+                maybeRecycleChildMergeTree(mergeTree, i);
+                return value;
+            });
+        }
+        return this.processSelectionSet({
+            result: value,
+            selectionSet: field.selectionSet,
+            context: context,
+            mergeTree: mergeTree,
+        });
+    };
+    StoreWriter.prototype.flattenFields = function (selectionSet, result, context, typename) {
+        if (typename === void 0) { typename = getTypenameFromResult(result, selectionSet, context.fragmentMap); }
+        var fieldMap = new Map();
+        var policies = this.cache.policies;
+        var limitingTrie = new Trie(false);
+        (function flatten(selectionSet, inheritedContext) {
+            var visitedNode = limitingTrie.lookup(selectionSet, inheritedContext.clientOnly, inheritedContext.deferred);
+            if (visitedNode.visited)
+                return;
+            visitedNode.visited = true;
+            selectionSet.selections.forEach(function (selection) {
+                if (!shouldInclude(selection, context.variables))
+                    return;
+                var clientOnly = inheritedContext.clientOnly, deferred = inheritedContext.deferred;
+                if (!(clientOnly && deferred) &&
+                    isNonEmptyArray(selection.directives)) {
+                    selection.directives.forEach(function (dir) {
+                        var name = dir.name.value;
+                        if (name === "client")
+                            clientOnly = true;
+                        if (name === "defer") {
+                            var args = argumentsObjectFromField(dir, context.variables);
+                            if (!args || args.if !== false) {
+                                deferred = true;
+                            }
+                        }
+                    });
+                }
+                if (isField(selection)) {
+                    var existing = fieldMap.get(selection);
+                    if (existing) {
+                        clientOnly = clientOnly && existing.clientOnly;
+                        deferred = deferred && existing.deferred;
+                    }
+                    fieldMap.set(selection, getContextFlavor(context, clientOnly, deferred));
+                }
+                else {
+                    var fragment = getFragmentFromSelection(selection, context.fragmentMap);
+                    if (fragment &&
+                        policies.fragmentMatches(fragment, typename, result, context.variables)) {
+                        flatten(fragment.selectionSet, getContextFlavor(context, clientOnly, deferred));
+                    }
+                }
+            });
+        })(selectionSet, context);
+        return fieldMap;
+    };
+    StoreWriter.prototype.applyMerges = function (mergeTree, existing, incoming, context, getStorageArgs) {
+        var _a;
+        var _this = this;
+        if (mergeTree.map.size && !isReference(incoming)) {
+            var e_1 = (!isArray$3(incoming) &&
+                (isReference(existing) || storeValueIsStoreObject(existing))) ? existing : void 0;
+            var i_1 = incoming;
+            if (e_1 && !getStorageArgs) {
+                getStorageArgs = [isReference(e_1) ? e_1.__ref : e_1];
+            }
+            var changedFields_1;
+            var getValue_1 = function (from, name) {
+                return isArray$3(from)
+                    ? (typeof name === "number" ? from[name] : void 0)
+                    : context.store.getFieldValue(from, String(name));
+            };
+            mergeTree.map.forEach(function (childTree, storeFieldName) {
+                var eVal = getValue_1(e_1, storeFieldName);
+                var iVal = getValue_1(i_1, storeFieldName);
+                if (void 0 === iVal)
+                    return;
+                if (getStorageArgs) {
+                    getStorageArgs.push(storeFieldName);
+                }
+                var aVal = _this.applyMerges(childTree, eVal, iVal, context, getStorageArgs);
+                if (aVal !== iVal) {
+                    changedFields_1 = changedFields_1 || new Map;
+                    changedFields_1.set(storeFieldName, aVal);
+                }
+                if (getStorageArgs) {
+                    invariant$2(getStorageArgs.pop() === storeFieldName);
+                }
+            });
+            if (changedFields_1) {
+                incoming = (isArray$3(i_1) ? i_1.slice(0) : __assign({}, i_1));
+                changedFields_1.forEach(function (value, name) {
+                    incoming[name] = value;
+                });
             }
         }
-    });
-    return keyObj;
+        if (mergeTree.info) {
+            return this.cache.policies.runMergeFunction(existing, incoming, mergeTree.info, context, getStorageArgs && (_a = context.store).getStorage.apply(_a, getStorageArgs));
+        }
+        return incoming;
+    };
+    return StoreWriter;
+}());
+var emptyMergeTreePool = [];
+function getChildMergeTree(_a, name) {
+    var map = _a.map;
+    if (!map.has(name)) {
+        map.set(name, emptyMergeTreePool.pop() || { map: new Map });
+    }
+    return map.get(name);
+}
+function mergeMergeTrees(left, right) {
+    if (left === right || !right || mergeTreeIsEmpty(right))
+        return left;
+    if (!left || mergeTreeIsEmpty(left))
+        return right;
+    var info = left.info && right.info ? __assign(__assign({}, left.info), right.info) : left.info || right.info;
+    var needToMergeMaps = left.map.size && right.map.size;
+    var map = needToMergeMaps ? new Map :
+        left.map.size ? left.map : right.map;
+    var merged = { info: info, map: map };
+    if (needToMergeMaps) {
+        var remainingRightKeys_1 = new Set(right.map.keys());
+        left.map.forEach(function (leftTree, key) {
+            merged.map.set(key, mergeMergeTrees(leftTree, right.map.get(key)));
+            remainingRightKeys_1.delete(key);
+        });
+        remainingRightKeys_1.forEach(function (key) {
+            merged.map.set(key, mergeMergeTrees(right.map.get(key), left.map.get(key)));
+        });
+    }
+    return merged;
+}
+function mergeTreeIsEmpty(tree) {
+    return !tree || !(tree.info || tree.map.size);
+}
+function maybeRecycleChildMergeTree(_a, name) {
+    var map = _a.map;
+    var childTree = map.get(name);
+    if (childTree && mergeTreeIsEmpty(childTree)) {
+        emptyMergeTreePool.push(childTree);
+        map.delete(name);
+    }
+}
+var warnings = new Set();
+function warnAboutDataLoss(existingRef, incomingObj, storeFieldName, store) {
+    var getChild = function (objOrRef) {
+        var child = store.getFieldValue(objOrRef, storeFieldName);
+        return typeof child === "object" && child;
+    };
+    var existing = getChild(existingRef);
+    if (!existing)
+        return;
+    var incoming = getChild(incomingObj);
+    if (!incoming)
+        return;
+    if (isReference(existing))
+        return;
+    if (equal$1(existing, incoming))
+        return;
+    if (Object.keys(existing).every(function (key) { return store.getFieldValue(incoming, key) !== void 0; })) {
+        return;
+    }
+    var parentType = store.getFieldValue(existingRef, "__typename") ||
+        store.getFieldValue(incomingObj, "__typename");
+    var fieldName = fieldNameFromStoreName(storeFieldName);
+    var typeDotName = "".concat(parentType, ".").concat(fieldName);
+    if (warnings.has(typeDotName))
+        return;
+    warnings.add(typeDotName);
+    var childTypenames = [];
+    if (!isArray$3(existing) &&
+        !isArray$3(incoming)) {
+        [existing, incoming].forEach(function (child) {
+            var typename = store.getFieldValue(child, "__typename");
+            if (typeof typename === "string" &&
+                !childTypenames.includes(typename)) {
+                childTypenames.push(typename);
+            }
+        });
+    }
+    __DEV__ && invariant$2.warn("Cache data may be lost when replacing the ".concat(fieldName, " field of a ").concat(parentType, " object.\n\nTo address this problem (which is not a bug in Apollo Client), ").concat(childTypenames.length
+        ? "either ensure all objects of type " +
+            childTypenames.join(" and ") + " have an ID or a custom merge function, or "
+        : "", "define a custom merge function for the ").concat(typeDotName, " field, so InMemoryCache can safely merge these objects:\n\n  existing: ").concat(JSON.stringify(existing).slice(0, 1000), "\n  incoming: ").concat(JSON.stringify(incoming).slice(0, 1000), "\n\nFor more information about these options, please refer to the documentation:\n\n  * Ensuring entity objects have IDs: https://go.apollo.dev/c/generating-unique-identifiers\n  * Defining custom merge functions: https://go.apollo.dev/c/merging-non-normalized-objects\n"));
 }
 
 var InMemoryCache = (function (_super) {
@@ -11952,8 +10650,14 @@ var InMemoryCache = (function (_super) {
         return (optimistic ? this.optimisticData : this.data).release(rootId);
     };
     InMemoryCache.prototype.identify = function (object) {
-        return isReference(object) ? object.__ref :
-            this.policies.identify(object)[0];
+        if (isReference(object))
+            return object.__ref;
+        try {
+            return this.policies.identify(object)[0];
+        }
+        catch (e) {
+            __DEV__ && invariant$2.warn(e);
+        }
     };
     InMemoryCache.prototype.evict = function (options) {
         if (!options.id) {
@@ -11996,6 +10700,7 @@ var InMemoryCache = (function (_super) {
     InMemoryCache.prototype.batch = function (options) {
         var _this = this;
         var update = options.update, _a = options.optimistic, optimistic = _a === void 0 ? true : _a, removeOptimistic = options.removeOptimistic, onWatchUpdated = options.onWatchUpdated;
+        var updateResult;
         var perform = function (layer) {
             var _a = _this, data = _a.data, optimisticData = _a.optimisticData;
             ++_this.txCount;
@@ -12003,7 +10708,7 @@ var InMemoryCache = (function (_super) {
                 _this.data = _this.optimisticData = layer;
             }
             try {
-                update(_this);
+                return updateResult = update(_this);
             }
             finally {
                 --_this.txCount;
@@ -12045,6 +10750,7 @@ var InMemoryCache = (function (_super) {
         else {
             this.broadcastWatches(options);
         }
+        return updateResult;
     };
     InMemoryCache.prototype.performTransaction = function (update, optimisticId) {
         return this.batch({
@@ -12089,6 +10795,43 @@ var InMemoryCache = (function (_super) {
     };
     return InMemoryCache;
 }(ApolloCache));
+
+function isApolloError(err) {
+    return err.hasOwnProperty('graphQLErrors');
+}
+var generateErrorMessage = function (err) {
+    var message = '';
+    if (isNonEmptyArray(err.graphQLErrors) || isNonEmptyArray(err.clientErrors)) {
+        var errors = (err.graphQLErrors || [])
+            .concat(err.clientErrors || []);
+        errors.forEach(function (error) {
+            var errorMessage = error
+                ? error.message
+                : 'Error message not found.';
+            message += "".concat(errorMessage, "\n");
+        });
+    }
+    if (err.networkError) {
+        message += "".concat(err.networkError.message, "\n");
+    }
+    message = message.replace(/\n$/, '');
+    return message;
+};
+var ApolloError = (function (_super) {
+    __extends(ApolloError, _super);
+    function ApolloError(_a) {
+        var graphQLErrors = _a.graphQLErrors, clientErrors = _a.clientErrors, networkError = _a.networkError, errorMessage = _a.errorMessage, extraInfo = _a.extraInfo;
+        var _this = _super.call(this, errorMessage) || this;
+        _this.graphQLErrors = graphQLErrors || [];
+        _this.clientErrors = clientErrors || [];
+        _this.networkError = networkError || null;
+        _this.message = errorMessage || generateErrorMessage(_this);
+        _this.extraInfo = extraInfo;
+        _this.__proto__ = ApolloError.prototype;
+        return _this;
+    }
+    return ApolloError;
+}(Error));
 
 var NetworkStatus;
 (function (NetworkStatus) {
@@ -12182,11 +10925,11 @@ var ObservableQuery = (function (_super) {
             NetworkStatus.ready;
         var result = __assign(__assign({}, lastResult), { loading: isNetworkRequestInFlight(networkStatus), networkStatus: networkStatus });
         var _a = this.options.fetchPolicy, fetchPolicy = _a === void 0 ? "cache-first" : _a;
-        var shouldReturnCachedData = lastResult || (fetchPolicy !== 'network-only' &&
-            fetchPolicy !== 'no-cache' &&
-            fetchPolicy !== 'standby');
-        if (shouldReturnCachedData &&
-            !this.queryManager.transform(this.options.query).hasForcedResolvers) {
+        if (fetchPolicy === 'network-only' ||
+            fetchPolicy === 'no-cache' ||
+            fetchPolicy === 'standby' ||
+            this.queryManager.transform(this.options.query).hasForcedResolvers) ;
+        else {
             var diff = this.queryInfo.getDiff();
             if (diff.complete || this.options.returnPartialData) {
                 result.data = diff.result;
@@ -12195,15 +10938,16 @@ var ObservableQuery = (function (_super) {
                 result.data = void 0;
             }
             if (diff.complete) {
-                if (result.networkStatus === NetworkStatus.loading &&
+                delete result.partial;
+                if (diff.complete &&
+                    result.networkStatus === NetworkStatus.loading &&
                     (fetchPolicy === 'cache-first' ||
                         fetchPolicy === 'cache-only')) {
                     result.networkStatus = NetworkStatus.ready;
                     result.loading = false;
                 }
-                delete result.partial;
             }
-            else if (fetchPolicy !== "no-cache") {
+            else {
                 result.partial = true;
             }
             if (__DEV__ &&
@@ -12250,17 +10994,20 @@ var ObservableQuery = (function (_super) {
             pollInterval: 0,
         };
         var fetchPolicy = this.options.fetchPolicy;
-        if (fetchPolicy === 'no-cache') {
+        if (fetchPolicy === 'cache-and-network') {
+            reobserveOptions.fetchPolicy = fetchPolicy;
+        }
+        else if (fetchPolicy === 'no-cache') {
             reobserveOptions.fetchPolicy = 'no-cache';
         }
-        else if (fetchPolicy !== 'cache-and-network') {
+        else {
             reobserveOptions.fetchPolicy = 'network-only';
         }
         if (__DEV__ && variables && hasOwnProperty$c.call(variables, "variables")) {
             var queryDef = getQueryDefinition(this.options.query);
             var vars = queryDef.variableDefinitions;
             if (!vars || !vars.some(function (v) { return v.variable.name.value === "variables"; })) {
-                __DEV__ && invariant$2.warn("Called refetch(" + JSON.stringify(variables) + ") for query " + (((_a = queryDef.name) === null || _a === void 0 ? void 0 : _a.value) || JSON.stringify(queryDef)) + ", which does not declare a $variables variable.\nDid you mean to call refetch(variables) instead of refetch({ variables })?");
+                __DEV__ && invariant$2.warn("Called refetch(".concat(JSON.stringify(variables), ") for query ").concat(((_a = queryDef.name) === null || _a === void 0 ? void 0 : _a.value) || JSON.stringify(queryDef), ", which does not declare a $variables variable.\nDid you mean to call refetch(variables) instead of refetch({ variables })?"));
             }
         }
         if (variables && !equal$1(this.options.variables, variables)) {
@@ -12407,7 +11154,7 @@ var ObservableQuery = (function (_super) {
             pollingInfo.interval === pollInterval) {
             return;
         }
-        __DEV__ ? invariant$2(pollInterval, 'Attempted to start a polling query without a polling interval.') : invariant$2(pollInterval, 12);
+        __DEV__ ? invariant$2(pollInterval, 'Attempted to start a polling query without a polling interval.') : invariant$2(pollInterval, 10);
         var info = pollingInfo || (this.pollingInfo = {});
         info.interval = pollInterval;
         var maybeFetch = function () {
@@ -12487,8 +11234,11 @@ var ObservableQuery = (function (_super) {
         this.reportResult(this.getCurrentResult(false), this.variables);
     };
     ObservableQuery.prototype.reportResult = function (result, variables) {
-        if (this.getLastError() || this.isDifferentFromLastResult(result)) {
-            this.updateLastResult(result, variables);
+        var lastError = this.getLastError();
+        if (lastError || this.isDifferentFromLastResult(result)) {
+            if (lastError || !result.partial || this.options.returnPartialData) {
+                this.updateLastResult(result, variables);
+            }
             iterateObserversSafely(this.observers, 'next', result);
         }
     };
@@ -12522,8 +11272,8 @@ function defaultSubscriptionObserverErrorCallback(error) {
     __DEV__ && invariant$2.error('Unhandled error', error.message, error.stack);
 }
 function logMissingFieldErrors(missing) {
-    if (__DEV__ && isNonEmptyArray(missing)) {
-        __DEV__ && invariant$2.debug("Missing cache result fields: " + missing.map(function (m) { return m.path.join('.'); }).join(', '), missing);
+    if (__DEV__ && missing) {
+        __DEV__ && invariant$2.debug("Missing cache result fields: ".concat(JSON.stringify(missing)), missing);
     }
 }
 function applyNextFetchPolicy(options) {
@@ -12704,7 +11454,7 @@ var LocalState = (function () {
                         }
                         else {
                             fragment = fragmentMap[selection.name.value];
-                            __DEV__ ? invariant$2(fragment, "No fragment named " + selection.name.value) : invariant$2(fragment, 11);
+                            __DEV__ ? invariant$2(fragment, "No fragment named ".concat(selection.name.value)) : invariant$2(fragment, 9);
                         }
                         if (fragment && fragment.typeCondition) {
                             typeCondition = fragment.typeCondition.name.value;
@@ -13090,7 +11840,7 @@ var QueryManager = (function () {
         this.queries.forEach(function (_info, queryId) {
             _this.stopQueryNoBroadcast(queryId);
         });
-        this.cancelPendingFetches(__DEV__ ? new InvariantError('QueryManager stopped while query was in flight') : new InvariantError(13));
+        this.cancelPendingFetches(__DEV__ ? new InvariantError('QueryManager stopped while query was in flight') : new InvariantError(11));
     };
     QueryManager.prototype.cancelPendingFetches = function (error) {
         this.fetchCancelFns.forEach(function (cancel) { return cancel(error); });
@@ -13103,10 +11853,10 @@ var QueryManager = (function () {
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
-                        __DEV__ ? invariant$2(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.') : invariant$2(mutation, 14);
+                        __DEV__ ? invariant$2(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.') : invariant$2(mutation, 12);
                         __DEV__ ? invariant$2(fetchPolicy === 'network-only' ||
                             fetchPolicy === 'no-cache', "Mutations support only 'network-only' or 'no-cache' fetchPolicy strings. The default `network-only` behavior automatically writes mutation results to the cache. Passing `no-cache` skips the cache write.") : invariant$2(fetchPolicy === 'network-only' ||
-                            fetchPolicy === 'no-cache', 15);
+                            fetchPolicy === 'no-cache', 13);
                         mutationId = this.generateMutationId();
                         mutation = this.transform(mutation).document;
                         variables = this.getVariables(mutation, variables);
@@ -13391,10 +12141,10 @@ var QueryManager = (function () {
         var _this = this;
         if (queryId === void 0) { queryId = this.generateQueryId(); }
         __DEV__ ? invariant$2(options.query, 'query option is required. You must specify your GraphQL document ' +
-            'in the query option.') : invariant$2(options.query, 16);
-        __DEV__ ? invariant$2(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.') : invariant$2(options.query.kind === 'Document', 17);
-        __DEV__ ? invariant$2(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.') : invariant$2(!options.returnPartialData, 18);
-        __DEV__ ? invariant$2(!options.pollInterval, 'pollInterval option only supported on watchQuery.') : invariant$2(!options.pollInterval, 19);
+            'in the query option.') : invariant$2(options.query, 14);
+        __DEV__ ? invariant$2(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.') : invariant$2(options.query.kind === 'Document', 15);
+        __DEV__ ? invariant$2(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.') : invariant$2(!options.returnPartialData, 16);
+        __DEV__ ? invariant$2(!options.pollInterval, 'pollInterval option only supported on watchQuery.') : invariant$2(!options.pollInterval, 17);
         return this.fetchQuery(queryId, options).finally(function () { return _this.stopQuery(queryId); });
     };
     QueryManager.prototype.generateQueryId = function () {
@@ -13415,8 +12165,11 @@ var QueryManager = (function () {
         if (queryInfo)
             queryInfo.stop();
     };
-    QueryManager.prototype.clearStore = function () {
-        this.cancelPendingFetches(__DEV__ ? new InvariantError('Store reset while query was in flight (not completed in link chain)') : new InvariantError(20));
+    QueryManager.prototype.clearStore = function (options) {
+        if (options === void 0) { options = {
+            discardWatches: true,
+        }; }
+        this.cancelPendingFetches(__DEV__ ? new InvariantError('Store reset while query was in flight (not completed in link chain)') : new InvariantError(18));
         this.queries.forEach(function (queryInfo) {
             if (queryInfo.observableQuery) {
                 queryInfo.networkStatus = NetworkStatus.loading;
@@ -13428,13 +12181,7 @@ var QueryManager = (function () {
         if (this.mutationStore) {
             this.mutationStore = Object.create(null);
         }
-        return this.cache.reset();
-    };
-    QueryManager.prototype.resetStore = function () {
-        var _this = this;
-        return this.clearStore().then(function () {
-            return _this.reFetchObservableQueries();
-        });
+        return this.cache.reset(options);
     };
     QueryManager.prototype.getObservableQueries = function (include) {
         var _this = this;
@@ -13498,7 +12245,7 @@ var QueryManager = (function () {
         if (__DEV__ && queryNamesAndDocs.size) {
             queryNamesAndDocs.forEach(function (included, nameOrDoc) {
                 if (!included) {
-                    __DEV__ && invariant$2.warn("Unknown query " + (typeof nameOrDoc === "string" ? "named " : "") + JSON.stringify(nameOrDoc, null, 2) + " requested in refetchQueries options.include array");
+                    __DEV__ && invariant$2.warn("Unknown query ".concat(typeof nameOrDoc === "string" ? "named " : "").concat(JSON.stringify(nameOrDoc, null, 2), " requested in refetchQueries options.include array"));
                 }
             });
         }
@@ -13734,7 +12481,7 @@ var QueryManager = (function () {
                             if (result !== false) {
                                 results.set(oq, result);
                             }
-                            return false;
+                            return result;
                         }
                         if (onQueryUpdated !== null) {
                             includedQueriesById.set(oq.queryId, { oq: oq, lastDiff: lastDiff, diff: diff });
@@ -13910,7 +12657,7 @@ var ApolloClient = (function () {
         if (!cache) {
             throw __DEV__ ? new InvariantError("To initialize Apollo Client, you must specify a 'cache' property " +
                 "in the options object. \n" +
-                "For more information, please visit: https://go.apollo.dev/c/docs") : new InvariantError(9);
+                "For more information, please visit: https://go.apollo.dev/c/docs") : new InvariantError(7);
         }
         this.link = link;
         this.cache = cache;
@@ -14006,7 +12753,7 @@ var ApolloClient = (function () {
         __DEV__ ? invariant$2(options.fetchPolicy !== 'cache-and-network', 'The cache-and-network fetchPolicy does not work with client.query, because ' +
             'client.query can only return a single result. Please use client.watchQuery ' +
             'to receive multiple results from the cache and the network, or consider ' +
-            'using a different fetchPolicy, such as cache-first or network-only.') : invariant$2(options.fetchPolicy !== 'cache-and-network', 10);
+            'using a different fetchPolicy, such as cache-first or network-only.') : invariant$2(options.fetchPolicy !== 'cache-and-network', 8);
         if (this.disableNetworkFetches && options.fetchPolicy === 'network-only') {
             options = __assign(__assign({}, options), { fetchPolicy: 'cache-first' });
         }
@@ -14046,14 +12793,18 @@ var ApolloClient = (function () {
     ApolloClient.prototype.resetStore = function () {
         var _this = this;
         return Promise.resolve()
-            .then(function () { return _this.queryManager.clearStore(); })
+            .then(function () { return _this.queryManager.clearStore({
+            discardWatches: false,
+        }); })
             .then(function () { return Promise.all(_this.resetStoreCallbacks.map(function (fn) { return fn(); })); })
             .then(function () { return _this.reFetchObservableQueries(); });
     };
     ApolloClient.prototype.clearStore = function () {
         var _this = this;
         return Promise.resolve()
-            .then(function () { return _this.queryManager.clearStore(); })
+            .then(function () { return _this.queryManager.clearStore({
+            discardWatches: true,
+        }); })
             .then(function () { return Promise.all(_this.clearStoreCallbacks.map(function (fn) { return fn(); })); });
     };
     ApolloClient.prototype.onResetStore = function (cb) {
@@ -14085,7 +12836,7 @@ var ApolloClient = (function () {
         result.queries = queries;
         result.results = results;
         result.catch(function (error) {
-            __DEV__ && invariant$2.debug("In client.refetchQueries, Promise.all promise rejected with error " + error);
+            __DEV__ && invariant$2.debug("In client.refetchQueries, Promise.all promise rejected with error ".concat(error));
         });
         return result;
     };
@@ -14180,7 +12931,8 @@ function parseDocument(source) {
     var cacheKey = normalize(source);
     if (!docCache.has(cacheKey)) {
         var parsed = parse$1s(source, {
-            experimentalFragmentVariables: experimentalFragmentVariables
+            experimentalFragmentVariables: experimentalFragmentVariables,
+            allowLegacyFragmentVariables: experimentalFragmentVariables
         });
         if (!parsed || parsed.kind !== 'Document') {
             throw new Error('Not a valid GraphQL document.');
@@ -14234,502 +12986,393 @@ var extras = {
 })(gql || (gql = {}));
 gql["default"] = gql;
 
-var MutationData = (function (_super) {
-    __extends(MutationData, _super);
-    function MutationData(_a) {
-        var options = _a.options, context = _a.context, result = _a.result, setResult = _a.setResult;
-        var _this = _super.call(this, options, context) || this;
-        _this.runMutation = function (mutationFunctionOptions) {
-            if (mutationFunctionOptions === void 0) { mutationFunctionOptions = {}; }
-            _this.onMutationStart();
-            var mutationId = _this.generateNewMutationId();
-            return _this.mutate(mutationFunctionOptions)
-                .then(function (response) {
-                _this.onMutationCompleted(response, mutationId);
-                return response;
-            })
-                .catch(function (error) {
-                var onError = _this.getOptions().onError;
-                _this.onMutationError(error, mutationId);
-                if (onError) {
-                    onError(error);
-                    return {
-                        data: undefined,
-                        errors: error,
-                    };
-                }
-                else {
-                    throw error;
-                }
-            });
-        };
-        _this.verifyDocumentType(options.mutation, DocumentType.Mutation);
-        _this.result = result;
-        _this.setResult = setResult;
-        _this.mostRecentMutationId = 0;
-        return _this;
+var DocumentType;
+(function (DocumentType) {
+    DocumentType[DocumentType["Query"] = 0] = "Query";
+    DocumentType[DocumentType["Mutation"] = 1] = "Mutation";
+    DocumentType[DocumentType["Subscription"] = 2] = "Subscription";
+})(DocumentType || (DocumentType = {}));
+var cache = new Map();
+function operationName(type) {
+    var name;
+    switch (type) {
+        case DocumentType.Query:
+            name = 'Query';
+            break;
+        case DocumentType.Mutation:
+            name = 'Mutation';
+            break;
+        case DocumentType.Subscription:
+            name = 'Subscription';
+            break;
     }
-    MutationData.prototype.execute = function (result) {
-        this.isMounted = true;
-        this.verifyDocumentType(this.getOptions().mutation, DocumentType.Mutation);
-        return [
-            this.runMutation,
-            __assign(__assign({}, result), { client: this.refreshClient().client })
-        ];
-    };
-    MutationData.prototype.afterExecute = function () {
-        this.isMounted = true;
-        return this.unmount.bind(this);
-    };
-    MutationData.prototype.cleanup = function () {
-    };
-    MutationData.prototype.mutate = function (options) {
-        return this.refreshClient().client.mutate(mergeOptions(this.getOptions(), options));
-    };
-    MutationData.prototype.onMutationStart = function () {
-        if (!this.result.loading && !this.getOptions().ignoreResults) {
-            this.updateResult({
-                loading: true,
-                error: undefined,
-                data: undefined,
-                called: true
-            });
-        }
-    };
-    MutationData.prototype.onMutationCompleted = function (response, mutationId) {
-        var _a = this.getOptions(), onCompleted = _a.onCompleted, ignoreResults = _a.ignoreResults;
-        var data = response.data, errors = response.errors;
-        var error = errors && errors.length > 0
-            ? new ApolloError({ graphQLErrors: errors })
-            : undefined;
-        var callOncomplete = function () {
-            return onCompleted ? onCompleted(data) : null;
-        };
-        if (this.isMostRecentMutation(mutationId) && !ignoreResults) {
-            this.updateResult({
-                called: true,
-                loading: false,
-                data: data,
-                error: error
-            });
-        }
-        callOncomplete();
-    };
-    MutationData.prototype.onMutationError = function (error, mutationId) {
-        if (this.isMostRecentMutation(mutationId)) {
-            this.updateResult({
-                loading: false,
-                error: error,
-                data: undefined,
-                called: true
-            });
-        }
-    };
-    MutationData.prototype.generateNewMutationId = function () {
-        return ++this.mostRecentMutationId;
-    };
-    MutationData.prototype.isMostRecentMutation = function (mutationId) {
-        return this.mostRecentMutationId === mutationId;
-    };
-    MutationData.prototype.updateResult = function (result) {
-        if (this.isMounted &&
-            (!this.previousResult || !equal$1(this.previousResult, result))) {
-            this.setResult(result);
-            this.previousResult = result;
-            return result;
-        }
-    };
-    return MutationData;
-}(OperationData));
-
-var QueryData = (function (_super) {
-    __extends(QueryData, _super);
-    function QueryData(_a) {
-        var options = _a.options, context = _a.context, onNewData = _a.onNewData;
-        var _this = _super.call(this, options, context) || this;
-        _this.runLazy = false;
-        _this.previous = Object.create(null);
-        _this.runLazyQuery = function (options) {
-            _this.cleanup();
-            _this.runLazy = true;
-            _this.lazyOptions = options;
-            _this.onNewData();
-        };
-        _this.obsRefetch = function (variables) { var _a; return (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.refetch(variables); };
-        _this.obsFetchMore = function (fetchMoreOptions) { var _a; return (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.fetchMore(fetchMoreOptions); };
-        _this.obsUpdateQuery = function (mapFn) { var _a; return (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.updateQuery(mapFn); };
-        _this.obsStartPolling = function (pollInterval) {
-            var _a;
-            (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.startPolling(pollInterval);
-        };
-        _this.obsStopPolling = function () {
-            var _a;
-            (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.stopPolling();
-        };
-        _this.obsSubscribeToMore = function (options) { var _a; return (_a = _this.currentObservable) === null || _a === void 0 ? void 0 : _a.subscribeToMore(options); };
-        _this.onNewData = onNewData;
-        return _this;
-    }
-    QueryData.prototype.execute = function () {
-        this.refreshClient();
-        var _a = this.getOptions(), skip = _a.skip, query = _a.query;
-        if (skip || query !== this.previous.query) {
-            this.removeQuerySubscription();
-            this.removeObservable(!skip);
-            this.previous.query = query;
-        }
-        this.updateObservableQuery();
-        return this.getExecuteSsrResult() || this.getExecuteResult();
-    };
-    QueryData.prototype.executeLazy = function () {
-        return !this.runLazy
-            ? [
-                this.runLazyQuery,
-                {
-                    loading: false,
-                    networkStatus: NetworkStatus.ready,
-                    called: false,
-                    data: undefined
-                }
-            ]
-            : [this.runLazyQuery, this.execute()];
-    };
-    QueryData.prototype.fetchData = function () {
-        var _this = this;
-        var options = this.getOptions();
-        if (options.skip || options.ssr === false)
-            return false;
-        return new Promise(function (resolve) { return _this.startQuerySubscription(resolve); });
-    };
-    QueryData.prototype.afterExecute = function (_a) {
-        var _b = _a === void 0 ? {} : _a, _c = _b.lazy, lazy = _c === void 0 ? false : _c;
-        this.isMounted = true;
-        var options = this.getOptions();
-        if (this.currentObservable && !this.ssrInitiated()) {
-            this.startQuerySubscription();
-        }
-        if (!lazy || this.runLazy) {
-            this.handleErrorOrCompleted();
-        }
-        this.previousOptions = options;
-        return this.unmount.bind(this);
-    };
-    QueryData.prototype.cleanup = function () {
-        this.removeQuerySubscription();
-        this.removeObservable(true);
-        delete this.previous.result;
-    };
-    QueryData.prototype.getOptions = function () {
-        var options = _super.prototype.getOptions.call(this);
-        if (this.lazyOptions) {
-            options.variables = __assign(__assign({}, options.variables), this.lazyOptions.variables);
-            options.context = __assign(__assign({}, options.context), this.lazyOptions.context);
-        }
-        if (this.runLazy) {
-            delete options.skip;
-        }
-        return options;
-    };
-    QueryData.prototype.ssrInitiated = function () {
-        return this.context && this.context.renderPromises;
-    };
-    QueryData.prototype.getExecuteSsrResult = function () {
-        var _a = this.getOptions(), ssr = _a.ssr, skip = _a.skip;
-        var ssrDisabled = ssr === false;
-        var fetchDisabled = this.refreshClient().client.disableNetworkFetches;
-        var ssrLoading = __assign({ loading: true, networkStatus: NetworkStatus.loading, called: true, data: undefined, stale: false, client: this.client }, this.observableQueryFields());
-        if (ssrDisabled && (this.ssrInitiated() || fetchDisabled)) {
-            this.previous.result = ssrLoading;
-            return ssrLoading;
-        }
-        if (this.ssrInitiated()) {
-            var result = this.getExecuteResult() || ssrLoading;
-            if (result.loading && !skip) {
-                this.context.renderPromises.addQueryPromise(this, function () { return null; });
-            }
-            return result;
-        }
-    };
-    QueryData.prototype.prepareObservableQueryOptions = function () {
-        var options = this.getOptions();
-        this.verifyDocumentType(options.query, DocumentType.Query);
-        var displayName = options.displayName || 'Query';
-        if (this.ssrInitiated() &&
-            (options.fetchPolicy === 'network-only' ||
-                options.fetchPolicy === 'cache-and-network')) {
-            options.fetchPolicy = 'cache-first';
-        }
-        return __assign(__assign({}, options), { displayName: displayName, context: options.context });
-    };
-    QueryData.prototype.initializeObservableQuery = function () {
-        if (this.ssrInitiated()) {
-            this.currentObservable = this.context.renderPromises.getSSRObservable(this.getOptions());
-        }
-        if (!this.currentObservable) {
-            var observableQueryOptions = this.prepareObservableQueryOptions();
-            this.previous.observableQueryOptions = __assign(__assign({}, observableQueryOptions), { children: void 0 });
-            this.currentObservable = this.refreshClient().client.watchQuery(__assign({}, observableQueryOptions));
-            if (this.ssrInitiated()) {
-                this.context.renderPromises.registerSSRObservable(this.currentObservable, observableQueryOptions);
-            }
-        }
-    };
-    QueryData.prototype.updateObservableQuery = function () {
-        if (!this.currentObservable) {
-            this.initializeObservableQuery();
-            return;
-        }
-        var newObservableQueryOptions = __assign(__assign({}, this.prepareObservableQueryOptions()), { children: void 0 });
-        if (this.getOptions().skip) {
-            this.previous.observableQueryOptions = newObservableQueryOptions;
-            return;
-        }
-        if (!equal$1(newObservableQueryOptions, this.previous.observableQueryOptions)) {
-            this.previous.observableQueryOptions = newObservableQueryOptions;
-            this.currentObservable
-                .setOptions(newObservableQueryOptions)
-                .catch(function () { });
-        }
-    };
-    QueryData.prototype.startQuerySubscription = function (onNewData) {
-        var _this = this;
-        if (onNewData === void 0) { onNewData = this.onNewData; }
-        if (this.currentSubscription || this.getOptions().skip)
-            return;
-        this.currentSubscription = this.currentObservable.subscribe({
-            next: function (_a) {
-                var loading = _a.loading, networkStatus = _a.networkStatus, data = _a.data;
-                var previousResult = _this.previous.result;
-                if (previousResult &&
-                    previousResult.loading === loading &&
-                    previousResult.networkStatus === networkStatus &&
-                    equal$1(previousResult.data, data)) {
-                    return;
-                }
-                onNewData();
-            },
-            error: function (error) {
-                _this.resubscribeToQuery();
-                if (!error.hasOwnProperty('graphQLErrors'))
-                    throw error;
-                var previousResult = _this.previous.result;
-                if ((previousResult && previousResult.loading) ||
-                    !equal$1(error, _this.previous.error)) {
-                    _this.previous.error = error;
-                    onNewData();
-                }
-            }
-        });
-    };
-    QueryData.prototype.resubscribeToQuery = function () {
-        this.removeQuerySubscription();
-        var currentObservable = this.currentObservable;
-        if (currentObservable) {
-            var last = currentObservable["last"];
-            try {
-                currentObservable.resetLastResults();
-                this.startQuerySubscription();
-            }
-            finally {
-                currentObservable["last"] = last;
-            }
-        }
-    };
-    QueryData.prototype.getExecuteResult = function () {
-        var result = this.observableQueryFields();
-        var options = this.getOptions();
-        if (options.skip) {
-            result = __assign(__assign({}, result), { data: undefined, error: undefined, loading: false, networkStatus: NetworkStatus.ready, called: true });
-        }
-        else if (this.currentObservable) {
-            var currentResult = this.currentObservable.getCurrentResult();
-            var data = currentResult.data, loading = currentResult.loading, partial = currentResult.partial, networkStatus = currentResult.networkStatus, errors = currentResult.errors;
-            var error = currentResult.error;
-            if (errors && errors.length > 0) {
-                error = new ApolloError({ graphQLErrors: errors });
-            }
-            result = __assign(__assign({}, result), { data: data, loading: loading, networkStatus: networkStatus, error: error, called: true });
-            if (loading) ;
-            else if (error) {
-                Object.assign(result, {
-                    data: (this.currentObservable.getLastResult() || {})
-                        .data
-                });
-            }
-            else {
-                var fetchPolicy = this.currentObservable.options.fetchPolicy;
-                var partialRefetch = options.partialRefetch;
-                if (partialRefetch &&
-                    partial &&
-                    (!data || Object.keys(data).length === 0) &&
-                    fetchPolicy !== 'cache-only') {
-                    Object.assign(result, {
-                        loading: true,
-                        networkStatus: NetworkStatus.loading
-                    });
-                    result.refetch();
-                    return result;
-                }
-            }
-        }
-        result.client = this.client;
-        this.setOptions(options, true);
-        var previousResult = this.previous.result;
-        this.previous.loading =
-            previousResult && previousResult.loading || false;
-        result.previousData = previousResult &&
-            (previousResult.data || previousResult.previousData);
-        this.previous.result = result;
-        this.currentObservable && this.currentObservable.resetQueryStoreErrors();
-        return result;
-    };
-    QueryData.prototype.handleErrorOrCompleted = function () {
-        if (!this.currentObservable || !this.previous.result)
-            return;
-        var _a = this.previous.result, data = _a.data, loading = _a.loading, error = _a.error;
-        if (!loading) {
-            var _b = this.getOptions(), query = _b.query, variables = _b.variables, onCompleted = _b.onCompleted, onError = _b.onError, skip = _b.skip;
-            if (this.previousOptions &&
-                !this.previous.loading &&
-                equal$1(this.previousOptions.query, query) &&
-                equal$1(this.previousOptions.variables, variables)) {
-                return;
-            }
-            if (onCompleted && !error && !skip) {
-                onCompleted(data);
-            }
-            else if (onError && error) {
-                onError(error);
-            }
-        }
-    };
-    QueryData.prototype.removeQuerySubscription = function () {
-        if (this.currentSubscription) {
-            this.currentSubscription.unsubscribe();
-            delete this.currentSubscription;
-        }
-    };
-    QueryData.prototype.removeObservable = function (andDelete) {
-        if (this.currentObservable) {
-            this.currentObservable["tearDownQuery"]();
-            if (andDelete) {
-                delete this.currentObservable;
-            }
-        }
-    };
-    QueryData.prototype.observableQueryFields = function () {
-        var _a;
-        return {
-            variables: (_a = this.currentObservable) === null || _a === void 0 ? void 0 : _a.variables,
-            refetch: this.obsRefetch,
-            fetchMore: this.obsFetchMore,
-            updateQuery: this.obsUpdateQuery,
-            startPolling: this.obsStartPolling,
-            stopPolling: this.obsStopPolling,
-            subscribeToMore: this.obsSubscribeToMore
-        };
-    };
-    return QueryData;
-}(OperationData));
-
-function useDeepMemo(memoFn, key) {
-    var ref = React.useRef();
-    if (!ref.current || !equal$1(key, ref.current.key)) {
-        ref.current = { key: key, value: memoFn() };
-    }
-    return ref.current.value;
+    return name;
 }
-
-function useAfterFastRefresh(effectFn) {
-    if (__DEV__) {
-        var didRefresh_1 = React.useRef(false);
-        React.useEffect(function () {
-            return function () {
-                didRefresh_1.current = true;
-            };
-        }, []);
-        React.useEffect(function () {
-            if (didRefresh_1.current === true) {
-                didRefresh_1.current = false;
-                effectFn();
-            }
-        }, []);
+function parser(document) {
+    var cached = cache.get(document);
+    if (cached)
+        return cached;
+    var variables, type, name;
+    __DEV__ ? invariant$2(!!document && !!document.kind, "Argument of ".concat(document, " passed to parser was not a valid GraphQL ") +
+        "DocumentNode. You may need to use 'graphql-tag' or another method " +
+        "to convert your operation into a document") : invariant$2(!!document && !!document.kind, 30);
+    var fragments = document.definitions.filter(function (x) { return x.kind === 'FragmentDefinition'; });
+    var queries = document.definitions.filter(function (x) {
+        return x.kind === 'OperationDefinition' && x.operation === 'query';
+    });
+    var mutations = document.definitions.filter(function (x) {
+        return x.kind === 'OperationDefinition' && x.operation === 'mutation';
+    });
+    var subscriptions = document.definitions.filter(function (x) {
+        return x.kind === 'OperationDefinition' && x.operation === 'subscription';
+    });
+    __DEV__ ? invariant$2(!fragments.length ||
+        (queries.length || mutations.length || subscriptions.length), "Passing only a fragment to 'graphql' is not yet supported. " +
+        "You must include a query, subscription or mutation as well") : invariant$2(!fragments.length ||
+        (queries.length || mutations.length || subscriptions.length), 31);
+    __DEV__ ? invariant$2(queries.length + mutations.length + subscriptions.length <= 1, "react-apollo only supports a query, subscription, or a mutation per HOC. " +
+        "".concat(document, " had ").concat(queries.length, " queries, ").concat(subscriptions.length, " ") +
+        "subscriptions and ".concat(mutations.length, " mutations. ") +
+        "You can use 'compose' to join multiple operation types to a component") : invariant$2(queries.length + mutations.length + subscriptions.length <= 1, 32);
+    type = queries.length ? DocumentType.Query : DocumentType.Mutation;
+    if (!queries.length && !mutations.length)
+        type = DocumentType.Subscription;
+    var definitions = queries.length
+        ? queries
+        : mutations.length
+            ? mutations
+            : subscriptions;
+    __DEV__ ? invariant$2(definitions.length === 1, "react-apollo only supports one definition per HOC. ".concat(document, " had ") +
+        "".concat(definitions.length, " definitions. ") +
+        "You can use 'compose' to join multiple operation types to a component") : invariant$2(definitions.length === 1, 33);
+    var definition = definitions[0];
+    variables = definition.variableDefinitions || [];
+    if (definition.name && definition.name.kind === 'Name') {
+        name = definition.name.value;
     }
+    else {
+        name = 'data';
+    }
+    var payload = { name: name, type: type, variables: variables };
+    cache.set(document, payload);
+    return payload;
 }
-
-function useBaseQuery(query, options, lazy) {
-    if (lazy === void 0) { lazy = false; }
-    var context = React.useContext(getApolloContext());
-    var _a = React.useReducer(function (x) { return x + 1; }, 0), tick = _a[0], forceUpdate = _a[1];
-    var updatedOptions = options ? __assign(__assign({}, options), { query: query }) : { query: query };
-    var queryDataRef = React.useRef();
-    var queryData = queryDataRef.current || (queryDataRef.current = new QueryData({
-        options: updatedOptions,
-        context: context,
-        onNewData: function () {
-            if (!queryData.ssrInitiated()) {
-                Promise.resolve().then(function () { return queryDataRef.current && queryDataRef.current.isMounted && forceUpdate(); });
-            }
-            else {
-                forceUpdate();
-            }
-        }
-    }));
-    queryData.setOptions(updatedOptions);
-    queryData.context = context;
-    var memo = {
-        options: __assign(__assign({}, updatedOptions), { onError: void 0, onCompleted: void 0 }),
-        context: context,
-        tick: tick
-    };
-    var result = useDeepMemo(function () { return (lazy ? queryData.executeLazy() : queryData.execute()); }, memo);
-    var queryResult = lazy
-        ? result[1]
-        : result;
-    if (__DEV__) {
-        useAfterFastRefresh(forceUpdate);
-    }
-    React.useEffect(function () {
-        return function () {
-            queryData.cleanup();
-            queryDataRef.current = void 0;
-        };
-    }, []);
-    React.useEffect(function () { return queryData.afterExecute({ lazy: lazy }); }, [
-        queryResult.loading,
-        queryResult.networkStatus,
-        queryResult.error,
-        queryResult.data,
-        queryData.currentObservable,
-    ]);
-    return result;
-}
-
-function useMutation(mutation, options) {
-    var context = React.useContext(getApolloContext());
-    var _a = React.useState({ called: false, loading: false }), result = _a[0], setResult = _a[1];
-    var updatedOptions = options ? __assign(__assign({}, options), { mutation: mutation }) : { mutation: mutation };
-    var mutationDataRef = React.useRef();
-    function getMutationDataRef() {
-        if (!mutationDataRef.current) {
-            mutationDataRef.current = new MutationData({
-                options: updatedOptions,
-                context: context,
-                result: result,
-                setResult: setResult
-            });
-        }
-        return mutationDataRef.current;
-    }
-    var mutationData = getMutationDataRef();
-    mutationData.setOptions(updatedOptions);
-    mutationData.context = context;
-    React.useEffect(function () { return mutationData.afterExecute(); });
-    return mutationData.execute(result);
+function verifyDocumentType(document, type) {
+    var operation = parser(document);
+    var requiredOperationName = operationName(type);
+    var usedOperationName = operationName(operation.type);
+    __DEV__ ? invariant$2(operation.type === type, "Running a ".concat(requiredOperationName, " requires a graphql ") +
+        "".concat(requiredOperationName, ", but a ").concat(usedOperationName, " was used instead.")) : invariant$2(operation.type === type, 34);
 }
 
 function useQuery(query, options) {
-    return useBaseQuery(query, options, false);
+    var _a;
+    var context = React.useContext(getApolloContext());
+    var client = useApolloClient(options === null || options === void 0 ? void 0 : options.client);
+    var defaultWatchQueryOptions = client.defaultOptions.watchQuery;
+    verifyDocumentType(query, DocumentType.Query);
+    var _b = React.useState(function () {
+        var watchQueryOptions = createWatchQueryOptions(query, options, defaultWatchQueryOptions);
+        var obsQuery = null;
+        if (context.renderPromises) {
+            obsQuery = context.renderPromises.getSSRObservable(watchQueryOptions);
+        }
+        if (!obsQuery) {
+            obsQuery = client.watchQuery(watchQueryOptions);
+            if (context.renderPromises) {
+                context.renderPromises.registerSSRObservable(obsQuery, watchQueryOptions);
+            }
+        }
+        if (context.renderPromises &&
+            (options === null || options === void 0 ? void 0 : options.ssr) !== false &&
+            !(options === null || options === void 0 ? void 0 : options.skip) &&
+            obsQuery.getCurrentResult().loading) {
+            context.renderPromises.addQueryPromise({
+                getOptions: function () { return createWatchQueryOptions(query, options, defaultWatchQueryOptions); },
+                fetchData: function () { return new Promise(function (resolve) {
+                    var sub = obsQuery.subscribe({
+                        next: function (result) {
+                            if (!result.loading) {
+                                resolve();
+                                sub.unsubscribe();
+                            }
+                        },
+                        error: function () {
+                            resolve();
+                            sub.unsubscribe();
+                        },
+                        complete: function () {
+                            resolve();
+                        },
+                    });
+                }); },
+            }, function () { return null; });
+        }
+        return obsQuery;
+    }), obsQuery = _b[0], setObsQuery = _b[1];
+    var _c = React.useState(function () {
+        var _a, _b;
+        var result = obsQuery.getCurrentResult();
+        if (!result.loading && options) {
+            if (result.error) {
+                (_a = options.onError) === null || _a === void 0 ? void 0 : _a.call(options, result.error);
+            }
+            else if (result.data) {
+                (_b = options.onCompleted) === null || _b === void 0 ? void 0 : _b.call(options, result.data);
+            }
+        }
+        return result;
+    }), result = _c[0], setResult = _c[1];
+    var ref = React.useRef({
+        client: client,
+        query: query,
+        options: options,
+        result: result,
+        previousData: void 0,
+        watchQueryOptions: createWatchQueryOptions(query, options, defaultWatchQueryOptions),
+    });
+    React.useEffect(function () {
+        var _a, _b;
+        var watchQueryOptions = createWatchQueryOptions(query, options, defaultWatchQueryOptions);
+        var nextResult;
+        if (ref.current.client !== client || !equal$1(ref.current.query, query)) {
+            var obsQuery_1 = client.watchQuery(watchQueryOptions);
+            setObsQuery(obsQuery_1);
+            nextResult = obsQuery_1.getCurrentResult();
+        }
+        else if (!equal$1(ref.current.watchQueryOptions, watchQueryOptions)) {
+            obsQuery.setOptions(watchQueryOptions).catch(function () { });
+            nextResult = obsQuery.getCurrentResult();
+            ref.current.watchQueryOptions = watchQueryOptions;
+        }
+        if (nextResult) {
+            var previousResult = ref.current.result;
+            if (previousResult.data) {
+                ref.current.previousData = previousResult.data;
+            }
+            setResult(ref.current.result = nextResult);
+            if (!nextResult.loading && options) {
+                if (nextResult.error) {
+                    (_a = options.onError) === null || _a === void 0 ? void 0 : _a.call(options, nextResult.error);
+                }
+                else if (nextResult.data) {
+                    (_b = options.onCompleted) === null || _b === void 0 ? void 0 : _b.call(options, nextResult.data);
+                }
+            }
+        }
+        Object.assign(ref.current, { client: client, query: query });
+    }, [obsQuery, client, query, options]);
+    React.useEffect(function () {
+        if (context.renderPromises) {
+            return;
+        }
+        var subscription = obsQuery.subscribe(onNext, onError);
+        function onNext() {
+            var _a, _b;
+            var previousResult = ref.current.result;
+            var result = obsQuery.getCurrentResult();
+            if (previousResult &&
+                previousResult.loading === result.loading &&
+                previousResult.networkStatus === result.networkStatus &&
+                equal$1(previousResult.data, result.data)) {
+                return;
+            }
+            if (previousResult.data) {
+                ref.current.previousData = previousResult.data;
+            }
+            setResult(ref.current.result = result);
+            if (!result.loading) {
+                (_b = (_a = ref.current.options) === null || _a === void 0 ? void 0 : _a.onCompleted) === null || _b === void 0 ? void 0 : _b.call(_a, result.data);
+            }
+        }
+        function onError(error) {
+            var _a, _b;
+            var last = obsQuery["last"];
+            subscription.unsubscribe();
+            try {
+                obsQuery.resetLastResults();
+                subscription = obsQuery.subscribe(onNext, onError);
+            }
+            finally {
+                obsQuery["last"] = last;
+            }
+            if (!error.hasOwnProperty('graphQLErrors')) {
+                throw error;
+            }
+            var previousResult = ref.current.result;
+            if ((previousResult && previousResult.loading) ||
+                !equal$1(error, previousResult.error)) {
+                setResult(ref.current.result = {
+                    data: previousResult.data,
+                    error: error,
+                    loading: false,
+                    networkStatus: NetworkStatus.error,
+                });
+                (_b = (_a = ref.current.options) === null || _a === void 0 ? void 0 : _a.onError) === null || _b === void 0 ? void 0 : _b.call(_a, error);
+            }
+        }
+        return function () { return subscription.unsubscribe(); };
+    }, [obsQuery, context.renderPromises, client.disableNetworkFetches]);
+    var partial;
+    (_a = result, partial = _a.partial, result = __rest(_a, ["partial"]));
+    {
+        if (partial &&
+            (options === null || options === void 0 ? void 0 : options.partialRefetch) &&
+            !result.loading &&
+            (!result.data || Object.keys(result.data).length === 0) &&
+            obsQuery.options.fetchPolicy !== 'cache-only') {
+            result = __assign(__assign({}, result), { loading: true, networkStatus: NetworkStatus.refetch });
+            obsQuery.refetch();
+        }
+        if (context.renderPromises &&
+            (options === null || options === void 0 ? void 0 : options.ssr) !== false &&
+            !(options === null || options === void 0 ? void 0 : options.skip) &&
+            result.loading) {
+            obsQuery.setOptions(createWatchQueryOptions(query, options, defaultWatchQueryOptions)).catch(function () { });
+        }
+        Object.assign(ref.current, { options: options });
+    }
+    if ((context.renderPromises || client.disableNetworkFetches) &&
+        (options === null || options === void 0 ? void 0 : options.ssr) === false) {
+        result = ref.current.result = {
+            loading: true,
+            data: void 0,
+            error: void 0,
+            networkStatus: NetworkStatus.loading,
+        };
+    }
+    else if ((options === null || options === void 0 ? void 0 : options.skip) || (options === null || options === void 0 ? void 0 : options.fetchPolicy) === 'standby') {
+        result = {
+            loading: false,
+            data: void 0,
+            error: void 0,
+            networkStatus: NetworkStatus.ready,
+        };
+    }
+    if (result.errors && result.errors.length) {
+        result = __assign(__assign({}, result), { error: result.error || new ApolloError({ graphQLErrors: result.errors }) });
+    }
+    var obsQueryFields = React.useMemo(function () { return ({
+        refetch: obsQuery.refetch.bind(obsQuery),
+        fetchMore: obsQuery.fetchMore.bind(obsQuery),
+        updateQuery: obsQuery.updateQuery.bind(obsQuery),
+        startPolling: obsQuery.startPolling.bind(obsQuery),
+        stopPolling: obsQuery.stopPolling.bind(obsQuery),
+        subscribeToMore: obsQuery.subscribeToMore.bind(obsQuery),
+    }); }, [obsQuery]);
+    return __assign(__assign(__assign({}, obsQueryFields), { variables: createWatchQueryOptions(query, options, defaultWatchQueryOptions).variables, client: client, called: true, previousData: ref.current.previousData }), result);
+}
+function createWatchQueryOptions(query, options, defaultOptions) {
+    var _a;
+    if (options === void 0) { options = {}; }
+    var skip = options.skip; options.ssr; options.onCompleted; options.onError; options.displayName; var otherOptions = __rest(options, ["skip", "ssr", "onCompleted", "onError", "displayName"]);
+    var watchQueryOptions = __assign({ query: query }, otherOptions);
+    if (defaultOptions) {
+        watchQueryOptions = mergeOptions(defaultOptions, watchQueryOptions);
+    }
+    if (skip) {
+        watchQueryOptions.fetchPolicy = 'standby';
+    }
+    else if (((_a = watchQueryOptions.context) === null || _a === void 0 ? void 0 : _a.renderPromises) &&
+        (watchQueryOptions.fetchPolicy === 'network-only' ||
+            watchQueryOptions.fetchPolicy === 'cache-and-network')) {
+        watchQueryOptions.fetchPolicy = 'cache-first';
+    }
+    else if (!watchQueryOptions.fetchPolicy) {
+        watchQueryOptions.fetchPolicy = 'cache-first';
+    }
+    if (!watchQueryOptions.variables) {
+        watchQueryOptions.variables = {};
+    }
+    return watchQueryOptions;
+}
+
+function useMutation(mutation, options) {
+    var client = useApolloClient(options === null || options === void 0 ? void 0 : options.client);
+    verifyDocumentType(mutation, DocumentType.Mutation);
+    var _a = React.useState({
+        called: false,
+        loading: false,
+        client: client,
+    }), result = _a[0], setResult = _a[1];
+    var ref = React.useRef({
+        result: result,
+        mutationId: 0,
+        isMounted: true,
+        client: client,
+        mutation: mutation,
+        options: options,
+    });
+    {
+        Object.assign(ref.current, { client: client, options: options, mutation: mutation });
+    }
+    var execute = React.useCallback(function (executeOptions) {
+        if (executeOptions === void 0) { executeOptions = {}; }
+        var _a = ref.current, client = _a.client, options = _a.options, mutation = _a.mutation;
+        var baseOptions = __assign(__assign({}, options), { mutation: mutation });
+        if (!ref.current.result.loading && !baseOptions.ignoreResults) {
+            setResult(ref.current.result = {
+                loading: true,
+                error: void 0,
+                data: void 0,
+                called: true,
+                client: client,
+            });
+        }
+        var mutationId = ++ref.current.mutationId;
+        var clientOptions = mergeOptions(baseOptions, executeOptions);
+        return client.mutate(clientOptions).then(function (response) {
+            var _a, _b;
+            var data = response.data, errors = response.errors;
+            var error = errors && errors.length > 0
+                ? new ApolloError({ graphQLErrors: errors })
+                : void 0;
+            if (mutationId === ref.current.mutationId &&
+                !clientOptions.ignoreResults) {
+                var result_1 = {
+                    called: true,
+                    loading: false,
+                    data: data,
+                    error: error,
+                    client: client,
+                };
+                if (ref.current.isMounted && !equal$1(ref.current.result, result_1)) {
+                    setResult(ref.current.result = result_1);
+                }
+            }
+            (_a = baseOptions.onCompleted) === null || _a === void 0 ? void 0 : _a.call(baseOptions, response.data);
+            (_b = executeOptions.onCompleted) === null || _b === void 0 ? void 0 : _b.call(executeOptions, response.data);
+            return response;
+        }).catch(function (error) {
+            var _a, _b;
+            if (mutationId === ref.current.mutationId &&
+                ref.current.isMounted) {
+                var result_2 = {
+                    loading: false,
+                    error: error,
+                    data: void 0,
+                    called: true,
+                    client: client,
+                };
+                if (!equal$1(ref.current.result, result_2)) {
+                    setResult(ref.current.result = result_2);
+                }
+            }
+            if (baseOptions.onError || clientOptions.onError) {
+                (_a = baseOptions.onError) === null || _a === void 0 ? void 0 : _a.call(baseOptions, error);
+                (_b = executeOptions.onError) === null || _b === void 0 ? void 0 : _b.call(executeOptions, error);
+                return { data: void 0, errors: error };
+            }
+            throw error;
+        });
+    }, []);
+    var reset = React.useCallback(function () {
+        setResult({ called: false, loading: false, client: client });
+    }, []);
+    React.useEffect(function () { return function () {
+        ref.current.isMounted = false;
+    }; }, []);
+    return [execute, __assign({ reset: reset }, result)];
 }
 
 function Query(props) {
@@ -14773,7 +13416,7 @@ Mutation.propTypes = {
 };
 
 var Loading = function Loading() {
-  return /*#__PURE__*/React__default['default'].createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     version: "1.1",
     id: "Layer_1",
     xmlns: "http://www.w3.org/2000/svg",
@@ -14787,84 +13430,84 @@ var Loading = function Loading() {
       enableBackground: 'new 0 0 50 50'
     },
     xmlSpace: "preserve"
-  }, /*#__PURE__*/React__default['default'].createElement("rect", {
+  }, /*#__PURE__*/React__default["default"].createElement("rect", {
     x: "0",
     y: "10",
     width: "4",
     height: "10",
     fill: "#333",
     opacity: "0.2"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     attributeType: "XML",
     values: "0.2; 1; .2",
     begin: "0s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "height",
     attributeType: "XML",
     values: "10; 20; 10",
     begin: "0s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "y",
     attributeType: "XML",
     values: "10; 5; 10",
     begin: "0s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     x: "8",
     y: "10",
     width: "4",
     height: "10",
     fill: "#333",
     opacity: "0.2"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     attributeType: "XML",
     values: "0.2; 1; .2",
     begin: "0.15s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "height",
     attributeType: "XML",
     values: "10; 20; 10",
     begin: "0.15s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "y",
     attributeType: "XML",
     values: "10; 5; 10",
     begin: "0.15s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     x: "16",
     y: "10",
     width: "4",
     height: "10",
     fill: "#333",
     opacity: "0.2"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     attributeType: "XML",
     values: "0.2; 1; .2",
     begin: "0.3s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "height",
     attributeType: "XML",
     values: "10; 20; 10",
     begin: "0.3s",
     dur: "0.6s",
     repeatCount: "indefinite"
-  }), /*#__PURE__*/React__default['default'].createElement("animate", {
+  }), /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "y",
     attributeType: "XML",
     values: "10; 5; 10",
@@ -14880,27 +13523,29 @@ var CALENDAR_QUERY$1 = gql(_templateObject2$1 || (_templateObject2$1 = _taggedTe
 var BOOKING_PRICE_QUERY = gql(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral(["\n  query BookingPriceQuery(\n    $id: ID!\n    $house_id: String!\n    $starts_at: Date!\n    $ends_at: Date!\n  ) {\n    PortalSite(id: $id) {\n      options\n      first_name_label\n      preposition_label\n      last_name_label\n      email_label\n      zipcode_label\n      city_label\n      address_label\n      house_number_label\n      phone_label\n      phone_mobile_label\n      country_label\n      iban_label\n      holder_label\n      bic_label\n      comment_label\n      company_name_label\n      extra_fields_drivers_license_label\n      extra_fields_destination_label\n      booking_fields {\n        id\n        label\n        field_type\n        options\n        placeholder\n      }\n      houses(house_code: $house_id) {\n        id\n        name\n        code\n        allow_option\n        persons\n        image_url\n        discounts\n        discounts_info\n        house_type\n        rental_terms\n        cancel_insurance\n        damage_insurance\n        damage_insurance_required\n        travel_insurance\n        babies_extra\n        booking_price(starts_at: $starts_at, ends_at: $ends_at)\n      }\n    }\n  }\n"])));
 var CREATE_BOOKING_MUTATION = gql(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  mutation CreateBooking(\n    $first_name: String!\n    $preposition: String\n    $last_name: String!\n    $company_name: String\n    $is_option: Boolean!\n    $address: String\n    $house_number: String\n    $zipcode: String\n    $city: String\n    $phone: String\n    $phone_mobile: String\n    $iban: String\n    $bic: String\n    $holder: String\n    $email: String!\n    $house_code: String!\n    $portal_code: String\n    $language: String\n    $country: String!\n    $adults: Int!\n    $children: Int\n    $babies: Int\n    $discount: Int\n    $damage_insurance: Int\n    $cancel_insurance: Int\n    $travel_insurance: Int\n    $discount_reason: String\n    $discount_code: String\n    $comment: String\n    $arrival_date: String!\n    $departure_date: String!\n    $costs: Json\n    $extra_fields: String\n  ) {\n    createBooking(\n      first_name: $first_name\n      preposition: $preposition\n      company_name: $company_name\n      last_name: $last_name\n      is_option: $is_option\n      address: $address\n      house_number: $house_number\n      zipcode: $zipcode\n      city: $city\n      phone: $phone\n      phone_mobile: $phone_mobile\n      iban: $iban\n      bic: $bic\n      holder: $holder\n      email: $email\n      house_code: $house_code\n      portal_code: $portal_code\n      language: $language\n      country: $country\n      adults: $adults\n      children: $children\n      babies: $babies\n      discount: $discount\n      discount_code: $discount_code\n      damage_insurance: $damage_insurance\n      cancel_insurance: $cancel_insurance\n      travel_insurance: $travel_insurance\n      discount_reason: $discount_reason\n      arrival_date: $arrival_date\n      departure_date: $departure_date\n      comment: $comment\n      costs: $costs\n      extra_fields: $extra_fields\n    ) {\n      booking_nr\n    }\n  }\n"])));
 
-var entry$1 = {};
+var entry = {};
 
 var DatePicker$1 = {};
 
-var entry = {};
-
-Object.defineProperty(entry, "__esModule", {
-  value: true
-});
-entry.default = entry.focusEvents = entry.keyboardEvents = entry.touchEvents = entry.mouseEvents = void 0;
-// As defined on the list of supported mouse events: https://reactjs.org/docs/events.html#mouse-events
-var mouseEvents = ['onClick', 'onContextMenu', 'onDoubleClick', 'onDrag', 'onDragEnd', 'onDragEnter', 'onDragExit', 'onDragLeave', 'onDragOver', 'onDragStart', 'onDrop', 'onMouseDown', 'onMouseEnter', 'onMouseLeave', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp']; // As defined on the list of supported touch events: https://reactjs.org/docs/events.html#touch-events
-
-entry.mouseEvents = mouseEvents;
-var touchEvents = ['onTouchCancel', 'onTouchEnd', 'onTouchMove', 'onTouchStart']; // As defined on the list of supported keyboard events: https://reactjs.org/docs/events.html#keyboard-events
-
-entry.touchEvents = touchEvents;
-var keyboardEvents = ['onKeyDown', 'onKeyPress', 'onKeyUp']; // As defined on the list of supported keyboard events: https://reactjs.org/docs/events.html#focus-events
-
-entry.keyboardEvents = keyboardEvents;
+// As defined on the list of supported events: https://reactjs.org/docs/events.html
+var clipboardEvents = ['onCopy', 'onCut', 'onPaste'];
+var compositionEvents = ['onCompositionEnd', 'onCompositionStart', 'onCompositionUpdate'];
+var keyboardEvents = ['onKeyDown', 'onKeyPress', 'onKeyUp'];
 var focusEvents = ['onFocus', 'onBlur'];
+var formEvents = ['onChange', 'onInput', 'onInvalid', 'onReset', 'onSubmit'];
+var genericEvents = ['onError', 'onLoad'];
+var mouseEvents = ['onClick', 'onContextMenu', 'onDoubleClick', 'onDrag', 'onDragEnd', 'onDragEnter', 'onDragExit', 'onDragLeave', 'onDragOver', 'onDragStart', 'onDrop', 'onMouseDown', 'onMouseEnter', 'onMouseLeave', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp'];
+var pointerEvents = ['onPointerDown', 'onPointerMove', 'onPointerUp', 'onPointerCancel', 'onGotPointerCapture', 'onLostPointerCapture', 'onPointerEnter', 'onPointerLeave', 'onPointerOver', 'onPointerOut'];
+var selectionEvents = ['onSelect'];
+var touchEvents = ['onTouchCancel', 'onTouchEnd', 'onTouchMove', 'onTouchStart'];
+var uiEvents = ['onScroll'];
+var wheelEvents = ['onWheel'];
+var mediaEvents = ['onAbort', 'onCanPlay', 'onCanPlayThrough', 'onDurationChange', 'onEmptied', 'onEncrypted', 'onEnded', 'onError', 'onLoadedData', 'onLoadedMetadata', 'onLoadStart', 'onPause', 'onPlay', 'onPlaying', 'onProgress', 'onRateChange', 'onSeeked', 'onSeeking', 'onStalled', 'onSuspend', 'onTimeUpdate', 'onVolumeChange', 'onWaiting'];
+var imageEvents = ['onLoad', 'onError'];
+var animationEvents = ['onAnimationStart', 'onAnimationEnd', 'onAnimationIteration'];
+var transitionEvents = ['onTransitionEnd'];
+var otherEvents = ['onToggle'];
+var allEvents = [].concat(clipboardEvents, compositionEvents, keyboardEvents, focusEvents, formEvents, genericEvents, mouseEvents, pointerEvents, selectionEvents, touchEvents, uiEvents, wheelEvents, mediaEvents, imageEvents, animationEvents, transitionEvents, otherEvents);
 /**
  * Returns an object with on-event callback props curried with provided args.
  * @param {Object} props Props passed to a component.
@@ -14908,27 +13553,56 @@ var focusEvents = ['onFocus', 'onBlur'];
  *   shall be curried with.
  */
 
-entry.focusEvents = focusEvents;
-
 var makeEventProps = function makeEventProps(props, getArgs) {
   var eventProps = {};
-  [].concat(mouseEvents, touchEvents, keyboardEvents, focusEvents).forEach(function (eventName) {
-    if (props[eventName]) {
-      eventProps[eventName] = function (event) {
-        return getArgs ? props[eventName](event, getArgs(eventName)) : props[eventName](event);
-      };
+  allEvents.forEach(function (eventName) {
+    if (!(eventName in props)) {
+      return;
     }
+
+    if (!getArgs) {
+      eventProps[eventName] = props[eventName];
+      return;
+    }
+
+    eventProps[eventName] = function (event) {
+      return props[eventName](event, getArgs(eventName));
+    };
   });
   return eventProps;
 };
 
-var _default = makeEventProps;
-entry.default = _default;
+var esm$6 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  clipboardEvents: clipboardEvents,
+  compositionEvents: compositionEvents,
+  keyboardEvents: keyboardEvents,
+  focusEvents: focusEvents,
+  formEvents: formEvents,
+  genericEvents: genericEvents,
+  mouseEvents: mouseEvents,
+  pointerEvents: pointerEvents,
+  selectionEvents: selectionEvents,
+  touchEvents: touchEvents,
+  uiEvents: uiEvents,
+  wheelEvents: wheelEvents,
+  mediaEvents: mediaEvents,
+  imageEvents: imageEvents,
+  animationEvents: animationEvents,
+  transitionEvents: transitionEvents,
+  otherEvents: otherEvents,
+  allEvents: allEvents,
+  'default': makeEventProps
+});
+
+var require$$2$1 = /*@__PURE__*/getAugmentedNamespace(esm$6);
 
 function mergeClassNames() {
   return Array.prototype.slice.call(arguments).reduce(function (classList, arg) {
-    return typeof arg === 'string' || Array.isArray(arg) ? classList.concat(arg) : classList;
-  }, []).filter(Boolean).join(' ');
+    return classList.concat(arg);
+  }, []).filter(function (arg) {
+    return typeof arg === 'string';
+  }).join(' ');
 }
 
 var esm$5 = /*#__PURE__*/Object.freeze({
@@ -15712,13 +14386,13 @@ function _nonIterableSpread$4() { throw new TypeError("Invalid attempt to spread
 
 function _unsupportedIterableToArray$4(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$4(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen); }
 
-function _iterableToArray$4(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray$4(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles$4(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$4(arr); }
 
 function _arrayLikeToArray$4(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _defineProperty$d(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$e(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var CALENDAR_TYPES = {
   ARABIC: 'Arabic',
@@ -15726,15 +14400,29 @@ var CALENDAR_TYPES = {
   ISO_8601: 'ISO 8601',
   US: 'US'
 };
-var CALENDAR_TYPE_LOCALES = (_CALENDAR_TYPE_LOCALE = {}, _defineProperty$d(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.US, ['en-CA', 'en-US', 'es-AR', 'es-BO', 'es-CL', 'es-CO', 'es-CR', 'es-DO', 'es-EC', 'es-GT', 'es-HN', 'es-MX', 'es-NI', 'es-PA', 'es-PE', 'es-PR', 'es-SV', 'es-VE', 'pt-BR']), _defineProperty$d(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.ARABIC, [// ar-LB, ar-MA intentionally missing
-'ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LY', 'ar-OM', 'ar-QA', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-YE', 'dv', 'dv-MV', 'ps', 'ps-AR']), _defineProperty$d(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.HEBREW, ['he', 'he-IL']), _CALENDAR_TYPE_LOCALE);
+var CALENDAR_TYPE_LOCALES = (_CALENDAR_TYPE_LOCALE = {}, _defineProperty$e(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.US, ['en-CA', 'en-US', 'es-AR', 'es-BO', 'es-CL', 'es-CO', 'es-CR', 'es-DO', 'es-EC', 'es-GT', 'es-HN', 'es-MX', 'es-NI', 'es-PA', 'es-PE', 'es-PR', 'es-SV', 'es-VE', 'pt-BR']), _defineProperty$e(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.ARABIC, [// ar-LB, ar-MA intentionally missing
+'ar', 'ar-AE', 'ar-BH', 'ar-DZ', 'ar-EG', 'ar-IQ', 'ar-JO', 'ar-KW', 'ar-LY', 'ar-OM', 'ar-QA', 'ar-SA', 'ar-SD', 'ar-SY', 'ar-YE', 'dv', 'dv-MV', 'ps', 'ps-AR']), _defineProperty$e(_CALENDAR_TYPE_LOCALE, CALENDAR_TYPES.HEBREW, ['he', 'he-IL']), _CALENDAR_TYPE_LOCALE);
 var WEEKDAYS = _toConsumableArray$4(Array(7)).map(function (el, index) {
   return index;
 });
 
+var formatterCache$1 = new Map();
+
 function getFormatter$4(options) {
   return function (locale, date) {
-    return date.toLocaleString(locale || getUserLocale(), options);
+    var localeWithDefault = locale || getUserLocale();
+
+    if (!formatterCache$1.has(localeWithDefault)) {
+      formatterCache$1.set(localeWithDefault, new Map());
+    }
+
+    var formatterCacheLocale = formatterCache$1.get(localeWithDefault);
+
+    if (!formatterCacheLocale.has(options)) {
+      formatterCacheLocale.set(options, new Intl.DateTimeFormat(localeWithDefault, options).format);
+    }
+
+    return formatterCacheLocale.get(options)(date);
   };
 }
 /**
@@ -15861,16 +14549,16 @@ function getBeginOfWeek(date) {
 function getWeekNumber(date) {
   var calendarType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : CALENDAR_TYPES.ISO_8601;
   var calendarTypeForWeekNumber = calendarType === CALENDAR_TYPES.US ? CALENDAR_TYPES.US : CALENDAR_TYPES.ISO_8601;
-  var beginOfWeek = getBeginOfWeek(date, calendarTypeForWeekNumber);
+  var beginOfWeek = getBeginOfWeek(date, calendarType);
   var year = getYear$1(date) + 1;
   var dayInWeekOne;
   var beginOfFirstWeek; // Look for the first week one that does not come after a given date
 
   do {
     dayInWeekOne = new Date(year, 0, calendarTypeForWeekNumber === CALENDAR_TYPES.ISO_8601 ? 4 : 1);
-    beginOfFirstWeek = getBeginOfWeek(dayInWeekOne, calendarTypeForWeekNumber);
+    beginOfFirstWeek = getBeginOfWeek(dayInWeekOne, calendarType);
     year -= 1;
-  } while (date - beginOfFirstWeek < 0);
+  } while (date < beginOfFirstWeek);
 
   return Math.round((beginOfWeek - beginOfFirstWeek) / (8.64e7 * 7)) + 1;
 }
@@ -16128,7 +14816,7 @@ function isWeekend$1(date) {
   }
 }
 
-function _typeof$4(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$4 = function _typeof(obj) { return typeof obj; }; } else { _typeof$4 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$4(obj); }
+function _typeof$4(obj) { "@babel/helpers - typeof"; return _typeof$4 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof$4(obj); }
 var calendarTypes = Object.values(CALENDAR_TYPES);
 var allViews$2 = ['century', 'decade', 'year', 'month'];
 var isCalendarType = PropTypes.oneOf(calendarTypes);
@@ -16172,7 +14860,6 @@ var isMaxDate$1 = function isMaxDate(props, propName, componentName) {
   return null;
 };
 var isRef$1 = PropTypes.oneOfType([PropTypes.func, PropTypes.shape({
-  // eslint-disable-next-line react/forbid-prop-types
   current: PropTypes.any
 })]);
 var isValue = PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.arrayOf(PropTypes.instanceOf(Date))]);
@@ -16230,7 +14917,7 @@ var tileProps = {
   tileDisabled: PropTypes.func
 };
 
-var className$5 = 'react-calendar__navigation';
+var className$6 = 'react-calendar__navigation';
 function Navigation(_ref) {
   var activeStartDate = _ref.activeStartDate,
       drillUp = _ref.drillUp,
@@ -16243,6 +14930,7 @@ function Navigation(_ref) {
       minDate = _ref.minDate,
       _ref$navigationAriaLa = _ref.navigationAriaLabel,
       navigationAriaLabel = _ref$navigationAriaLa === void 0 ? '' : _ref$navigationAriaLa,
+      navigationAriaLive = _ref.navigationAriaLive,
       navigationLabel = _ref.navigationLabel,
       _ref$next2AriaLabel = _ref.next2AriaLabel,
       next2AriaLabel = _ref$next2AriaLabel === void 0 ? '' : _ref$next2AriaLabel,
@@ -16289,23 +14977,23 @@ function Navigation(_ref) {
     return minDate && minDate >= previousActiveEndDate;
   }();
 
-  var nextButtonDisabled = maxDate && maxDate <= nextActiveStartDate;
-  var next2ButtonDisabled = shouldShowPrevNext2Buttons && maxDate && maxDate <= nextActiveStartDate2;
+  var nextButtonDisabled = maxDate && maxDate < nextActiveStartDate;
+  var next2ButtonDisabled = shouldShowPrevNext2Buttons && maxDate && maxDate < nextActiveStartDate2;
 
   function onClickPrevious() {
-    setActiveStartDate(previousActiveStartDate);
+    setActiveStartDate(previousActiveStartDate, 'prev');
   }
 
   function onClickPrevious2() {
-    setActiveStartDate(previousActiveStartDate2);
+    setActiveStartDate(previousActiveStartDate2, 'prev2');
   }
 
   function onClickNext() {
-    setActiveStartDate(nextActiveStartDate);
+    setActiveStartDate(nextActiveStartDate, 'next');
   }
 
   function onClickNext2() {
-    setActiveStartDate(nextActiveStartDate2);
+    setActiveStartDate(nextActiveStartDate2, 'next2');
   }
 
   function renderLabel(date) {
@@ -16337,9 +15025,10 @@ function Navigation(_ref) {
   }
 
   function renderButton() {
-    var labelClassName = "".concat(className$5, "__label");
-    return /*#__PURE__*/React__default['default'].createElement("button", {
+    var labelClassName = "".concat(className$6, "__label");
+    return /*#__PURE__*/React__default["default"].createElement("button", {
       "aria-label": navigationAriaLabel,
+      "aria-live": navigationAriaLive,
       className: labelClassName,
       disabled: !drillUpAvailable,
       onClick: drillUp,
@@ -16347,41 +15036,38 @@ function Navigation(_ref) {
         flexGrow: 1
       },
       type: "button"
-    }, /*#__PURE__*/React__default['default'].createElement("span", {
+    }, /*#__PURE__*/React__default["default"].createElement("span", {
       className: "".concat(labelClassName, "__labelText ").concat(labelClassName, "__labelText--from")
-    }, renderLabel(activeStartDate)), showDoubleView && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("span", {
+    }, renderLabel(activeStartDate)), showDoubleView && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("span", {
       className: "".concat(labelClassName, "__divider")
-    }, ' ', "\u2013", ' '), /*#__PURE__*/React__default['default'].createElement("span", {
+    }, " \u2013 "), /*#__PURE__*/React__default["default"].createElement("span", {
       className: "".concat(labelClassName, "__labelText ").concat(labelClassName, "__labelText--to")
     }, renderLabel(nextActiveStartDate))));
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
-    className: className$5,
-    style: {
-      display: 'flex'
-    }
-  }, prev2Label !== null && shouldShowPrevNext2Buttons && /*#__PURE__*/React__default['default'].createElement("button", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: className$6
+  }, prev2Label !== null && shouldShowPrevNext2Buttons && /*#__PURE__*/React__default["default"].createElement("button", {
     "aria-label": prev2AriaLabel,
-    className: "".concat(className$5, "__arrow ").concat(className$5, "__prev2-button"),
+    className: "".concat(className$6, "__arrow ").concat(className$6, "__prev2-button"),
     disabled: prev2ButtonDisabled,
     onClick: onClickPrevious2,
     type: "button"
-  }, prev2Label), prevLabel !== null && /*#__PURE__*/React__default['default'].createElement("button", {
+  }, prev2Label), prevLabel !== null && /*#__PURE__*/React__default["default"].createElement("button", {
     "aria-label": prevAriaLabel,
-    className: "".concat(className$5, "__arrow ").concat(className$5, "__prev-button"),
+    className: "".concat(className$6, "__arrow ").concat(className$6, "__prev-button"),
     disabled: prevButtonDisabled,
     onClick: onClickPrevious,
     type: "button"
-  }, prevLabel), renderButton(), nextLabel !== null && /*#__PURE__*/React__default['default'].createElement("button", {
+  }, prevLabel), renderButton(), nextLabel !== null && /*#__PURE__*/React__default["default"].createElement("button", {
     "aria-label": nextAriaLabel,
-    className: "".concat(className$5, "__arrow ").concat(className$5, "__next-button"),
+    className: "".concat(className$6, "__arrow ").concat(className$6, "__next-button"),
     disabled: nextButtonDisabled,
     onClick: onClickNext,
     type: "button"
-  }, nextLabel), next2Label !== null && shouldShowPrevNext2Buttons && /*#__PURE__*/React__default['default'].createElement("button", {
+  }, nextLabel), next2Label !== null && shouldShowPrevNext2Buttons && /*#__PURE__*/React__default["default"].createElement("button", {
     "aria-label": next2AriaLabel,
-    className: "".concat(className$5, "__arrow ").concat(className$5, "__next2-button"),
+    className: "".concat(className$6, "__arrow ").concat(className$6, "__next2-button"),
     disabled: next2ButtonDisabled,
     onClick: onClickNext2,
     type: "button"
@@ -16396,6 +15082,7 @@ Navigation.propTypes = {
   maxDate: PropTypes.instanceOf(Date),
   minDate: PropTypes.instanceOf(Date),
   navigationAriaLabel: PropTypes.string,
+  navigationAriaLive: PropTypes.string,
   navigationLabel: PropTypes.func,
   next2AriaLabel: PropTypes.string,
   next2Label: PropTypes.node,
@@ -16411,17 +15098,19 @@ Navigation.propTypes = {
   views: isViews.isRequired
 };
 
+var _excluded$d = ["children", "className", "direction", "count", "offset", "style", "wrap"];
+
 function _extends$d() { _extends$d = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$d.apply(this, arguments); }
 
-function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$c(Object(source), true).forEach(function (key) { _defineProperty$c(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty$d(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-function _defineProperty$c(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$d(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _objectWithoutProperties$9(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$a(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$a(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$b(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$a(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$b(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function toPercent(num) {
   return "".concat(num, "%");
@@ -16435,20 +15124,21 @@ function Flex(_ref) {
       offset = _ref.offset,
       style = _ref.style,
       wrap = _ref.wrap,
-      otherProps = _objectWithoutProperties$9(_ref, ["children", "className", "direction", "count", "offset", "style", "wrap"]);
+      otherProps = _objectWithoutProperties$a(_ref, _excluded$d);
 
-  return /*#__PURE__*/React__default['default'].createElement("div", _extends$d({
+  return /*#__PURE__*/React__default["default"].createElement("div", _extends$d({
     className: className,
-    style: _objectSpread$c({
+    style: _objectSpread$d({
       display: 'flex',
       flexDirection: direction,
       flexWrap: wrap ? 'wrap' : 'no-wrap'
     }, style)
-  }, otherProps), React__default['default'].Children.map(children, function (child, index) {
-    return /*#__PURE__*/React__default['default'].cloneElement(child, _objectSpread$c(_objectSpread$c({}, child.props), {}, {
+  }, otherProps), React__default["default"].Children.map(children, function (child, index) {
+    return /*#__PURE__*/React__default["default"].cloneElement(child, _objectSpread$d(_objectSpread$d({}, child.props), {}, {
       style: {
         flexBasis: toPercent(100 / count),
-        maxWidth: toPercent(100 / count),
+        flexShrink: 0,
+        flexGrow: 0,
         overflow: 'hidden',
         marginLeft: offset && index === 0 ? toPercent(100 * offset / count) : null
       }
@@ -16471,7 +15161,7 @@ function _nonIterableSpread$3() { throw new TypeError("Invalid attempt to spread
 
 function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
 
-function _iterableToArray$3(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray$3(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles$3(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$3(arr); }
 
@@ -16574,9 +15264,10 @@ function getTileClasses() {
 
   var valueRangeClassNames = getRangeClassNames(valueRange, dateRange, "".concat(className, "--range"));
   classes.push.apply(classes, _toConsumableArray$3(valueRangeClassNames));
+  var valueArray = [].concat(value);
 
-  if (hover) {
-    var hoverRange = hover > valueRange[1] ? [valueRange[1], hover] : [hover, valueRange[0]];
+  if (hover && valueArray.length === 1) {
+    var hoverRange = hover > valueRange[0] ? [valueRange[0], hover] : [hover, valueRange[0]];
     var hoverRangeClassNames = getRangeClassNames(hoverRange, dateRange, "".concat(className, "--hover"));
     classes.push.apply(classes, _toConsumableArray$3(hoverRangeClassNames));
   }
@@ -16584,17 +15275,19 @@ function getTileClasses() {
   return classes;
 }
 
-function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$c = ["className", "count", "dateTransform", "dateType", "end", "hover", "offset", "start", "step", "tile", "value", "valueType"];
 
-function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$b(Object(source), true).forEach(function (key) { _defineProperty$b(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$b(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty$c(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$c(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$c() { _extends$c = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$c.apply(this, arguments); }
 
-function _objectWithoutProperties$8(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$9(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$9(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$a(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$9(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$a(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function TileGroup(_ref) {
   var className = _ref.className,
       _ref$count = _ref.count,
@@ -16610,13 +15303,13 @@ function TileGroup(_ref) {
       Tile = _ref.tile,
       value = _ref.value,
       valueType = _ref.valueType,
-      tileProps = _objectWithoutProperties$8(_ref, ["className", "count", "dateTransform", "dateType", "end", "hover", "offset", "start", "step", "tile", "value", "valueType"]);
+      tileProps = _objectWithoutProperties$9(_ref, _excluded$c);
 
   var tiles = [];
 
   for (var point = start; point <= end; point += step) {
     var date = dateTransform(point);
-    tiles.push( /*#__PURE__*/React__default['default'].createElement(Tile, _extends$c({
+    tiles.push( /*#__PURE__*/React__default["default"].createElement(Tile, _extends$c({
       key: date.getTime(),
       classes: getTileClasses({
         value: value,
@@ -16630,14 +15323,14 @@ function TileGroup(_ref) {
     }, tileProps)));
   }
 
-  return /*#__PURE__*/React__default['default'].createElement(Flex, {
+  return /*#__PURE__*/React__default["default"].createElement(Flex, {
     className: className,
     count: count,
     offset: offset,
     wrap: true
   }, tiles);
 }
-TileGroup.propTypes = _objectSpread$b(_objectSpread$b({}, tileGroupProps), {}, {
+TileGroup.propTypes = _objectSpread$c(_objectSpread$c({}, tileGroupProps), {}, {
   activeStartDate: PropTypes.instanceOf(Date),
   count: PropTypes.number,
   dateTransform: PropTypes.func.isRequired,
@@ -16647,33 +15340,37 @@ TileGroup.propTypes = _objectSpread$b(_objectSpread$b({}, tileGroupProps), {}, {
   tile: PropTypes.func.isRequired
 });
 
-function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function _typeof$3(obj) { "@babel/helpers - typeof"; return _typeof$3 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof$3(obj); }
 
-function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$a(Object(source), true).forEach(function (key) { _defineProperty$a(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _typeof$3(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$3 = function _typeof(obj) { return typeof obj; }; } else { _typeof$3 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$3(obj); }
+function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty$b(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties$2(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass$2(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$2(Constructor.prototype, protoProps); if (staticProps) _defineProperties$2(Constructor, staticProps); return Constructor; }
+function _createClass$2(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$2(Constructor.prototype, protoProps); if (staticProps) _defineProperties$2(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$2(subClass, superClass); }
+function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf$2(subClass, superClass); }
 
 function _setPrototypeOf$2(o, p) { _setPrototypeOf$2 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$2(o, p); }
 
 function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf$2(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$2(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$2(this, result); }; }
 
-function _possibleConstructorReturn$2(self, call) { if (call && (_typeof$3(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$2(self); }
+function _possibleConstructorReturn$2(self, call) { if (call && (_typeof$3(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized$2(self); }
 
 function _assertThisInitialized$2(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf$2(o) { _getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$2(o); }
 
-function _defineProperty$a(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$b(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function datesAreDifferent(date1, date2) {
+  return date1 && !date2 || !date1 && date2 || date1 && date2 && date1.getTime() !== date2.getTime();
+}
 
 function getValue$2(nextProps, prop) {
   var activeStartDate = nextProps.activeStartDate,
@@ -16702,7 +15399,7 @@ var Tile = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty$a(_assertThisInitialized$2(_this), "state", {});
+    _defineProperty$b(_assertThisInitialized$2(_this), "state", {});
 
     return _this;
   }
@@ -16729,7 +15426,7 @@ var Tile = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           tileClassName = _this$state.tileClassName,
           tileContent = _this$state.tileContent;
-      return /*#__PURE__*/React__default['default'].createElement("button", {
+      return /*#__PURE__*/React__default["default"].createElement("button", {
         className: mergeClassNames(classes, tileClassName),
         disabled: minDate && minDateTransform(minDate) > date || maxDate && maxDateTransform(maxDate) < date || tileDisabled && tileDisabled({
           activeStartDate: activeStartDate,
@@ -16747,83 +15444,87 @@ var Tile = /*#__PURE__*/function (_Component) {
         },
         style: style,
         type: "button"
-      }, formatAbbr ? /*#__PURE__*/React__default['default'].createElement("abbr", {
+      }, formatAbbr ? /*#__PURE__*/React__default["default"].createElement("abbr", {
         "aria-label": formatAbbr(locale, date)
       }, children) : children, tileContent);
     }
   }], [{
     key: "getDerivedStateFromProps",
     value: function getDerivedStateFromProps(nextProps, prevState) {
-      var tileClassName = nextProps.tileClassName,
+      var activeStartDate = nextProps.activeStartDate,
+          tileClassName = nextProps.tileClassName,
           tileContent = nextProps.tileContent;
       var nextState = {};
 
-      if (tileClassName !== prevState.tileClassNameProps) {
+      if (tileClassName !== prevState.tileClassNameProps || datesAreDifferent(activeStartDate, prevState.activeStartDateProps)) {
         nextState.tileClassName = getValue$2(nextProps, tileClassName);
         nextState.tileClassNameProps = tileClassName;
       }
 
-      if (tileContent !== prevState.tileContentProps) {
+      if (tileContent !== prevState.tileContentProps || datesAreDifferent(activeStartDate, prevState.activeStartDateProps)) {
         nextState.tileContent = getValue$2(nextProps, tileContent);
         nextState.tileContentProps = tileContent;
       }
 
+      nextState.activeStartDateProps = activeStartDate;
       return nextState;
     }
   }]);
 
   return Tile;
 }(React.Component);
-Tile.propTypes = _objectSpread$a(_objectSpread$a({}, tileProps), {}, {
+Tile.propTypes = _objectSpread$b(_objectSpread$b({}, tileProps), {}, {
   children: PropTypes.node.isRequired,
   formatAbbr: PropTypes.func,
   maxDateTransform: PropTypes.func.isRequired,
   minDateTransform: PropTypes.func.isRequired
 });
 
-function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$b = ["classes", "formatYear"];
 
-function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$9(Object(source), true).forEach(function (key) { _defineProperty$9(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$9(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty$a(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$a(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$b() { _extends$b = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$b.apply(this, arguments); }
 
-function _objectWithoutProperties$7(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$8(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$8(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$9(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$8(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-var className$4 = 'react-calendar__century-view__decades__decade';
+function _objectWithoutPropertiesLoose$9(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+var className$5 = 'react-calendar__century-view__decades__decade';
 function Decade(_ref) {
   var classes = _ref.classes,
       _ref$formatYear = _ref.formatYear,
       formatYear$1 = _ref$formatYear === void 0 ? formatYear : _ref$formatYear,
-      otherProps = _objectWithoutProperties$7(_ref, ["classes", "formatYear"]);
+      otherProps = _objectWithoutProperties$8(_ref, _excluded$b);
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$b({}, otherProps, {
-    classes: [].concat(classes, className$4),
+  return /*#__PURE__*/React__default["default"].createElement(Tile, _extends$b({}, otherProps, {
+    classes: [].concat(classes, className$5),
     maxDateTransform: getDecadeEnd,
     minDateTransform: getDecadeStart,
     view: "century"
   }), getDecadeLabel(locale, formatYear$1, date));
 }
-Decade.propTypes = _objectSpread$9(_objectSpread$9({}, tileProps), {}, {
+Decade.propTypes = _objectSpread$a(_objectSpread$a({}, tileProps), {}, {
   formatYear: PropTypes.func
 });
 
-function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$8(Object(source), true).forEach(function (key) { _defineProperty$8(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty$9(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-function _defineProperty$8(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$9(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$a() { _extends$a = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$a.apply(this, arguments); }
 function Decades(props) {
   var activeStartDate = props.activeStartDate;
   var start = getBeginOfCenturyYear(activeStartDate);
   var end = start + 99;
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$a({}, props, {
+  return /*#__PURE__*/React__default["default"].createElement(TileGroup, _extends$a({}, props, {
     className: "react-calendar__century-view__decades",
     dateTransform: getDecadeStart,
     dateType: "decade",
@@ -16833,61 +15534,63 @@ function Decades(props) {
     tile: Decade
   }));
 }
-Decades.propTypes = _objectSpread$8({}, tileGroupProps);
+Decades.propTypes = _objectSpread$9({}, tileGroupProps);
 
 function CenturyView(props) {
   function renderDecades() {
-    return /*#__PURE__*/React__default['default'].createElement(Decades, props);
+    return /*#__PURE__*/React__default["default"].createElement(Decades, props);
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "react-calendar__century-view"
   }, renderDecades());
 }
 
-function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$a = ["classes", "formatYear"];
 
-function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$7(Object(source), true).forEach(function (key) { _defineProperty$7(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$7(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty$8(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$8(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$9() { _extends$9 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
 
-function _objectWithoutProperties$6(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$7(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$7(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$8(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-var className$3 = 'react-calendar__decade-view__years__year';
+function _objectWithoutPropertiesLoose$8(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+var className$4 = 'react-calendar__decade-view__years__year';
 function Year(_ref) {
   var classes = _ref.classes,
       _ref$formatYear = _ref.formatYear,
       formatYear$1 = _ref$formatYear === void 0 ? formatYear : _ref$formatYear,
-      otherProps = _objectWithoutProperties$6(_ref, ["classes", "formatYear"]);
+      otherProps = _objectWithoutProperties$7(_ref, _excluded$a);
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$9({}, otherProps, {
-    classes: [].concat(classes, className$3),
+  return /*#__PURE__*/React__default["default"].createElement(Tile, _extends$9({}, otherProps, {
+    classes: [].concat(classes, className$4),
     maxDateTransform: getYearEnd,
     minDateTransform: getYearStart,
     view: "decade"
   }), formatYear$1(locale, date));
 }
-Year.propTypes = _objectSpread$7(_objectSpread$7({}, tileProps), {}, {
+Year.propTypes = _objectSpread$8(_objectSpread$8({}, tileProps), {}, {
   formatYear: PropTypes.func
 });
 
-function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$6(Object(source), true).forEach(function (key) { _defineProperty$6(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$7(Object(source), !0).forEach(function (key) { _defineProperty$7(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-function _defineProperty$6(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$7(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$8() { _extends$8 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
 function Years(props) {
   var activeStartDate = props.activeStartDate;
   var start = getBeginOfDecadeYear(activeStartDate);
   var end = start + 9;
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$8({}, props, {
+  return /*#__PURE__*/React__default["default"].createElement(TileGroup, _extends$8({}, props, {
     className: "react-calendar__decade-view__years",
     dateTransform: function dateTransform(year) {
       var date = new Date();
@@ -16901,58 +15604,60 @@ function Years(props) {
     tile: Year
   }));
 }
-Years.propTypes = _objectSpread$6({}, tileGroupProps);
+Years.propTypes = _objectSpread$7({}, tileGroupProps);
 
 function DecadeView(props) {
   function renderYears() {
-    return /*#__PURE__*/React__default['default'].createElement(Years, props);
+    return /*#__PURE__*/React__default["default"].createElement(Years, props);
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "react-calendar__decade-view"
   }, renderYears());
 }
 
-function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$9 = ["classes", "formatMonth", "formatMonthYear"];
 
-function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$5(Object(source), true).forEach(function (key) { _defineProperty$5(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$5(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$6(Object(source), !0).forEach(function (key) { _defineProperty$6(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$6(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
 
-function _objectWithoutProperties$5(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$6(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$6(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$7(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-var className$2 = 'react-calendar__year-view__months__month';
+function _objectWithoutPropertiesLoose$7(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+var className$3 = 'react-calendar__year-view__months__month';
 function Month(_ref) {
   var classes = _ref.classes,
       _ref$formatMonth = _ref.formatMonth,
       formatMonth = _ref$formatMonth === void 0 ? formatMonth$1 : _ref$formatMonth,
       _ref$formatMonthYear = _ref.formatMonthYear,
       formatMonthYear$1 = _ref$formatMonthYear === void 0 ? formatMonthYear : _ref$formatMonthYear,
-      otherProps = _objectWithoutProperties$5(_ref, ["classes", "formatMonth", "formatMonthYear"]);
+      otherProps = _objectWithoutProperties$6(_ref, _excluded$9);
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$7({}, otherProps, {
-    classes: [].concat(classes, className$2),
+  return /*#__PURE__*/React__default["default"].createElement(Tile, _extends$7({}, otherProps, {
+    classes: [].concat(classes, className$3),
     formatAbbr: formatMonthYear$1,
     maxDateTransform: getMonthEnd,
     minDateTransform: getMonthStart,
     view: "year"
   }), formatMonth(locale, date));
 }
-Month.propTypes = _objectSpread$5(_objectSpread$5({}, tileProps), {}, {
+Month.propTypes = _objectSpread$6(_objectSpread$6({}, tileProps), {}, {
   formatMonth: PropTypes.func,
   formatMonthYear: PropTypes.func
 });
 
-function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$4(Object(source), true).forEach(function (key) { _defineProperty$4(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$5(Object(source), !0).forEach(function (key) { _defineProperty$5(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-function _defineProperty$4(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty$5(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
 function Months(props) {
@@ -16960,7 +15665,7 @@ function Months(props) {
   var start = 0;
   var end = 11;
   var year = getYear$1(activeStartDate);
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$6({}, props, {
+  return /*#__PURE__*/React__default["default"].createElement(TileGroup, _extends$6({}, props, {
     className: "react-calendar__year-view__months",
     dateTransform: function dateTransform(monthIndex) {
       var date = new Date();
@@ -16974,32 +15679,34 @@ function Months(props) {
     tile: Month
   }));
 }
-Months.propTypes = _objectSpread$4(_objectSpread$4({}, tileGroupProps), {}, {
+Months.propTypes = _objectSpread$5(_objectSpread$5({}, tileGroupProps), {}, {
   locale: PropTypes.string
 });
 
 function YearView(props) {
   function renderMonths() {
-    return /*#__PURE__*/React__default['default'].createElement(Months, props);
+    return /*#__PURE__*/React__default["default"].createElement(Months, props);
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "react-calendar__year-view"
   }, renderMonths());
 }
 
-function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$8 = ["formatDay", "formatLongDate", "calendarType", "classes", "currentMonthIndex"];
 
-function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$3(Object(source), true).forEach(function (key) { _defineProperty$3(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$3(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$4(Object(source), !0).forEach(function (key) { _defineProperty$4(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$4(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
 
-function _objectWithoutProperties$4(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$5(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$5(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$6(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-var className$1 = 'react-calendar__month-view__days__day';
+function _objectWithoutPropertiesLoose$6(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+var className$2 = 'react-calendar__month-view__days__day';
 function Day(_ref) {
   var _ref$formatDay = _ref.formatDay,
       formatDay$1 = _ref$formatDay === void 0 ? formatDay : _ref$formatDay,
@@ -17008,42 +15715,44 @@ function Day(_ref) {
       calendarType = _ref.calendarType,
       classes = _ref.classes,
       currentMonthIndex = _ref.currentMonthIndex,
-      otherProps = _objectWithoutProperties$4(_ref, ["formatDay", "formatLongDate", "calendarType", "classes", "currentMonthIndex"]);
+      otherProps = _objectWithoutProperties$5(_ref, _excluded$8);
 
   var date = otherProps.date,
       locale = otherProps.locale;
-  return /*#__PURE__*/React__default['default'].createElement(Tile, _extends$5({}, otherProps, {
-    classes: [].concat(classes, className$1, isWeekend$1(date, calendarType) ? "".concat(className$1, "--weekend") : null, date.getMonth() !== currentMonthIndex ? "".concat(className$1, "--neighboringMonth") : null),
+  return /*#__PURE__*/React__default["default"].createElement(Tile, _extends$5({}, otherProps, {
+    classes: [].concat(classes, className$2, isWeekend$1(date, calendarType) ? "".concat(className$2, "--weekend") : null, date.getMonth() !== currentMonthIndex ? "".concat(className$2, "--neighboringMonth") : null),
     formatAbbr: formatLongDate$1,
     maxDateTransform: getDayEnd,
     minDateTransform: getDayStart,
     view: "month"
   }), formatDay$1(locale, date));
 }
-Day.propTypes = _objectSpread$3(_objectSpread$3({}, tileProps), {}, {
+Day.propTypes = _objectSpread$4(_objectSpread$4({}, tileProps), {}, {
   currentMonthIndex: PropTypes.number.isRequired,
   formatDay: PropTypes.func,
   formatLongDate: PropTypes.func
 });
 
-function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+var _excluded$7 = ["showFixedNumberOfWeeks", "showNeighboringMonth"];
 
-function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$2(Object(source), true).forEach(function (key) { _defineProperty$2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$3(Object(source), !0).forEach(function (key) { _defineProperty$3(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$3(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
 
-function _objectWithoutProperties$3(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$4(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+function _objectWithoutProperties$4(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$5(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
-function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _objectWithoutPropertiesLoose$5(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function Days(props) {
   var activeStartDate = props.activeStartDate,
       calendarType = props.calendarType;
 
   var showFixedNumberOfWeeks = props.showFixedNumberOfWeeks,
       showNeighboringMonth = props.showNeighboringMonth,
-      otherProps = _objectWithoutProperties$3(props, ["showFixedNumberOfWeeks", "showNeighboringMonth"]);
+      otherProps = _objectWithoutProperties$4(props, _excluded$7);
 
   var year = getYear$1(activeStartDate);
   var monthIndex = getMonth$1(activeStartDate);
@@ -17082,7 +15791,7 @@ function Days(props) {
     return daysInMonth;
   }();
 
-  return /*#__PURE__*/React__default['default'].createElement(TileGroup, _extends$4({}, otherProps, {
+  return /*#__PURE__*/React__default["default"].createElement(TileGroup, _extends$4({}, otherProps, {
     className: "react-calendar__month-view__days",
     count: 7,
     currentMonthIndex: monthIndex,
@@ -17099,13 +15808,13 @@ function Days(props) {
     tile: Day
   }));
 }
-Days.propTypes = _objectSpread$2({
+Days.propTypes = _objectSpread$3({
   calendarType: isCalendarType.isRequired,
   showFixedNumberOfWeeks: PropTypes.bool,
   showNeighboringMonth: PropTypes.bool
 }, tileGroupProps);
 
-var className = 'react-calendar__month-view__weekdays';
+var className$1 = 'react-calendar__month-view__weekdays';
 function Weekdays(props) {
   var calendarType = props.calendarType,
       _props$formatShortWee = props.formatShortWeekday,
@@ -17121,17 +15830,17 @@ function Weekdays(props) {
   for (var weekday = 1; weekday <= 7; weekday += 1) {
     var weekdayDate = new Date(year, monthIndex, weekday - getDayOfWeek(beginOfMonth, calendarType));
     var abbr = formatWeekday(locale, weekdayDate);
-    weekdays.push( /*#__PURE__*/React__default['default'].createElement("div", {
+    weekdays.push( /*#__PURE__*/React__default["default"].createElement("div", {
       key: weekday,
-      className: "".concat(className, "__weekday")
-    }, /*#__PURE__*/React__default['default'].createElement("abbr", {
+      className: "".concat(className$1, "__weekday")
+    }, /*#__PURE__*/React__default["default"].createElement("abbr", {
       "aria-label": abbr,
       title: abbr
     }, formatShortWeekday$1(locale, weekdayDate).replace('.', ''))));
   }
 
-  return /*#__PURE__*/React__default['default'].createElement(Flex, {
-    className: className,
+  return /*#__PURE__*/React__default["default"].createElement(Flex, {
+    className: className$1,
     count: 7,
     onFocus: onMouseLeave,
     onMouseOver: onMouseLeave
@@ -17144,24 +15853,37 @@ Weekdays.propTypes = {
   onMouseLeave: PropTypes.func
 };
 
+var _excluded$6 = ["date", "onClickWeekNumber", "weekNumber"];
+
 function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+
+function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) { _defineProperty$2(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _objectWithoutProperties$3(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose$4(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose$4(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+var className = 'react-calendar__tile';
 function WeekNumber(_ref) {
   var date = _ref.date,
       onClickWeekNumber = _ref.onClickWeekNumber,
-      weekNumber = _ref.weekNumber;
-  var props = {
-    className: 'react-calendar__tile',
-    style: {
-      flexGrow: 1
-    }
-  };
-  var children = /*#__PURE__*/React__default['default'].createElement("span", null, weekNumber);
-  return onClickWeekNumber ? /*#__PURE__*/React__default['default'].createElement("button", _extends$3({}, props, {
+      weekNumber = _ref.weekNumber,
+      otherProps = _objectWithoutProperties$3(_ref, _excluded$6);
+
+  var props = _objectSpread$2({
+    className: className
+  }, otherProps);
+
+  var children = /*#__PURE__*/React__default["default"].createElement("span", null, weekNumber);
+  return onClickWeekNumber ? /*#__PURE__*/React__default["default"].createElement("button", _extends$3({}, props, {
     onClick: function onClick(event) {
       return onClickWeekNumber(weekNumber, date, event);
     },
     type: "button"
-  }), children) : /*#__PURE__*/React__default['default'].createElement("div", props, children);
+  }), children) : /*#__PURE__*/React__default["default"].createElement("div", props, children);
 }
 WeekNumber.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
@@ -17203,7 +15925,7 @@ function WeekNumbers(props) {
   var weekNumbers = dates.map(function (date) {
     return getWeekNumber(date, calendarType);
   });
-  return /*#__PURE__*/React__default['default'].createElement(Flex, {
+  return /*#__PURE__*/React__default["default"].createElement(Flex, {
     className: "react-calendar__month-view__weekNumbers",
     count: numberOfWeeks,
     direction: "column",
@@ -17214,7 +15936,7 @@ function WeekNumbers(props) {
       flexShrink: 0
     }
   }, weekNumbers.map(function (weekNumber, weekIndex) {
-    return /*#__PURE__*/React__default['default'].createElement(WeekNumber, {
+    return /*#__PURE__*/React__default["default"].createElement(WeekNumber, {
       key: weekNumber,
       date: dates[weekIndex],
       onClickWeekNumber: onClickWeekNumber,
@@ -17229,6 +15951,8 @@ WeekNumbers.propTypes = {
   onMouseLeave: PropTypes.func,
   showFixedNumberOfWeeks: PropTypes.bool
 };
+
+var _excluded$5 = ["calendarType", "formatShortWeekday", "onClickWeekNumber", "showWeekNumbers"];
 
 function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 
@@ -17253,10 +15977,10 @@ function MonthView(props) {
       formatShortWeekday = props.formatShortWeekday,
       onClickWeekNumber = props.onClickWeekNumber,
       showWeekNumbers = props.showWeekNumbers,
-      childProps = _objectWithoutProperties$2(props, ["calendarType", "formatShortWeekday", "onClickWeekNumber", "showWeekNumbers"]);
+      childProps = _objectWithoutProperties$2(props, _excluded$5);
 
   function renderWeekdays() {
-    return /*#__PURE__*/React__default['default'].createElement(Weekdays, {
+    return /*#__PURE__*/React__default["default"].createElement(Weekdays, {
       calendarType: calendarType,
       formatShortWeekday: formatShortWeekday,
       locale: locale,
@@ -17269,7 +15993,7 @@ function MonthView(props) {
       return null;
     }
 
-    return /*#__PURE__*/React__default['default'].createElement(WeekNumbers, {
+    return /*#__PURE__*/React__default["default"].createElement(WeekNumbers, {
       activeStartDate: activeStartDate,
       calendarType: calendarType,
       onClickWeekNumber: onClickWeekNumber,
@@ -17279,20 +16003,20 @@ function MonthView(props) {
   }
 
   function renderDays() {
-    return /*#__PURE__*/React__default['default'].createElement(Days, _extends$2({
+    return /*#__PURE__*/React__default["default"].createElement(Days, _extends$2({
       calendarType: calendarType
     }, childProps));
   }
 
   var className = 'react-calendar__month-view';
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: mergeClassNames(className, showWeekNumbers ? "".concat(className, "--weekNumbers") : '')
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     style: {
       display: 'flex',
       alignItems: 'flex-end'
     }
-  }, renderWeekNumbers(), /*#__PURE__*/React__default['default'].createElement("div", {
+  }, renderWeekNumbers(), /*#__PURE__*/React__default["default"].createElement("div", {
     style: {
       flexGrow: 1,
       width: '100%'
@@ -17310,33 +16034,35 @@ MonthView.propTypes = {
   showWeekNumbers: PropTypes.bool
 };
 
+var _excluded$4 = ["activeStartDate", "defaultActiveStartDate", "defaultValue", "defaultView", "maxDetail", "minDetail", "value", "view"];
+
 function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 
-function _typeof$2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$2 = function _typeof(obj) { return typeof obj; }; } else { _typeof$2 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$2(obj); }
+function _typeof$2(obj) { "@babel/helpers - typeof"; return _typeof$2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof$2(obj); }
 
 function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); if (staticProps) _defineProperties$1(Constructor, staticProps); return Constructor; }
+function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); if (staticProps) _defineProperties$1(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
+function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
 
 function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
 
-function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$2(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
+function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$2(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized$1(self); }
 
 function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
 
-function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$1(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -17350,7 +16076,7 @@ function _nonIterableSpread$2() { throw new TypeError("Invalid attempt to spread
 
 function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
 
-function _iterableToArray$2(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray$2(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles$2(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$2(arr); }
 
@@ -17491,7 +16217,7 @@ function getInitialActiveStartDate(props) {
       minDetail = props.minDetail,
       value = props.value,
       view = props.view,
-      otherProps = _objectWithoutProperties$1(props, ["activeStartDate", "defaultActiveStartDate", "defaultValue", "defaultView", "maxDetail", "minDetail", "value", "view"]);
+      otherProps = _objectWithoutProperties$1(props, _excluded$4);
 
   var rangeType = getView(view, minDetail, maxDetail);
   var valueFrom = activeStartDate || defaultActiveStartDate;
@@ -17529,12 +16255,9 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
     _this = _super.call.apply(_super, [this].concat(_args));
 
     _defineProperty$1(_assertThisInitialized$1(_this), "state", {
-      /* eslint-disable react/destructuring-assignment */
       activeStartDate: _this.props.defaultActiveStartDate,
       value: _this.props.defaultValue,
       view: _this.props.defaultView
-      /* eslint-enable react/destructuring-assignment */
-
     });
 
     _defineProperty$1(_assertThisInitialized$1(_this), "setStateAndCallCallbacks", function (nextState, event, callback) {
@@ -17555,6 +16278,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
 
       _this.setState(nextState, function () {
         var args = {
+          action: nextState.action,
           activeStartDate: nextState.activeStartDate || _this.activeStartDate,
           value: nextState.value || _this.value,
           view: nextState.view || _this.view
@@ -17563,8 +16287,8 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         function shouldUpdate(key) {
           return (// Key must exist, and…
             key in nextState && ( // …key changed from undefined to defined or the other way around, or…
-            _typeof$2(nextState[key]) !== _typeof$2(prevArgs[key]) // …value changed.
-            || (nextState[key] instanceof Date ? nextState[key].getTime() !== prevArgs[key].getTime() : nextState[key] !== prevArgs[key]))
+            _typeof$2(nextState[key]) !== _typeof$2(prevArgs[key]) || ( // …value changed.
+            nextState[key] instanceof Date ? nextState[key].getTime() !== prevArgs[key].getTime() : nextState[key] !== prevArgs[key]))
           );
         }
 
@@ -17596,9 +16320,10 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
       });
     });
 
-    _defineProperty$1(_assertThisInitialized$1(_this), "setActiveStartDate", function (activeStartDate) {
+    _defineProperty$1(_assertThisInitialized$1(_this), "setActiveStartDate", function (nextActiveStartDate, action) {
       _this.setStateAndCallCallbacks({
-        activeStartDate: activeStartDate
+        action: action,
+        activeStartDate: nextActiveStartDate
       });
     });
 
@@ -17617,6 +16342,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
       var nextView = views[views.indexOf(view) + 1];
 
       _this.setStateAndCallCallbacks({
+        action: 'drillDown',
         activeStartDate: nextActiveStartDate,
         view: nextView
       }, undefined, onDrillDown);
@@ -17637,6 +16363,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
       var nextActiveStartDate = getBegin$1(nextView, activeStartDate);
 
       _this.setStateAndCallCallbacks({
+        action: 'drillUp',
         activeStartDate: nextActiveStartDate,
         view: nextView
       }, undefined, onDrillUp);
@@ -17674,6 +16401,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
       event.persist();
 
       _this.setStateAndCallCallbacks({
+        action: 'onChange',
         activeStartDate: nextActiveStartDate,
         value: nextValue
       }, event);
@@ -17733,17 +16461,83 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
   }
 
   _createClass$1(Calendar, [{
-    key: "getProcessedValue",
+    key: "activeStartDate",
+    get: function get() {
+      var activeStartDateProps = this.props.activeStartDate;
+      var activeStartDateState = this.state.activeStartDate;
+      return activeStartDateProps || activeStartDateState || getInitialActiveStartDate(this.props);
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      var _this$props3 = this.props,
+          selectRange = _this$props3.selectRange,
+          valueProps = _this$props3.value;
+      var valueState = this.state.value; // In the middle of range selection, use value from state
 
+      if (selectRange && getIsSingleValue(valueState)) {
+        return valueState;
+      }
+
+      return valueProps !== undefined ? valueProps : valueState;
+    }
+  }, {
+    key: "valueType",
+    get: function get() {
+      var maxDetail = this.props.maxDetail;
+      return getValueType(maxDetail);
+    }
+  }, {
+    key: "view",
+    get: function get() {
+      var _this$props4 = this.props,
+          minDetail = _this$props4.minDetail,
+          maxDetail = _this$props4.maxDetail,
+          viewProps = _this$props4.view;
+      var viewState = this.state.view;
+      return getView(viewProps || viewState, minDetail, maxDetail);
+    }
+  }, {
+    key: "views",
+    get: function get() {
+      var _this$props5 = this.props,
+          minDetail = _this$props5.minDetail,
+          maxDetail = _this$props5.maxDetail;
+      return getLimitedViews(minDetail, maxDetail);
+    }
+  }, {
+    key: "hover",
+    get: function get() {
+      var selectRange = this.props.selectRange;
+      var hover = this.state.hover;
+      return selectRange ? hover : null;
+    }
+  }, {
+    key: "drillDownAvailable",
+    get: function get() {
+      var view = this.view,
+          views = this.views;
+      return views.indexOf(view) < views.length - 1;
+    }
+  }, {
+    key: "drillUpAvailable",
+    get: function get() {
+      var view = this.view,
+          views = this.views;
+      return views.indexOf(view) > 0;
+    }
     /**
      * Gets current value in a desired format.
      */
+
+  }, {
+    key: "getProcessedValue",
     value: function getProcessedValue(value) {
-      var _this$props3 = this.props,
-          minDate = _this$props3.minDate,
-          maxDate = _this$props3.maxDate,
-          maxDetail = _this$props3.maxDetail,
-          returnValue = _this$props3.returnValue;
+      var _this$props6 = this.props,
+          minDate = _this$props6.minDate,
+          maxDate = _this$props6.maxDate,
+          maxDetail = _this$props6.maxDetail,
+          returnValue = _this$props6.returnValue;
 
       var processFunction = function () {
         switch (returnValue) {
@@ -17776,15 +16570,15 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
           valueType = this.valueType,
           value = this.value,
           view = this.view;
-      var _this$props4 = this.props,
-          calendarType = _this$props4.calendarType,
-          locale = _this$props4.locale,
-          maxDate = _this$props4.maxDate,
-          minDate = _this$props4.minDate,
-          selectRange = _this$props4.selectRange,
-          tileClassName = _this$props4.tileClassName,
-          tileContent = _this$props4.tileContent,
-          tileDisabled = _this$props4.tileDisabled;
+      var _this$props7 = this.props,
+          calendarType = _this$props7.calendarType,
+          locale = _this$props7.locale,
+          maxDate = _this$props7.maxDate,
+          minDate = _this$props7.minDate,
+          selectRange = _this$props7.selectRange,
+          tileClassName = _this$props7.tileClassName,
+          tileContent = _this$props7.tileContent,
+          tileDisabled = _this$props7.tileDisabled;
       var hover = this.hover;
       var activeStartDate = next ? getBeginNext(view, currentActiveStartDate) : getBegin$1(view, currentActiveStartDate);
       var onClick = this.drillDownAvailable ? this.drillDown : this.onChange;
@@ -17807,7 +16601,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         case 'century':
           {
             var formatYear = this.props.formatYear;
-            return /*#__PURE__*/React__default['default'].createElement(CenturyView, _extends$1({
+            return /*#__PURE__*/React__default["default"].createElement(CenturyView, _extends$1({
               formatYear: formatYear
             }, commonProps));
           }
@@ -17815,17 +16609,17 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         case 'decade':
           {
             var _formatYear = this.props.formatYear;
-            return /*#__PURE__*/React__default['default'].createElement(DecadeView, _extends$1({
+            return /*#__PURE__*/React__default["default"].createElement(DecadeView, _extends$1({
               formatYear: _formatYear
             }, commonProps));
           }
 
         case 'year':
           {
-            var _this$props5 = this.props,
-                formatMonth = _this$props5.formatMonth,
-                formatMonthYear = _this$props5.formatMonthYear;
-            return /*#__PURE__*/React__default['default'].createElement(YearView, _extends$1({
+            var _this$props8 = this.props,
+                formatMonth = _this$props8.formatMonth,
+                formatMonthYear = _this$props8.formatMonthYear;
+            return /*#__PURE__*/React__default["default"].createElement(YearView, _extends$1({
               formatMonth: formatMonth,
               formatMonthYear: formatMonthYear
             }, commonProps));
@@ -17833,24 +16627,24 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
 
         case 'month':
           {
-            var _this$props6 = this.props,
-                formatDay = _this$props6.formatDay,
-                formatLongDate = _this$props6.formatLongDate,
-                formatShortWeekday = _this$props6.formatShortWeekday,
-                onClickWeekNumber = _this$props6.onClickWeekNumber,
-                showDoubleView = _this$props6.showDoubleView,
-                showFixedNumberOfWeeks = _this$props6.showFixedNumberOfWeeks,
-                showNeighboringMonth = _this$props6.showNeighboringMonth,
-                showWeekNumbers = _this$props6.showWeekNumbers;
+            var _this$props9 = this.props,
+                formatDay = _this$props9.formatDay,
+                formatLongDate = _this$props9.formatLongDate,
+                formatShortWeekday = _this$props9.formatShortWeekday,
+                onClickWeekNumber = _this$props9.onClickWeekNumber,
+                showDoubleView = _this$props9.showDoubleView,
+                showFixedNumberOfWeeks = _this$props9.showFixedNumberOfWeeks,
+                showNeighboringMonth = _this$props9.showNeighboringMonth,
+                showWeekNumbers = _this$props9.showWeekNumbers;
             var onMouseLeave = this.onMouseLeave;
-            return /*#__PURE__*/React__default['default'].createElement(MonthView, _extends$1({
+            return /*#__PURE__*/React__default["default"].createElement(MonthView, _extends$1({
               calendarType: calendarType,
               formatDay: formatDay,
               formatLongDate: formatLongDate,
               formatShortWeekday: formatShortWeekday,
               onClickWeekNumber: onClickWeekNumber,
               onMouseLeave: selectRange ? onMouseLeave : null,
-              showFixedNumberOfWeeks: showFixedNumberOfWeeks || showDoubleView,
+              showFixedNumberOfWeeks: typeof showFixedNumberOfWeeks !== 'undefined' ? showFixedNumberOfWeeks : showDoubleView,
               showNeighboringMonth: showNeighboringMonth,
               showWeekNumbers: showWeekNumbers
             }, commonProps));
@@ -17872,24 +16666,25 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
       var activeStartDate = this.activeStartDate,
           view = this.view,
           views = this.views;
-      var _this$props7 = this.props,
-          formatMonthYear = _this$props7.formatMonthYear,
-          formatYear = _this$props7.formatYear,
-          locale = _this$props7.locale,
-          maxDate = _this$props7.maxDate,
-          minDate = _this$props7.minDate,
-          navigationAriaLabel = _this$props7.navigationAriaLabel,
-          navigationLabel = _this$props7.navigationLabel,
-          next2AriaLabel = _this$props7.next2AriaLabel,
-          next2Label = _this$props7.next2Label,
-          nextAriaLabel = _this$props7.nextAriaLabel,
-          nextLabel = _this$props7.nextLabel,
-          prev2AriaLabel = _this$props7.prev2AriaLabel,
-          prev2Label = _this$props7.prev2Label,
-          prevAriaLabel = _this$props7.prevAriaLabel,
-          prevLabel = _this$props7.prevLabel,
-          showDoubleView = _this$props7.showDoubleView;
-      return /*#__PURE__*/React__default['default'].createElement(Navigation, {
+      var _this$props10 = this.props,
+          formatMonthYear = _this$props10.formatMonthYear,
+          formatYear = _this$props10.formatYear,
+          locale = _this$props10.locale,
+          maxDate = _this$props10.maxDate,
+          minDate = _this$props10.minDate,
+          navigationAriaLabel = _this$props10.navigationAriaLabel,
+          navigationAriaLive = _this$props10.navigationAriaLive,
+          navigationLabel = _this$props10.navigationLabel,
+          next2AriaLabel = _this$props10.next2AriaLabel,
+          next2Label = _this$props10.next2Label,
+          nextAriaLabel = _this$props10.nextAriaLabel,
+          nextLabel = _this$props10.nextLabel,
+          prev2AriaLabel = _this$props10.prev2AriaLabel,
+          prev2Label = _this$props10.prev2Label,
+          prevAriaLabel = _this$props10.prevAriaLabel,
+          prevLabel = _this$props10.prevLabel,
+          showDoubleView = _this$props10.showDoubleView;
+      return /*#__PURE__*/React__default["default"].createElement(Navigation, {
         activeStartDate: activeStartDate,
         drillUp: this.drillUp,
         formatMonthYear: formatMonthYear,
@@ -17898,6 +16693,7 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
         maxDate: maxDate,
         minDate: minDate,
         navigationAriaLabel: navigationAriaLabel,
+        navigationAriaLive: navigationAriaLive,
         navigationLabel: navigationLabel,
         next2AriaLabel: next2AriaLabel,
         next2Label: next2Label,
@@ -17916,88 +16712,22 @@ var Calendar$1 = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props8 = this.props,
-          className = _this$props8.className,
-          inputRef = _this$props8.inputRef,
-          selectRange = _this$props8.selectRange,
-          showDoubleView = _this$props8.showDoubleView;
+      var _this$props11 = this.props,
+          className = _this$props11.className,
+          inputRef = _this$props11.inputRef,
+          selectRange = _this$props11.selectRange,
+          showDoubleView = _this$props11.showDoubleView;
       var onMouseLeave = this.onMouseLeave,
           value = this.value;
       var valueArray = [].concat(value);
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: mergeClassNames(baseClassName, selectRange && valueArray.length === 1 && "".concat(baseClassName, "--selectRange"), showDoubleView && "".concat(baseClassName, "--doubleView"), className),
         ref: inputRef
-      }, this.renderNavigation(), /*#__PURE__*/React__default['default'].createElement("div", {
+      }, this.renderNavigation(), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "".concat(baseClassName, "__viewContainer"),
         onBlur: selectRange ? onMouseLeave : null,
         onMouseLeave: selectRange ? onMouseLeave : null
       }, this.renderContent(), showDoubleView && this.renderContent(true)));
-    }
-  }, {
-    key: "activeStartDate",
-    get: function get() {
-      var activeStartDateProps = this.props.activeStartDate;
-      var activeStartDateState = this.state.activeStartDate;
-      return activeStartDateProps || activeStartDateState || getInitialActiveStartDate(this.props);
-    }
-  }, {
-    key: "value",
-    get: function get() {
-      var _this$props9 = this.props,
-          selectRange = _this$props9.selectRange,
-          valueProps = _this$props9.value;
-      var valueState = this.state.value; // In the middle of range selection, use value from state
-
-      if (selectRange && getIsSingleValue(valueState)) {
-        return valueState;
-      }
-
-      return valueProps !== undefined ? valueProps : valueState;
-    }
-  }, {
-    key: "valueType",
-    get: function get() {
-      var maxDetail = this.props.maxDetail;
-      return getValueType(maxDetail);
-    }
-  }, {
-    key: "view",
-    get: function get() {
-      var _this$props10 = this.props,
-          minDetail = _this$props10.minDetail,
-          maxDetail = _this$props10.maxDetail,
-          viewProps = _this$props10.view;
-      var viewState = this.state.view;
-      return getView(viewProps || viewState, minDetail, maxDetail);
-    }
-  }, {
-    key: "views",
-    get: function get() {
-      var _this$props11 = this.props,
-          minDetail = _this$props11.minDetail,
-          maxDetail = _this$props11.maxDetail;
-      return getLimitedViews(minDetail, maxDetail);
-    }
-  }, {
-    key: "hover",
-    get: function get() {
-      var selectRange = this.props.selectRange;
-      var hover = this.state.hover;
-      return selectRange ? hover : null;
-    }
-  }, {
-    key: "drillDownAvailable",
-    get: function get() {
-      var view = this.view,
-          views = this.views;
-      return views.indexOf(view) < views.length - 1;
-    }
-  }, {
-    key: "drillUpAvailable",
-    get: function get() {
-      var view = this.view,
-          views = this.views;
-      return views.indexOf(view) > 0;
     }
   }]);
 
@@ -18035,6 +16765,7 @@ Calendar$1.propTypes = {
   minDate: isMinDate$1,
   minDetail: PropTypes.oneOf(allViews$1),
   navigationAriaLabel: PropTypes.string,
+  navigationAriaLive: PropTypes.oneOf(['off', 'polite', 'assertive']),
   navigationLabel: PropTypes.func,
   next2AriaLabel: PropTypes.string,
   next2Label: PropTypes.node,
@@ -18123,31 +16854,26 @@ var detectElementOverflow = function detectElementOverflow(element, container) {
 
 var detectElementOverflow$1 = detectElementOverflow;
 
-/**
- * Checks whether we're running on a production build or not.
- */
-var isProduction$1 = process.env.NODE_ENV === 'production';
-
-var consoleOnDev = function consoleOnDev(method) {
-  if (!isProduction$1) {
-    var _console;
-
-    for (var _len = arguments.length, message = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      message[_key - 1] = arguments[_key];
+var isProduction = process.env.NODE_ENV === 'production';
+function warning(condition, message) {
+  if (!isProduction) {
+    if (condition) {
+      return;
     }
 
-    // eslint-disable-next-line no-console
-    (_console = console)[method].apply(_console, message);
-  }
-};
+    var text = "Warning: " + message;
 
-var warnOnDev = function warnOnDev() {
-  for (var _len2 = arguments.length, message = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    message[_key2] = arguments[_key2];
-  }
+    if (typeof console !== 'undefined') {
+      console.warn(text);
+    }
 
-  return consoleOnDev.apply(void 0, ['warn'].concat(message));
-};
+    try {
+      throw Error(text);
+    } catch (x) {}
+  }
+}
+
+var _excluded$3 = ["invertAxis", "invertSecondaryAxis"];
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18161,11 +16887,11 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
@@ -18173,7 +16899,7 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose$1(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -18248,13 +16974,13 @@ function alignAxis(_ref) {
   var offsetSize = element[offsetSizeProperty];
 
   function displayStart() {
-    element.style[startProperty] = 'unset';
+    element.style[startProperty] = 'auto';
     element.style[endProperty] = secondary ? '0' : '100%';
   }
 
   function displayEnd() {
     element.style[startProperty] = secondary ? '0' : '100%';
-    element.style[endProperty] = 'unset';
+    element.style[endProperty] = 'auto';
   }
 
   function displayIfFits(availableSpace, display) {
@@ -18280,12 +17006,9 @@ function alignAxis(_ref) {
     var minSize = style[minSizeProperty] && parseInt(style[minSizeProperty], 10);
 
     function shrinkToSize(size) {
-      if (minSize && size < minSize) {
-        warnOnDev("<Fit />'s child will not fit anywhere with its current ".concat(minSizeProperty, " of ").concat(minSize, "px."));
-      }
-
+      warning(!minSize || size >= minSize, "<Fit />'s child will not fit anywhere with its current ".concat(minSizeProperty, " of ").concat(minSize, "px."));
       var newSize = Math.max(size, minSize || 0);
-      warnOnDev("<Fit />'s child needed to have its ".concat(sizeProperty, " decreased to ").concat(newSize, "px."));
+      warning(false, "<Fit />'s child needed to have its ".concat(sizeProperty, " decreased to ").concat(newSize, "px."));
       element.style[sizeProperty] = "".concat(newSize, "px");
     }
 
@@ -18325,7 +17048,7 @@ function alignSecondaryAxis(args) {
 function alignBothAxis(args) {
   var invertAxis = args.invertAxis,
       invertSecondaryAxis = args.invertSecondaryAxis,
-      commonArgs = _objectWithoutProperties(args, ["invertAxis", "invertSecondaryAxis"]);
+      commonArgs = _objectWithoutProperties(args, _excluded$3);
 
   alignMainAxis(_objectSpread(_objectSpread({}, commonArgs), {}, {
     invertAxis: invertAxis
@@ -18392,7 +17115,7 @@ var Fit = /*#__PURE__*/function (_Component) {
       var position = style.position;
 
       if (position !== 'absolute') {
-        warnOnDev('<Fit />\'s child does not have absolute position. You should apply `position: absolute` to it.');
+        warning(false, '<Fit />\'s child does not have absolute position. You should apply `position: absolute` to it.');
         element.style.position = 'absolute';
       }
       /**
@@ -18405,7 +17128,7 @@ var Fit = /*#__PURE__*/function (_Component) {
       var parentPosition = parentStyle.position;
 
       if (parentPosition !== 'relative' && parentPosition !== 'absolute') {
-        warnOnDev('<Fit />\'s parent does not have relative position. You should apply `position: relative` to it.');
+        warning(false, '<Fit />\'s parent does not have relative position. You should apply `position: relative` to it.');
         parent.style.position = 'relative';
       }
 
@@ -18454,10 +17177,10 @@ var Fit = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var children = this.props.children;
-      var child = React__default['default'].Children.only(children);
+      var child = React__default["default"].Children.only(children);
 
       if (isDisplayContentsSupported) {
-        return /*#__PURE__*/React__default['default'].createElement("span", {
+        return /*#__PURE__*/React__default["default"].createElement("span", {
           ref: function ref(container) {
             _this2.container = container;
             var element = container && container.firstChild;
@@ -18513,7 +17236,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = Divider;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -18663,13 +17386,13 @@ var propTypes = {};
 Object.defineProperty(propTypes, "__esModule", {
   value: true
 });
-propTypes.isRef = propTypes.isMaxDate = propTypes.isMinDate = propTypes.isValueType = void 0;
+propTypes.isValueType = propTypes.isRef = propTypes.isMinDate = propTypes.isMaxDate = void 0;
 
 var _propTypes = _interopRequireDefault$1(propTypes$1.exports);
 
 function _interopRequireDefault$1(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _toConsumableArray$1(arr) { return _arrayWithoutHoles$1(arr) || _iterableToArray$1(arr) || _unsupportedIterableToArray$1(arr) || _nonIterableSpread$1(); }
 
@@ -18677,7 +17400,7 @@ function _nonIterableSpread$1() { throw new TypeError("Invalid attempt to spread
 
 function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
 
-function _iterableToArray$1(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray$1(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles$1(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$1(arr); }
 
@@ -18735,7 +17458,6 @@ var isMaxDate = function isMaxDate(props, propName, componentName) {
 propTypes.isMaxDate = isMaxDate;
 
 var isRef = _propTypes["default"].oneOfType([_propTypes["default"].func, _propTypes["default"].shape({
-  // eslint-disable-next-line react/forbid-prop-types
   current: _propTypes["default"].any
 })]);
 
@@ -18743,14 +17465,14 @@ propTypes.isRef = isRef;
 
 (function (exports) {
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = Input;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -18762,19 +17484,20 @@ var _updateInputWidth = _interopRequireWildcard(require$$4);
 
 var _propTypes2 = propTypes;
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /* eslint-disable jsx-a11y/no-autofocus */
-var isEdgeLegacy = typeof window !== 'undefined' && 'navigator' in window && navigator.userAgent.match(/ Edge\/1/);
+var isIEOrEdgeLegacy = typeof window !== 'undefined' && /(MSIE|Trident\/|Edge\/)/.test(window.navigator.userAgent);
+var isFirefox = typeof window !== 'undefined' && /Firefox/.test(window.navigator.userAgent);
 
 function onFocus(event) {
   var target = event.target;
 
-  if (isEdgeLegacy) {
+  if (isIEOrEdgeLegacy) {
     requestAnimationFrame(function () {
       return target.select();
     });
@@ -18807,12 +17530,20 @@ function updateInputWidthOnFontLoad(element) {
   document.fonts.addEventListener('loadingdone', onLoadingDone);
 }
 
-function getSelectionString() {
-  if (typeof window === 'undefined') {
-    return null;
+function getSelectionString(input) {
+  /**
+   * window.getSelection().toString() returns empty string in IE11 and Firefox,
+   * so alternatives come first.
+   */
+  if (input && 'selectionStart' in input && input.selectionStart !== null) {
+    return input.value.slice(input.selectionStart, input.selectionEnd);
   }
 
-  return window.getSelection().toString();
+  if ('getSelection' in window) {
+    return window.getSelection().toString();
+  }
+
+  return null;
 }
 
 function makeOnKeyPress(maxLength) {
@@ -18821,17 +17552,20 @@ function makeOnKeyPress(maxLength) {
    * exceed maxLength.
    */
   return function onKeyPress(event) {
-    var key = event.key,
-        input = event.target;
-    var value = input.value;
-    var isNumberKey = !isNaN(parseInt(key, 10));
-    var selection = getSelectionString();
-
-    if (isNumberKey && (selection || value.length < maxLength)) {
+    if (isFirefox) {
+      // See https://github.com/wojtekmaj/react-time-picker/issues/92
       return;
     }
 
-    event.preventDefault();
+    var key = event.key,
+        input = event.target;
+    var value = input.value;
+    var isNumberKey = key.length === 1 && /\d/.test(key);
+    var selection = getSelectionString(input);
+
+    if (!isNumberKey || !(selection || value.length < maxLength)) {
+      event.preventDefault();
+    }
   };
 }
 
@@ -18918,8 +17652,8 @@ Object.defineProperty(utils, "__esModule", {
   value: true
 });
 utils.between = between;
-utils.safeMin = safeMin;
 utils.safeMax = safeMax;
+utils.safeMin = safeMin;
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -18927,7 +17661,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -18979,7 +17713,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = DayInput;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -18990,6 +17724,8 @@ var _Input = _interopRequireDefault(Input);
 var _propTypes2 = propTypes;
 
 var _utils = utils;
+
+var _excluded = ["maxDate", "minDate", "month", "year"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19004,7 +17740,7 @@ function DayInput(_ref) {
       minDate = _ref.minDate,
       month = _ref.month,
       year = _ref.year,
-      otherProps = _objectWithoutProperties(_ref, ["maxDate", "minDate", "month", "year"]);
+      otherProps = _objectWithoutProperties(_ref, _excluded);
 
   var currentMonthMaxDays = function () {
     if (!month) {
@@ -19055,7 +17791,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = MonthInput;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -19066,6 +17802,8 @@ var _Input = _interopRequireDefault(Input);
 var _propTypes2 = propTypes;
 
 var _utils = utils;
+
+var _excluded = ["maxDate", "minDate", "year"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19079,7 +17817,7 @@ function MonthInput(_ref) {
   var maxDate = _ref.maxDate,
       minDate = _ref.minDate,
       year = _ref.year,
-      otherProps = _objectWithoutProperties(_ref, ["maxDate", "minDate", "year"]);
+      otherProps = _objectWithoutProperties(_ref, _excluded);
 
   function isSameYear(date) {
     return date && year === (0, _dateUtils.getYear)(date).toString();
@@ -19121,16 +17859,30 @@ var require$$0 = /*@__PURE__*/getAugmentedNamespace(esm$4);
 Object.defineProperty(dateFormatter, "__esModule", {
   value: true
 });
-dateFormatter.getFormatter = getFormatter$3;
 dateFormatter.formatShortMonth = dateFormatter.formatMonth = void 0;
+dateFormatter.getFormatter = getFormatter$3;
 
 var _getUserLocale = _interopRequireDefault(require$$0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var formatterCache = new Map();
+
 function getFormatter$3(options) {
   return function (locale, date) {
-    return date.toLocaleString(locale || (0, _getUserLocale["default"])(), options);
+    var localeWithDefault = locale || (0, _getUserLocale["default"])();
+
+    if (!formatterCache.has(localeWithDefault)) {
+      formatterCache.set(localeWithDefault, new Map());
+    }
+
+    var formatterCacheLocale = formatterCache.get(localeWithDefault);
+
+    if (!formatterCacheLocale.has(options)) {
+      formatterCacheLocale.set(options, new Intl.DateTimeFormat(localeWithDefault, options).format);
+    }
+
+    return formatterCacheLocale.get(options)(date);
   };
 }
 /**
@@ -19173,7 +17925,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = MonthSelect;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -19187,6 +17939,8 @@ var _propTypes2 = propTypes;
 
 var _utils = utils;
 
+var _excluded = ["ariaLabel", "className", "inputRef", "locale", "maxDate", "minDate", "placeholder", "short", "value", "year"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -19197,7 +17951,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -19219,7 +17973,7 @@ function MonthSelect(_ref) {
       _short = _ref["short"],
       value = _ref.value,
       year = _ref.year,
-      otherProps = _objectWithoutProperties(_ref, ["ariaLabel", "className", "inputRef", "locale", "maxDate", "minDate", "placeholder", "short", "value", "year"]);
+      otherProps = _objectWithoutProperties(_ref, _excluded);
 
   function isSameYear(date) {
     return date && year === (0, _dateUtils.getYear)(date).toString();
@@ -19238,6 +17992,7 @@ function MonthSelect(_ref) {
     "aria-label": ariaLabel,
     className: (0, _mergeClassNames["default"])("".concat(className, "__input"), "".concat(className, "__").concat(name)),
     "data-input": "true",
+    "data-select": "true",
     name: name,
     ref: inputRef,
     value: value !== null ? value : ''
@@ -19282,7 +18037,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = YearInput;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -19293,6 +18048,8 @@ var _Input = _interopRequireDefault(Input);
 var _propTypes2 = propTypes;
 
 var _utils = utils;
+
+var _excluded = ["maxDate", "minDate", "placeholder", "valueType"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19308,7 +18065,7 @@ function YearInput(_ref) {
       _ref$placeholder = _ref.placeholder,
       placeholder = _ref$placeholder === void 0 ? '----' : _ref$placeholder,
       valueType = _ref.valueType,
-      otherProps = _objectWithoutProperties(_ref, ["maxDate", "minDate", "placeholder", "valueType"]);
+      otherProps = _objectWithoutProperties(_ref, _excluded);
 
   var maxYear = (0, _utils.safeMin)(275760, maxDate && (0, _dateUtils.getYear)(maxDate));
   var minYear = (0, _utils.safeMax)(1, minDate && (0, _dateUtils.getYear)(minDate));
@@ -19356,7 +18113,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = NativeInput;
 
-var _react = _interopRequireDefault(React__default['default']);
+var _react = _interopRequireDefault(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -19517,12 +18274,14 @@ function getEnd(rangeType, date) {
 
 (function (exports) {
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(React__default['default']);
+var _react = _interopRequireWildcard(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -19550,11 +18309,9 @@ var _utils = utils;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -19562,7 +18319,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -19570,19 +18327,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
@@ -19594,7 +18351,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -19873,8 +18630,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       } else if (formElements.every(function (formElement) {
         return formElement.value && formElement.validity.valid;
       })) {
-        var year = parseInt(values.year, 10);
-        var monthIndex = parseInt(values.month, 10) - 1 || 0;
+        var year = parseInt(values.year, 10) || new Date().getFullYear();
+        var monthIndex = parseInt(values.month || 1, 10) - 1;
         var day = parseInt(values.day || 1, 10);
         var proposedValue = new Date();
         proposedValue.setFullYear(year, monthIndex, day);
@@ -19905,7 +18662,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       return /*#__PURE__*/_react["default"].createElement(_DayInput["default"], _extends({
         key: "day"
       }, _this.commonInputProps, {
-        ariaLabel: dayAriaLabel,
+        ariaLabel: dayAriaLabel // eslint-disable-next-line jsx-a11y/no-autofocus
+        ,
         autoFocus: index === 0 && autoFocus,
         inputRef: _this.dayInput,
         month: month,
@@ -19935,7 +18693,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
         return /*#__PURE__*/_react["default"].createElement(_MonthSelect["default"], _extends({
           key: "month"
         }, _this.commonInputProps, {
-          ariaLabel: monthAriaLabel,
+          ariaLabel: monthAriaLabel // eslint-disable-next-line jsx-a11y/no-autofocus
+          ,
           autoFocus: index === 0 && autoFocus,
           inputRef: _this.monthInput,
           locale: locale,
@@ -19950,7 +18709,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       return /*#__PURE__*/_react["default"].createElement(_MonthInput["default"], _extends({
         key: "month"
       }, _this.commonInputProps, {
-        ariaLabel: monthAriaLabel,
+        ariaLabel: monthAriaLabel // eslint-disable-next-line jsx-a11y/no-autofocus
+        ,
         autoFocus: index === 0 && autoFocus,
         inputRef: _this.monthInput,
         placeholder: monthPlaceholder,
@@ -19969,7 +18729,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       return /*#__PURE__*/_react["default"].createElement(_YearInput["default"], _extends({
         key: "year"
       }, _this.commonInputProps, {
-        ariaLabel: yearAriaLabel,
+        ariaLabel: yearAriaLabel // eslint-disable-next-line jsx-a11y/no-autofocus
+        ,
         autoFocus: index === 0 && autoFocus,
         inputRef: _this.yearInput,
         placeholder: yearPlaceholder,
@@ -19982,11 +18743,30 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
   }
 
   _createClass(DateInput, [{
-    key: "getProcessedValue",
+    key: "formatDate",
+    get: function get() {
+      var maxDetail = this.props.maxDetail;
+      var options = {
+        year: 'numeric'
+      };
+      var level = allViews.indexOf(maxDetail);
 
+      if (level >= 2) {
+        options.month = 'numeric';
+      }
+
+      if (level >= 3) {
+        options.day = 'numeric';
+      }
+
+      return (0, _dateFormatter.getFormatter)(options);
+    }
     /**
      * Gets current value in a desired format.
      */
+
+  }, {
+    key: "getProcessedValue",
     value: function getProcessedValue(value) {
       var _this$props4 = this.props,
           minDate = _this$props4.minDate,
@@ -20018,75 +18798,6 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       });
     }
   }, {
-    key: "renderCustomInputs",
-    value: function renderCustomInputs() {
-      var placeholder = this.placeholder;
-      var format = this.props.format;
-      var elementFunctions = {
-        d: this.renderDay,
-        M: this.renderMonth,
-        y: this.renderYear
-      };
-      var allowMultipleInstances = typeof format !== 'undefined';
-      return _renderCustomInputs(placeholder, elementFunctions, allowMultipleInstances);
-    }
-  }, {
-    key: "renderNativeInput",
-    value: function renderNativeInput() {
-      var _this$props5 = this.props,
-          disabled = _this$props5.disabled,
-          maxDate = _this$props5.maxDate,
-          minDate = _this$props5.minDate,
-          name = _this$props5.name,
-          nativeInputAriaLabel = _this$props5.nativeInputAriaLabel,
-          required = _this$props5.required;
-      var value = this.state.value;
-      return /*#__PURE__*/_react["default"].createElement(_NativeInput["default"], {
-        key: "date",
-        ariaLabel: nativeInputAriaLabel,
-        disabled: disabled,
-        maxDate: maxDate || defaultMaxDate,
-        minDate: minDate || defaultMinDate,
-        name: name,
-        onChange: this.onChangeNative,
-        required: required,
-        value: value,
-        valueType: this.valueType
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var className = this.props.className;
-      /* eslint-disable jsx-a11y/click-events-have-key-events */
-
-      /* eslint-disable jsx-a11y/no-static-element-interactions */
-
-      return /*#__PURE__*/_react["default"].createElement("div", {
-        className: className,
-        onClick: this.onClick
-      }, this.renderNativeInput(), this.renderCustomInputs());
-    }
-  }, {
-    key: "formatDate",
-    get: function get() {
-      var maxDetail = this.props.maxDetail;
-      var options = {
-        year: 'numeric'
-      };
-      var level = allViews.indexOf(maxDetail);
-
-      if (level >= 2) {
-        options.month = 'numeric';
-      }
-
-      if (level >= 3) {
-        options.day = 'numeric';
-      }
-
-      return (0, _dateFormatter.getFormatter)(options);
-    }
-  }, {
     key: "divider",
     get: function get() {
       var dividers = this.placeholder.match(/[^0-9a-z]/i);
@@ -20095,9 +18806,9 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
   }, {
     key: "placeholder",
     get: function get() {
-      var _this$props6 = this.props,
-          format = _this$props6.format,
-          locale = _this$props6.locale;
+      var _this$props5 = this.props,
+          format = _this$props5.format,
+          locale = _this$props5.locale;
 
       if (format) {
         return format;
@@ -20122,19 +18833,21 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
         var formattedDatePiece = formatDatePiece(datePiece, date);
         var datePieceReplacement = datePieceReplacements[index];
         placeholder = placeholder.replace(formattedDatePiece, datePieceReplacement);
-      });
+      }); // See: https://github.com/wojtekmaj/react-date-picker/issues/396
+
+      placeholder = placeholder.replace('17', 'y');
       return placeholder;
     }
   }, {
     key: "commonInputProps",
     get: function get() {
-      var _this$props7 = this.props,
-          className = _this$props7.className,
-          disabled = _this$props7.disabled,
-          isCalendarOpen = _this$props7.isCalendarOpen,
-          maxDate = _this$props7.maxDate,
-          minDate = _this$props7.minDate,
-          required = _this$props7.required;
+      var _this$props6 = this.props,
+          className = _this$props6.className,
+          disabled = _this$props6.disabled,
+          isCalendarOpen = _this$props6.isCalendarOpen,
+          maxDate = _this$props6.maxDate,
+          minDate = _this$props6.minDate,
+          required = _this$props6.required;
       return {
         className: className,
         disabled: disabled,
@@ -20152,6 +18865,56 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
     get: function get() {
       var maxDetail = this.props.maxDetail;
       return getValueType(maxDetail);
+    }
+  }, {
+    key: "renderCustomInputs",
+    value: function renderCustomInputs() {
+      var placeholder = this.placeholder;
+      var format = this.props.format;
+      var elementFunctions = {
+        d: this.renderDay,
+        M: this.renderMonth,
+        y: this.renderYear
+      };
+      var allowMultipleInstances = typeof format !== 'undefined';
+      return _renderCustomInputs(placeholder, elementFunctions, allowMultipleInstances);
+    }
+  }, {
+    key: "renderNativeInput",
+    value: function renderNativeInput() {
+      var _this$props7 = this.props,
+          disabled = _this$props7.disabled,
+          maxDate = _this$props7.maxDate,
+          minDate = _this$props7.minDate,
+          name = _this$props7.name,
+          nativeInputAriaLabel = _this$props7.nativeInputAriaLabel,
+          required = _this$props7.required;
+      var value = this.state.value;
+      return /*#__PURE__*/_react["default"].createElement(_NativeInput["default"], {
+        key: "date",
+        ariaLabel: nativeInputAriaLabel,
+        disabled: disabled,
+        maxDate: maxDate || defaultMaxDate,
+        minDate: minDate || defaultMinDate,
+        name: name,
+        onChange: this.onChangeNative,
+        required: required,
+        value: value,
+        valueType: this.valueType
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var className = this.props.className;
+      return (
+        /*#__PURE__*/
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+        _react["default"].createElement("div", {
+          className: className,
+          onClick: this.onClick
+        }, this.renderNativeInput(), this.renderCustomInputs())
+      );
     }
   }], [{
     key: "getDerivedStateFromProps",
@@ -20184,8 +18947,8 @@ var DateInput = /*#__PURE__*/function (_PureComponent) {
       var values = [nextValue, prevState.value];
 
       if ( // Toggling calendar visibility resets values
-      nextState.isCalendarOpen // Flag was toggled
-      || datesAreDifferent.apply(void 0, _toConsumableArray(values.map(function (value) {
+      nextState.isCalendarOpen || // Flag was toggled
+      datesAreDifferent.apply(void 0, _toConsumableArray(values.map(function (value) {
         return getDetailValueFrom({
           value: value,
           minDate: minDate,
@@ -20257,16 +19020,18 @@ DateInput.propTypes = {
 
 (function (exports) {
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(React__default['default']);
+var _react = _interopRequireWildcard(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
-var _makeEventProps = _interopRequireDefault(entry);
+var _makeEventProps = _interopRequireDefault(require$$2$1);
 
 var _mergeClassNames = _interopRequireDefault(require$$3$1);
 
@@ -20278,13 +19043,14 @@ var _DateInput = _interopRequireDefault(DateInput);
 
 var _propTypes2 = propTypes;
 
+var _excluded = ["calendarClassName", "className", "onChange", "value"],
+    _excluded2 = ["onChange"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -20300,7 +19066,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -20308,19 +19074,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
@@ -20386,7 +19152,17 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       }
 
       if (openCalendarOnFocus) {
+        if (event.target.getAttribute('data-select') === 'true') {
+          return;
+        }
+
         _this.openCalendar();
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onKeyDown", function (event) {
+      if (event.key === 'Escape') {
+        _this.closeCalendar();
       }
     });
 
@@ -20452,6 +19228,11 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       this.handleOutsideActionListeners(false);
     }
   }, {
+    key: "eventProps",
+    get: function get() {
+      return (0, _makeEventProps["default"])(this.props);
+    }
+  }, {
     key: "handleOutsideActionListeners",
     value: function handleOutsideActionListeners(shouldListen) {
       var _this2 = this;
@@ -20462,6 +19243,7 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       outsideActionEvents.forEach(function (eventName) {
         return document[fnName](eventName, _this2.onOutsideAction);
       });
+      document[fnName]('keydown', this.onKeyDown);
     }
   }, {
     key: "renderInputs",
@@ -20511,6 +19293,7 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: "".concat(baseClassName, "__wrapper")
       }, /*#__PURE__*/_react["default"].createElement(_DateInput["default"], _extends({}, ariaLabelProps, placeholderProps, {
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus: autoFocus,
         className: "".concat(baseClassName, "__inputGroup"),
         disabled: disabled,
@@ -20558,11 +19341,17 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
           _this$props4.className;
           _this$props4.onChange;
           var value = _this$props4.value,
-          calendarProps = _objectWithoutProperties(_this$props4, ["calendarClassName", "className", "onChange", "value"]);
+          calendarProps = _objectWithoutProperties(_this$props4, _excluded);
 
       var className = "".concat(baseClassName, "__calendar");
       return /*#__PURE__*/_react["default"].createElement(_reactFit["default"], null, /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _mergeClassNames["default"])(className, "".concat(className, "--").concat(isOpen ? 'open' : 'closed'))
+        ref: function ref(_ref) {
+          if (_ref && !isOpen) {
+            _ref.removeAttribute('style');
+          }
+        },
+        className: (0, _mergeClassNames["default"])(className, "".concat(className, "--").concat(isOpen ? 'open' : 'closed')),
+        style: isOpen ? undefined : {}
       }, /*#__PURE__*/_react["default"].createElement(_reactCalendar["default"], _extends({
         className: calendarClassName,
         onChange: this.onChange,
@@ -20574,27 +19363,27 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
     value: function render() {
       var _this3 = this;
 
+      var eventProps = this.eventProps;
       var _this$props5 = this.props,
           className = _this$props5.className,
           disabled = _this$props5.disabled;
       var isOpen = this.state.isOpen;
+
+      eventProps.onChange;
+          var eventPropsWithoutOnChange = _objectWithoutProperties(eventProps, _excluded2);
+
       return /*#__PURE__*/_react["default"].createElement("div", _extends({
         className: (0, _mergeClassNames["default"])(baseClassName, "".concat(baseClassName, "--").concat(isOpen ? 'open' : 'closed'), "".concat(baseClassName, "--").concat(disabled ? 'disabled' : 'enabled'), className)
-      }, this.eventProps, {
+      }, eventPropsWithoutOnChange, {
         onFocus: this.onFocus,
-        ref: function ref(_ref) {
-          if (!_ref) {
+        ref: function ref(_ref2) {
+          if (!_ref2) {
             return;
           }
 
-          _this3.wrapper = _ref;
+          _this3.wrapper = _ref2;
         }
       }), this.renderInputs(), this.renderCalendar());
-    }
-  }, {
-    key: "eventProps",
-    get: function get() {
-      return (0, _makeEventProps["default"])(this.props);
     }
   }], [{
     key: "getDerivedStateFromProps",
@@ -20724,9 +19513,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // eslint-disable-next-line import/no-unresolved
 var _default = _DatePicker["default"];
 exports["default"] = _default;
-}(entry$1));
+}(entry));
 
-var DatePicker = /*@__PURE__*/getDefaultExportFromCjs(entry$1);
+var DatePicker = /*@__PURE__*/getDefaultExportFromCjs(entry);
 
 var toStr$8 = Object.prototype.toString;
 
@@ -21660,7 +20449,7 @@ var $sign = sign;
 
 // http://262.ecma-international.org/5.1/#sec-9.4
 
-var ToInteger$3 = function ToInteger(value) {
+var ToInteger = function ToInteger(value) {
 	var number = ToNumber$2(value);
 	if ($isNaN$2(number)) { return 0; }
 	if (number === 0 || !$isFinite$1(number)) { return number; }
@@ -21880,23 +20669,23 @@ var ToNumber$1 = function ToNumber(argument) {
 			return ToNumber($parseInteger($strSlice(value, 2), 8));
 		} else if (hasNonWS(value) || isInvalidHexLiteral(value)) {
 			return NaN;
-		} else {
-			var trimmed = $trim(value);
-			if (trimmed !== value) {
-				return ToNumber(trimmed);
-			}
 		}
+		var trimmed = $trim(value);
+		if (trimmed !== value) {
+			return ToNumber(trimmed);
+		}
+
 	}
 	return $Number$1(value);
 };
 
-var ES5ToInteger = ToInteger$3;
+var ES5ToInteger = ToInteger;
 
 var ToNumber = ToNumber$1;
 
-// https://262.ecma-international.org/11.0/#sec-tointeger
+// https://www.ecma-international.org/ecma-262/11.0/#sec-tointeger
 
-var ToInteger$2 = function ToInteger(value) {
+var ToIntegerOrInfinity$2 = function ToInteger(value) {
 	var number = ToNumber(value);
 	if (number !== 0) {
 		number = ES5ToInteger(number);
@@ -21913,10 +20702,10 @@ var maxSafeInteger = $Number.MAX_SAFE_INTEGER || $Math.pow(2, 53) - 1;
 
 var MAX_SAFE_INTEGER$2 = maxSafeInteger;
 
-var ToInteger$1 = ToInteger$2;
+var ToIntegerOrInfinity$1 = ToIntegerOrInfinity$2;
 
 var ToLength$1 = function ToLength(argument) {
-	var len = ToInteger$1(argument);
+	var len = ToIntegerOrInfinity$1(argument);
 	if (len <= 0) { return 0; } // includes converting -0 to +0
 	if (len > MAX_SAFE_INTEGER$2) { return MAX_SAFE_INTEGER$2; }
 	return len;
@@ -21966,7 +20755,7 @@ var isString$2 = function isString(value) {
 	return hasToStringTag ? tryStringObject(value) : toStr.call(value) === strClass;
 };
 
-var ToInteger = ToInteger$2;
+var ToIntegerOrInfinity = ToIntegerOrInfinity$2;
 var ToLength = ToLength$1;
 var ToObject = ToObject$1;
 var SameValueZero = SameValueZero$1;
@@ -21978,9 +20767,10 @@ var isString$1 = isString$2;
 
 var $charAt = callBound$1('String.prototype.charAt');
 var $indexOf = GetIntrinsic('%Array.prototype.indexOf%'); // TODO: use callBind.apply without breaking IE 8
+var $max = GetIntrinsic('%Math.max%');
 
 var implementation$2 = function includes(searchElement) {
-	var fromIndex = arguments.length > 1 ? ToInteger(arguments[1]) : 0;
+	var fromIndex = arguments.length > 1 ? ToIntegerOrInfinity(arguments[1]) : 0;
 	if ($indexOf && !$isNaN(searchElement) && $isFinite(fromIndex) && typeof searchElement !== 'undefined') {
 		return $indexOf.apply(this, arguments) > -1;
 	}
@@ -21990,7 +20780,7 @@ var implementation$2 = function includes(searchElement) {
 	if (length === 0) {
 		return false;
 	}
-	var k = fromIndex >= 0 ? fromIndex : Math.max(0, length + fromIndex);
+	var k = fromIndex >= 0 ? fromIndex : $max(0, length + fromIndex);
 	while (k < length) {
 		if (SameValueZero(searchElement, isString$1(O) ? $charAt(O, k) : O[k])) {
 			return true;
@@ -22061,13 +20851,13 @@ function List(_ref) {
   };
 
   if (arrayIncludes(['cities', 'regions'], field.id)) {
-    return /*#__PURE__*/React__default['default'].createElement("ul", {
+    return /*#__PURE__*/React__default["default"].createElement("ul", {
       className: "radioList"
     }, options.map(function (opt) {
-      return /*#__PURE__*/React__default['default'].createElement("li", {
+      return /*#__PURE__*/React__default["default"].createElement("li", {
         key: opt.id,
         className: "bu-list-item ".concat(countries && !arrayIncludes(countries, opt.country_id) ? 'bu-disabled' : 'bu-open')
-      }, /*#__PURE__*/React__default['default'].createElement("input", {
+      }, /*#__PURE__*/React__default["default"].createElement("input", {
         name: field.id,
         type: "checkbox",
         id: opt.id,
@@ -22076,18 +20866,18 @@ function List(_ref) {
         checked: value === opt.id,
         onBlur: handleCheckboxChange,
         onChange: handleCheckboxChange
-      }), /*#__PURE__*/React__default['default'].createElement("label", {
+      }), /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: opt.id
       }, opt.name));
     }));
   } else {
-    return /*#__PURE__*/React__default['default'].createElement("ul", {
+    return /*#__PURE__*/React__default["default"].createElement("ul", {
       className: "radioList"
     }, options.map(function (opt) {
-      return /*#__PURE__*/React__default['default'].createElement("li", {
+      return /*#__PURE__*/React__default["default"].createElement("li", {
         key: opt.id,
         className: "bu-list-item bu-open"
-      }, /*#__PURE__*/React__default['default'].createElement("input", {
+      }, /*#__PURE__*/React__default["default"].createElement("input", {
         name: field.id,
         type: "checkbox",
         id: opt.id,
@@ -22095,7 +20885,7 @@ function List(_ref) {
         checked: value === opt.id,
         onBlur: handleCheckboxChange,
         onChange: updateList
-      }), /*#__PURE__*/React__default['default'].createElement("label", {
+      }), /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: opt.id
       }, opt.name));
     }));
@@ -28104,7 +26894,7 @@ var Field$1 = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass$7(Field, [{
+  _createClass$6(Field, [{
     key: "handleChange",
     value: function handleChange(event) {
       this.props.onFilterChange(this.props.field.id, event.target.value);
@@ -28191,15 +26981,15 @@ var Field$1 = /*#__PURE__*/function (_Component) {
         input = [];
         PortalSite.categories.map(function (category) {
           if (arrayIncludes(requiredCategories, category.id)) {
-            input.push( /*#__PURE__*/React__default['default'].createElement("div", {
+            input.push( /*#__PURE__*/React__default["default"].createElement("div", {
               className: "bu-properties",
               key: category.id
-            }, /*#__PURE__*/React__default['default'].createElement("strong", null, category.name), /*#__PURE__*/React__default['default'].createElement("ul", null, category.properties.map(function (property) {
-              return /*#__PURE__*/React__default['default'].createElement("li", {
+            }, /*#__PURE__*/React__default["default"].createElement("strong", null, category.name), /*#__PURE__*/React__default["default"].createElement("ul", null, category.properties.map(function (property) {
+              return /*#__PURE__*/React__default["default"].createElement("li", {
                 key: property.id
-              }, /*#__PURE__*/React__default['default'].createElement("label", {
+              }, /*#__PURE__*/React__default["default"].createElement("label", {
                 htmlFor: property.id
-              }, /*#__PURE__*/React__default['default'].createElement("input", {
+              }, /*#__PURE__*/React__default["default"].createElement("input", {
                 type: "checkbox",
                 id: property.id,
                 value: property.id,
@@ -28215,12 +27005,12 @@ var Field$1 = /*#__PURE__*/function (_Component) {
         });
 
         if (options && arrayIncludes(['countries', 'cities', 'regions'], field.id)) {
-          input = /*#__PURE__*/React__default['default'].createElement("select", {
+          input = /*#__PURE__*/React__default["default"].createElement("select", {
             name: field.id,
             onBlur: this.handleChange,
             onChange: this.handleChange,
             value: value
-          }, /*#__PURE__*/React__default['default'].createElement("option", {
+          }, /*#__PURE__*/React__default["default"].createElement("option", {
             value: ""
           }), options.map(function (opt) {
             var hidden = false;
@@ -28237,7 +27027,7 @@ var Field$1 = /*#__PURE__*/function (_Component) {
               }
             }
 
-            return /*#__PURE__*/React__default['default'].createElement("option", {
+            return /*#__PURE__*/React__default["default"].createElement("option", {
               key: opt.id,
               value: opt.id,
               id: opt.region,
@@ -28246,16 +27036,16 @@ var Field$1 = /*#__PURE__*/function (_Component) {
             }, opt.name);
           }));
         } else {
-          input = /*#__PURE__*/React__default['default'].createElement("select", {
+          input = /*#__PURE__*/React__default["default"].createElement("select", {
             name: field.id,
             onBlur: this.handleChange,
             onChange: this.handleChange,
             value: value
-          }, /*#__PURE__*/React__default['default'].createElement("option", {
+          }, /*#__PURE__*/React__default["default"].createElement("option", {
             value: ""
           }), options.map(function (opt) {
             var hidden = false;
-            return /*#__PURE__*/React__default['default'].createElement("option", {
+            return /*#__PURE__*/React__default["default"].createElement("option", {
               key: opt,
               value: opt,
               disabled: hidden,
@@ -28264,7 +27054,7 @@ var Field$1 = /*#__PURE__*/function (_Component) {
           }));
         }
       } else if (field.type === 'list') {
-        input = /*#__PURE__*/React__default['default'].createElement(List, {
+        input = /*#__PURE__*/React__default["default"].createElement(List, {
           countries: countries,
           field: field,
           options: options,
@@ -28272,13 +27062,13 @@ var Field$1 = /*#__PURE__*/function (_Component) {
           value: value
         });
       } else if (field.type === 'radio') {
-        input = /*#__PURE__*/React__default['default'].createElement("ul", {
+        input = /*#__PURE__*/React__default["default"].createElement("ul", {
           className: "radioList"
         }, options.map(function (opt) {
-          return /*#__PURE__*/React__default['default'].createElement("li", {
+          return /*#__PURE__*/React__default["default"].createElement("li", {
             key: opt.id || opt,
             className: "bu-list-item ".concat(countries && !arrayIncludes(countries, opt.country_id) ? 'bu-disabled' : '')
-          }, /*#__PURE__*/React__default['default'].createElement("input", {
+          }, /*#__PURE__*/React__default["default"].createElement("input", {
             name: field.id,
             type: "radio",
             id: opt.id || opt,
@@ -28287,12 +27077,12 @@ var Field$1 = /*#__PURE__*/function (_Component) {
             ,
             onBlur: _this2.handleChange,
             onChange: _this2.handleChange
-          }), /*#__PURE__*/React__default['default'].createElement("label", {
+          }), /*#__PURE__*/React__default["default"].createElement("label", {
             htmlFor: opt.id || opt
           }, opt.name || opt));
         }));
       } else if (field.type === 'number') {
-        input = /*#__PURE__*/React__default['default'].createElement("input", {
+        input = /*#__PURE__*/React__default["default"].createElement("input", {
           value: value,
           type: "number",
           min: "0",
@@ -28308,14 +27098,14 @@ var Field$1 = /*#__PURE__*/function (_Component) {
           tempval = new Date(value);
         }
 
-        input = /*#__PURE__*/React__default['default'].createElement(DatePicker, {
+        input = /*#__PURE__*/React__default["default"].createElement(DatePicker, {
           id: field.id,
           onChange: this.handleDateChange,
           value: tempval,
           format: "dd-MM-y"
         });
       } else {
-        input = /*#__PURE__*/React__default['default'].createElement("input", {
+        input = /*#__PURE__*/React__default["default"].createElement("input", {
           value: value,
           onBlur: this.handleChange
         });
@@ -28337,7 +27127,7 @@ Field$1.propTypes = {
 };
 
 var Reload = function Reload() {
-  return /*#__PURE__*/React__default['default'].createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
     version: "1.1",
@@ -28347,7 +27137,7 @@ var Reload = function Reload() {
     enableBackground: "new 0 0 100 100",
     xmlSpace: "preserve",
     height: "16px"
-  }, /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
     fill: "#000000",
     stroke: "2",
     d: "M77,53.752c0,0.012,0,0.022,0,0.034c0,14.92-12.019,27.058-26.938,27.058  c-14.92,0-26.948-12.138-26.948-27.058C23.114,38.961,35,26.889,50,26.738v4.942c0,2.84,2.54,2.913,3.947,1.647l10.354-7.714  c0,0,1.128-0.942,1.128-1.979c0-1.089-1.147-1.979-1.147-1.979L53.95,13.941C52.543,12.675,50,12.749,50,15.588v5.149  c-18,0.151-32.826,14.915-32.826,33.048c0,18.229,14.686,33.058,32.914,33.058C68.314,86.844,83,72.015,83,53.786  c0-0.012,0-0.022,0-0.034c0,0,0-3.375-3.037-3.375C77.109,50.376,77,53.752,77,53.752z"
@@ -31682,7 +30472,7 @@ var Filters = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass$7(Filters, [{
+  _createClass$6(Filters, [{
     key: "saveFilters",
     value: function saveFilters(field, input) {
       var newFilters = this.props.filters;
@@ -31718,14 +30508,14 @@ var Filters = /*#__PURE__*/function (_Component) {
       var fixed = options.filtersForm ? options.filtersForm.fixedMobile ? 'fixed-mobile' : null : null;
       var filterClass = options.filtersForm ? options.filtersForm.show ? "filters filters-".concat(options.filtersForm.location) : 'filters-hidden' : 'filters';
       var show = this.state.show && 'showOnMobile';
-      return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("button", {
+      return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("button", {
         className: "filters-button ".concat(fixed),
         onClick: this.toggle
-      }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "filters"
-      })), /*#__PURE__*/React__default['default'].createElement("div", {
+      })), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "".concat(filterClass, " ").concat(fixed, " ").concat(show)
-      }, /*#__PURE__*/React__default['default'].createElement("button", {
+      }, /*#__PURE__*/React__default["default"].createElement("button", {
         onClick: function onClick() {
           var filters = {};
 
@@ -31736,18 +30526,18 @@ var Filters = /*#__PURE__*/function (_Component) {
           _this2.props.onFilterChange(filters);
         },
         className: "filters-reload"
-      }, /*#__PURE__*/React__default['default'].createElement(Reload, null)), searchFields.map(function (field) {
-        return /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement(Reload, null)), searchFields.map(function (field) {
+        return /*#__PURE__*/React__default["default"].createElement("div", {
           key: field.id,
           className: "bu-field",
           id: field.id
-        }, /*#__PURE__*/React__default['default'].createElement("label", {
+        }, /*#__PURE__*/React__default["default"].createElement("label", {
           style: {
             width: '100%',
             display: 'block'
           },
           htmlFor: field.id
-        }, PortalSite["".concat(field.id, "_label")]), /*#__PURE__*/React__default['default'].createElement(Field$1, {
+        }, PortalSite["".concat(field.id, "_label")]), /*#__PURE__*/React__default["default"].createElement(Field$1, {
           field: field,
           PortalSite: PortalSite,
           filters: filters,
@@ -31769,13 +30559,13 @@ Filters.propTypes = {
 };
 
 var ArrowRight$1 = function ArrowRight() {
-  return /*#__PURE__*/React__default['default'].createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     "data-name": "Layer 1",
     viewBox: "0 0 100 100",
     x: "0px",
     y: "0px"
-  }, /*#__PURE__*/React__default['default'].createElement("title", null, "Forward"), /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("title", null, "Forward"), /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M97.64,44.1,64.72,11.18a8.06,8.06,0,1,0-11.4,11.39L72.78,42H8.06a8.06,8.06,0,0,0,0,16.12H72.6L53.32,77.43a8.06,8.06,0,0,0,11.4,11.39L97.64,55.9A8,8,0,0,0,100,50.2a1.27,1.27,0,0,0,0-.2,1.41,1.41,0,0,0,0-.2A8.07,8.07,0,0,0,97.64,44.1Z"
   }));
 };
@@ -31784,56 +30574,56 @@ function SingleResult(_ref) {
   var result = _ref.result,
       options = _ref.options;
   var thisOptions = options || {};
-  return /*#__PURE__*/React__default['default'].createElement("a", {
+  return /*#__PURE__*/React__default["default"].createElement("a", {
     className: "bukazu-result",
     href: result.house_url
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "bukazu-result-inner"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "image-holder"
-  }, /*#__PURE__*/React__default['default'].createElement("img", {
+  }, /*#__PURE__*/React__default["default"].createElement("img", {
     src: result.image_url,
     alt: result.name
-  })), /*#__PURE__*/React__default['default'].createElement("div", {
+  })), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-title"
-  }, result.name), /*#__PURE__*/React__default['default'].createElement("div", {
+  }, result.name), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-place"
-  }, thisOptions.showCity && /*#__PURE__*/React__default['default'].createElement("span", null, result.city, ", "), thisOptions.showRegion && /*#__PURE__*/React__default['default'].createElement("span", null, result.province, ", "), thisOptions.showCountry && /*#__PURE__*/React__default['default'].createElement("span", null, result.country_name)), /*#__PURE__*/React__default['default'].createElement("div", {
+  }, thisOptions.showCity && /*#__PURE__*/React__default["default"].createElement("span", null, result.city, ", "), thisOptions.showRegion && /*#__PURE__*/React__default["default"].createElement("span", null, result.province, ", "), thisOptions.showCountry && /*#__PURE__*/React__default["default"].createElement("span", null, result.country_name)), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-description",
     dangerouslySetInnerHTML: {
       __html: result.description
     }
-  }), /*#__PURE__*/React__default['default'].createElement("div", {
+  }), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-details"
-  }, thisOptions.showPersons && /*#__PURE__*/React__default['default'].createElement("div", null, result.persons, " ", /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, thisOptions.showPersons && /*#__PURE__*/React__default["default"].createElement("div", null, result.persons, " ", /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "persons"
-  })), thisOptions.showBedrooms && /*#__PURE__*/React__default['default'].createElement("div", null, result.bedrooms, " ", /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), thisOptions.showBedrooms && /*#__PURE__*/React__default["default"].createElement("div", null, result.bedrooms, " ", /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "bedrooms"
-  })), thisOptions.showBathrooms && /*#__PURE__*/React__default['default'].createElement("div", null, result.bathrooms, " ", /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), thisOptions.showBathrooms && /*#__PURE__*/React__default["default"].createElement("div", null, result.bathrooms, " ", /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "bathrooms"
-  }))), thisOptions.showPrice && /*#__PURE__*/React__default['default'].createElement("div", {
+  }))), thisOptions.showPrice && /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-price"
-  }, result.booking_price ? /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, result.booking_price ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "price_from"
-  }), /*#__PURE__*/React__default['default'].createElement("span", {
+  }), /*#__PURE__*/React__default["default"].createElement("span", {
     className: "price"
-  }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+  }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
     value: result.booking_price.total_price,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }))) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }))) : /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "minimum_week_price"
-  }), /*#__PURE__*/React__default['default'].createElement("span", {
+  }), /*#__PURE__*/React__default["default"].createElement("span", {
     className: "price"
-  }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+  }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
     value: result.minimum_week_price,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  })))), /*#__PURE__*/React__default['default'].createElement("div", {
+  })))), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "result-button"
-  }, /*#__PURE__*/React__default['default'].createElement(ArrowRight$1, null)))));
+  }, /*#__PURE__*/React__default["default"].createElement(ArrowRight$1, null)))));
 }
 
 SingleResult.propTypes = {
@@ -31999,7 +30789,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(React__default['default']);
+var _react = _interopRequireWildcard(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -32124,7 +30914,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(React__default['default']);
+var _react = _interopRequireWildcard(React__default["default"]);
 
 var _propTypes = _interopRequireDefault(propTypes$1.exports);
 
@@ -32384,30 +31174,30 @@ function Paginator(_ref) {
       variables = _ref.variables,
       activePage = _ref.activePage,
       limit = _ref.limit;
-  return /*#__PURE__*/React__default['default'].createElement(Query, {
+  return /*#__PURE__*/React__default["default"].createElement(Query, {
     query: HOUSE_COUNT_QUERY,
     variables: variables
   }, function (_ref2) {
     var loading = _ref2.loading,
         error = _ref2.error,
         data = _ref2.data;
-    if (loading) return /*#__PURE__*/React__default['default'].createElement("div", {
+    if (loading) return /*#__PURE__*/React__default["default"].createElement("div", {
       style: {
         width: '100%',
         display: 'flex',
         justifyContent: 'center'
       }
-    }, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+    }, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
     if (error) {
-      return /*#__PURE__*/React__default['default'].createElement("div", null, "Error");
+      return /*#__PURE__*/React__default["default"].createElement("div", null, "Error");
     }
     var results = data.PortalSite.houses;
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "bu-paginator"
-    }, /*#__PURE__*/React__default['default'].createElement("div", null, results.length, " ", /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement("div", null, results.length, " ", /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "results"
-    })), /*#__PURE__*/React__default['default'].createElement(Pagination, {
+    })), /*#__PURE__*/React__default["default"].createElement(Pagination, {
       activePage: activePage,
       itemsCountPerPage: limit,
       totalItemsCount: results.length,
@@ -32443,14 +31233,14 @@ var Modal = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "state", {
+    _defineProperty$g(_assertThisInitialized$4(_this), "state", {
       visible: _this.props.show
     });
 
     return _this;
   }
 
-  _createClass$7(Modal, [{
+  _createClass$6(Modal, [{
     key: "setVisible",
     value: function setVisible(visible) {
       this.setState({
@@ -32468,7 +31258,7 @@ var Modal = /*#__PURE__*/function (_Component) {
       var visible = this.state.visible;
 
       if (!visible) {
-        return /*#__PURE__*/React__default['default'].createElement("a", {
+        return /*#__PURE__*/React__default["default"].createElement("a", {
           className: "info-button",
           onClick: function onClick() {
             return _this2.setVisible(true);
@@ -32476,26 +31266,26 @@ var Modal = /*#__PURE__*/function (_Component) {
         }, buttonText);
       }
 
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal-container"
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal-container-inner"
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal-escape",
         onClick: function onClick() {
           return _this2.setVisible(false);
         }
-      }), /*#__PURE__*/React__default['default'].createElement("div", {
+      }), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal"
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal-content"
-      }, children), /*#__PURE__*/React__default['default'].createElement("div", {
+      }, children), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "bukazu-modal-footer"
-      }, /*#__PURE__*/React__default['default'].createElement("a", {
+      }, /*#__PURE__*/React__default["default"].createElement("a", {
         onClick: function onClick() {
           return _this2.setVisible(false);
         }
-      }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "close"
       }))))));
     }
@@ -32517,18 +31307,18 @@ function ApiError(errors, modal) {
   console.error({
     errors: errors
   });
-  var errorMessage = /*#__PURE__*/React__default['default'].createElement("div", {
+  var errorMessage = /*#__PURE__*/React__default["default"].createElement("div", {
     className: "bukazu-error-message"
-  }, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "something_went_wrong_please_try_again"
-  })), /*#__PURE__*/React__default['default'].createElement("ul", null, errors.errors.graphQLErrors.map(function (err) {
-    return /*#__PURE__*/React__default['default'].createElement("li", {
+  })), /*#__PURE__*/React__default["default"].createElement("ul", null, errors.errors.graphQLErrors.map(function (err) {
+    return /*#__PURE__*/React__default["default"].createElement("li", {
       key: err.message
     }, err.message);
   })));
 
   if (modal == true) {
-    return /*#__PURE__*/React__default['default'].createElement(Modal, {
+    return /*#__PURE__*/React__default["default"].createElement(Modal, {
       show: true
     }, errorMessage);
   }
@@ -32577,10 +31367,10 @@ function IntegrationError(_ref) {
     return false;
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage, {
+  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage, {
     id: "something_went_wrong_please_try_again"
-  })), /*#__PURE__*/React__default['default'].createElement("ul", null, errors.map(function (err) {
-    return /*#__PURE__*/React__default['default'].createElement("li", null, err);
+  })), /*#__PURE__*/React__default["default"].createElement("ul", null, errors.map(function (err) {
+    return /*#__PURE__*/React__default["default"].createElement("li", null, err);
   })));
 }
 
@@ -32631,41 +31421,41 @@ function Results(_ref) {
     skip: skip,
     locale: locale
   };
-  return /*#__PURE__*/React__default['default'].createElement(Query, {
+  return /*#__PURE__*/React__default["default"].createElement(Query, {
     query: requestPrices ? HOUSES_PRICE_QUERY : HOUSES_QUERY,
     variables: variables
   }, function (_ref2) {
     var loading = _ref2.loading,
         error = _ref2.error,
         data = _ref2.data;
-    if (loading) return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+    if (loading) return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
     if (error) {
-      return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(ApiError, {
+      return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(ApiError, {
         errors: error
       }));
     }
 
     var Results = data.PortalSite.houses;
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       id: "results",
       className: PortalSite.options.filtersForm ? PortalSite.options.filtersForm.mode : null
-    }, /*#__PURE__*/React__default['default'].createElement(Paginator, {
+    }, /*#__PURE__*/React__default["default"].createElement(Paginator, {
       variables: variables,
       activePage: activePage,
       limit: limit,
       onPageChange: onPageChange
-    }), ' ', Results.length === 0 ? /*#__PURE__*/React__default['default'].createElement("div", {
+    }), ' ', Results.length === 0 ? /*#__PURE__*/React__default["default"].createElement("div", {
       className: "bu-noresults"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "no_results"
     })) : null, Results.map(function (result) {
-      return /*#__PURE__*/React__default['default'].createElement(SingleResult, {
+      return /*#__PURE__*/React__default["default"].createElement(SingleResult, {
         key: result.id,
         result: result,
         options: PortalSite.options.filtersForm
       });
-    }), /*#__PURE__*/React__default['default'].createElement(Paginator, {
+    }), /*#__PURE__*/React__default["default"].createElement(Paginator, {
       variables: variables,
       activePage: activePage,
       limit: limit,
@@ -32707,13 +31497,24 @@ var SearchPage = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass$7(SearchPage, [{
+  _createClass$6(SearchPage, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var filters = localStorage.getItem('bukazuFilters');
+      var activePage = localStorage.getItem('bukazuActivePage');
+      this.setState({
+        filters: JSON.parse(filters) || this.props.filters
+      });
+      this.pageChange(activePage || 1);
+    }
+  }, {
     key: "onFilterChange",
     value: function onFilterChange(data) {
       var filters = data;
       this.setState({
         filters: filters
       });
+      localStorage.setItem('bukazuFilters', JSON.stringify(filters));
       this.pageChange(1);
     }
   }, {
@@ -32721,6 +31522,7 @@ var SearchPage = /*#__PURE__*/function (_Component) {
     value: function pageChange(pageNumber) {
       var limit = this.state.limit;
       var newSkip = pageNumber * limit - limit;
+      localStorage.setItem('bukazuActivePage', pageNumber);
       this.setState({
         activePage: pageNumber,
         skip: newSkip
@@ -32737,15 +31539,15 @@ var SearchPage = /*#__PURE__*/function (_Component) {
       var _this$props = this.props,
           options = _this$props.options,
           locale = _this$props.locale;
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         id: "search-page",
         className: options.filtersForm ? options.filtersForm.location === 'right' ? 'bu-reverse' : options.filtersForm.location === 'top' ? 'bu-column' : null : null
-      }, /*#__PURE__*/React__default['default'].createElement(Filters, {
+      }, /*#__PURE__*/React__default["default"].createElement(Filters, {
         PortalSite: this.props.PortalSite,
         filters: filters,
         onFilterChange: this.onFilterChange,
         options: options
-      }), /*#__PURE__*/React__default['default'].createElement(Results, {
+      }), /*#__PURE__*/React__default["default"].createElement(Results, {
         PortalSite: this.props.PortalSite,
         filters: filters,
         activePage: activePage,
@@ -33865,7 +32667,7 @@ var format_1 = function (date, formatStr) {
 };
 
 var ArrowRight = function ArrowRight() {
-  return /*#__PURE__*/React__default['default'].createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
     version: "1.1",
@@ -33876,7 +32678,7 @@ var ArrowRight = function ArrowRight() {
       enableBackground: 'new 0 0 100 100'
     },
     xmlSpace: "preserve"
-  }, /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M2.4,44.1l32.9-32.9c3.1-3.1,8.2-3.1,11.4,0c1.6,1.6,2.4,3.6,2.4,5.7c0,2.1-0.8,4.1-2.4,5.7L27.2,42h64.7  c2.2,0,4.2,0.9,5.7,2.4c1.5,1.5,2.4,3.5,2.4,5.7c0,4.4-3.6,8.1-8.1,8.1H27.4l19.3,19.3c1.6,1.6,2.4,3.6,2.4,5.7s-0.8,4.1-2.4,5.7  c-3.1,3.1-8.3,3.1-11.4,0L2.4,55.9C0.8,54.3,0,52.3,0,50.2c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2C0,47.7,0.8,45.7,2.4,44.1z"
   }));
 };
@@ -33885,9 +32687,9 @@ function CalendarHeader(_ref) {
   var onGoPrev = _ref.onGoPrev,
       onReset = _ref.onReset,
       onGoNext = _ref.onGoNext;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "calendars-header"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "col bu-prev",
     style: {
       textAlign: 'center'
@@ -33896,9 +32698,9 @@ function CalendarHeader(_ref) {
     onKeyPress: onGoPrev,
     tabIndex: 0,
     role: "button"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "icon"
-  }, ' ', /*#__PURE__*/React__default['default'].createElement(ArrowRight, null))), /*#__PURE__*/React__default['default'].createElement("div", {
+  }, ' ', /*#__PURE__*/React__default["default"].createElement(ArrowRight, null))), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "col bu-reset",
     onClick: onReset,
     onKeyPress: onReset,
@@ -33907,9 +32709,9 @@ function CalendarHeader(_ref) {
     },
     tabIndex: 0,
     role: "button"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "icon"
-  }, /*#__PURE__*/React__default['default'].createElement(Reload, null))), /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement(Reload, null))), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "col bu-next",
     onClick: onGoNext,
     onKeyPress: onGoNext,
@@ -33918,9 +32720,9 @@ function CalendarHeader(_ref) {
     },
     tabIndex: 0,
     role: "button"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "icon"
-  }, /*#__PURE__*/React__default['default'].createElement(ArrowRight$1, null))));
+  }, /*#__PURE__*/React__default["default"].createElement(ArrowRight$1, null))));
 }
 
 CalendarHeader.propTypes = {
@@ -33961,10 +32763,10 @@ function byString(o, s) {
   return o;
 }
 function translatedOption(id, value) {
-  return /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  return /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: id
   }, function (formattedMessage) {
-    return /*#__PURE__*/React__default['default'].createElement("option", {
+    return /*#__PURE__*/React__default["default"].createElement("option", {
       value: value
     }, formattedMessage);
   });
@@ -33998,14 +32800,14 @@ var PriceField = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "state", {
+    _defineProperty$g(_assertThisInitialized$4(_this), "state", {
       persons: 2
     });
 
     return _this;
   }
 
-  _createClass$7(PriceField, [{
+  _createClass$6(PriceField, [{
     key: "setPersons",
     value: function setPersons(persons) {
       this.setState({
@@ -34029,58 +32831,58 @@ var PriceField = /*#__PURE__*/function (_Component) {
           minNights = _this$props.minNights;
       var persons = this.state.persons;
       var adults = createPeronsArray(house.persons);
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar--picker"
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar--picker--date"
-      }, /*#__PURE__*/React__default['default'].createElement("span", {
+      }, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "name"
-      }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".arrival")
-      })), /*#__PURE__*/React__default['default'].createElement("span", {
+      })), /*#__PURE__*/React__default["default"].createElement("span", {
         className: "detail"
-      }, startsAt ? /*#__PURE__*/React__default['default'].createElement("span", null, format_1(startsAt, dateFormat$1)) : /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, startsAt ? /*#__PURE__*/React__default["default"].createElement("span", null, format_1(startsAt, dateFormat$1)) : /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".pick_your_arrivaldate_in_the_calendar")
-      }))), /*#__PURE__*/React__default['default'].createElement("div", {
+      }))), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar--picker--date"
-      }, /*#__PURE__*/React__default['default'].createElement("span", {
+      }, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "name"
-      }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".departure")
-      })), /*#__PURE__*/React__default['default'].createElement("span", {
+      })), /*#__PURE__*/React__default["default"].createElement("span", {
         className: "detail"
-      }, endsAt ? /*#__PURE__*/React__default['default'].createElement("span", null, format_1(endsAt, dateFormat$1)) : /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, endsAt ? /*#__PURE__*/React__default["default"].createElement("span", null, format_1(endsAt, dateFormat$1)) : /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".pick_your_departure_in_the_calendar")
-      })), minNights && /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      })), minNights && /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "minimum_nights",
         defaultMessage: "Minimum {minimum} nights",
         values: {
           minimum: minNights
         }
-      })))), /*#__PURE__*/React__default['default'].createElement("div", {
+      })))), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar--picker--date"
-      }, /*#__PURE__*/React__default['default'].createElement("span", {
+      }, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "detail"
-      }, /*#__PURE__*/React__default['default'].createElement("select", {
+      }, /*#__PURE__*/React__default["default"].createElement("select", {
         className: "calendar--picker--persons",
         value: persons,
         onChange: function onChange(e) {
           _this2.setPersons(e.target.value);
         }
       }, adults.map(function (person) {
-        return /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        return /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "persons",
           key: person,
           children: function children(text) {
-            return /*#__PURE__*/React__default['default'].createElement("option", {
+            return /*#__PURE__*/React__default["default"].createElement("option", {
               value: person,
               key: person
             }, person, " ", text);
           }
         });
-      })))), /*#__PURE__*/React__default['default'].createElement("div", {
+      })))), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar--picker--date"
-      }, startsAt && endsAt && /*#__PURE__*/React__default['default'].createElement(Query, {
+      }, startsAt && endsAt && /*#__PURE__*/React__default["default"].createElement(Query, {
         query: CALENDAR_QUERY,
         variables: {
           id: portalCode,
@@ -34094,34 +32896,34 @@ var PriceField = /*#__PURE__*/function (_Component) {
         var loading = _ref.loading,
             data = _ref.data,
             error = _ref.error;
-        if (loading) return /*#__PURE__*/React__default['default'].createElement("div", {
+        if (loading) return /*#__PURE__*/React__default["default"].createElement("div", {
           className: "price-overview--build"
-        }, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+        }, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
         if (error) {
-          return /*#__PURE__*/React__default['default'].createElement("div", {
+          return /*#__PURE__*/React__default["default"].createElement("div", {
             className: "price-overview--build"
-          }, /*#__PURE__*/React__default['default'].createElement(ApiError, {
+          }, /*#__PURE__*/React__default["default"].createElement(ApiError, {
             errors: error
           }));
         }
 
         var result = data.PortalSite.houses[0].booking_price;
-        return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
+        return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
           className: "price-overview--book"
-        }, /*#__PURE__*/React__default['default'].createElement("div", {
+        }, /*#__PURE__*/React__default["default"].createElement("div", {
           className: "price"
-        }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+        }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
           value: Math.round(result.total_price),
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
-        })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("i", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        })), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("i", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "based_on_one_person",
           values: {
             persons: persons
           }
         })))));
-      })), /*#__PURE__*/React__default['default'].createElement("button", {
+      })), /*#__PURE__*/React__default["default"].createElement("button", {
         className: "button",
         disabled: !disabled,
         onClick: function onClick() {
@@ -34129,7 +32931,7 @@ var PriceField = /*#__PURE__*/function (_Component) {
             onStartBooking('false', persons);
           }
         }
-      }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "calculate"
       })));
     }
@@ -34157,23 +32959,23 @@ var AssistanceMessage = function AssistanceMessage(_ref) {
       minNights = _ref.minNights;
 
   if (departureDate.date) {
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "assistance"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "".concat(house.house_type, ".you_picked_arrival_date")
-    }), ":", " ", format_1(arrivalDate.date, dateFormat), /*#__PURE__*/React__default['default'].createElement("br", null), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }), ":", " ", format_1(arrivalDate.date, dateFormat), /*#__PURE__*/React__default["default"].createElement("br", null), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "".concat(house.house_type, ".you_picked_departure_date")
     }), ": ", format_1(departureDate.date, dateFormat));
   }
 
   if (arrivalDate.date) {
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "assistance"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "".concat(house.house_type, ".you_picked_arrival_date")
-    }), ":", " ", format_1(arrivalDate.date, dateFormat), /*#__PURE__*/React__default['default'].createElement("br", null), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }), ":", " ", format_1(arrivalDate.date, dateFormat), /*#__PURE__*/React__default["default"].createElement("br", null), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "".concat(house.house_type, ".pick_your_departure_in_the_calendar")
-    }), /*#__PURE__*/React__default['default'].createElement("br", null), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }), /*#__PURE__*/React__default["default"].createElement("br", null), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "minimum_nights",
       values: {
         minimum: minNights
@@ -34182,9 +32984,9 @@ var AssistanceMessage = function AssistanceMessage(_ref) {
     }));
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "assistance"
-  }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "".concat(house.house_type, ".pick_your_arrivaldate_in_the_calendar")
   }));
 };
@@ -34201,7 +33003,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "state", {
+    _defineProperty$g(_assertThisInitialized$4(_this), "state", {
       currentMonth: new Date(),
       selectedDate: "",
       numberOfMonths: _this.props.numberOfMonths,
@@ -34213,7 +33015,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
       startBooking: false
     });
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "onDateClick", function (day) {
+    _defineProperty$g(_assertThisInitialized$4(_this), "onDateClick", function (day) {
       var _this$state = _this.state,
           arrivalDate = _this$state.arrivalDate,
           selectedDate = _this$state.selectedDate,
@@ -34235,7 +33037,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
       }
     });
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "nextMonth", function () {
+    _defineProperty$g(_assertThisInitialized$4(_this), "nextMonth", function () {
       var _this$state2 = _this.state,
           numberOfMonths = _this$state2.numberOfMonths,
           currentMonth = _this$state2.currentMonth;
@@ -34245,7 +33047,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "prevMonth", function () {
+    _defineProperty$g(_assertThisInitialized$4(_this), "prevMonth", function () {
       var _this$state3 = _this.state,
           numberOfMonths = _this$state3.numberOfMonths,
           currentMonth = _this$state3.currentMonth;
@@ -34255,7 +33057,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "reset", function () {
+    _defineProperty$g(_assertThisInitialized$4(_this), "reset", function () {
       _this.setState({
         selectedDate: "",
         arrivalDate: "",
@@ -34268,18 +33070,18 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
     return _this;
   }
 
-  _createClass$7(Calendar, [{
+  _createClass$6(Calendar, [{
     key: "renderHeader",
     value: function renderHeader(month) {
       var dateFormat = "MMMM YYYY";
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "header row flex-middle"
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "col col-center",
         style: {
           textAlign: "center"
         }
-      }, /*#__PURE__*/React__default['default'].createElement("span", null, format_1(month, dateFormat))));
+      }, /*#__PURE__*/React__default["default"].createElement("span", null, format_1(month, dateFormat))));
     }
   }, {
     key: "renderDays",
@@ -34289,13 +33091,13 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
       var startDate = dateFns.startOfWeek(this.state.currentMonth);
 
       for (var i = 0; i < 7; i++) {
-        days.push( /*#__PURE__*/React__default['default'].createElement("div", {
+        days.push( /*#__PURE__*/React__default["default"].createElement("div", {
           className: "col col-center",
           key: i
         }, format_1(dateFns.addDays(startDate, i), dateFormat)));
       }
 
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "days row"
       }, days);
     }
@@ -34341,7 +33143,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
           var daysFromToday = difference_in_calendar_days(daz.date, today);
           var last_minute = daysFromToday <= house.last_minute_days && daysFromToday > 0;
           var highlight = daz.departure && is_after(daz.date, selectedDate) ? minimum ? maximum ? prevBooked.max_nights !== 0 ? "departure" : null : "" : "" : "";
-          days.push( /*#__PURE__*/React__default['default'].createElement("div", {
+          days.push( /*#__PURE__*/React__default["default"].createElement("div", {
             className: "col cell\n        ".concat(!dateFns.isSameMonth(day, monthStart) ? "disabled" : dateFns.isSameDay(day, selectedDate) || dateFns.isSameDay(day, departureDate.date) ? "selected" : "", "\n              ").concat(dateFns.isAfter(day, selectedDate) && dateFns.isBefore(day, departureDate.date) ? "selected" : "", "\n              ").concat(last_minute || daz.special_offer > 0 ? "discount" : "", "\n              ").concat(discount ? "discount" : "", "\n              ").concat(daz.arrival ? dateFns.isAfter(daz.date, new Date()) ? daz.max_nights !== 0 ? prevBooked.max_nights === 0 ? "departure-arrival" : "arrival" : "" : "" : "", "\n              ").concat(highlight, "\n              ").concat(daz.max_nights === 0 ? prevBooked.max_nights !== 0 ? "booked-departure" : "booked" : prevBooked.max_nights === 0 ? "booked" : ""),
             key: day,
             date: daz.date,
@@ -34353,7 +33155,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
             onKeyPress: function onKeyPress() {
               return _this2.onDateClick(cloneDay);
             }
-          }, /*#__PURE__*/React__default['default'].createElement("span", null, !dateFns.isSameMonth(day, monthStart) ? "" : formattedDate)));
+          }, /*#__PURE__*/React__default["default"].createElement("span", null, !dateFns.isSameMonth(day, monthStart) ? "" : formattedDate)));
           day = dateFns.addDays(day, 1);
         };
 
@@ -34362,14 +33164,14 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
           _loop(i);
         }
 
-        rows.push( /*#__PURE__*/React__default['default'].createElement("div", {
+        rows.push( /*#__PURE__*/React__default["default"].createElement("div", {
           className: "row",
           key: day
         }, days));
         days = [];
       }
 
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "body"
       }, rows);
     }
@@ -34400,20 +33202,20 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
         ends_at: dateFns.endOfWeek(monthEnd),
         locale: this.props.locale
       };
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar calendar-".concat(numberOfMonthsInARow),
         key: month
-      }, this.renderHeader(month), this.renderDays(), /*#__PURE__*/React__default['default'].createElement(Query, {
+      }, this.renderHeader(month), this.renderDays(), /*#__PURE__*/React__default["default"].createElement(Query, {
         query: CALENDAR_QUERY$1,
         variables: variables
       }, function (_ref) {
         var loading = _ref.loading,
             error = _ref.error,
             data = _ref.data;
-        if (loading) return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+        if (loading) return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
         if (error) {
-          return /*#__PURE__*/React__default['default'].createElement("div", null, "Error");
+          return /*#__PURE__*/React__default["default"].createElement("div", null, "Error");
         }
 
         var results = data.PortalSite.houses[0].availabilities;
@@ -34434,7 +33236,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
           portalCode = _this$props.portalCode,
           objectCode = _this$props.objectCode,
           locale = _this$props.locale;
-      return /*#__PURE__*/React__default['default'].createElement(PriceField, {
+      return /*#__PURE__*/React__default["default"].createElement(PriceField, {
         portalCode: portalCode,
         objectCode: objectCode,
         locale: locale,
@@ -34475,37 +33277,37 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
           arrivalDate = _this$state7.arrivalDate,
           departureDate = _this$state7.departureDate,
           minNights = _this$state7.minNights;
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar-container "
-      }, /*#__PURE__*/React__default['default'].createElement("div", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", {
         className: "price-overview"
-      }, this.showBooking()), /*#__PURE__*/React__default['default'].createElement("div", {
+      }, this.showBooking()), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendar-section"
-      }, /*#__PURE__*/React__default['default'].createElement(CalendarHeader, {
+      }, /*#__PURE__*/React__default["default"].createElement(CalendarHeader, {
         onGoNext: this.nextMonth,
         onGoPrev: this.prevMonth,
         onReset: this.reset
-      }), /*#__PURE__*/React__default['default'].createElement("div", {
+      }), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "calendars-row"
-      }, this.renderMonths()), /*#__PURE__*/React__default['default'].createElement("div", {
+      }, this.renderMonths()), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "legend"
-      }, /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("span", {
+      }, /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "legend-field arrival"
-      }), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".arrival_date")
-      })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("span", {
+      })), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "legend-field booked"
-      }), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "booked"
-      })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("span", {
+      })), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "legend-field departure"
-      }), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "".concat(house.house_type, ".departure_date")
-      })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("span", {
+      })), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("span", {
         className: "legend-field last_minute_discount"
-      }), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      }), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "discount"
-      }))), /*#__PURE__*/React__default['default'].createElement(AssistanceMessage, {
+      }))), /*#__PURE__*/React__default["default"].createElement(AssistanceMessage, {
         house: house,
         arrivalDate: arrivalDate,
         departureDate: departureDate,
@@ -34515,7 +33317,7 @@ var Calendar = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return Calendar;
-}(React__default['default'].Component);
+}(React__default["default"].Component);
 
 Calendar.defaultProps = {
   numberOfMonths: 4,
@@ -37347,25 +36149,6 @@ function toPath(value) {
   return isSymbol(value) ? [value] : copyArray(stringToPath$1(toString$1(value)));
 }
 
-var isProduction = process.env.NODE_ENV === 'production';
-function warning(condition, message) {
-  if (!isProduction) {
-    if (condition) {
-      return;
-    }
-
-    var text = "Warning: " + message;
-
-    if (typeof console !== 'undefined') {
-      console.warn(text);
-    }
-
-    try {
-      throw Error(text);
-    } catch (x) {}
-  }
-}
-
 function _extends() {
   _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -38696,7 +37479,7 @@ var Icon = function Icon(_ref) {
       height = _ref$height === void 0 ? '16px' : _ref$height,
       _ref$width = _ref.width,
       width = _ref$width === void 0 ? '16px' : _ref$width;
-  return /*#__PURE__*/React__default['default'].createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
     version: "1.1",
@@ -38709,13 +37492,13 @@ var Icon = function Icon(_ref) {
       height: height,
       width: width
     }
-  }, /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M50,5c24.813,0,45,20.187,45,45c0,24.813-20.187,45-45,45C25.187,95,5,74.813,5,50C5,25.187,25.187,5,50,5   M50,0C22.386,0,0,22.386,0,50c0,27.614,22.386,50,50,50c27.614,0,50-22.386,50-50C100,22.386,77.614,0,50,0L50,0z"
-  }), /*#__PURE__*/React__default['default'].createElement("circle", {
+  }), /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: "50",
     cy: "29.546",
     r: "4.934"
-  }), /*#__PURE__*/React__default['default'].createElement("rect", {
+  }), /*#__PURE__*/React__default["default"].createElement("rect", {
     x: "46.5",
     y: "41.21",
     width: "7",
@@ -38730,49 +37513,49 @@ var LocalizedAttachment = {
 };
 
 var CancelInsuranceText = function CancelInsuranceText() {
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance"
-  })), /*#__PURE__*/React__default['default'].createElement("hr", null), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("hr", null), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance_desc"
-  })), /*#__PURE__*/React__default['default'].createElement("h3", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h3", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance_normal_long"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance_normal_desc"
-  })), /*#__PURE__*/React__default['default'].createElement("h3", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h3", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance_all_risk_long"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "cancel_insurance_all_risk_desc"
-  })), /*#__PURE__*/React__default['default'].createElement("h3", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h3", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "terms_and_costs"
-  })), /*#__PURE__*/React__default['default'].createElement("h4", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h4", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "costs_normal_cancel_insurance"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "666_costs"
-  })), /*#__PURE__*/React__default['default'].createElement("h4", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h4", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "costs_allrisk_cancel_insurance"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "847_costs"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "more_information"
-  })), /*#__PURE__*/React__default['default'].createElement("a", {
+  })), /*#__PURE__*/React__default["default"].createElement("a", {
     href: LocalizedAttachment[window.__localeId__],
     target: "_blank",
     rel: "noopener noreferrer"
-  }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "show_terms"
-  })), /*#__PURE__*/React__default['default'].createElement("h3", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h3", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "terms"
-  })), /*#__PURE__*/React__default['default'].createElement("ul", null, /*#__PURE__*/React__default['default'].createElement("li", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("ul", null, /*#__PURE__*/React__default["default"].createElement("li", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "9persons_9addresses"
-  })), /*#__PURE__*/React__default['default'].createElement("li", null, /*#__PURE__*/React__default['default'].createElement("strong", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("li", null, /*#__PURE__*/React__default["default"].createElement("strong", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "or"
-  }))), /*#__PURE__*/React__default['default'].createElement("li", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }))), /*#__PURE__*/React__default["default"].createElement("li", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "9persons_4addresses"
-  }))), /*#__PURE__*/React__default['default'].createElement("hr", null), /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }))), /*#__PURE__*/React__default["default"].createElement("hr", null), /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "poliscosts"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "poliscosts_are"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "youwillrecieve"
   })));
 };
@@ -38782,28 +37565,28 @@ function NumberSelect(_ref) {
   var label = _ref.label,
       description = _ref.description,
       count = _ref.count,
-      props = _objectWithoutProperties$a(_ref, _excluded$2);
+      props = _objectWithoutProperties$b(_ref, _excluded$2);
 
   var numbers = createPeronsArray(count);
-  return /*#__PURE__*/React__default['default'].createElement(Field, {
+  return /*#__PURE__*/React__default["default"].createElement(Field, {
     name: props.name
   }, function (_ref2) {
     var field = _ref2.field,
         meta = _ref2.meta;
         _ref2.form;
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row inline",
       id: "bukazu_form_".concat(props.name)
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: props.name
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: label
-    })), /*#__PURE__*/React__default['default'].createElement("select", _extends$e({}, field, props), numbers.map(function (opt) {
-      return /*#__PURE__*/React__default['default'].createElement("option", {
+    })), /*#__PURE__*/React__default["default"].createElement("select", _extends$e({}, field, props), numbers.map(function (opt) {
+      return /*#__PURE__*/React__default["default"].createElement("option", {
         key: opt,
         value: opt
       }, opt);
-    })), description, meta.touched && meta.error && /*#__PURE__*/React__default['default'].createElement("div", {
+    })), description, meta.touched && meta.error && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "error-message"
     }, meta.error));
   });
@@ -38818,7 +37601,7 @@ function DateField(_ref) {
       _ref.options;
       var name = _ref.name,
       inline = _ref.inline;
-  return /*#__PURE__*/React__default['default'].createElement(Field, {
+  return /*#__PURE__*/React__default["default"].createElement(Field, {
     name: name
   }, function (_ref2) {
     var field = _ref2.field,
@@ -38834,14 +37617,14 @@ function DateField(_ref) {
       tempval = new Date(value);
     }
 
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row ".concat(inline && 'inline'),
       id: "bukazu_form_".concat(name)
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: name
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: label
-    })), /*#__PURE__*/React__default['default'].createElement(DatePicker, {
+    })), /*#__PURE__*/React__default["default"].createElement(DatePicker, {
       className: "bukazu-date-picker",
       name: name,
       format: "dd-MM-y",
@@ -38850,9 +37633,9 @@ function DateField(_ref) {
         field.onChange(dateFns.format(e, 'YYYY-MM-DD'));
         form.setFieldValue(name, dateFns.format(e, 'YYYY-MM-DD'));
       }
-    }), /*#__PURE__*/React__default['default'].createElement("span", {
+    }), /*#__PURE__*/React__default["default"].createElement("span", {
       className: "bu-input-description"
-    }, description), meta.touched && meta.error && /*#__PURE__*/React__default['default'].createElement("div", {
+    }, description), meta.touched && meta.error && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "error-message"
     }, meta.error));
   });
@@ -38864,19 +37647,19 @@ DateField.defaultValues = {
 
 function cancelInsurance(house) {
   if (house.cancel_insurance) {
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row inline"
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: "cancel_insurance"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "cancel_insurance"
-    })), /*#__PURE__*/React__default['default'].createElement(Field, {
+    })), /*#__PURE__*/React__default["default"].createElement(Field, {
       component: "select",
       name: "cancel_insurance",
       required: true
-    }, translatedOption('choose', ''), translatedOption('cancel_insurance_all_risk', 2), translatedOption('cancel_insurance_normal', 1), translatedOption('none', 0)), /*#__PURE__*/React__default['default'].createElement(Modal, {
-      buttonText: /*#__PURE__*/React__default['default'].createElement(Icon, null)
-    }, /*#__PURE__*/React__default['default'].createElement(CancelInsuranceText, null)));
+    }, translatedOption('choose', ''), translatedOption('cancel_insurance_all_risk', 2), translatedOption('cancel_insurance_normal', 1), translatedOption('none', 0)), /*#__PURE__*/React__default["default"].createElement(Modal, {
+      buttonText: /*#__PURE__*/React__default["default"].createElement(Icon, null)
+    }, /*#__PURE__*/React__default["default"].createElement(CancelInsuranceText, null)));
   }
 }
 
@@ -38885,21 +37668,21 @@ var Insurances = function Insurances(_ref) {
       values = _ref.values;
 
   if (house.cancel_insurance) {
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-section",
       id: "insurances"
-    }, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "insurances"
-    })), cancelInsurance(house), values.cancel_insurance && values.cancel_insurance !== '0' && /*#__PURE__*/React__default['default'].createElement(DateField, {
+    })), cancelInsurance(house), values.cancel_insurance && values.cancel_insurance !== '0' && /*#__PURE__*/React__default["default"].createElement(DateField, {
       label: "extra_fields.date_of_birth",
       name: "extra_fields.date_of_birth",
       required: "true",
-      description: /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+      description: /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
         id: "insurance_company_needs_date_of_birth"
       })
     }));
   } else {
-    return /*#__PURE__*/React__default['default'].createElement("div", null);
+    return /*#__PURE__*/React__default["default"].createElement("div", null);
   }
 };
 Insurances.propTypes = {
@@ -38910,7 +37693,7 @@ var _templateObject$2;
 
 function DiscountCode(_ref) {
   var house = _ref.house;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(Mutation, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Mutation, {
     mutation: CHECK_DISCOUNT_CODE
   }, function (checkCode, _ref2) {
     var loading = _ref2.loading,
@@ -38921,18 +37704,18 @@ function DiscountCode(_ref) {
       console.log(data);
     }
 
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row inline"
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: "discount_code"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "discount_code"
-    })), /*#__PURE__*/React__default['default'].createElement(Field, {
+    })), /*#__PURE__*/React__default["default"].createElement(Field, {
       name: "discount_code"
     }, function (_ref3) {
       var field = _ref3.field,
           form = _ref3.form;
-      return /*#__PURE__*/React__default['default'].createElement("input", _extends$e({}, field, {
+      return /*#__PURE__*/React__default["default"].createElement("input", _extends$e({}, field, {
         onChange: function onChange(e) {
           // console.log({ code: house.code, e: e.target.value });
           checkCode({
@@ -38944,15 +37727,15 @@ function DiscountCode(_ref) {
           form.setFieldValue(field.name, e.target.value);
         }
       }));
-    }), loading && /*#__PURE__*/React__default['default'].createElement("div", {
+    }), loading && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "bu_discount_code"
-    }, "Loading..."), error && /*#__PURE__*/React__default['default'].createElement("div", {
+    }, "Loading..."), error && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "bu_discount_code"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "no_discount_code_found"
-    })), data && /*#__PURE__*/React__default['default'].createElement("div", {
+    })), data && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "bu_discount_code"
-    }, /*#__PURE__*/React__default['default'].createElement("div", null, data.checkDiscountCode.name), data.checkDiscountCode.use_price ? /*#__PURE__*/React__default['default'].createElement("div", null, "\u20AC ", data.checkDiscountCode.price) : /*#__PURE__*/React__default['default'].createElement("div", null, data.checkDiscountCode.percentage, "%")));
+    }, /*#__PURE__*/React__default["default"].createElement("div", null, data.checkDiscountCode.name), data.checkDiscountCode.use_price ? /*#__PURE__*/React__default["default"].createElement("div", null, "\u20AC ", data.checkDiscountCode.price) : /*#__PURE__*/React__default["default"].createElement("div", null, data.checkDiscountCode.percentage, "%")));
   }));
 }
 
@@ -38970,37 +37753,37 @@ var Discount = function Discount(_ref) {
     var _options$bookingForm2;
 
     var discounts = house.discounts ? house.discounts.split(',') : [];
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-section"
-    }, house.discounts && house.discounts !== '0' && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
+    }, house.discounts && house.discounts !== '0' && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row inline"
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: "discount"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "discount"
-    })), /*#__PURE__*/React__default['default'].createElement(Field, {
+    })), /*#__PURE__*/React__default["default"].createElement(Field, {
       component: "select",
       name: "discount"
     }, discounts.map(function (discount) {
-      return /*#__PURE__*/React__default['default'].createElement("option", {
+      return /*#__PURE__*/React__default["default"].createElement("option", {
         value: discount,
         key: discount
       }, discount, "%");
-    }))), /*#__PURE__*/React__default['default'].createElement("div", {
+    }))), /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form-row inline"
-    }, /*#__PURE__*/React__default['default'].createElement("label", {
+    }, /*#__PURE__*/React__default["default"].createElement("label", {
       htmlFor: "discount_reason"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "discount_reason"
-    })), /*#__PURE__*/React__default['default'].createElement(Field, {
+    })), /*#__PURE__*/React__default["default"].createElement(Field, {
       name: "discount_reason"
-    }), errors.discount_reason && /*#__PURE__*/React__default['default'].createElement("div", {
+    }), errors.discount_reason && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "error-message"
-    }, errors.discount_reason)), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("i", {
+    }, errors.discount_reason)), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("i", {
       style: {
         fontSize: 14
       }
-    }, house.discounts_info))), ((_options$bookingForm2 = options.bookingForm) === null || _options$bookingForm2 === void 0 ? void 0 : _options$bookingForm2.showDiscountCode) && /*#__PURE__*/React__default['default'].createElement(DiscountCode, {
+    }, house.discounts_info))), ((_options$bookingForm2 = options.bookingForm) === null || _options$bookingForm2 === void 0 ? void 0 : _options$bookingForm2.showDiscountCode) && /*#__PURE__*/React__default["default"].createElement(DiscountCode, {
       errors: errors,
       house: house,
       values: values
@@ -39019,7 +37802,7 @@ var _excluded$1 = ["field", "id", "label"];
 
 var InputFeedback = function InputFeedback(_ref) {
   var error = _ref.error;
-  return error ? /*#__PURE__*/React__default['default'].createElement("div", {
+  return error ? /*#__PURE__*/React__default["default"].createElement("div", {
     className: "input-feedback"
   }, error) : null;
 };
@@ -39036,9 +37819,9 @@ var RadioButton = function RadioButton(_ref2) {
       onBlur = _ref2$field.onBlur,
       id = _ref2.id,
       label = _ref2.label,
-      props = _objectWithoutProperties$a(_ref2, _excluded$1);
+      props = _objectWithoutProperties$b(_ref2, _excluded$1);
 
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", _extends$e({
+  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("input", _extends$e({
     name: name,
     id: id,
     type: "radio",
@@ -39048,7 +37831,7 @@ var RadioButton = function RadioButton(_ref2) {
     onChange: onChange,
     onBlur: onBlur,
     className: "radio-button"
-  }, props)), /*#__PURE__*/React__default['default'].createElement("label", {
+  }, props)), /*#__PURE__*/React__default["default"].createElement("label", {
     htmlFor: id
   }, label));
 };
@@ -39064,11 +37847,11 @@ var RadioButtonGroup = function RadioButtonGroup(_ref3) {
       label = _ref3.label,
       className = _ref3.className,
       children = _ref3.children;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: className
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "legend"
-  }, label), children, touched && /*#__PURE__*/React__default['default'].createElement(InputFeedback, {
+  }, label), children, touched && /*#__PURE__*/React__default["default"].createElement(InputFeedback, {
     error: error
   }));
 };
@@ -39083,24 +37866,24 @@ RadioButtonGroup.propTypes = {
 var _excluded = ["house"];
 function BookingOrOption(_ref) {
   var house = _ref.house;
-      _objectWithoutProperties$a(_ref, _excluded);
+      _objectWithoutProperties$b(_ref, _excluded);
 
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, house.allow_option && /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(RadioButtonGroup, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, house.allow_option && /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(RadioButtonGroup, {
     id: "is_option",
     className: "booking_option"
-  }, /*#__PURE__*/React__default['default'].createElement(Field, {
+  }, /*#__PURE__*/React__default["default"].createElement(Field, {
     component: RadioButton,
     name: "is_option",
     id: "true",
     disabled: !house.allow_option,
-    label: /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    label: /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "option"
     })
-  }), /*#__PURE__*/React__default['default'].createElement(Field, {
+  }), /*#__PURE__*/React__default["default"].createElement(Field, {
     component: RadioButton,
     name: "is_option",
     id: "false",
-    label: /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    label: /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "booking"
     })
   }))));
@@ -39108,16 +37891,16 @@ function BookingOrOption(_ref) {
 
 function Description(_ref) {
   var description = _ref.description;
-  var val = /*#__PURE__*/React__default['default'].createElement("span", null);
+  var val = /*#__PURE__*/React__default["default"].createElement("span", null);
 
   if (description) {
-    val = /*#__PURE__*/React__default['default'].createElement("span", {
+    val = /*#__PURE__*/React__default["default"].createElement("span", {
       style: {
         padding: "0 0 0 8px"
       }
-    }, /*#__PURE__*/React__default['default'].createElement(Modal, {
-      buttonText: /*#__PURE__*/React__default['default'].createElement(Icon, null)
-    }, /*#__PURE__*/React__default['default'].createElement("p", null, description)));
+    }, /*#__PURE__*/React__default["default"].createElement(Modal, {
+      buttonText: /*#__PURE__*/React__default["default"].createElement(Icon, null)
+    }, /*#__PURE__*/React__default["default"].createElement("p", null, description)));
   }
 
   return val;
@@ -39130,17 +37913,17 @@ function CostRow(_ref) {
       method_name = _ref.method_name,
       formatName = _ref.formatName,
       forceMethod = _ref.forceMethod;
-  return /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, formatName ? /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  return /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, formatName ? /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: name
-  }) : name, description && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, ' ', /*#__PURE__*/React__default['default'].createElement(Description, {
+  }) : name, description && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, ' ', /*#__PURE__*/React__default["default"].createElement(Description, {
     description: description
-  }))), /*#__PURE__*/React__default['default'].createElement("td", {
+  }))), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
-  }, amount && amount > 0 ? /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+  }, amount && amount > 0 ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
     value: amount,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }), forceMethod && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, ' ', method_name)) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, method_name)));
+  }), forceMethod && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, ' ', method_name)) : /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, method_name)));
 }
 
 CostRow.defaultValues = {
@@ -39154,10 +37937,10 @@ function InsurancesAndRequired(_ref) {
       insurances = _prices$total_costs.insurances,
       required_costs = _prices$total_costs.required_costs;
   var not_on_site = required_costs.not_on_site;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "costs-section"
-  }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, insurances.cancel_insurance && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, Object.keys(insurances).map(function (key) {
-    return /*#__PURE__*/React__default['default'].createElement(CostRow, {
+  }, /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, insurances.cancel_insurance && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, Object.keys(insurances).map(function (key) {
+    return /*#__PURE__*/React__default["default"].createElement(CostRow, {
       name: key,
       key: key,
       formatName: true,
@@ -39166,7 +37949,7 @@ function InsurancesAndRequired(_ref) {
   })), prices.required_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else {
@@ -39174,7 +37957,7 @@ function InsurancesAndRequired(_ref) {
           return null;
         }
 
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, {
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, {
           key: cost.id,
           name: cost.name,
           amount: not_on_site === null || not_on_site === void 0 ? void 0 : not_on_site.find(function (x) {
@@ -39194,17 +37977,17 @@ function RentAndDiscount(_ref) {
   var rent_price = prices.rent_price,
       discount = prices.discount,
       discounted_price = prices.discounted_price;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "costs-section"
-  }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, /*#__PURE__*/React__default['default'].createElement(CostRow, {
+  }, /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, /*#__PURE__*/React__default["default"].createElement(CostRow, {
     name: "rent_price",
     formatName: true,
     amount: rent_price
-  }), discount > 0 ? /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(CostRow, {
+  }), discount > 0 ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(CostRow, {
     name: "discount",
     formatName: true,
     amount: discount
-  }), /*#__PURE__*/React__default['default'].createElement(CostRow, {
+  }), /*#__PURE__*/React__default["default"].createElement(CostRow, {
     name: "price_after_discount",
     formatName: true,
     amount: discounted_price
@@ -39215,19 +37998,19 @@ function OptionalNotOnSite(_ref) {
   var prices = _ref.prices;
   var optional_costs = prices.total_costs.optional_costs;
   var not_on_site = optional_costs.not_on_site;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "costs-section"
-  }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.optional_house_costs.map(function (cost) {
+  }, /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, prices.optional_house_costs.map(function (cost) {
     if (!cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if (not_on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -39240,7 +38023,7 @@ function OptionalNotOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: amount
@@ -39255,17 +38038,17 @@ function OptionalOnSite(_ref) {
   var prices = _ref.prices;
   var optional_costs = prices.total_costs.optional_costs;
   var on_site = optional_costs.on_site;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, prices.optional_house_costs.map(function (cost) {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, prices.optional_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else if (cost.method === 'on_site') {
         if ((on_site === null || on_site === void 0 ? void 0 : on_site.find(function (x) {
           return x.id == cost.id;
         }).nr_of_items) > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: cost.amount,
@@ -39278,7 +38061,7 @@ function OptionalOnSite(_ref) {
         }).amount;
 
         if (amount > 0) {
-          return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+          return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
             key: cost.id
           }, cost, {
             amount: amount
@@ -39293,79 +38076,79 @@ function OnSite(_ref) {
   var prices = _ref.prices;
   var required_costs = prices.total_costs.required_costs;
   var on_site = required_costs.on_site;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "costs-section"
-  }, /*#__PURE__*/React__default['default'].createElement("strong", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement("strong", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "costs_on_site"
-  })), /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, prices.required_house_costs.map(function (cost) {
+  })), /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, prices.required_house_costs.map(function (cost) {
     if (cost.on_site && cost.gl !== '0120') {
       if (cost.method === 'none') {
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost));
       } else {
         var amount = on_site.find(function (x) {
           return x.id == cost.id;
         }).amount;
-        return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+        return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
           key: cost.id
         }, cost, {
           amount: amount
         }));
       }
     }
-  }), /*#__PURE__*/React__default['default'].createElement(OptionalOnSite, {
+  }), /*#__PURE__*/React__default["default"].createElement(OptionalOnSite, {
     prices: prices
   }))));
 }
 
 function CostSection(_ref) {
   var children = _ref.children;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "costs-section"
-  }, /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, children)));
+  }, /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, children)));
 }
 
 function Totals(_ref) {
   var prices = _ref.prices;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(CostSection, null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(CostSection, null, /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", {
     style: {
       textAlign: 'left',
       testTransform: 'capitalize'
     }
-  }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "total"
-  })), /*#__PURE__*/React__default['default'].createElement("th", {
+  })), /*#__PURE__*/React__default["default"].createElement("th", {
     className: "price",
     style: {
       fontSize: 18
     }
-  }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+  }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
     value: prices.total_costs.sub_total,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  })))), /*#__PURE__*/React__default['default'].createElement(CostSection, null, /*#__PURE__*/React__default['default'].createElement(Deposit, {
+  })))), /*#__PURE__*/React__default["default"].createElement(CostSection, null, /*#__PURE__*/React__default["default"].createElement(Deposit, {
     cost_array: prices.required_house_costs,
     price_array: prices.total_costs.required_costs.on_site
-  }), /*#__PURE__*/React__default['default'].createElement(Deposit, {
+  }), /*#__PURE__*/React__default["default"].createElement(Deposit, {
     cost_array: prices.required_house_costs,
     price_array: prices.total_costs.required_costs.not_on_site
-  }), /*#__PURE__*/React__default['default'].createElement(Deposit, {
+  }), /*#__PURE__*/React__default["default"].createElement(Deposit, {
     cost_array: prices.optional_house_costs,
     price_array: prices.total_costs.optional_costs.on_site
-  }), /*#__PURE__*/React__default['default'].createElement(Deposit, {
+  }), /*#__PURE__*/React__default["default"].createElement(Deposit, {
     cost_array: prices.optional_house_costs,
     price_array: prices.total_costs.optional_costs.not_on_site
-  })), /*#__PURE__*/React__default['default'].createElement(CostSection, null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  })), /*#__PURE__*/React__default["default"].createElement(CostSection, null, /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", {
     style: {
       textAlign: 'left',
       testTransform: 'capitalize'
     }
-  }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "total"
-  })), /*#__PURE__*/React__default['default'].createElement("td", {
+  })), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
-  }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+  }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
     value: prices.total_costs.total_price,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
@@ -39375,13 +38158,13 @@ function Totals(_ref) {
 function Deposit(_ref2) {
   var cost_array = _ref2.cost_array,
       price_array = _ref2.price_array;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, cost_array.map(function (cost) {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, cost_array.map(function (cost) {
     var price = price_array.find(function (x) {
       return x.id == cost.id;
     });
 
     if (cost.gl === '0120' && (price === null || price === void 0 ? void 0 : price.amount) > 0) {
-      return /*#__PURE__*/React__default['default'].createElement(CostRow, _extends$e({
+      return /*#__PURE__*/React__default["default"].createElement(CostRow, _extends$e({
         key: cost.id
       }, cost, {
         amount: price.amount
@@ -39424,19 +38207,19 @@ function CostSummary(_ref) {
   }
 
   if (error) {
-    return /*#__PURE__*/React__default['default'].createElement("div", null, JSON.stringify(error));
+    return /*#__PURE__*/React__default["default"].createElement("div", null, JSON.stringify(error));
   }
 
   var prices = data.PortalSite.houses[0].booking_price;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(RentAndDiscount, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(RentAndDiscount, {
     prices: prices
-  }), /*#__PURE__*/React__default['default'].createElement(InsurancesAndRequired, {
+  }), /*#__PURE__*/React__default["default"].createElement(InsurancesAndRequired, {
     prices: prices
-  }), /*#__PURE__*/React__default['default'].createElement(OptionalNotOnSite, {
+  }), /*#__PURE__*/React__default["default"].createElement(OptionalNotOnSite, {
     prices: prices
-  }), /*#__PURE__*/React__default['default'].createElement(OnSite, {
+  }), /*#__PURE__*/React__default["default"].createElement(OnSite, {
     prices: prices
-  }), /*#__PURE__*/React__default['default'].createElement(Totals, {
+  }), /*#__PURE__*/React__default["default"].createElement(Totals, {
     prices: prices
   }));
 }
@@ -39446,22 +38229,22 @@ var Object$1 = function Object(_ref) {
       values = _ref.values;
   var arrivalDate = values.arrivalDate,
       departureDate = values.departureDate;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "booking_details"
-  })), /*#__PURE__*/React__default['default'].createElement("div", {
+  })), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "house-details"
-  }, /*#__PURE__*/React__default['default'].createElement("div", null, house.name), /*#__PURE__*/React__default['default'].createElement("img", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", null, house.name), /*#__PURE__*/React__default["default"].createElement("img", {
     src: house.image_url,
     alt: ""
-  }), /*#__PURE__*/React__default['default'].createElement("table", null, /*#__PURE__*/React__default['default'].createElement("tbody", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }), /*#__PURE__*/React__default["default"].createElement("table", null, /*#__PURE__*/React__default["default"].createElement("tbody", null, /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "".concat(house.house_type, ".arrival")
-  })), /*#__PURE__*/React__default['default'].createElement("td", {
+  })), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
-  }, format_1(arrivalDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default['default'].createElement("td", null, arrivalDate.arrival_time)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, format_1(arrivalDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default["default"].createElement("td", null, arrivalDate.arrival_time)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "".concat(house.house_type, ".departure")
-  })), /*#__PURE__*/React__default['default'].createElement("td", {
+  })), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
-  }, format_1(departureDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default['default'].createElement("td", null, departureDate.departure_time))))));
+  }, format_1(departureDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default["default"].createElement("td", null, departureDate.departure_time))))));
 };
 Object$1.propTypes = {
   house: PropTypes.object.isRequired,
@@ -39475,12 +38258,12 @@ function Summary(_ref) {
   console.log({
     values: values
   });
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Object$1, {
+  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Object$1, {
     house: house,
     values: values
-  }), /*#__PURE__*/React__default['default'].createElement(BookingOrOption, {
+  }), /*#__PURE__*/React__default["default"].createElement(BookingOrOption, {
     house: house
-  }), /*#__PURE__*/React__default['default'].createElement(CostSummary, {
+  }), /*#__PURE__*/React__default["default"].createElement(CostSummary, {
     values: values,
     house: house,
     locale: locale
@@ -39577,9 +38360,9 @@ var DefaultBookingFields = [{
 }];
 
 var SuccessMessage = function SuccessMessage() {
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "success-message"
-  }, /*#__PURE__*/React__default['default'].createElement("svg", {
+  }, /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
     version: "1.1",
@@ -39592,11 +38375,11 @@ var SuccessMessage = function SuccessMessage() {
       height: '150px'
     },
     xmlSpace: "preserve"
-  }, /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M50,5C25.2,5,5,25.1,5,50c0,24.8,20.2,45,45,45s45-20.2,45-45C95,25.1,74.8,5,50,5z M72.7,38.2L44.2,66.7  c-0.4,0.4-0.9,0.6-1.4,0.6s-1-0.2-1.4-0.6l-14-14c-0.8-0.8-0.8-2,0-2.8c0.8-0.8,2-0.8,2.8,0l12.6,12.6l27.1-27.1  c0.8-0.8,2-0.8,2.8,0C73.5,36.1,73.5,37.4,72.7,38.2z"
-  })), /*#__PURE__*/React__default['default'].createElement("h3", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("h3", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "thank_you_for_your_request"
-  })), /*#__PURE__*/React__default['default'].createElement("p", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  })), /*#__PURE__*/React__default["default"].createElement("p", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "we_sent_confirmation_check_email"
   })));
 };
@@ -45636,9 +44419,9 @@ function OptionalBookingFields(_ref) {
     });
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "form-section"
-  }, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "personal_details"
   })), fields.map(function (input) {
     if (input.id === 'telephone') {
@@ -45649,12 +44432,12 @@ function OptionalBookingFields(_ref) {
       var bookingField = PortalSite.booking_fields.find(function (x) {
         return x.id === input.id;
       });
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "form-row",
         key: bookingField.id
-      }, /*#__PURE__*/React__default['default'].createElement("label", {
+      }, /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: "extra_fields.booking_field_".concat(bookingField.id)
-      }, bookingField.label, ' ', input.required && /*#__PURE__*/React__default['default'].createElement("span", null, "*")), /*#__PURE__*/React__default['default'].createElement(Field, {
+      }, bookingField.label, ' ', input.required && /*#__PURE__*/React__default["default"].createElement("span", null, "*")), /*#__PURE__*/React__default["default"].createElement(Field, {
         onKeyPress: function onKeyPress(e) {
           e.which === 13 && e.preventDefault();
         },
@@ -45662,49 +44445,49 @@ function OptionalBookingFields(_ref) {
         type: bookingField.field_type === 'text' ? 'input' : bookingField.field_type,
         component: bookingField.field_type === 'text' ? 'input' : bookingField.field_type,
         name: "extra_fields.booking_field_".concat(bookingField.id)
-      }), errors[input.id] && (touched.extra_fields && touched.extra_fields["booking_field_".concat(bookingField.id)] || touched[input.id]) && /*#__PURE__*/React__default['default'].createElement("div", {
+      }), errors[input.id] && (touched.extra_fields && touched.extra_fields["booking_field_".concat(bookingField.id)] || touched[input.id]) && /*#__PURE__*/React__default["default"].createElement("div", {
         className: "error-message"
       }, errors[input.id]));
     } else if (input.id === 'country') {
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "form-row",
         key: input.id
-      }, /*#__PURE__*/React__default['default'].createElement("label", {
+      }, /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: input.id
-      }, PortalSite["".concat(input.id, "_label")], ' ', input.required && /*#__PURE__*/React__default['default'].createElement("span", null, "*")), /*#__PURE__*/React__default['default'].createElement(Field, {
+      }, PortalSite["".concat(input.id, "_label")], ' ', input.required && /*#__PURE__*/React__default["default"].createElement("span", null, "*")), /*#__PURE__*/React__default["default"].createElement(Field, {
         component: "select",
         name: input.id
       }, Countries[window.__localeId__].map(function (country) {
-        return /*#__PURE__*/React__default['default'].createElement("option", {
+        return /*#__PURE__*/React__default["default"].createElement("option", {
           value: country.alpha2,
           key: country.alpha2
         }, country.name);
-      })), errors[input.id] && /*#__PURE__*/React__default['default'].createElement("div", {
+      })), errors[input.id] && /*#__PURE__*/React__default["default"].createElement("div", {
         className: "error-message"
       }, errors[input.id]));
     } else if (input.type === 'date') {
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "form-row",
         key: input.id
-      }, /*#__PURE__*/React__default['default'].createElement(DateField, {
+      }, /*#__PURE__*/React__default["default"].createElement(DateField, {
         name: input.id,
         label: input.id,
         inline: false
       }));
     } else {
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "form-row",
         key: input.id
-      }, /*#__PURE__*/React__default['default'].createElement("label", {
+      }, /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: input.id,
         name: "".concat(input.id.replace(/\./g, '_'), "_label")
-      }, PortalSite["".concat(input.id.replace(/\./g, '_'), "_label")], ' ', input.required && /*#__PURE__*/React__default['default'].createElement("span", null, "*")), /*#__PURE__*/React__default['default'].createElement(Field, {
+      }, PortalSite["".concat(input.id.replace(/\./g, '_'), "_label")], ' ', input.required && /*#__PURE__*/React__default["default"].createElement("span", null, "*")), /*#__PURE__*/React__default["default"].createElement(Field, {
         type: input.type,
         name: input.id,
         onKeyPress: function onKeyPress(e) {
           e.which === 13 && e.preventDefault();
         }
-      }), errors[input.id] && touched[input.id] && /*#__PURE__*/React__default['default'].createElement("div", {
+      }), errors[input.id] && touched[input.id] && /*#__PURE__*/React__default["default"].createElement("div", {
         className: "error-message"
       }, errors[input.id]));
     }
@@ -45723,66 +44506,66 @@ function OptionalCosts(_ref) {
     return null;
   }
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "form-section optional_house_costs"
-  }, /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+  }, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "extra_costs_bookable"
-  })), /*#__PURE__*/React__default['default'].createElement("div", null, costs.map(function (cost) {
+  })), /*#__PURE__*/React__default["default"].createElement("div", null, costs.map(function (cost) {
     if (!arrayIncludes(['none', 'total'], cost.method) && cost.max_available > 0) {
       if (cost.max_available === 1) {
-        return /*#__PURE__*/React__default['default'].createElement("div", {
+        return /*#__PURE__*/React__default["default"].createElement("div", {
           className: "form-row inline",
           key: cost.id
-        }, /*#__PURE__*/React__default['default'].createElement("label", {
+        }, /*#__PURE__*/React__default["default"].createElement("label", {
           htmlFor: cost.id
-        }, cost.name), /*#__PURE__*/React__default['default'].createElement(Field, {
+        }, cost.name), /*#__PURE__*/React__default["default"].createElement(Field, {
           component: "select",
           name: "costs[".concat(cost.id, "]")
-        }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "no"
         }, function (formattedMessage) {
-          return /*#__PURE__*/React__default['default'].createElement("option", {
+          return /*#__PURE__*/React__default["default"].createElement("option", {
             value: 0
           }, formattedMessage);
-        }), /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        }), /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "yes"
         }, function (formattedMessage) {
-          return /*#__PURE__*/React__default['default'].createElement("option", {
+          return /*#__PURE__*/React__default["default"].createElement("option", {
             value: 1
           }, formattedMessage);
-        })), /*#__PURE__*/React__default['default'].createElement("div", {
+        })), /*#__PURE__*/React__default["default"].createElement("div", {
           className: "price_per"
-        }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+        }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
           value: cost.amount,
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
-        }), ' ', cost.method_name), /*#__PURE__*/React__default['default'].createElement("div", null, cost.description ? /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Modal, {
-          buttonText: /*#__PURE__*/React__default['default'].createElement(Icon, null)
-        }, /*#__PURE__*/React__default['default'].createElement("p", null, cost.description))) : null));
+        }), ' ', cost.method_name), /*#__PURE__*/React__default["default"].createElement("div", null, cost.description ? /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Modal, {
+          buttonText: /*#__PURE__*/React__default["default"].createElement(Icon, null)
+        }, /*#__PURE__*/React__default["default"].createElement("p", null, cost.description))) : null));
       }
 
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         className: "form-row inline",
         key: cost.id
-      }, /*#__PURE__*/React__default['default'].createElement("label", {
+      }, /*#__PURE__*/React__default["default"].createElement("label", {
         htmlFor: cost.id
-      }, cost.name), /*#__PURE__*/React__default['default'].createElement(Field, {
+      }, cost.name), /*#__PURE__*/React__default["default"].createElement(Field, {
         component: "select",
         name: "costs[".concat(cost.id, "]")
       }, createPeronsArray(cost.max_available).map(function (opt) {
-        return /*#__PURE__*/React__default['default'].createElement("option", {
+        return /*#__PURE__*/React__default["default"].createElement("option", {
           key: opt,
           value: opt
         }, opt);
-      })), /*#__PURE__*/React__default['default'].createElement("div", {
+      })), /*#__PURE__*/React__default["default"].createElement("div", {
         className: "price_per"
-      }, "\u20AC", ' ', /*#__PURE__*/React__default['default'].createElement(FormattedNumber, {
+      }, "\u20AC", ' ', /*#__PURE__*/React__default["default"].createElement(FormattedNumber, {
         value: cost.amount,
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }), ' ', cost.method_name), /*#__PURE__*/React__default['default'].createElement("div", null, cost.description ? /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Modal, {
-        buttonText: /*#__PURE__*/React__default['default'].createElement(Icon, null)
-      }, /*#__PURE__*/React__default['default'].createElement("p", null, cost.description))) : null));
+      }), ' ', cost.method_name), /*#__PURE__*/React__default["default"].createElement("div", null, cost.description ? /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Modal, {
+        buttonText: /*#__PURE__*/React__default["default"].createElement(Icon, null)
+      }, /*#__PURE__*/React__default["default"].createElement("p", null, cost.description))) : null));
     } else {
       return '';
     }
@@ -45792,26 +44575,26 @@ function OptionalCosts(_ref) {
 function Guests(_ref) {
   var options = _ref.options,
       house = _ref.house;
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(NumberSelect, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(NumberSelect, {
     name: "adults",
     label: "adults",
     count: house.persons,
-    description: /*#__PURE__*/React__default['default'].createElement("div", {
+    description: /*#__PURE__*/React__default["default"].createElement("div", {
       className: "age-description"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "adults_from",
       defaultMessage: "> {age}",
       values: {
         age: options.bookingForm ? options.bookingForm.adults_from || '18' : '18'
       }
     }))
-  }), options.bookingForm && !options.bookingForm.children ? null : /*#__PURE__*/React__default['default'].createElement(NumberSelect, {
+  }), options.bookingForm && !options.bookingForm.children ? null : /*#__PURE__*/React__default["default"].createElement(NumberSelect, {
     name: "children",
     label: "children",
     count: house.persons - 1,
-    description: /*#__PURE__*/React__default['default'].createElement("div", {
+    description: /*#__PURE__*/React__default["default"].createElement("div", {
       className: "age-description"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "children_from",
       defaultMessage: "{from} - {til}",
       values: {
@@ -45819,13 +44602,13 @@ function Guests(_ref) {
         til: options.bookingForm ? options.bookingForm.children_til || '17' : '17'
       }
     }))
-  }), options.bookingForm && !options.bookingForm.babies ? null : /*#__PURE__*/React__default['default'].createElement(NumberSelect, {
+  }), options.bookingForm && !options.bookingForm.babies ? null : /*#__PURE__*/React__default["default"].createElement(NumberSelect, {
     name: "babies",
     label: "babies",
     count: house.persons - 1,
-    description: /*#__PURE__*/React__default['default'].createElement("div", {
+    description: /*#__PURE__*/React__default["default"].createElement("div", {
       className: "age-description"
-    }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+    }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
       id: "babies_from",
       defaultMessage: "til {babies_til}",
       values: {
@@ -45851,12 +44634,12 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "state", {
+    _defineProperty$g(_assertThisInitialized$4(_this), "state", {
       formSubmit: false,
       bookingFields: _this.props.options.bookingFields || DefaultBookingFields
     });
 
-    _defineProperty$e(_assertThisInitialized$4(_this), "validate", function (values) {
+    _defineProperty$g(_assertThisInitialized$4(_this), "validate", function (values) {
       var _values$extra_fields;
 
       var _this$props$house = _this.props.house,
@@ -45883,7 +44666,7 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
               var validateValue = byString(values, "extra_fields.booking_field_".concat(field.id));
 
               if (!validateValue || validateValue === '') {
-                errors[field.id] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+                errors[field.id] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
                   id: "required"
                 });
               }
@@ -45891,7 +44674,7 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
               var _validateValue = byString(values, field.id);
 
               if (!_validateValue || _validateValue === '') {
-                errors[field.id] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+                errors[field.id] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
                   id: "required"
                 });
               }
@@ -45905,37 +44688,37 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
       }
 
       if (values.adults < 1) {
-        errors.adults = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors.adults = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "at_least_1_adult"
         });
       }
 
       if (Number(values.discount) > 0 && !values.discount_reason) {
-        errors.discount_reason = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors.discount_reason = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "you_need_to_give_reason"
         });
       }
 
       if (values.persons > persons) {
-        errors.max_persons = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors.max_persons = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "max_persons_reached"
         });
       }
 
       if (values.cancel_insurance !== 0 && validateAge((_values$extra_fields = values.extra_fields) === null || _values$extra_fields === void 0 ? void 0 : _values$extra_fields.date_of_birth)) {
-        errors['extra_fields.date_of_birth'] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors['extra_fields.date_of_birth'] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "at_least_18y_old"
         });
-        errors['insurances'] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors['insurances'] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "at_least_18y_old"
         });
       }
 
       if (values.cancel_insurance !== 0 && !arrayIncludes(['nl', 'de', 'be'], values.country)) {
-        errors['insurances'] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors['insurances'] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "can_only_take_insurance_in_de_be_nl"
         });
-        errors['country'] = /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+        errors['country'] = /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
           id: "can_only_take_insurance_in_de_be_nl"
         });
       }
@@ -45946,7 +44729,7 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
     return _this;
   }
 
-  _createClass$7(FormCreator, [{
+  _createClass$6(FormCreator, [{
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -45976,13 +44759,13 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
       }
 
       var optBookingFieldsInitialized = initializeBookingFields(bookingFields);
-      return /*#__PURE__*/React__default['default'].createElement(Mutation, {
+      return /*#__PURE__*/React__default["default"].createElement(Mutation, {
         mutation: CREATE_BOOKING_MUTATION
       }, function (createBooking, _ref) {
         var loading = _ref.loading,
             error = _ref.error,
             data = _ref.data;
-        return /*#__PURE__*/React__default['default'].createElement(Formik, {
+        return /*#__PURE__*/React__default["default"].createElement(Formik, {
           validate: _this2.validate,
           initialValues: _objectSpread2(_objectSpread2(_objectSpread2({}, booking), optBookingFieldsInitialized), {}, {
             costs: costs,
@@ -46035,22 +44818,22 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
                 values = _ref3.values,
                 status = _ref3.status,
                 isSubmitting = _ref3.isSubmitting;
-            return /*#__PURE__*/React__default['default'].createElement(Form, {
+            return /*#__PURE__*/React__default["default"].createElement(Form, {
               className: "form"
-            }, loading && /*#__PURE__*/React__default['default'].createElement("div", {
+            }, loading && /*#__PURE__*/React__default["default"].createElement("div", {
               className: "return-message"
-            }, "Loading..."), error && /*#__PURE__*/React__default['default'].createElement(Modal, {
+            }, "Loading..."), error && /*#__PURE__*/React__default["default"].createElement(Modal, {
               show: true
-            }, /*#__PURE__*/React__default['default'].createElement(ApiError, {
+            }, /*#__PURE__*/React__default["default"].createElement(ApiError, {
               errors: error,
               modal: true
-            })), data && /*#__PURE__*/React__default['default'].createElement(Modal, {
+            })), data && /*#__PURE__*/React__default["default"].createElement(Modal, {
               show: true
-            }, /*#__PURE__*/React__default['default'].createElement(SuccessMessage, null)), /*#__PURE__*/React__default['default'].createElement("div", {
+            }, /*#__PURE__*/React__default["default"].createElement(SuccessMessage, null)), /*#__PURE__*/React__default["default"].createElement("div", {
               className: "form-content"
-            }, /*#__PURE__*/React__default['default'].createElement("div", {
+            }, /*#__PURE__*/React__default["default"].createElement("div", {
               className: "form-section"
-            }, /*#__PURE__*/React__default['default'].createElement("a", {
+            }, /*#__PURE__*/React__default["default"].createElement("a", {
               className: "return-link",
               role: "link",
               tabIndex: 0,
@@ -46060,66 +44843,66 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
               onClick: function onClick() {
                 _this2.props.onReturn();
               }
-            }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "return_to_calendar"
-            })), /*#__PURE__*/React__default['default'].createElement("h2", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            })), /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "stay_details"
-            })), /*#__PURE__*/React__default['default'].createElement(Guests, {
+            })), /*#__PURE__*/React__default["default"].createElement(Guests, {
               options: options,
               house: house
-            }), errors.max_persons && /*#__PURE__*/React__default['default'].createElement("div", {
+            }), errors.max_persons && /*#__PURE__*/React__default["default"].createElement("div", {
               className: "error-message persons"
-            }, errors.max_persons)), /*#__PURE__*/React__default['default'].createElement(Discount, {
+            }, errors.max_persons)), /*#__PURE__*/React__default["default"].createElement(Discount, {
               errors: errors,
               house: house,
               options: options,
               values: values
-            }), /*#__PURE__*/React__default['default'].createElement(Insurances, {
+            }), /*#__PURE__*/React__default["default"].createElement(Insurances, {
               house: house,
               values: values
-            }), /*#__PURE__*/React__default['default'].createElement(OptionalCosts, {
+            }), /*#__PURE__*/React__default["default"].createElement(OptionalCosts, {
               costs: bookingPrice.optional_house_costs
-            }), /*#__PURE__*/React__default['default'].createElement(OptionalBookingFields, {
+            }), /*#__PURE__*/React__default["default"].createElement(OptionalBookingFields, {
               bookingFields: bookingFields,
               errors: errors,
               touched: touched,
               PortalSite: PortalSite,
               values: values
-            })), /*#__PURE__*/React__default['default'].createElement("div", {
+            })), /*#__PURE__*/React__default["default"].createElement("div", {
               className: "form-sum"
-            }, /*#__PURE__*/React__default['default'].createElement(Summary, {
+            }, /*#__PURE__*/React__default["default"].createElement(Summary, {
               house: house,
               values: values
-            }), status && status.msg && /*#__PURE__*/React__default['default'].createElement("div", null, status.msg), /*#__PURE__*/React__default['default'].createElement("div", {
+            }), status && status.msg && /*#__PURE__*/React__default["default"].createElement("div", null, status.msg), /*#__PURE__*/React__default["default"].createElement("div", {
               className: "terms"
-            }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "agree_with"
-            }), ' ', /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            }), ' ', /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "terms"
             }, function (fm) {
-              return /*#__PURE__*/React__default['default'].createElement(Modal, {
+              return /*#__PURE__*/React__default["default"].createElement(Modal, {
                 buttonText: fm
-              }, /*#__PURE__*/React__default['default'].createElement("div", {
+              }, /*#__PURE__*/React__default["default"].createElement("div", {
                 style: {
                   width: '90vh',
                   height: '90vh'
                 }
-              }, /*#__PURE__*/React__default['default'].createElement("iframe", {
+              }, /*#__PURE__*/React__default["default"].createElement("iframe", {
                 src: house.rental_terms,
                 width: "100%",
                 height: "100%",
                 title: "Terms",
                 frameBorder: "0"
               })));
-            })), arrayIncludes([1, 2], Number(values.cancel_insurance)) ? /*#__PURE__*/React__default['default'].createElement("div", {
+            })), arrayIncludes([1, 2], Number(values.cancel_insurance)) ? /*#__PURE__*/React__default["default"].createElement("div", {
               className: "terms"
-            }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "comply_insurance_card"
-            })) : null, /*#__PURE__*/React__default['default'].createElement("button", {
+            })) : null, /*#__PURE__*/React__default["default"].createElement("button", {
               className: "button",
               type: "submit",
               disabled: isSubmitting
-            }, /*#__PURE__*/React__default['default'].createElement(FormattedMessage$2, {
+            }, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
               id: "book"
             }))));
           }
@@ -46129,7 +44912,7 @@ var FormCreator = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return FormCreator;
-}(React__default['default'].Component);
+}(React__default["default"].Component);
 
 FormCreator.propTypes = {
   house: PropTypes.object.isRequired,
@@ -46144,7 +44927,7 @@ function BookingForm(_ref) {
   var booking = _ref.booking,
       locale = _ref.locale,
       _onReturn = _ref.onReturn;
-  return /*#__PURE__*/React__default['default'].createElement(Query, {
+  return /*#__PURE__*/React__default["default"].createElement(Query, {
     query: BOOKING_PRICE_QUERY,
     variables: {
       id: booking.portalCode,
@@ -46157,15 +44940,15 @@ function BookingForm(_ref) {
     var loading = _ref2.loading,
         error = _ref2.error,
         data = _ref2.data;
-    if (loading) return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+    if (loading) return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
     if (error) {
-      return /*#__PURE__*/React__default['default'].createElement("div", null, "Error");
+      return /*#__PURE__*/React__default["default"].createElement("div", null, "Error");
     }
 
     var result = data.PortalSite.houses[0];
     var options = data.PortalSite.options;
-    return /*#__PURE__*/React__default['default'].createElement(FormCreator, {
+    return /*#__PURE__*/React__default["default"].createElement(FormCreator, {
       house: result,
       options: options,
       booking: booking,
@@ -46213,7 +44996,7 @@ var CalendarPage = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass$7(CalendarPage, [{
+  _createClass$6(CalendarPage, [{
     key: "onBooking",
     value: function onBooking(booking) {
       this.setState({
@@ -46243,17 +45026,17 @@ var CalendarPage = /*#__PURE__*/function (_Component) {
         house_id: objectCode,
         locale: locale
       };
-      return /*#__PURE__*/React__default['default'].createElement(Query, {
+      return /*#__PURE__*/React__default["default"].createElement(Query, {
         query: HOUSE_QUERY,
         variables: variables
       }, function (_ref) {
         var loading = _ref.loading,
             error = _ref.error,
             data = _ref.data;
-        if (loading) return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+        if (loading) return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
         if (error) {
-          return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(ApiError, {
+          return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(ApiError, {
             errors: error
           }));
         }
@@ -46261,16 +45044,16 @@ var CalendarPage = /*#__PURE__*/function (_Component) {
         var Results = data.PortalSite.houses;
         var numberOfMonths = PortalSite.options.bookingForm ? PortalSite.options.bookingForm.numberOfMonths : 4;
         var numberOfMonthsInARow = PortalSite.options.bookingForm ? PortalSite.options.bookingForm.numberOfMonthsInARow : 4;
-        return /*#__PURE__*/React__default['default'].createElement("div", {
+        return /*#__PURE__*/React__default["default"].createElement("div", {
           id: "calendar-container"
-        }, Results.length === 0 && /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(FormattedMessage, {
+        }, Results.length === 0 && /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage, {
           id: "no_house_found"
         })), Results.map(function (result) {
-          return /*#__PURE__*/React__default['default'].createElement("div", {
+          return /*#__PURE__*/React__default["default"].createElement("div", {
             key: result.id
-          }, /*#__PURE__*/React__default['default'].createElement("div", {
+          }, /*#__PURE__*/React__default["default"].createElement("div", {
             className: "house-name"
-          }, result.name), /*#__PURE__*/React__default['default'].createElement(Calendar, {
+          }, result.name), /*#__PURE__*/React__default["default"].createElement(Calendar, {
             portalCode: variables.id,
             objectCode: variables.house_id,
             numberOfMonths: numberOfMonths,
@@ -46285,7 +45068,7 @@ var CalendarPage = /*#__PURE__*/function (_Component) {
   }, {
     key: "bookingForm",
     value: function bookingForm() {
-      return /*#__PURE__*/React__default['default'].createElement(BookingForm, {
+      return /*#__PURE__*/React__default["default"].createElement(BookingForm, {
         booking: this.state.booking,
         locale: this.props.locale,
         onReturn: this.onReturn
@@ -46337,10 +45120,10 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  _createClass$7(ReviewsPage, [{
+  _createClass$6(ReviewsPage, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React__default['default'].createElement("div", null, "Display Reviews");
+      return /*#__PURE__*/React__default["default"].createElement("div", null, "Display Reviews");
     }
   }]);
 
@@ -46349,7 +45132,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.1.3",
+	version: "2.1.4",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -46372,7 +45155,7 @@ var pjson = {
 		"@babel/preset-react": "^7.14.5",
 		"@cypress/react": "^5.3.3",
 		"@cypress/webpack-dev-server": "^1.1.3",
-		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-commonjs": "^21.0.0",
 		"@rollup/plugin-json": "^4.1.0",
 		autoprefixer: "^10.2.5",
 		"babel-core": "^6.26.3",
@@ -46396,7 +45179,7 @@ var pjson = {
 		"postcss-loader": "^5.2.0",
 		"postcss-modules": "^4.2.2",
 		"postcss-nested": "^5.0.5",
-		"postcss-preset-env": "^6.7.0",
+		"postcss-preset-env": "^7.4.3",
 		prettier: "^2.3.1",
 		react: "^16.4.1",
 		"react-dev-utils": "^5.0.1",
@@ -46491,12 +45274,12 @@ var trans = {
 
 function SafeBooking(_ref) {
   var locale = _ref.locale;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     style: style
-  }, /*#__PURE__*/React__default['default'].createElement("a", {
+  }, /*#__PURE__*/React__default["default"].createElement("a", {
     href: trans[locale].url,
     style: styleLink
-  }, /*#__PURE__*/React__default['default'].createElement("svg", {
+  }, /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
     version: "1.1",
@@ -46511,9 +45294,9 @@ function SafeBooking(_ref) {
       marginRight: "4px",
       fill: "#808080"
     }
-  }, /*#__PURE__*/React__default['default'].createElement("path", {
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M75.98,41.62h-2.47L73.5,29.31C73.49,15.9,62.58,4.99,49.17,5C35.76,5.01,24.85,15.92,24.86,29.33l0.02,12.31H24  c-4.61,0.01-8.35,3.75-8.34,8.36v36.65c0,4.61,3.75,8.35,8.36,8.35L76,94.97c4.61,0,8.35-3.74,8.34-8.35V49.96  C84.34,45.35,80.59,41.62,75.98,41.62z M33.84,41.64l-0.02-12.31c0-8.47,6.88-15.36,15.35-15.37c8.47,0,15.36,6.89,15.36,15.35  l0.02,12.31L33.84,41.64z"
-  })), trans[locale].label, " ", /*#__PURE__*/React__default['default'].createElement("span", {
+  })), trans[locale].label, " ", /*#__PURE__*/React__default["default"].createElement("span", {
     style: {
       opacity: .5,
       fontSize: 9,
@@ -46541,7 +45324,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
     return _this;
   }
 
-  _createClass$7(ErrorBoundary, [{
+  _createClass$6(ErrorBoundary, [{
     key: "componentDidCatch",
     value: function componentDidCatch(error, errorInfo) {
       // You can also log the error to an error reporting service
@@ -46552,7 +45335,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       if (this.state.hasError) {
         // You can render any custom fallback UI
-        return /*#__PURE__*/React__default['default'].createElement("h1", null, "Something went wrong.");
+        return /*#__PURE__*/React__default["default"].createElement("h1", null, "Something went wrong.");
       }
 
       return this.props.children;
@@ -46568,7 +45351,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return ErrorBoundary;
-}(React__default['default'].Component);
+}(React__default["default"].Component);
 
 var App = /*#__PURE__*/function (_Component) {
   _inherits$4(App, _Component);
@@ -46581,7 +45364,7 @@ var App = /*#__PURE__*/function (_Component) {
     _classCallCheck$4(this, App);
 
     _this = _super.call(this, props);
-    _this.pageWidth = /*#__PURE__*/React__default['default'].createRef();
+    _this.pageWidth = /*#__PURE__*/React__default["default"].createRef();
     return _this;
   }
   /**
@@ -46589,7 +45372,7 @@ var App = /*#__PURE__*/function (_Component) {
    */
 
 
-  _createClass$7(App, [{
+  _createClass$6(App, [{
     key: "updateDimensions",
     value: function updateDimensions() {
       if (this.pageWidth.current.offsetWidth < 1200) {
@@ -46616,11 +45399,11 @@ var App = /*#__PURE__*/function (_Component) {
           filters = _this$props.filters,
           id = _this$props.id,
           className = _this$props.className;
-      return /*#__PURE__*/React__default['default'].createElement("div", {
+      return /*#__PURE__*/React__default["default"].createElement("div", {
         ref: this.pageWidth,
         id: id,
         className: className
-      }, /*#__PURE__*/React__default['default'].createElement(Query, {
+      }, /*#__PURE__*/React__default["default"].createElement(Query, {
         query: PORTAL_QUERY,
         variables: {
           id: portalCode,
@@ -46630,10 +45413,10 @@ var App = /*#__PURE__*/function (_Component) {
         var loading = _ref.loading,
             error = _ref.error,
             data = _ref.data;
-        if (loading) return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(Loading, null));
+        if (loading) return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(Loading, null));
 
         if (error) {
-          return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(ApiError, {
+          return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(ApiError, {
             errors: _objectSpread2({}, error)
           }));
         }
@@ -46651,22 +45434,22 @@ var App = /*#__PURE__*/function (_Component) {
         root.style.setProperty('--bukazu-background_month', "".concat(options.colors ? options.colors.month_background : '#e28413'));
 
         if (objectCode && objectCode !== null && pageType !== 'reviews') {
-          return /*#__PURE__*/React__default['default'].createElement("section", null, /*#__PURE__*/React__default['default'].createElement(ErrorBoundary, null, /*#__PURE__*/React__default['default'].createElement(CalendarPage, {
+          return /*#__PURE__*/React__default["default"].createElement("section", null, /*#__PURE__*/React__default["default"].createElement(ErrorBoundary, null, /*#__PURE__*/React__default["default"].createElement(CalendarPage, {
             PortalSite: PortalSite,
             objectCode: objectCode,
             locale: locale
-          }), /*#__PURE__*/React__default['default'].createElement(SafeBooking, {
+          }), /*#__PURE__*/React__default["default"].createElement(SafeBooking, {
             locale: locale
           })));
         } else if (objectCode && objectCode !== null && pageType === 'reviews') {
-          return /*#__PURE__*/React__default['default'].createElement(ReviewsPage, {
+          return /*#__PURE__*/React__default["default"].createElement(ReviewsPage, {
             PortalSite: PortalSite,
             locale: locale,
             options: options,
             filters: filters
           });
         } else {
-          return /*#__PURE__*/React__default['default'].createElement(SearchPage, {
+          return /*#__PURE__*/React__default["default"].createElement(SearchPage, {
             PortalSite: PortalSite,
             locale: locale,
             options: options,
@@ -47395,12 +46178,12 @@ function Portal(_ref) {
     it: it
   };
   window.__localeId__ = locale;
-  return /*#__PURE__*/React__default['default'].createElement(ApolloProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(ApolloProvider, {
     client: client
-  }, /*#__PURE__*/React__default['default'].createElement(IntlProvider$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(IntlProvider$1, {
     locale: locale,
     messages: messages[locale]
-  }, /*#__PURE__*/React__default['default'].createElement(App, {
+  }, /*#__PURE__*/React__default["default"].createElement(App, {
     portalCode: portalCode,
     objectCode: objectCode,
     pageType: pageType,
