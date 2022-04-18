@@ -31367,7 +31367,7 @@ function IntegrationError(_ref) {
     return false;
   }
 
-  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage, {
+  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "something_went_wrong_please_try_again"
   })), /*#__PURE__*/React__default["default"].createElement("ul", null, errors.map(function (err) {
     return /*#__PURE__*/React__default["default"].createElement("li", null, err);
@@ -45132,7 +45132,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.1.6",
+	version: "2.1.7",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
