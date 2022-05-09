@@ -5,6 +5,7 @@ import format from '../../../_lib/format';
 
 export const Object = ({ house, values }) => {
   const { arrivalDate, departureDate } = values
+  console.log({ values });
   return (
   <React.Fragment>
     <h2>
@@ -22,7 +23,7 @@ export const Object = ({ house, values }) => {
             <td className="price">
               {format(arrivalDate.date, 'dddd DD MMMM YYYY')}
             </td>
-            <td>{arrivalDate.arrival_time}</td>
+            <td>{arrivalDate.arrival_time_from} - {arrivalDate.arrival_time_to}</td>
           </tr>
           <tr>
             <th>

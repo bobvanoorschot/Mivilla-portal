@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export default function IntegrationError({
   portalCode,
@@ -41,8 +40,7 @@ export default function IntegrationError({
   return (
     <div>
       <h2>
-        <FormattedMessage id="something_went_wrong_please_try_again" />
-      </h2>
+       Something went wrong please try again      </h2>
       <ul>
         {errors.map((err) => (
           <li>{err}</li>
