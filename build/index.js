@@ -31367,9 +31367,7 @@ function IntegrationError(_ref) {
     return false;
   }
 
-  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
-    id: "something_went_wrong_please_try_again"
-  })), /*#__PURE__*/React__default["default"].createElement("ul", null, errors.map(function (err) {
+  return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("h2", null, "Something went wrong please try again      "), /*#__PURE__*/React__default["default"].createElement("ul", null, errors.map(function (err) {
     return /*#__PURE__*/React__default["default"].createElement("li", null, err);
   })));
 }
@@ -38229,6 +38227,9 @@ var Object$1 = function Object(_ref) {
       values = _ref.values;
   var arrivalDate = values.arrivalDate,
       departureDate = values.departureDate;
+  console.log({
+    values: values
+  });
   return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("h2", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "booking_details"
   })), /*#__PURE__*/React__default["default"].createElement("div", {
@@ -38240,7 +38241,7 @@ var Object$1 = function Object(_ref) {
     id: "".concat(house.house_type, ".arrival")
   })), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
-  }, format_1(arrivalDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default["default"].createElement("td", null, arrivalDate.arrival_time)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
+  }, format_1(arrivalDate.date, 'dddd DD MMMM YYYY')), /*#__PURE__*/React__default["default"].createElement("td", null, arrivalDate.arrival_time_from, " - ", arrivalDate.arrival_time_to)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", null, /*#__PURE__*/React__default["default"].createElement(FormattedMessage$2, {
     id: "".concat(house.house_type, ".departure")
   })), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "price"
@@ -45132,7 +45133,7 @@ var ReviewsPage = /*#__PURE__*/function (_Component) {
 
 var pjson = {
 	name: "bukazu-portal-react",
-	version: "2.1.7",
+	version: "2.1.9",
 	description: "A package for loading the calendar and search module from bukazu loading into a react app.",
 	main: "build/index.js",
 	repository: "https://github.com/BUKAZU/React-portal",
@@ -45568,13 +45569,17 @@ var en = {
 	filters: "Filters",
 	comply_insurance_card: "I agree that the cancellation insurance insurance card will be digitally issued to me. I receive this card with my booking confirmation.",
 	"house.you_picked_arrival_date": "Your arrival date is",
-	"camper.you_picked_arrival_date": "Your pickup date is",
 	"house.pick_your_departure_in_the_calendar": "Select a departure date",
-	"camper.pick_your_departure_in_the_calendar": "Select a return date",
 	"house.you_picked_departure_date": "Your departure date is",
-	"camper.you_picked_departure_date": "Your return date is",
 	"house.pick_your_arrivaldate_in_the_calendar": "Choose an arrival date",
+	"camper.you_picked_arrival_date": "Your pickup date is",
+	"camper.pick_your_departure_in_the_calendar": "Select a return date",
+	"camper.you_picked_departure_date": "Your return date is",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
+	"boat.you_picked_arrival_date": "Your pickup date is",
+	"boat.pick_your_departure_in_the_calendar": "Select a return date",
+	"boat.you_picked_departure_date": "Your return date is",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
 	no: "No",
 	no_house_found: "No object found for this combination of PortalCode and ObjectCode",
 	insurance_company_needs_date_of_birth: "A date of birth is required for taking out insurance",
@@ -45681,13 +45686,17 @@ var nl = {
 	filters: "Filters",
 	comply_insurance_card: "Ik ga ermee akkoord dat de verzekeringskaart van de annuleringsverzekering digitaal aan mij verstrekt wordt. Ik ontvang deze bij mijn boekingsbevestiging.",
 	"house.you_picked_arrival_date": "Uw aankomstdatum is",
-	"camper.you_picked_arrival_date": "Uw ophaaldatum is",
 	"house.pick_your_departure_in_the_calendar": "Kies een vertrekdatum",
-	"camper.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
 	"house.you_picked_departure_date": "Uw vertrekdatum is",
-	"camper.you_picked_departure_date": "Uw inleverdatum is",
 	"house.pick_your_arrivaldate_in_the_calendar": "Kies een aankomstdatum",
+	"camper.you_picked_arrival_date": "Uw ophaaldatum is",
+	"camper.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
+	"camper.you_picked_departure_date": "Uw inleverdatum is",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
+	"boat.you_picked_arrival_date": "Uw ophaaldatum is",
+	"boat.pick_your_departure_in_the_calendar": "Kies een inleverdatum",
+	"boat.you_picked_departure_date": "Uw inleverdatum is",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Kies een ophaaldatum",
 	no: "Nee",
 	no_house_found: "Geen object gevonden voor deze combinatie van Portal-code en Object-code",
 	insurance_company_needs_date_of_birth: "Voor het afsluiten van een verzekering is een geboortedatum verplicht",
@@ -45794,13 +45803,17 @@ var de = {
 	filters: "Filter",
 	comply_insurance_card: "Ich bin damit einverstanden, dass die Versicherungskarte der Reiserücktrittsversicherung digital ausgestellt wird. Ich erhalte diese mit meiner Buchungsbestätigung.",
 	"house.you_picked_arrival_date": "Ihre Ankunft ist",
-	"camper.you_picked_arrival_date": "Ihr Abholdatum ist",
 	"house.pick_your_departure_in_the_calendar": "Wählen Sie ein Abreisedatum",
-	"camper.pick_your_departure_in_the_calendar": "Wählen Sie ein Rückgabedatum",
 	"house.you_picked_departure_date": "Ihr Abreisedatum ist",
-	"camper.you_picked_departure_date": "Ihr Rückgabedatum ist",
 	"house.pick_your_arrivaldate_in_the_calendar": "Wählen Sie das Ankunftsdatum",
+	"camper.you_picked_arrival_date": "Ihr Abholdatum ist",
+	"camper.pick_your_departure_in_the_calendar": "Wählen Sie ein Rückgabedatum",
+	"camper.you_picked_departure_date": "Ihr Rückgabedatum ist",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
+	"boat.you_picked_arrival_date": "Ihr Abholdatum ist",
+	"boat.pick_your_departure_in_the_calendar": "Wählen Sie ein Rückgabedatum",
+	"boat.you_picked_departure_date": "Ihr Rückgabedatum ist",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Wählen Sie einen Abholtermin",
 	no: "Nein",
 	insurance_company_needs_date_of_birth: "Für den Abschluss einer Versicherung wird ein Geburtsdatum benötigt",
 	"extra_fields.date_of_birth": "Geburtsdatum",
@@ -45913,6 +45926,10 @@ var fr = {
 	"camper.you_picked_departure_date": "Votre date de retour est",
 	"house.pick_your_arrivaldate_in_the_calendar": "Choisissez une date d'arrivée",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Choisissez une date de pick-up",
+	"boat.you_picked_arrival_date": "Your pickup date is",
+	"boat.pick_your_departure_in_the_calendar": "Select a return date",
+	"boat.you_picked_departure_date": "Your return date is",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
 	no: "Non",
 	minimum_nights: "Au moins {minimum} nuits",
 	can_only_take_insurance_in_de_be_nl: "Vous ne pouvez souscrire une assurance que si vous résidez aux Pays-Bas, en Allemagne ou en Belgique.",
@@ -46021,6 +46038,10 @@ var es = {
 	"camper.you_picked_departure_date": "Su fecha de retorno es",
 	"house.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de llegada",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Elija una fecha de recogida",
+	"boat.you_picked_arrival_date": "Your pickup date is",
+	"boat.pick_your_departure_in_the_calendar": "Select a return date",
+	"boat.you_picked_departure_date": "Your return date is",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
 	no: "No",
 	minimum_nights: "Al menos {minimum} noches",
 	can_only_take_insurance_in_de_be_nl: "Solo puede contratar un seguro si vive en los Países Bajos, Alemania o Bélgica.",
@@ -46129,6 +46150,10 @@ var it = {
 	"camper.you_picked_departure_date": "La data di ritorno è",
 	"house.pick_your_arrivaldate_in_the_calendar": "Scegliere una data di arrivo",
 	"camper.pick_your_arrivaldate_in_the_calendar": "Scegli una data di ritiro",
+	"boat.you_picked_arrival_date": "Your pickup date is",
+	"boat.pick_your_departure_in_the_calendar": "Select a return date",
+	"boat.you_picked_departure_date": "Your return date is",
+	"boat.pick_your_arrivaldate_in_the_calendar": "Choose a pickup date",
 	no: "No",
 	minimum_nights: "Almeno {minimum} notti",
 	can_only_take_insurance_in_de_be_nl: "Puoi stipulare un'assicurazione solo se vivi nei Paesi Bassi, in Germania o in Belgio.",
