@@ -68,7 +68,8 @@ function Portal({ portalCode, objectCode, pageType, locale, filters, api_url } )
 
 Portal.defaultProps = {
   pageType: null,
-  api_url: "https://api.mivilla.nl/graphql"
+  api_url: "https://api.mivilla.nl/graphql",
+  filters: {}
 };
 
 export default Portal;
