@@ -8,10 +8,10 @@ import 'react-calendar/dist/Calendar.css';
 
 import { PORTAL_QUERY } from '../_lib/queries';
 
-import SearchPage from './SearchPage/SearchPage';
+// import SearchPage from './SearchPage/SearchPage';
 import CalendarPage from './CalendarPage/CalendarPage';
-import ReviewsPage from './ReviewsPage/ReviewsPage';
-import SafeBooking from './SafeBooking';
+// import ReviewsPage from './ReviewsPage/ReviewsPage';
+// import SafeBooking from './SafeBooking';
 import { ApiError } from './Error';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -28,7 +28,7 @@ class App extends Component {
    * Calculate & Update state of new dimensions
    */
   updateDimensions() {
-    if (this.pageWidth.current.offsetWidth < 1200) {
+    if (this.pageWidth.current.offsetWidth < 1000) {
       this.pageWidth.current.classList.add('bu-smaller');
     } else {
     }
@@ -43,7 +43,7 @@ class App extends Component {
   }
 
   render() {
-    const { portalCode, objectCode, pageType, locale, filters, id, className } =
+    const { portalCode, objectCode, locale, id, className } =
       this.props;
 
     return (
@@ -107,7 +107,7 @@ class App extends Component {
               `${options.colors ? options.colors.month_background : '#e28413'}`
             );
 
-            if (objectCode && objectCode !== null && pageType !== 'reviews') {
+            if (objectCode && objectCode !== null) {
               return (
                 <section>
                   <ErrorBoundary>
@@ -116,31 +116,13 @@ class App extends Component {
                       objectCode={objectCode}
                       locale={locale}
                     />
-                    <SafeBooking locale={locale} />
                   </ErrorBoundary>
                 </section>
               );
-            } else if (
-              objectCode &&
-              objectCode !== null &&
-              pageType === 'reviews'
-            ) {
+            } 
+             else {
               return (
-                <ReviewsPage
-                  PortalSite={PortalSite}
-                  locale={locale}
-                  options={options}
-                  filters={filters}
-                />
-              );
-            } else {
-              return (
-                <SearchPage
-                  PortalSite={PortalSite}
-                  locale={locale}
-                  options={options}
-                  filters={filters}
-                />
+                <div />
               );
             }
           }}
