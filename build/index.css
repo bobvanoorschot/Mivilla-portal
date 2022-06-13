@@ -377,6 +377,8 @@
         var(--bukazu-booked) 50%,
         var(--bukazu-arrival) 50%
       ) !important;
+    }
+  #bukazu-app .calendar .departure-arrival {
       cursor: pointer;
     }
   #bukazu-app .calendar .discount.departure-arrival {
