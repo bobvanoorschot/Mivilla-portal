@@ -1,9 +1,9 @@
 {
-  "name": "bukazu-portal-react",
-  "version": "2.1.9",
-  "description": "A package for loading the calendar and search module from bukazu loading into a react app.",
+  "name": "mivilla-portal",
+  "version": "2.1.10",
+  "description": "A package for loading the calendar and search module from mivilla loading into a react app.",
   "main": "build/index.js",
-  "repository": "https://github.com/BUKAZU/React-portal",
+  "repository": "https://github.com/bobvanoorschot/Mivilla-portal",
   "scripts": {
     "start": "webpack serve --open --config webpack.config.dev",
     "test": "cypress open",
