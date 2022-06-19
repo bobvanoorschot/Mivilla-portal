@@ -46669,7 +46669,7 @@ function Portal(_ref) {
 
 Portal.defaultProps = {
   pageType: null,
-  api_url: "https://api.mivilla.nl/graphql",
+  api_url: "https://api.mivilla.bukazu.com/graphql",
   filters: {}
 };
 
