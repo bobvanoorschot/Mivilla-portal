@@ -1,6 +1,6 @@
 {
   "name": "@mivilla/mivilla-portal",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "A package for loading the calendar and search module from mivilla loading into a react app.",
   "main": "build/index.js",
   "repository": "https://github.com/bobvanoorschot/Mivilla-portal",

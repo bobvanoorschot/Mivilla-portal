@@ -203,7 +203,12 @@ class FormCreator extends React.Component {
                       </div>
                     )}
                   </div>
-                  <Discount errors={errors} house={house} options={options} values={values} />
+                  <Discount
+                    errors={errors}
+                    house={house}
+                    options={options}
+                    values={values}
+                  />
 
                   <Insurances house={house} values={values} />
 
@@ -233,7 +238,7 @@ class FormCreator extends React.Component {
                             }}
                           >
                             <iframe
-                              src={house.rental_terms}
+                              src="https://mivilla.nl/terms-and-conditions"
                               width="100%"
                               height="100%"
                               title="Terms"
